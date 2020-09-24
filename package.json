@@ -3,9 +3,10 @@
   "version": "3.0.7",
   "description": "React support for Okta",
   "main": "./dist/index.js",
+  "private": true,
   "scripts": {
     "build": "rimraf dist/ && yarn build:package-info && babel src -d dist -s",
-    "build:package-info": "node ../../util/write-package-info.js . src/packageInfo.js",
+    "build:package-info": "node util/write-package-info.js . src/packageInfo.js",
     "lint": "eslint src",
     "lint:watch": "esw -w lib/**",
     "prepare": "yarn build",
@@ -17,7 +18,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/okta/okta-oidc-js.git"
+    "url": "git+https://github.com/okta/okta-react.git"
   },
   "keywords": [
     "oauth2"
@@ -29,9 +30,9 @@
   "author": "",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/okta/okta-oidc-js/issues"
+    "url": "https://github.com/okta/okta-react/issues"
   },
-  "homepage": "https://github.com/okta/okta-oidc-js#readme",
+  "homepage": "https://github.com/okta/okta-react#readme",
   "dependencies": {
     "@okta/configuration-validation": "^0.4.1",
     "@okta/okta-auth-js": "^3.2.3",
