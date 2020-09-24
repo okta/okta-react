@@ -18,11 +18,12 @@ module.exports = {
   rules: {
     'react/prop-types': 0,
     'react-hooks/rules-of-hooks': 'error',
-    'react-hooks/exhaustive-deps': 'warn'
+    'react-hooks/exhaustive-deps': 'warn',
+    'semi': ['error', 'always'],
   },
   settings: {
     react: {
-      version: '15.0',
+      version: '16.8',
     }
   }
 };
