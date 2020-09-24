@@ -16,7 +16,7 @@ install:
 
 script:
 - bash ./scripts/snyk.sh
-- base ./scripts/travis.sh
+- bash ./scripts/travis.sh
 
 before_install:
 - curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.13.0
