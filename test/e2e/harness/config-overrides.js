@@ -1,12 +1,8 @@
-/* global __dirname, module, process */
+/* global module, process */
 
 const webpack = require('webpack');
-const path = require('path');
-const MODULE_DIR = path.resolve(__dirname, '../../../');
-const MAIN_ENTRY = path.join(MODULE_DIR, 'dist/');
-const NODE_MODULES = path.join(MODULE_DIR, 'node_modules');
 
-require('../../../.oidc.config.js'); // will load environment vars from testenv
+require('../../../env'); // will load environment vars from testenv file and set on process.env
 
 const env = {};
 // List of environment variables made available to the app
@@ -33,20 +29,6 @@ module.exports = {
         'process.env': env,
       }),
     ].concat(config.plugins);
-
-    if (!config.resolve.alias) {
-      config.resolve.alias = {};
-    }
-    Object.assign(config.resolve.alias, {
-      '@okta/okta-react': MAIN_ENTRY,
-
-      // We receive strange errors if there are more than one copy of react modules.
-      // This happens because okta-react has devDependencies installed. Use copy from okta-react.
-      'react': path.join(NODE_MODULES, 'react'),
-      'react-dom': path.join(NODE_MODULES, 'react-dom'),
-      'react-router': path.join(NODE_MODULES, 'react-router'),
-      'react-router-dom': path.join(NODE_MODULES, 'react-router-dom')
-    });
 
     config.devtool = 'source-map';
     config.module.rules.push(
