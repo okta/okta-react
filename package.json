@@ -6,16 +6,13 @@
   "scripts": {
     "banners": "util/maintain-banners.js",
     "build": "node build.js",
-    "__build": "rimraf dist/ && yarn build:package-info && babel src -d dist -s",
-    "build:package-info": "node util/write-package-info.js . src/packageInfo.js",
     "lint": "eslint src",
     "lint:watch": "esw -w lib/**",
     "prepare": "yarn build",
     "start": "yarn --cwd test/e2e/harness start",
     "test": "yarn lint && yarn test:unit && yarn test:e2e",
     "test:e2e": "yarn --cwd test/e2e/harness test",
-    "test:unit": "jest",
-    "dev": "babel src -wd dist -s"
+    "test:unit": "jest"
   },
   "repository": {
     "type": "git",
@@ -27,11 +24,6 @@
   "main": "bundles/okta-react.umd.js",
   "files": [
     "bundles",
-    "src"
-  ],
-  "__main": "./dist/index.js",
-  "__files": [
-    "dist",
     "src"
   ],
   "author": "",
