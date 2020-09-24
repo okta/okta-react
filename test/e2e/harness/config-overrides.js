@@ -6,7 +6,7 @@ const MODULE_DIR = path.resolve(__dirname, '../../../');
 const MAIN_ENTRY = path.join(MODULE_DIR, 'dist/');
 const NODE_MODULES = path.join(MODULE_DIR, 'node_modules');
 
-require('../../../../../.oidc.config.js'); // will load environment vars from testenv
+require('../../../.oidc.config.js'); // will load environment vars from testenv
 
 const env = {};
 // List of environment variables made available to the app
