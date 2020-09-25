@@ -9,7 +9,6 @@
     "dev": "babel src -wd dist -s",
     "lint": "eslint src",
     "lint:watch": "esw -w lib/**",
-    "prepare": "yarn build",
     "start": "yarn --cwd test/e2e/harness start",
     "test": "yarn lint && yarn test:unit && yarn test:e2e",
     "test:e2e": "yarn --cwd test/e2e/harness test",
