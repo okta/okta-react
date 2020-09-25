@@ -6,6 +6,7 @@
   "scripts": {
     "banners": "util/maintain-banners.js",
     "build": "node build.js",
+    "dev": "babel src -wd dist -s",
     "lint": "eslint src",
     "lint:watch": "esw -w lib/**",
     "prepare": "yarn build",
@@ -68,9 +69,6 @@
     "polished": "^1.7.0",
     "prop-types": "^15.5.10",
     "protractor": "^5.4.2",
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6",
-    "react-router-dom": "^5.1.0",
     "rimraf": "^2.6.2",
     "shelljs": "^0.8.4",
     "styled-components": "^2.1.2",
