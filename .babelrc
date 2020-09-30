@@ -9,6 +9,12 @@
     }
   }], "react"],
   "plugins": [
+    ["transform-inline-environment-variables", {
+      "include": [
+        "PACKAGE_NAME",
+        "PACKAGE_VERSION"
+      ]
+    }],
     "transform-object-rest-spread",
     "transform-class-properties",
     "transform-runtime",

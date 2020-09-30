@@ -4,6 +4,8 @@ const shell = require('shelljs');
 const chalk = require('chalk');
 const fs = require('fs');
 
+require('./env'); // set variables in process.env
+
 const NPM_DIR = `dist`;
 const BABEL_CMD = `babel src -d ${NPM_DIR}/src -s`;
 

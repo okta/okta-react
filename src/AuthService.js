@@ -9,6 +9,7 @@
  *
  * See the License for the specific language governing permissions and limitations under the License.
  */
+/* global process */
 import {
   assertIssuer,
   assertClientId,
@@ -16,8 +17,6 @@ import {
   buildConfigObject
 } from '@okta/configuration-validation';
 import OktaAuth from '@okta/okta-auth-js';
-
-import packageInfo from './packageInfo';
 
 class AuthService {
   constructor(config) {
@@ -33,7 +32,7 @@ class AuthService {
     assertRedirectUri(authConfig.redirectUri);
 
     this._oktaAuth = new OktaAuth(authConfig);
-    this._oktaAuth.userAgent = `${packageInfo.name}/${packageInfo.version} ${this._oktaAuth.userAgent}`;
+    this._oktaAuth.userAgent = `${process.env.PACKAGE_NAME}/${process.env.PACKAGE_VERSION} ${this._oktaAuth.userAgent}`;
     this._config = authConfig; // use normalized config
     this._pending = {}; // manage overlapping async calls 
 
