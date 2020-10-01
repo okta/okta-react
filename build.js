@@ -4,8 +4,6 @@ const shell = require('shelljs');
 const chalk = require('chalk');
 const fs = require('fs');
 
-require('./env'); // set variables in process.env
-
 const NPM_DIR = `dist`;
 const BABEL_CMD = `babel src -d ${NPM_DIR}/src -s`;
 
@@ -28,6 +26,7 @@ let packageJSON = JSON.parse(fs.readFileSync(`./${NPM_DIR}/package.json`));
 delete packageJSON.private; // remove private flag
 delete packageJSON.scripts; // remove all scripts
 delete packageJSON.jest; // remove jest section
+delete packageJSON['jest-junit']; // remove jest-junit section
 delete packageJSON.workspaces; // remove yarn workspace section
 
 // Remove "build/" from the entrypoint paths.

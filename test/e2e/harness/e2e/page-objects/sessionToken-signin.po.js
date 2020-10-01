@@ -11,7 +11,7 @@
  */
 
 import { browser, by, element, ExpectedConditions } from 'protractor';
-import { Util } from '../util'
+import { Util } from '../util';
 
 export class SessionTokenSignInPage {
   navigateTo() {

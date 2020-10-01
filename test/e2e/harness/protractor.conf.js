@@ -9,14 +9,15 @@
  *
  * See the License for the specific language governing permissions and limitations under the License.
  */
-
+/* global browser, jasmine */
 const SpecReporter = require('jasmine-spec-reporter').SpecReporter;
 const JUnitXmlReporter = require('jasmine-reporters').JUnitXmlReporter;
+const TEST_RESULT_FILE_DIR = process.env.TEST_RESULT_FILE_DIR || '../../../test-reports/e2e';
 
 exports.config = {
   allScriptsTimeout: 11000,
   specs: [
-    './e2e/dist/*.test.js'
+    './e2e/*.test.js'
   ],
   capabilities: {
     'browserName': 'chrome',
@@ -40,7 +41,7 @@ exports.config = {
       }
     }));
     jasmine.getEnv().addReporter(new JUnitXmlReporter({
-      savePath: '../reports/junit',
+      savePath: TEST_RESULT_FILE_DIR,
       filePrefix: 'results',
     }));
   }

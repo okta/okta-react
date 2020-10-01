@@ -4,11 +4,12 @@
   "description": "React support for Okta",
   "private": true,
   "scripts": {
-    "banners": "util/maintain-banners.js",
+    "banners": "node util/maintain-banners.js",
     "build": "node build.js",
+    "clean": "rm -rf dist && rm -rf test-reports",
     "dev": "babel src -wd dist/src -s",
-    "lint": "eslint src",
-    "lint:watch": "esw -w lib/**",
+    "lint": "eslint .",
+    "lint:report": "eslint -f checkstyle -o ./test-reports/lint/eslint-checkstyle-result.xml .",
     "prepare": "yarn build",
     "start": "yarn --cwd test/e2e/harness start",
     "test": "yarn lint && yarn test:unit && yarn test:e2e",
@@ -30,39 +31,47 @@
     "url": "https://github.com/okta/okta-react/issues"
   },
   "homepage": "https://github.com/okta/okta-react#readme",
+  "engines": {
+    "node": ">=10.3",
+    "yarn": "^1.7.0"
+  },
   "dependencies": {
+    "@babel/runtime": "^7.11.2",
     "@okta/configuration-validation": "^0.4.1",
-    "@okta/okta-auth-js": "^3.2.5"
+    "@okta/okta-auth-js": "^3.2.5",
+    "babel-jest": "^26.3.0"
   },
   "peerDependencies": {
     "react": ">=16.8.0",
+    "react-dom": ">=16.8.0",
     "react-router-dom": ">=5.1.0"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.0",
-    "babel-eslint": "^8.1.1",
-    "babel-loader": "^7.1.1",
-    "babel-plugin-transform-class-properties": "^6.24.1",
+    "@babel/cli": "^7.11.6",
+    "@babel/core": "^7.11.6",
+    "@babel/eslint-parser": "^7.11.5",
+    "@babel/plugin-transform-runtime": "^7.11.5",
+    "@babel/preset-env": "^7.11.5",
+    "@babel/preset-react": "^7.10.4",
     "babel-plugin-transform-inline-environment-variables": "^0.4.3",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-plugin-transform-runtime": "^6.23.0",
-    "babel-preset-env": "^1.6.1",
-    "babel-preset-react-app": "^3.0.2",
-    "babel-runtime": "^6.26.0",
+    "chalk": "^4.1.0",
     "cross-env": "^7.0.2",
     "dotenv": "^8.2.0",
     "enzyme": "^3.5.1",
     "enzyme-adapter-react-16": "^1.4.0",
-    "eslint": "^4.7.1",
+    "eslint": "^7.10.0",
     "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-jest": "^24.0.2",
     "eslint-plugin-jsx-a11y": "^6.0.2",
+    "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-react": "^7.3.0",
     "eslint-plugin-react-hooks": "^2.5.0",
     "eslint-watch": "^3.1.2",
+    "globby": "^11.0.1",
     "jasmine-core": "~2.6.2",
     "jasmine-spec-reporter": "~4.1.0",
-    "jest": "^23.6.0",
+    "jest": "^26.4.2",
+    "jest-junit": "^11.1.0",
     "lerna": "^3.22.1",
     "polished": "^1.7.0",
     "prop-types": "^15.5.10",
@@ -71,15 +80,19 @@
     "shelljs": "^0.8.4",
     "styled-components": "^2.1.2",
     "tiny-emitter": "^2.1.0",
-    "uglifyjs-webpack-plugin": "^2.2.0",
-    "webdriver-manager": "^12.1.4",
-    "webpack": "^4.44.2",
-    "webpack-cli": "^3.3.12"
-  },
-  "resolutions": {
-    "webdriver-manager": "^12.1.4"
+    "uglifyjs-webpack-plugin": "^2.2.0"
   },
   "jest": {
+    "coverageDirectory": "<rootDir>/test-reports/coverage",
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "./src/**",
+      "!./test/**"
+    ],
+    "reporters": [
+      "default",
+      "jest-junit"
+    ],
     "restoreMocks": true,
     "roots": [
       "./test/jest"
@@ -88,6 +101,10 @@
       "./test/jest/setup.js"
     ],
     "testEnvironment": "jsdom"
+  },
+  "jest-junit": {
+    "outputDirectory": "./test-reports/unit/",
+    "outputName": "junit-result.xml"
   },
   "workspaces": [
     "./",
