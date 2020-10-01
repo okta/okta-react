@@ -2,5 +2,6 @@ dist
 node_modules
 .DS_Store
 testenv
-test/e2e/reports/
+/test-reports
+
 

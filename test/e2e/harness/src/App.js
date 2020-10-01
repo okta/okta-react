@@ -30,11 +30,10 @@ class App extends Component {
   }
 
   onAuthRequired() {
-    this.props.history.push('/login')
+    this.props.history.push('/login');
   }
   
   render() {
-     /* global process */
     const { ISSUER, CLIENT_ID } = process.env;
     const { pkce, redirectUri } = this.props;
     return (

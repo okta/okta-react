@@ -1,5 +1,5 @@
 import AuthService from '../../src/AuthService';
-import AuthJS from '@okta/okta-auth-js'
+import AuthJS from '@okta/okta-auth-js';
 import Emitter from 'tiny-emitter';
 
 const pkg = require('../../package.json');
@@ -15,15 +15,15 @@ describe('AuthService configuration', () => {
       emitter: new Emitter()
     };
     AuthJS.mockImplementation(() => {
-      return mockAuthJsInstance
+      return mockAuthJsInstance;
     });
-  })
+  });
 
   it('should throw if no issuer is provided', () => {
     function createInstance () {
       return new AuthService();
     }
-    expect(createInstance).toThrow()
+    expect(createInstance).toThrow();
   });
 
   it('should throw if an issuer that does not contain https is provided', () => {
@@ -32,7 +32,7 @@ describe('AuthService configuration', () => {
         issuer: 'http://foo.com'
       });
     }
-    expect(createInstance).toThrow()
+    expect(createInstance).toThrow();
   });
 
   it('should throw if an issuer matching {yourOktaDomain} is provided', () => {
@@ -41,7 +41,7 @@ describe('AuthService configuration', () => {
         issuer: 'https://{yourOktaDomain}'
       });
     }
-    expect(createInstance).toThrow()
+    expect(createInstance).toThrow();
   });
 
   it('should throw if an issuer matching -admin.okta.com is provided', () => {
@@ -50,7 +50,7 @@ describe('AuthService configuration', () => {
         issuer: 'https://foo-admin.okta.com'
       });
     }
-    expect(createInstance).toThrow()
+    expect(createInstance).toThrow();
   });
 
   it('should throw if an issuer matching -admin.oktapreview.com is provided', () => {
@@ -59,7 +59,7 @@ describe('AuthService configuration', () => {
         issuer: 'https://foo-admin.oktapreview.com'
       });
     }
-    expect(createInstance).toThrow()
+    expect(createInstance).toThrow();
   });
 
   it('should throw if an issuer matching -admin.okta-emea.com is provided', () => {
@@ -68,7 +68,7 @@ describe('AuthService configuration', () => {
         issuer: 'https://foo-admin.okta-emea.com'
       });
     }
-    expect(createInstance).toThrow()
+    expect(createInstance).toThrow();
   });
 
   it('should throw if the clientId is not provided', () => {
@@ -77,7 +77,7 @@ describe('AuthService configuration', () => {
         issuer: 'https://foo/oauth2/default'
       });
     }
-    expect(createInstance).toThrow()
+    expect(createInstance).toThrow();
   });
 
   it('should throw if a clientId matching {clientId} is provided', () => {
@@ -87,7 +87,7 @@ describe('AuthService configuration', () => {
         clientId: '{clientId}',
       });
     }
-    expect(createInstance).toThrow()
+    expect(createInstance).toThrow();
   });
 
   it('should throw if the redirectUri is not provided', () => {
@@ -130,7 +130,7 @@ describe('AuthService configuration', () => {
       onSessionExpired: expect.any(Function),
       redirectUri: 'foo',
       pkce: true,
-    }
+    };
 
     new AuthService(options);
     expect(AuthJS.prototype.constructor).toHaveBeenCalledWith(options);
@@ -148,7 +148,7 @@ describe('AuthService configuration', () => {
         secure: true,
         storage: 'cookie'
       }
-    }
+    };
 
     new AuthService(options);
     expect(AuthJS.prototype.constructor).toHaveBeenCalledWith(options);
@@ -196,14 +196,10 @@ describe('AuthService', () => {
       signOut: jest.fn().mockReturnValue(Promise.resolve())
     };
     AuthJS.mockImplementation(() => {
-      return mockAuthJsInstance
+      return mockAuthJsInstance;
     });
     jest.spyOn(window.location, 'assign').mockImplementation(() => {});
   });
-
-  function extendConfig(config) {
-    return Object.assign({}, validConfig, config);
-  }
   
   describe('TokenManager', () => {
     it('Exposes the token manager', () => {
@@ -288,7 +284,7 @@ describe('AuthService', () => {
         .then(() => {
           expect(window.location.assign).not.toHaveBeenCalled();
         });
-    })
+    });
   });
 
   test('sets the right user agent on AuthJS', () => {
@@ -301,7 +297,7 @@ describe('AuthService', () => {
     expect(authService._oktaAuth.userAgent).toMatch(expectedUserAgent);
   });
 
-  test('can retrieve an accessToken from the tokenManager', async (done) => {
+  test('can retrieve an accessToken from the tokenManager', async () => {
     const authService = new AuthService({
       issuer: 'https://foo/oauth2/default',
       clientId: 'foo',
@@ -309,7 +305,6 @@ describe('AuthService', () => {
     });
     const accessToken = await authService.getAccessToken();
     expect(accessToken).toBe(accessTokenParsed.accessToken);
-    done();
   });
 
   test('builds the authorize request with correct params', () => {
@@ -502,7 +497,7 @@ describe('AuthService', () => {
         redirectUri: 'https://foo/redirect',
       });
       authService.redirect = jest.fn();
-      Promise.all([authService.login('/'), authService.login('/')]).then(() => {
+      return Promise.all([authService.login('/'), authService.login('/')]).then(() => {
         expect(authService.redirect).toHaveBeenCalledTimes(1);
       });
     });
@@ -516,11 +511,9 @@ describe('AuthService', () => {
       });
       const mockErrorMessage = 'mock error';
       authService.redirect = jest.fn().mockRejectedValue(new Error(mockErrorMessage));
-      try {
-        await authService.login('/')
-      } catch (e) {
+      return authService.login('/').catch(e => {
         expect(e.message).toEqual(mockErrorMessage);
-      }
+      });
     });
   });
 
@@ -796,7 +789,7 @@ describe('AuthService', () => {
         clientId: 'foo',
         redirectUri: 'https://foo/redirect',
       });
-    })
+    });
     it('puts tokens in the TokenManager', () => {
       const accessToken = {
         accessToken: 'fake access'

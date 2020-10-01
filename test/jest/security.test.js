@@ -65,18 +65,20 @@ describe('<Security />', () => {
     const mockProps = {
       authService
     };
-    let call = 1;
 
-    const MyComponent = jest.fn().mockImplementation(() => {
-      const oktaProps = useOktaAuth();
-      if (call === 1) {
+    const MyComponent = jest.fn()
+      // first call
+      .mockImplementationOnce(() => {
+        const oktaProps = useOktaAuth();
         expect(oktaProps.authState).toBe(initialAuthState);
-      } else if (call === 2) {
+        return null;
+      })
+      // second call
+      .mockImplementationOnce(() => {
+        const oktaProps = useOktaAuth();
         expect(oktaProps.authState).toBe(newAuthState);
-      }
-      call++;
-      return null; 
-    });
+        return null;
+      });
 
     mount(
       <MemoryRouter>
@@ -130,19 +132,26 @@ describe('<Security />', () => {
     const mockProps = {
       authService
     };
-    let call = 1;
-    const MyComponent = jest.fn().mockImplementation(() => {
-      const oktaProps = useOktaAuth();
-      if (call === 1) {
+    const MyComponent = jest.fn()
+      // first call
+      .mockImplementationOnce(() => {
+        const oktaProps = useOktaAuth();
         expect(oktaProps.authState).toBe(initialAuthState);
-      } else if (call === 2) {
+        return null;
+      })
+      // second call
+      .mockImplementationOnce(() => {
+        const oktaProps = useOktaAuth();
         expect(oktaProps.authState).toBe(mockAuthStates[1]);
-      } else if (call === 3) {
+        return null;
+      })
+      // third call
+      .mockImplementationOnce(() => {
+        const oktaProps = useOktaAuth();
         expect(oktaProps.authState).toBe(mockAuthStates[2]);
-      }
-      call++;
-      return null; 
-    });
+        return null;
+      });
+
     mount(
       <MemoryRouter>
         <Security {...mockProps}>
@@ -178,7 +187,7 @@ describe('<Security />', () => {
     const tokenManager = {
       secure: true,
       storage: 'cookie'
-    }
+    };
 
     const mockProps = Object.assign({}, VALID_CONFIG, {
       tokenManager,
@@ -190,5 +199,5 @@ describe('<Security />', () => {
       </MemoryRouter>
     );
     expect(wrapper.find(Security).props().tokenManager).toBe(tokenManager);
-  })
+  });
 });

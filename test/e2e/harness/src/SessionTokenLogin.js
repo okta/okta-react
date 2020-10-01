@@ -11,7 +11,6 @@
  */
 
 import React, { Component } from 'react';
-import OktaAuth from '@okta/okta-auth-js';
 import { withOktaAuth } from '@okta/okta-react';
 
 export default withOktaAuth(class SessionTokenLogin extends Component {
@@ -21,21 +20,15 @@ export default withOktaAuth(class SessionTokenLogin extends Component {
       sessionToken: null,
       username: '',
       password: ''
-    }
+    };
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleUsernameChange = this.handleUsernameChange.bind(this);
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
   }
 
-  componentWillMount() {
-    this.oktaAuth = new OktaAuth({
-      issuer: this.props.authService._config.issuer
-    });
-  }
-
   handleSubmit(e) {
-    this.oktaAuth.signIn({
+    this.props.authService._oktaAuth.signIn({
       username: this.state.username,
       password: this.state.password
     })

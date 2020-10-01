@@ -11,7 +11,7 @@
  */
 
 import { browser, element, by } from 'protractor';
-import { Util } from '../util'
+import { Util } from '../util';
 
 export class ProtectedPage {
   navigateTo(path) {

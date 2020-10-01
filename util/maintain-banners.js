@@ -1,5 +1,3 @@
-#! /usr/bin/env node
-
 const fs = require('fs');
 const globby = require('globby');
 const path = require('path');
