@@ -1,3 +1,16 @@
+# 4.0.0
+
+### Breaking Changes
+
+- [#8](https://github.com/okta/okta-react/pull/8) See [MIGRATING](README#migrating-from-3x-to-4x) for detailed information.
+  - Replaces `authService` with instance of `@okta/okta-auth-js` so all configuration options and public methods are available.
+  - By default `isAuthenticated` will be true if **both** accessToken **and** idToken are valid
+  - Changes `@okta/okta-auth-js` as peerDependency
+
+### Features
+
+- [#8](https://github.com/okta/okta-react/pull/8) Accepts `onAuthRequired` prop in `SecureRoute` component to override the existing callback for the route
+
 # 3.0.8
 
 ### Other

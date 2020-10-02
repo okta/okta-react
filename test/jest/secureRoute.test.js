@@ -6,7 +6,7 @@ import SecureRoute from '../../src/SecureRoute';
 import Security from '../../src/Security';
 
 describe('<SecureRoute />', () => {
-  let authService;
+  let oktaAuth;
   let authState;
   let mockProps;
 
@@ -14,18 +14,19 @@ describe('<SecureRoute />', () => {
     authState = {
       isPending: true
     };
-    authService = {
-      on: jest.fn(),
-      updateAuthState: jest.fn(),
-      getAuthState: jest.fn().mockImplementation(() => authState),
-      login: jest.fn(),
-      _oktaAuth: {
-        token: {
-          isLoginRedirect: jest.fn().mockImplementation(() => false)
-        }
-      }
+    oktaAuth = {
+      options: {},
+      authStateManager: {
+        getAuthState: jest.fn().mockImplementation(() => authState),
+        subscribe: jest.fn(),
+        updateAuthState: jest.fn(),
+      },
+      isLoginRedirect: jest.fn().mockImplementation(() => false),
+      handleLoginRedirect: jest.fn(),
+      signInWithRedirect: jest.fn(),
+      setOriginalUri: jest.fn()
     };
-    mockProps = { authService };
+    mockProps = { oktaAuth };
   });
 
   describe('With changing authState', () => {
@@ -158,7 +159,7 @@ describe('<SecureRoute />', () => {
       expect(wrapper.find(MyComponent).length).toBe(0);
     });
 
-   it('will not render wrapped component with children', () => {
+    it('will not render wrapped component with children', () => {
       const MyComponent = function() { return <div>hello world</div>; };
       const wrapper = mount(
         <MemoryRouter>
@@ -178,26 +179,62 @@ describe('<SecureRoute />', () => {
         authState.isPending = false;
       });
 
-      it('calls login() if route matches', () => {
-        mount(
-          <MemoryRouter>
-            <Security {...mockProps}>
-              <SecureRoute path="/" />
-            </Security>
-          </MemoryRouter>
-        );
-        expect(authService.login).toHaveBeenCalled();
+      describe('route matches', () => {
+        it('calls signInWithRedirect() if route matches', () => {
+          mount(
+            <MemoryRouter>
+              <Security {...mockProps}>
+                <SecureRoute path="/" />
+              </Security>
+            </MemoryRouter>
+          );
+          expect(oktaAuth.setOriginalUri).toHaveBeenCalled();
+          expect(oktaAuth.signInWithRedirect).toHaveBeenCalled();
+        });
+  
+        it('calls onAuthRequired if provided from Security', () => {
+          const onAuthRequired = jest.fn();
+          mount(
+            <MemoryRouter>
+              <Security {...mockProps} onAuthRequired={onAuthRequired}>
+                <SecureRoute path="/" />
+              </Security>
+            </MemoryRouter>
+          );
+          expect(oktaAuth.setOriginalUri).toHaveBeenCalled();
+          expect(oktaAuth.signInWithRedirect).not.toHaveBeenCalled();
+          expect(onAuthRequired).toHaveBeenCalledWith(oktaAuth);
+        });
+
+        it('calls onAuthRequired from SecureRoute if provide from both Security and SecureRoute', () => {
+          const onAuthRequired1 = jest.fn();
+          const onAuthRequired2 = jest.fn();
+          mount(
+            <MemoryRouter>
+              <Security {...mockProps} onAuthRequired={onAuthRequired1}>
+                <SecureRoute path="/" onAuthRequired={onAuthRequired2} />
+              </Security>
+            </MemoryRouter>
+          );
+          expect(oktaAuth.setOriginalUri).toHaveBeenCalled();
+          expect(oktaAuth.signInWithRedirect).not.toHaveBeenCalled();
+          expect(onAuthRequired1).not.toHaveBeenCalled();
+          expect(onAuthRequired2).toHaveBeenCalledWith(oktaAuth);
+        });
       });
 
-      it('does not call login() if route does not match', () => {
-        mount(
-          <MemoryRouter>
-            <Security {...mockProps}>
-              <SecureRoute path="/other" />
-            </Security>
-          </MemoryRouter>
-        );
-        expect(authService.login).not.toHaveBeenCalled();
+      describe('route does not match', () => {
+        it('does not call signInWithRedirect()', () => {
+          mount(
+            <MemoryRouter>
+              <Security {...mockProps}>
+                <SecureRoute path="/other" />
+              </Security>
+            </MemoryRouter>
+          );
+          expect(oktaAuth.setOriginalUri).not.toHaveBeenCalled();
+          expect(oktaAuth.signInWithRedirect).not.toHaveBeenCalled();
+        });
       });
     });
 
@@ -207,7 +244,7 @@ describe('<SecureRoute />', () => {
         authState.isPending = true;
       });
 
-      it('does not call login()', () => {
+      it('does not call signInWithRedirect()', () => {
         mount(
           <MemoryRouter>
             <Security {...mockProps}>
@@ -215,7 +252,7 @@ describe('<SecureRoute />', () => {
             </Security>
           </MemoryRouter>
         );
-        expect(authService.login).not.toHaveBeenCalled();
+        expect(oktaAuth.signInWithRedirect).not.toHaveBeenCalled();
       });
     });
   });

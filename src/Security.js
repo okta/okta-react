@@ -10,35 +10,61 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-import React, { useState, useEffect, useMemo } from 'react';
-import AuthService from './AuthService';
+import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
+import { toRelativeUrl, DEFAULT_AUTH_STATE, AuthSdkError } from '@okta/okta-auth-js';
 import OktaContext from './OktaContext';
+import OktaError from './OktaError';
 
-const Security = (props) => { 
+const Security = ({ oktaAuth, onAuthRequired, children }) => { 
+  const history = useHistory();
+  const [authState, setAuthState] = useState(() => {
+    if (!oktaAuth) {
+      return DEFAULT_AUTH_STATE;
+    }
+    return oktaAuth.authStateManager.getAuthState();
+  });
 
-  const initialAuthService = useMemo( () => { 
-    // don't keep spawning new service instances if this component rerenders
-    return props.authService || new AuthService(props);
-  }, [ props ]);
+  useEffect(() => {
+    if (!oktaAuth) {
+      return;
+    }
 
-  const [authService] = useState( initialAuthService );
-  const [authState, setAuthState] = useState(authService.getAuthState());
-  
-  useEffect( () => { 
-    const unsub = authService.on('authStateChange', () => {
-      setAuthState(authService.getAuthState());
+    // Add default restoreOriginalUri callback
+    if (!oktaAuth.options.restoreOriginalUri) {
+      oktaAuth.options.restoreOriginalUri = (_, originalUri) => {
+        history.replace(toRelativeUrl(originalUri, window.location.origin));
+      };
+    }
+
+    // Add okta-react userAgent
+    oktaAuth.userAgent = `${process.env.PACKAGE_NAME}/${process.env.PACKAGE_VERSION} ${oktaAuth.userAgent}`;
+
+    // Update Security provider with latest authState
+    oktaAuth.authStateManager.subscribe((authState) => {
+      setAuthState(authState);
     });
 
-    if (!authService._oktaAuth.token.isLoginRedirect()) {
-      // Trigger an initial change event to make sure authState is latest when not in loginRedirect state
-      authService.updateAuthState(); 
+    // Trigger an initial change event to make sure authState is latest
+    if (!oktaAuth.isLoginRedirect()) {
+      oktaAuth.authStateManager.updateAuthState();
     }
-    return unsub;
-  }, [authService]);
+
+    return () => oktaAuth.authStateManager.unsubscribe();
+  }, [oktaAuth, history]);
+
+  if (!oktaAuth) {
+    const err = new AuthSdkError('No oktaAuth instance passed to Security Component.');
+    return <OktaError error={err} />;
+  }
 
   return (
-    <OktaContext.Provider value={ { authService, authState } }>
-      {props.children}
+    <OktaContext.Provider value={{ 
+      oktaAuth, 
+      authState, 
+      _onAuthRequired: onAuthRequired
+    }}>
+      {children}
     </OktaContext.Provider>
   );
 };

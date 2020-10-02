@@ -15,14 +15,14 @@ import { useOktaAuth } from './OktaContext';
 import OktaError from './OktaError';
 
 const LoginCallback = ({ errorComponent }) => { 
-  const { authService, authState } = useOktaAuth();
+  const { oktaAuth, authState } = useOktaAuth();
   const authStateReady = !authState.isPending;
 
   let ErrorReporter = errorComponent || OktaError;
 
   useEffect(() => {
-    authService.handleAuthentication();
-  }, [authService]);
+    oktaAuth.handleLoginRedirect();
+  }, [oktaAuth]);
 
   if(authStateReady && authState.error) { 
     return <ErrorReporter error={authState.error}/>;

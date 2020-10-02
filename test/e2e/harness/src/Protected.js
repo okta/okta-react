@@ -21,13 +21,13 @@ export default withOktaAuth(class Protected extends Component {
   }
 
   async componentDidMount() {
-    const claims = await this.props.authService.getUser();
+    const claims = await this.props.oktaAuth.getUser();
     const userinfo = JSON.stringify(claims, null, 4);
     this.setState({ userinfo });
   }
 
   async logout() {
-    this.props.authService.logout('/');
+    this.props.oktaAuth.signOut();
   }
 
   render() {
