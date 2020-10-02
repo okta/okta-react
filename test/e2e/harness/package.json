@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@okta/okta-react": "*",
+    "@okta/okta-auth-js": "^4.0.1",
     "react": "^16.8.0",
     "react-dom": "^16.8.0",
     "react-router": "^5.1.2",

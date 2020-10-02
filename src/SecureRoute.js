@@ -15,11 +15,27 @@ import { useOktaAuth } from './OktaContext';
 import { Route, useRouteMatch } from 'react-router-dom';
 
 const SecureRoute = ( props ) => { 
-  const { authService, authState } = useOktaAuth();
+  const { oktaAuth, authState, _onAuthRequired } = useOktaAuth();
   const match = useRouteMatch(props);
   const pendingLogin = useRef(false);
 
   useEffect(() => {
+    const handleLogin = async () => {
+      if (pendingLogin.current) {
+        return;
+      }
+
+      pendingLogin.current = true;
+
+      oktaAuth.setOriginalUri();
+      const onAuthRequiredFn = props.onAuthRequired || _onAuthRequired;
+      if (onAuthRequiredFn) {
+        await onAuthRequiredFn(oktaAuth);
+      } else {
+        await oktaAuth.signInWithRedirect();
+      }
+    };
+
     // Only process logic if the route matches
     if (!match) {
       return;
@@ -31,9 +47,8 @@ const SecureRoute = ( props ) => {
     }
 
     // Start login if app has decided it is not logged in and there is no pending signin
-    if(!authState.isAuthenticated && !authState.isPending && !pendingLogin.current) { 
-      pendingLogin.current = true;
-      authService.login();
+    if(!authState.isAuthenticated && !authState.isPending) { 
+      handleLogin();
     }
   }, [authState.isPending, authState.isAuthenticated, authService, match]);
 

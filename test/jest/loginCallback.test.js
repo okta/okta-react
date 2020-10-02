@@ -4,25 +4,24 @@ import LoginCallback from '../../src/LoginCallback';
 import Security from '../../src/Security';
 
 describe('<LoginCallback />', () => {
-  let authService;
+  let oktaAuth;
   let authState;
   let mockProps;
   beforeEach(() => {
     authState = {
       isPending: true
     };
-    authService = {
-      on: jest.fn(),
-      updateAuthState: jest.fn(),
-      getAuthState: jest.fn().mockImplementation(() => authState),
-      handleAuthentication: jest.fn(),
-      _oktaAuth: {
-        token: {
-          isLoginRedirect: jest.fn().mockImplementation(() => false)
-        }
-      }
+    oktaAuth = {
+      options: {},
+      authStateManager: {
+        getAuthState: jest.fn().mockImplementation(() => authState),
+        subscribe: jest.fn(),
+        updateAuthState: jest.fn(),
+      },
+      isLoginRedirect: jest.fn().mockImplementation(() => false),
+      handleLoginRedirect: jest.fn()
     };
-    mockProps = { authService };
+    mockProps = { oktaAuth };
   });
 
   it('renders the component', () => {
@@ -35,7 +34,7 @@ describe('<LoginCallback />', () => {
     expect(wrapper.text()).toBe('');
   });
 
-  it('calls handleAuthentication when authState is resolved', () => {
+  it('calls handleLoginRedirect when authState is resolved', () => {
     authState.isPending = false;
     authState.isAuthorized = true;
 
@@ -44,7 +43,7 @@ describe('<LoginCallback />', () => {
         <LoginCallback />
       </Security>
     );
-    expect(authService.handleAuthentication).toHaveBeenCalledTimes(1);
+    expect(oktaAuth.handleLoginRedirect).toHaveBeenCalledTimes(1);
   });
 
   describe('shows errors', () => {

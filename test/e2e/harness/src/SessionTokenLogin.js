@@ -28,7 +28,7 @@ export default withOktaAuth(class SessionTokenLogin extends Component {
   }
 
   handleSubmit(e) {
-    this.props.authService._oktaAuth.signIn({
+    this.props.oktaAuth.signInWithCredentials({
       username: this.state.username,
       password: this.state.password
     })
@@ -36,7 +36,7 @@ export default withOktaAuth(class SessionTokenLogin extends Component {
       this.setState({
         sessionToken: res.sessionToken
       });
-      this.props.authService.redirect({sessionToken: res.sessionToken});
+      this.props.oktaAuth.signInWithRedirect({sessionToken: res.sessionToken});
     })
     .catch(err => {
       console.log('Found an error', err);
