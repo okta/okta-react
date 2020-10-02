@@ -5,12 +5,6 @@ source ${OKTA_HOME}/${REPO}/scripts/setup.sh
 export TEST_SUITE_TYPE="checkstyle"
 export TEST_RESULT_FILE_DIR="${REPO}/test-reports"
 
-# build is required to access linked module "@okta/okta-react"
-if ! yarn build; then
-  echo "build failed! Exiting..."
-  exit ${TEST_FAILURE}
-fi
-
 if ! yarn lint:report; then
   echo "lint failed! Exiting..."
   exit ${TEST_FAILURE}

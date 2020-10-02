@@ -5,7 +5,6 @@ source ${OKTA_HOME}/${REPO}/scripts/setup.sh
 export TEST_SUITE_TYPE="junit"
 export TEST_RESULT_FILE_DIR="${REPO}/test-reports/unit"
 
-# Build is not required for unit tests. Code is transpiled on the fly by jest/babel
 # Run jest with "ci" flag
 if ! yarn test:unit --ci; then
   echo "unit failed! Exiting..."
