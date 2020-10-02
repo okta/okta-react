@@ -3,5 +3,5 @@ node_modules
 .DS_Store
 testenv
 /test-reports
-
-
+.yalc
+yalc.lock
