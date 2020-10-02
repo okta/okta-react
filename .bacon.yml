@@ -21,7 +21,7 @@ test_suites:
       criteria: MERGE
       queue_name: small
     - name: publish
-      script_path: /root/okta/npm/okta-react/scripts
+      script_path: /root/okta/okta-react/scripts
       sort_order: '4'
       timeout: '60'
       script_name: publish
