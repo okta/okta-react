@@ -15,9 +15,9 @@ import {
   assertRedirectUri,
   buildConfigObject
 } from '@okta/configuration-validation';
-import OktaAuth from '@okta/okta-auth-js';
+import { OktaAuth } from '@okta/okta-auth-js';
 
-class AuthService {
+class AuthService extends OktaAuth {
   constructor(config) {
     const testing = {
       // If the config is undefined, cast it to false
@@ -29,8 +29,9 @@ class AuthService {
     assertIssuer(authConfig.issuer, testing);
     assertClientId(authConfig.clientId);
     assertRedirectUri(authConfig.redirectUri);
+    super(authConfig);
 
-    this._oktaAuth = new OktaAuth(authConfig);
+    this._oktaAuth = this;
     this._oktaAuth.userAgent = `${process.env.PACKAGE_NAME}/${process.env.PACKAGE_VERSION} ${this._oktaAuth.userAgent}`;
     this._config = authConfig; // use normalized config
     this._pending = {}; // manage overlapping async calls 

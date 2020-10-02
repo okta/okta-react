@@ -2533,16 +2533,19 @@
   dependencies:
     lodash "^4.17.15"
 
-"@okta/okta-auth-js@^3.2.5":
-  version "3.2.5"
-  resolved "https://registry.yarnpkg.com/@okta/okta-auth-js/-/okta-auth-js-3.2.5.tgz#46ab9f35be37fc58e970997342799fe0a72c3e5e"
-  integrity sha512-QbyRhDrBI9CdKBFpikPFjR2zmwOIQSndx+/g9YVuQ25QrxUnVhq/nAg/EXMQtrOQVtcb99Vx5AIfm1DWnKV31A==
+"@okta/okta-auth-js@^4.0.0":
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/@okta/okta-auth-js/-/okta-auth-js-4.0.2.tgz#979fa450053f1d34a6c998d5e4064fa7b35a7067"
+  integrity sha512-XHOaU+qBsNEj0m3Dg9ZzCjHdPAYb5o3a9ZOqTOiDNZpkuIB2u9gbyrePoEiSz0jkUDhzenNqhSH4HkaK6R96cw==
   dependencies:
     Base64 "0.3.0"
+    core-js "^3.6.5"
     cross-fetch "^3.0.0"
     js-cookie "2.2.0"
     node-cache "^4.2.0"
+    text-encoding "^0.7.0"
     tiny-emitter "1.1.0"
+    webcrypto-shim "^0.1.5"
     xhr2 "0.1.3"
 
 "@sinonjs/commons@^1.7.0":
@@ -5869,7 +5872,7 @@ core-js@^2.4.0, core-js@^2.4.1, core-js@^2.5.0:
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.6.11.tgz#38831469f9922bded8ee21c9dc46985e0399308c"
   integrity sha512-5wjnpaT/3dV+XB4borEsnAYQchn00XSgTAWKDkEqv+K8KevjbzmofK6hfJ9TZIlpj2N0xQpazy7PiRQiWHqzWg==
 
-core-js@^3.5.0:
+core-js@^3.5.0, core-js@^3.6.5:
   version "3.6.5"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.6.5.tgz#7395dc273af37fb2e50e9bd3d9fe841285231d1a"
   integrity sha512-vZVEEwZoIsI+vPEuoF9Iqf5H7/M3eeQqWlQnYa8FSKKePuYTf5MWnxb5SDAzCa60b3JBRS5g9b+Dq7b1y/RCrA==
@@ -15630,6 +15633,11 @@ test-exclude@^6.0.0:
     glob "^7.1.4"
     minimatch "^3.0.4"
 
+text-encoding@^0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/text-encoding/-/text-encoding-0.7.0.tgz#f895e836e45990624086601798ea98e8f36ee643"
+  integrity sha512-oJQ3f1hrOnbRLOcwKz0Liq2IcrvDeZRHXhd9RgLrsT+DjWY/nty1Hi7v3dtkaEYbPYe0mUoOfzRrMwfXXwgPUA==
+
 text-extensions@^1.0.0:
   version "1.9.0"
   resolved "https://registry.yarnpkg.com/text-extensions/-/text-extensions-1.9.0.tgz#1853e45fee39c945ce6f6c36b2d659b5aabc2a26"
@@ -16364,6 +16372,11 @@ wcwidth@^1.0.0:
   integrity sha1-8LDc+RW8X/FSivrbLA4XtTLaL+g=
   dependencies:
     defaults "^1.0.3"
+
+webcrypto-shim@^0.1.5:
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/webcrypto-shim/-/webcrypto-shim-0.1.6.tgz#b4554d95c0a63637226c9732440dc674bf96f5cb"
+  integrity sha512-0o612s3S5z3IkDSRghIwd3Ul4X8NRmmZDpt6PWGI9gSM+nygVvrfzGjhIh4vwzlOJxYxS0fcFD1wh3yznuVzFg==
 
 webdriver-js-extender@2.1.0:
   version "2.1.0"
