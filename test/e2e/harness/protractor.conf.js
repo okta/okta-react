@@ -12,7 +12,7 @@
 /* global browser, jasmine */
 const SpecReporter = require('jasmine-spec-reporter').SpecReporter;
 const JUnitXmlReporter = require('jasmine-reporters').JUnitXmlReporter;
-const TEST_RESULT_FILE_DIR = process.env.TEST_RESULT_FILE_DIR || '../../../test-reports/e2e';
+const TEST_RESULT_FILE_DIR = '../../../test-reports/e2e';
 
 exports.config = {
   allScriptsTimeout: 11000,
