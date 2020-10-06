@@ -1,3 +1,9 @@
+# 3.0.8
+
+### Other
+
+- Upgrades internal dependencies
+
 # 3.0.7
 
 ### Bug Fixes
