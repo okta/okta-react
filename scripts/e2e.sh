@@ -17,8 +17,6 @@ if ! yarn test:e2e; then
   exit ${TEST_FAILURE}
 fi
 
-ls -al /root/okta/okta-react/test-reports
-
 echo ${TEST_SUITE_TYPE} > ${TEST_SUITE_TYPE_FILE}
 echo ${TEST_RESULT_FILE_DIR} > ${TEST_RESULT_FILE_DIR_FILE}
 exit ${PUBLISH_TYPE_AND_RESULT_DIR}
