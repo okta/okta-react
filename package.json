@@ -38,8 +38,7 @@
   "dependencies": {
     "@babel/runtime": "^7.11.2",
     "@okta/configuration-validation": "^0.4.1",
-    "@okta/okta-auth-js": "^3.2.5",
-    "babel-jest": "^26.3.0"
+    "@okta/okta-auth-js": "^3.2.5"
   },
   "peerDependencies": {
     "react": ">=16.8.0",
@@ -53,6 +52,7 @@
     "@babel/plugin-transform-runtime": "^7.11.5",
     "@babel/preset-env": "^7.11.5",
     "@babel/preset-react": "^7.10.4",
+    "babel-jest": "^26.3.0",
     "babel-plugin-transform-inline-environment-variables": "^0.4.3",
     "chalk": "^4.1.0",
     "cross-env": "^7.0.2",
