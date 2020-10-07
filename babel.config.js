@@ -19,9 +19,9 @@ if (process.env.NODE_ENV === 'test') {
     modules: 'commonjs'
   }]);
 } else {
-  // Normal build uses "auto" setting
+  // Normal build produces an ES module
   presets.unshift(['@babel/preset-env', {
-    modules: "auto"
+    modules: false
   }]);
 }
 
