@@ -1,3 +1,9 @@
+# 3.0.9
+
+### Bug Fixes
+
+- [#17](https://github.com/okta/okta-react/pull/17) fixes `authState.isPending` issue in login/logout process
+
 # 3.0.8
 
 ### Other
