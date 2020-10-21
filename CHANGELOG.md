@@ -13,6 +13,12 @@
 - [#39](https://github.com/okta/okta-react/pull/39) Exposes ES module bundle from package `module` field
 - [#44](https://github.com/okta/okta-react/pull/44) Adds support for Typescript
 
+# 3.0.9
+
+### Bug Fixes
+
+- [#17](https://github.com/okta/okta-react/pull/17) fixes `authState.isPending` issue in login/logout process
+
 # 3.0.8
 
 ### Other
