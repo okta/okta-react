@@ -205,6 +205,7 @@ class AuthService {
       return await this.redirect(additionalParams);
     } finally {
       this._pending.handleLogin = null;
+      this.emitAuthState({ ...this.getAuthState(), isPending: false });
     }
   }
 
@@ -222,9 +223,18 @@ class AuthService {
   }
 
   async logout(options={}) {
+    let error;
     options = this._convertLogoutPathToOptions(options);
-    await this._oktaAuth.signOut(options);
-    this.clearAuthState();
+    try {
+      await this._oktaAuth.signOut(options);
+    } catch (err) {
+      error = err;
+    } finally {
+      this.clearAuthState({ 
+        ...(error && { error }),
+        isPending: false 
+      });
+    }
   }
 
   async redirect(additionalParams = {}) {
