@@ -269,6 +269,21 @@ describe('AuthService', () => {
       return res;
     });
 
+    test('should end up with isPending === false', async () => {
+      expect.assertions(1);
+      const authService = new AuthService({
+        issuer: 'https://foo/oauth2/default',
+        clientId: 'foo',
+        redirectUri: 'foo',
+        history: {
+          push: jest.fn()
+        }
+      });
+      await authService.logout();
+      const authState = authService.getAuthState();
+      expect(authState.isPending).toEqual(false);
+    });
+
     test('can throw', async () => {
       const testError = new Error('test error');
       mockAuthJsInstance.signOut = jest.fn().mockReturnValue(Promise.reject(testError));
@@ -285,6 +300,25 @@ describe('AuthService', () => {
           expect(window.location.assign).not.toHaveBeenCalled();
         });
     });
+
+    test('should emit error when happens', async () => {
+      expect.assertions(2);
+      const testError = new Error('test error');
+      mockAuthJsInstance.signOut = jest.fn().mockReturnValue(Promise.reject(testError));
+      const authService = new AuthService({
+        issuer: 'https://foo/oauth2/default',
+        clientId: 'foo',
+        redirectUri: 'foo',
+        history: {
+          push: jest.fn()
+        }
+      });
+      await authService.logout();
+      const authState = authService.getAuthState();
+      expect(authState.error).toEqual(testError);
+      expect(authState.isPending).toEqual(false);
+    });
+
   });
 
   test('sets the right user agent on AuthJS', () => {
@@ -500,6 +534,19 @@ describe('AuthService', () => {
       return Promise.all([authService.login('/'), authService.login('/')]).then(() => {
         expect(authService.redirect).toHaveBeenCalledTimes(1);
       });
+    });
+
+    it('should end up with isPending === false', async () => {
+      expect.assertions(1);
+      const authService = new AuthService({
+        issuer: 'https://foo/oauth2/default',
+        clientId: 'foo',
+        redirectUri: 'https://foo/redirect',
+      });
+      authService.redirect = jest.fn();
+      await authService.login('/');
+      const authState = authService.getAuthState();
+      expect(authState.isPending).toEqual(false);
     });
 
     it('should throw when error happens', async () => {
