@@ -12,6 +12,7 @@
     "lint:report": "eslint -f checkstyle -o ./test-reports/lint/eslint-checkstyle-result.xml .",
     "prepare": "yarn build",
     "start": "yarn --cwd test/e2e/harness start",
+    "pretest": "node ./scripts/update-se-drivers.js",
     "test": "yarn lint && yarn test:unit && yarn test:e2e",
     "test:e2e": "yarn --cwd test/e2e/harness test",
     "test:unit": "jest"
