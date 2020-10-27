@@ -37,7 +37,7 @@ const LoginCallback = (props) => {
       if (onPostLoginRedirectFn) {
         onPostLoginRedirectFn(fromUri);
       } else {
-        history.replace(toRelativeUrl(fromUri));
+        history.replace(toRelativeUrl(fromUri, window.location.origin));
       }
     };
 
