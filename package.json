@@ -12,6 +12,7 @@
     "lint:report": "eslint -f checkstyle -o ./test-reports/lint/eslint-checkstyle-result.xml .",
     "prepare": "yarn build",
     "start": "yarn --cwd test/e2e/harness start",
+    "pretest": "node ./scripts/update-se-drivers.js",
     "test": "yarn lint && yarn test:unit && yarn test:e2e",
     "test:e2e": "yarn --cwd test/e2e/harness test",
     "test:unit": "jest"
@@ -46,6 +47,7 @@
     "react-router-dom": ">=5.1.0"
   },
   "devDependencies": {
+    "axios": "^0.20.0",
     "@babel/cli": "^7.11.6",
     "@babel/core": "^7.11.6",
     "@babel/eslint-parser": "^7.11.5",
