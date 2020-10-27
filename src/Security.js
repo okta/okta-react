@@ -10,35 +10,35 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-import React, { useState, useEffect, useMemo } from 'react';
-import AuthService from './AuthService';
+import React, { useState, useEffect } from 'react';
 import OktaContext from './OktaContext';
 
-const Security = (props) => { 
+const Security = ({ oktaAuth, onAuthRequired, onPostLoginRedirect, children }) => { 
+  if (!oktaAuth) {
+    throw new Error('Missing required oktaAuth instance.');
+  }
 
-  const initialAuthService = useMemo( () => { 
-    // don't keep spawning new service instances if this component rerenders
-    return props.authService || new AuthService(props);
-  }, [ props ]);
+  const [authState, setAuthState] = useState(oktaAuth.authStateManager.getAuthState());
 
-  const [authService] = useState( initialAuthService );
-  const [authState, setAuthState] = useState(authService.getAuthState());
-  
-  useEffect( () => { 
-    const unsub = authService.on('authStateChange', () => {
-      setAuthState(authService.getAuthState());
+  useEffect(() => {
+    oktaAuth.userAgent = `${process.env.PACKAGE_NAME}/${process.env.PACKAGE_VERSION} ${oktaAuth.userAgent}`;
+    oktaAuth.authStateManager.subscribe((authState) => {
+      setAuthState(authState);
     });
 
-    if (!authService._oktaAuth.token.isLoginRedirect()) {
-      // Trigger an initial change event to make sure authState is latest when not in loginRedirect state
-      authService.updateAuthState(); 
+    if (!oktaAuth.token.isLoginRedirect()) {
+      // Trigger an initial change event to make sure authState is latest
+      oktaAuth.authStateManager.updateAuthState();
     }
-    return unsub;
-  }, [authService]);
+
+    return () => oktaAuth.authStateManager.unsubscribe();
+  }, [oktaAuth]);
 
   return (
-    <OktaContext.Provider value={ { authService, authState } }>
-      {props.children}
+    <OktaContext.Provider value={{ 
+      oktaAuth, authState, onAuthRequired, onPostLoginRedirect
+    }}>
+      {children}
     </OktaContext.Provider>
   );
 };
