@@ -1,3 +1,17 @@
+# 4.0.0
+
+### Breaking Changes
+
+- [#8](https://github.com/okta/okta-react/pull/8)
+  - Changes `@okta/okta-auth-js` as peerDependency
+  - Removes `authService` module
+  - Explicitly accepts `oktaAuth` instance in `Security` component
+  - Replaces `authService` with `oktaAuth` in `useOktaAuth` hook and `withOktaAuth` HOC
+
+### Features
+
+- [#8](https://github.com/okta/okta-react/pull/8) Accepts `onAuthRequired` prop in `SecureRoute` component to override the existing callback for the route
+
 # 3.0.8
 
 ### Other
