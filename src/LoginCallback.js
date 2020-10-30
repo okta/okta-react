@@ -11,37 +11,17 @@
  */
 
 import React, { useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
-import { toRelativeUrl } from '@okta/okta-auth-js';
 import { useOktaAuth } from './OktaContext';
 import OktaError from './OktaError';
 
-const LoginCallback = (props) => { 
-  const history = useHistory();
-  const { oktaAuth, authState, onPostLoginRedirect } = useOktaAuth();
+const LoginCallback = ({ errorComponent }) => { 
+  const { oktaAuth, authState } = useOktaAuth();
   const authStateReady = !authState.isPending;
 
-  let ErrorReporter = props.errorComponent || OktaError;
+  let ErrorReporter = errorComponent || OktaError;
 
   useEffect(() => {
-    const handleAuthentication = async () => {
-      // Store tokens when redirect back from OKTA
-      await oktaAuth.storeTokensFromRedirect();
-      
-      // Get and clear fromUri from storage
-      const fromUri = oktaAuth.getFromUri();
-      oktaAuth.removeFromUri();
-
-      // Redirect to fromUri
-      const onPostLoginRedirectFn = props.onPostLoginRedirect || onPostLoginRedirect;
-      if (onPostLoginRedirectFn) {
-        onPostLoginRedirectFn(fromUri);
-      } else {
-        history.replace(toRelativeUrl(fromUri, window.location.origin));
-      }
-    };
-
-    handleAuthentication();
+    oktaAuth.handleLoginRedirect();
   }, [oktaAuth]);
 
   if(authStateReady && authState.error) { 

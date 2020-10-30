@@ -11,23 +11,36 @@
  */
 
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
+import { toRelativeUrl } from '@okta/okta-auth-js';
 import OktaContext from './OktaContext';
 
-const Security = ({ oktaAuth, onAuthRequired, onPostLoginRedirect, children }) => { 
+const Security = ({ oktaAuth, onAuthRequired, children }) => { 
   if (!oktaAuth) {
     throw new Error('Missing required oktaAuth instance.');
   }
 
+  const history = useHistory();
   const [authState, setAuthState] = useState(oktaAuth.authStateManager.getAuthState());
 
   useEffect(() => {
+    // Add default restoreOriginalUri callback
+    if (!oktaAuth.options.restoreOriginalUri) {
+      oktaAuth.options.restoreOriginalUri = (_, originalUri) => {
+        history.replace(toRelativeUrl(originalUri, window.location.origin));
+      };
+    }
+
+    // Add okta-react userAgent
     oktaAuth.userAgent = `${process.env.PACKAGE_NAME}/${process.env.PACKAGE_VERSION} ${oktaAuth.userAgent}`;
+
+    // Update Security provider with latest authState
     oktaAuth.authStateManager.subscribe((authState) => {
       setAuthState(authState);
     });
 
+    // Trigger an initial change event to make sure authState is latest
     if (!oktaAuth.token.isLoginRedirect()) {
-      // Trigger an initial change event to make sure authState is latest
       oktaAuth.authStateManager.updateAuthState();
     }
 
@@ -36,7 +49,9 @@ const Security = ({ oktaAuth, onAuthRequired, onPostLoginRedirect, children }) =
 
   return (
     <OktaContext.Provider value={{ 
-      oktaAuth, authState, onAuthRequired, onPostLoginRedirect
+      oktaAuth, 
+      authState, 
+      _onAuthRequired: onAuthRequired
     }}>
       {children}
     </OktaContext.Provider>

@@ -15,15 +15,15 @@ import { useOktaAuth } from './OktaContext';
 import { Route, useRouteMatch } from 'react-router-dom';
 
 const SecureRoute = ( props ) => { 
-  const { oktaAuth, authState, onAuthRequired } = useOktaAuth();
+  const { oktaAuth, authState, _onAuthRequired } = useOktaAuth();
   const match = useRouteMatch(props);
 
   useEffect(() => {
     const handleLogin = async () => {
-      oktaAuth.setFromUri();
-      const onAuthRequiredFn = props.onAuthRequired || onAuthRequired;
+      oktaAuth.setOriginalUri();
+      const onAuthRequiredFn = props.onAuthRequired || _onAuthRequired;
       if (onAuthRequiredFn) {
-        await onAuthRequiredFn();
+        await onAuthRequiredFn(oktaAuth);
       } else {
         await oktaAuth.signInWithRedirect();
       }
