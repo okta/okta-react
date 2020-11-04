@@ -11,27 +11,26 @@ describe('<Security />', () => {
     clientId: 'foo',
     redirectUri: 'https://example.com'
   };
-  let authService;
+  let oktaAuth;
   let initialAuthState;
   beforeEach(() => {
     initialAuthState = {
       isInitialState: true
     };
-    authService = {
-      on: jest.fn(),
-      updateAuthState: jest.fn(),
-      getAuthState: jest.fn().mockImplementation(() => initialAuthState),
-      _oktaAuth: {
-        token: {
-          isLoginRedirect: jest.fn().mockImplementation(() => false)
-        }
-      }
+    oktaAuth = {
+      options: {},
+      authStateManager: {
+        getAuthState: jest.fn().mockImplementation(() => initialAuthState),
+        subscribe: jest.fn(),
+        updateAuthState: jest.fn(),
+      },
+      isLoginRedirect: jest.fn().mockImplementation(() => false),
     };
   });
 
   it('gets initial state from authService and exposes it on the context', () => {
     const mockProps = {
-      authService
+      oktaAuth
     };
     const MyComponent = jest.fn().mockImplementation(() => {
       const oktaProps = useOktaAuth();
@@ -45,7 +44,7 @@ describe('<Security />', () => {
         </Security>
       </MemoryRouter>
     );
-    expect(authService.getAuthState).toHaveBeenCalled();
+    expect(oktaAuth.authStateManager.getAuthState).toHaveBeenCalled();
     expect(MyComponent).toHaveBeenCalled();
   });
 
@@ -54,16 +53,14 @@ describe('<Security />', () => {
       fromUpdateAuthState: true
     };
     let callback;
-    authService.on.mockImplementation((eventName, fn) => {
-      expect(eventName).toBe('authStateChange');
+    oktaAuth.authStateManager.subscribe.mockImplementation(fn => {
       callback = fn;
     });
-    authService.updateAuthState.mockImplementation(() => {
-      authService.getAuthState.mockImplementation(() => newAuthState);
-      callback();
+    oktaAuth.authStateManager.updateAuthState.mockImplementation(() => {
+      callback(newAuthState);
     });
     const mockProps = {
-      authService
+      oktaAuth
     };
 
     const MyComponent = jest.fn()
@@ -88,22 +85,22 @@ describe('<Security />', () => {
       </MemoryRouter>
     );
 
-    expect(authService.on).toHaveBeenCalledTimes(1);
-    expect(authService.updateAuthState).toHaveBeenCalledTimes(1);
+    expect(oktaAuth.authStateManager.subscribe).toHaveBeenCalledTimes(1);
+    expect(oktaAuth.authStateManager.updateAuthState).toHaveBeenCalledTimes(1);
     expect(MyComponent).toHaveBeenCalledTimes(2);
   });
 
   it('should not call updateAuthState when in login redirect state', () => {
-    authService._oktaAuth.token.isLoginRedirect = jest.fn().mockImplementation(() => true);
+    oktaAuth.isLoginRedirect = jest.fn().mockImplementation(() => true);
     const mockProps = {
-      authService
+      oktaAuth
     };
     mount(
       <MemoryRouter>
         <Security {...mockProps} />
       </MemoryRouter>
     );
-    expect(authService.updateAuthState).not.toHaveBeenCalled();
+    expect(oktaAuth.authStateManager.updateAuthState).not.toHaveBeenCalled();
   });
 
   it('subscribes to "authStateChange" and updates the context', () => {
@@ -118,19 +115,18 @@ describe('<Security />', () => {
     ];
     let callback;
     let stateCount = 0;
-    authService.getAuthState.mockImplementation( () => { 
+    oktaAuth.authStateManager.getAuthState.mockImplementation( () => { 
       return mockAuthStates[stateCount];
     });
-    authService.on.mockImplementation((eventName, fn) => {
-      expect(eventName).toBe('authStateChange');
+    oktaAuth.authStateManager.subscribe.mockImplementation(fn => {
       callback = fn;
     });
-    authService.updateAuthState.mockImplementation(() => {
+    oktaAuth.authStateManager.updateAuthState.mockImplementation(() => {
       stateCount++;
-      callback();
+      callback(mockAuthStates[stateCount]);
     });
     const mockProps = {
-      authService
+      oktaAuth
     };
     const MyComponent = jest.fn()
       // first call
@@ -159,20 +155,20 @@ describe('<Security />', () => {
         </Security>
       </MemoryRouter>
     );
-    expect(authService.on).toHaveBeenCalledTimes(1);
-    expect(authService.updateAuthState).toHaveBeenCalledTimes(1);
+    expect(oktaAuth.authStateManager.subscribe).toHaveBeenCalledTimes(1);
+    expect(oktaAuth.authStateManager.updateAuthState).toHaveBeenCalledTimes(1);
     expect(MyComponent).toHaveBeenCalledTimes(2);
     MyComponent.mockClear();
     act(() => {
       stateCount++;
-      callback();
+      callback(mockAuthStates[stateCount]);
     });
     expect(MyComponent).toHaveBeenCalledTimes(1);
   });
 
   it('should accept a className prop and render a component using the className', () => {
     const mockProps = {
-      authService
+      oktaAuth
     };
     const wrapper = mount(
       <MemoryRouter>
@@ -181,23 +177,5 @@ describe('<Security />', () => {
     );
     expect(wrapper.find(Security).hasClass('foo bar')).toEqual(true);
     expect(wrapper.find(Security).props().className).toBe('foo bar');
-  });
-
-  it('Accepts token manager config', () => {
-    const tokenManager = {
-      secure: true,
-      storage: 'cookie'
-    };
-
-    const mockProps = Object.assign({}, VALID_CONFIG, {
-      tokenManager,
-      authService
-    });
-    const wrapper = mount(
-      <MemoryRouter>
-        <Security {...mockProps} />
-      </MemoryRouter>
-    );
-    expect(wrapper.find(Security).props().tokenManager).toBe(tokenManager);
   });
 });

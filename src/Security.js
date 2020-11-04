@@ -42,7 +42,7 @@ const Security = ({ oktaAuth, onAuthRequired, children }) => {
     });
 
     // Trigger an initial change event to make sure authState is latest
-    if (!oktaAuth.token.isLoginRedirect()) {
+    if (!oktaAuth.isLoginRedirect()) {
       oktaAuth.authStateManager.updateAuthState();
     }
 
