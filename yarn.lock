@@ -2526,23 +2526,17 @@
   dependencies:
     "@types/node" ">= 8"
 
-"@okta/configuration-validation@^0.4.1":
-  version "0.4.3"
-  resolved "https://registry.yarnpkg.com/@okta/configuration-validation/-/configuration-validation-0.4.3.tgz#5756695979c54f9058dd36fb5a87c1c8f463df7e"
-  integrity sha512-dn/1EMGhwajQwV/jNIrj6zvYDdDpFIQnrdqRAww/SvzIz9cuPbw1vYBRpBYX2RQpPhJJuy6iZf0XB6yWVDUavw==
-  dependencies:
-    lodash "^4.17.15"
-
-"@okta/okta-auth-js@^4.0.0":
-  version "4.0.2"
-  resolved "https://registry.yarnpkg.com/@okta/okta-auth-js/-/okta-auth-js-4.0.2.tgz#979fa450053f1d34a6c998d5e4064fa7b35a7067"
-  integrity sha512-XHOaU+qBsNEj0m3Dg9ZzCjHdPAYb5o3a9ZOqTOiDNZpkuIB2u9gbyrePoEiSz0jkUDhzenNqhSH4HkaK6R96cw==
+"@okta/okta-auth-js@^4.1.0":
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/@okta/okta-auth-js/-/okta-auth-js-4.1.0.tgz#b1cb0ac5bb2918c703b461fb9a5c505f18d1db90"
+  integrity sha512-ehPFay3+UirXL3F0NTE6yoqSo2idjJIL7ka/bJha129lHsi9fcXwvtwUz56hnn4qOlDQm8/qnHpF+/6HGoe3Eg==
   dependencies:
     Base64 "0.3.0"
     core-js "^3.6.5"
     cross-fetch "^3.0.0"
     js-cookie "2.2.0"
     node-cache "^4.2.0"
+    p-cancelable "^2.0.0"
     text-encoding "^0.7.0"
     tiny-emitter "1.1.0"
     webcrypto-shim "^0.1.5"
@@ -12213,6 +12207,11 @@ output-file-sync@^1.1.2:
     graceful-fs "^4.1.4"
     mkdirp "^0.5.1"
     object-assign "^4.1.0"
+
+p-cancelable@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/p-cancelable/-/p-cancelable-2.0.0.tgz#4a3740f5bdaf5ed5d7c3e34882c6fb5d6b266a6e"
+  integrity sha512-wvPXDmbMmu2ksjkB4Z3nZWTSkJEb9lqVdMaCKpZUGJG9TMiNp9XcbG3fn9fPKjem04fJMJnXoyFPk2FmgiaiNg==
 
 p-defer@^1.0.0:
   version "1.0.0"

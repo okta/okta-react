@@ -2,11 +2,10 @@
 
 ### Breaking Changes
 
-- [#8](https://github.com/okta/okta-react/pull/8)
+- [#8](https://github.com/okta/okta-react/pull/8) See [MIGRATING](README#migrating-from-3x-to-4x) for detailed information.
+  - Replaces `authService` with instance of `@okta/okta-auth-js` so all configuration options and public methods are available.
+  - By default `isAuthenticated` will be true if **both** accessToken **and** idToken are valid
   - Changes `@okta/okta-auth-js` as peerDependency
-  - Removes `authService` module
-  - Explicitly accepts `oktaAuth` instance in `Security` component
-  - Replaces `authService` with `oktaAuth` in `useOktaAuth` hook and `withOktaAuth` HOC
 
 ### Features
 

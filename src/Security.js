@@ -12,12 +12,14 @@
 
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { toRelativeUrl } from '@okta/okta-auth-js';
+import { toRelativeUrl, AuthSdkError } from '@okta/okta-auth-js';
 import OktaContext from './OktaContext';
+import OktaError from './OktaError';
 
 const Security = ({ oktaAuth, onAuthRequired, children }) => { 
   if (!oktaAuth) {
-    throw new Error('Missing required oktaAuth instance.');
+    const err = new AuthSdkError('No oktaAuth instance passed to Security Component.');
+    return <OktaError error={err} />;
   }
 
   const history = useHistory();

@@ -449,18 +449,98 @@ export default MyComponent = () => {
 
 From version 4.0, the Security component starts to explicitly accept [oktaAuth][Okta Auth SDK] instance as prop to replace the internal `authService` instance. You will need to replace the [Okta Auth SDK related configurations](https://github.com/okta/okta-auth-js#configuration-reference) with a pre-initialized [oktaAuth][Okta Auth SDK] instance.
 
+**Note** [onAuthRequired](#onauthrequired) is kept in Security's props.
+
+```jsx
+import { OktaAuth } from '@okta/okta-auth-js';
+import { Security } from '@okta/okta-react';
+
+const oktaAuth = new OktaAuth(oidcConfig);
+export default () => (
+  <Security oktaAuth={oktaAuth} onAuthRequired={customAuthHandler}>
+    // children component
+  </Security>
+);
+```
+
 #### Replacing authService instance
 
-The `authService` module has been deprecated since version 4.0. All the exposure and internal usage has been replaced with the passed in [oktaAuth][Okta Auth SDK] instance.
+The `authService` module has been removed since version 4.0. The [useOktaAuth](#useOktaAuth) hook and [withOktaAuth](#withoktaauth) hoc are exposing `oktaAuth` instead of `authService`.
 
 - Replace `authService` with `oktaAuth` when use [useOktaAuth](#useOktaAuth)
+
+  ```jsx
+  import { useOktaAuth } from '@okta/okta-react';
+
+  export default () => {
+    const { oktaAuth, authState } = useOktaAuth();
+    // handle rest component logic
+  };
+  ```
+
 - Replace `props.authService` with `props.oktaAuth` when use [withOktaAuth](#withoktaauth)
-- Replace public methods usage from `authService` with [API of Okta Auth SDK](https://github.com/okta/okta-auth-js#api-reference). Some common changes:
-  - Change `authService.login` to `oktaAuth.signInWithRedirect`
-  - Change `authService.logout` to `oktaAuth.signOut`
-  - Change `authService.setFromUri` to `oktaAuth.setOriginalUri`
-  - Change `authService.getFromUri` to use `oktaAuth.getOriginalUri` and `oktaAuth.removeOriginalUri`
-  - Change `authService.on` to `oktaAuth.authStateManager.subscribe`
+
+  ```jsx
+  import { withOktaAuth } from '@okta/okta-react';
+
+  export default withOktaAuth((props) => {
+    // use props.oktaAuth
+  });
+  ```
+
+#### Replacing authService public methods
+
+The `oktaAuth` instance exposes similar [public methods](https://github.com/okta/okta-auth-js#api-reference) to handle logic for the removed `authService` module.
+
+- `login` is removed
+
+  This method called `onAuthRequired`, if it was set in the config options, or `redirect` if no `onAuthRequired` option was set. If you had code that was calling this method, you may either call your `onAuthRequired` function directly or `signInWithRedirect`.
+
+- `redirect` is replaced by `signInWithRedirect`
+
+- `logout` is replaced by `signOut`
+
+  `logout` accepted either a string or an object as options. [signOut](https://github.com/okta/okta-auth-js/blob/master/README.md#signout) accepts only an options object.
+
+  If you had code like this:
+
+  ```javascript
+  authService.logout('/goodbye');
+  ```
+
+  it can be rewritten as:
+
+  ```javascript
+  oktaAuth.signOut({ postLogoutRedirectUri: window.location.orign + '/goodbye' });
+  ```
+
+  **Note** that the value for `postLogoutRedirectUri` must be an absolute URL. This URL must also be on the "allowed list" in your Okta app's configuration. If no options are passed or no `postLogoutRedirectUri` is set on the options object, it will redirect to `window.location.origin` after sign out is complete.
+
+- `getAccessToken` and `getIdToken` have been changed to synchronous methods
+
+  With maintaining in-memory [AuthState][] since [Okta Auth SDK][] version 4.1, token values can be accessed in synchronous manner.
+
+- `handleAuthentication` is replaced by `handleLoginRedirect`
+
+  `handleLoginRedirect` is called by the `OktaLoginCallback` component as the last step of the login redirect authorization flow. It will obtain and store tokens and then call `restoreOriginalUri` which will return the browser to the `originalUri` which was set before the login redirect flow began.
+
+- `authState` related methods have been collected in [Okta Auth SDK AuthStateManager](https://github.com/okta/okta-auth-js#authstatemanager)
+  - Change `authService.updateAuthState` to `oktaAuth.authStateManager.updateAuthState`
+  - Change `authService.getAuthState` to `oktaAuth.authStateManager.getAuthState`
+  - Change `on` to `oktaAuth.authStateManager.subscribe`
+  - `clearAuthState`, `emitAuthState` and `emit` have been removed
+
+- `isAuthenticated` will be true if **both** accessToken **and** idToken are valid
+
+  If you have a custom `isAuthenticated` function which implements the default logic, you may remove it.
+
+- `getTokenManager` has been removed
+
+  You may access the `TokenManager` with the `tokenManager` property:
+
+  ```javascript
+  const tokens = oktaAuth.tokenManager.getTokens();
+  ```
 
 ### Migrating from 2.x to 3.x
 
