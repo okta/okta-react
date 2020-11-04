@@ -12,10 +12,13 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { OktaAuth } from '@okta/okta-auth-js';
 import './index.css';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import { BrowserRouter as Router } from 'react-router-dom';
+
+const { ISSUER, CLIENT_ID } = process.env;
 
 // To perform end-to-end PKCE flow we must be configured on both ends: when the login is initiated, and on the callback
 // The login page is loaded with a query param. This will select a unique callback url
@@ -24,9 +27,17 @@ const url = new URL(window.location.href);
 const pkce = !!url.searchParams.get('pkce') || url.pathname.indexOf('pkce/callback') >= 0;
 const redirectUri = window.location.origin + (pkce ? '/pkce/callback' : '/implicit/callback');
 
+const oktaAuth = new OktaAuth({
+  issuer: ISSUER,
+  clientId: CLIENT_ID,
+  disableHttpsCheck: true,
+  redirectUri,
+  pkce
+})
+
 ReactDOM.render(
   <Router>
-    <App pkce={pkce} redirectUri={redirectUri} />
+    <App oktaAuth={oktaAuth} />
   </Router>
   , document.getElementById('root')
 );

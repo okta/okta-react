@@ -15,7 +15,7 @@ import { withOktaAuth } from '@okta/okta-react';
 
 export default withOktaAuth(class CustomLogin extends Component {
   componentDidMount() {
-    this.props.authService.redirect();
+    this.props.oktaAuth.signInWithRedirect();
   }
   render() {
     return null;
