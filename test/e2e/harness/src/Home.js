@@ -59,7 +59,7 @@ export default withOktaAuth(class Home extends Component {
       <button id="logout-button" onClick={this.logout}>Logout</button> :
       <button id="login-button" onClick={this.login}>Login</button>;
 
-    const pkce = this.props.oktaAuth.options.pkce;
+    const pkce = this.props.oktaAuth.isPKCE();
 
     return (
       <div>

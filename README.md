@@ -105,7 +105,7 @@ This example defines 3 routes:
 
 - **/** - Anyone can access the home page
 - **/protected** - Protected is only visible to authenticated users
-- **/implicit/callback** - This is where auth is handled for you after redirection
+- **/login/callback** - This is where auth is handled for you after redirection
 
 > A common mistake is to try and apply an authentication requirement to all pages, THEN add an exception for the login page.  This often fails because of how routes are evaluated in most routing packages.  To avoid this problem, declare specific routes or branches of routes that require authentication without exceptions.
 
@@ -124,7 +124,7 @@ import Protected from './Protected';
 const oktaAuth = new OktaAuth({
   issuer: 'https://{yourOktaDomain}.com/oauth2/default',
   clientId: '{clientId}',
-  redirectUri: window.location.origin + '/implicit/callback'
+  redirectUri: window.location.origin + '/login/callback'
 });
 class App extends Component {
   render() {
@@ -133,7 +133,7 @@ class App extends Component {
         <Security oktaAuth={oktaAuth}>
           <Route path='/' exact={true} component={Home}/>
           <SecureRoute path='/protected' component={Protected}/>
-          <Route path='/implicit/callback' component={LoginCallback} />
+          <Route path='/login/callback' component={LoginCallback} />
         </Security>
       </Router>
     );
@@ -154,14 +154,14 @@ import Protected from './Protected';
 const oktaAuth = new OktaAuth({
   issuer: 'https://{yourOktaDomain}.com/oauth2/default',
   clientId: '{clientId}',
-  redirectUri: window.location.origin + '/implicit/callback'
+  redirectUri: window.location.origin + '/login/callback'
 });
 const App = () => (
   <Router>
     <Security oktaAuth={oktaAuth}>
       <Route path='/' exact={true} component={Home}/>
       <SecureRoute path='/protected' component={Protected}/>
-      <Route path='/implicit/callback' component={LoginCallback} />
+      <Route path='/login/callback' component={LoginCallback} />
     </Security>
   </Router>
 );
@@ -341,7 +341,7 @@ import { OktaAuth } from '@okta/okta-auth-js';
 const oktaAuth = new OktaAuth({
   issuer: 'https://{yourOktaDomain}.com/oauth2/default',
   clientId: '{clientId}',
-  redirectUri: 'window.location.origin' + '/implicit/callback'
+  redirectUri: 'window.location.origin' + '/login/callback'
 });
 
 export default App = () => {
@@ -370,7 +370,7 @@ export default App = () => {
 Assuming you have configured your application to allow the `Authorization code` grant type, you can implement the PKCE flow with the following steps:
 
 - Initialize [oktaAuth](Okta Auth SDK) instance with `pkce=true` and pass it to the `Security` component.
-- add `/implicit/callback` route with [LoginCallback](#logincallback) component to handle login redirect from OKTA.
+- add `/login/callback` route with [LoginCallback](#logincallback) component to handle login redirect from OKTA.
 
 ```jsx
 import { OktaAuth } from '@okta/okta-auth-js';
@@ -379,7 +379,7 @@ const oktaAuth = new OktaAuth({
   issuer: 'https://{yourOktaDomain}.com/oauth2/default',
   clientId: '{clientId}',
   pkce: true,
-  redirectUri: window.location.origin + '/implicit/callback',
+  redirectUri: window.location.origin + '/login/callback',
 });
 
 class App extends Component {
@@ -388,7 +388,7 @@ class App extends Component {
       <Router>
         <Security oktaAuth={oktaAuth}>
           <Route path='/' exact={true} component={Home}/>
-          <Route path='/implicit/callback' component={LoginCallback} />
+          <Route path='/login/callback' component={LoginCallback} />
         </Security>
       </Router>
     );
@@ -449,7 +449,10 @@ export default MyComponent = () => {
 
 From version 4.0, the Security component starts to explicitly accept [oktaAuth][Okta Auth SDK] instance as prop to replace the internal `authService` instance. You will need to replace the [Okta Auth SDK related configurations](https://github.com/okta/okta-auth-js#configuration-reference) with a pre-initialized [oktaAuth][Okta Auth SDK] instance.
 
-**Note** [onAuthRequired](#onauthrequired) is kept in Security's props.
+##### **Note**
+
+- `@okta/okta-auth-js` has been changed as a peerDependency for this SDK. You must add `@okta/okta-auth-js` as a dependency to your project and install it separately from `@okta/okta-react`.
+- [onAuthRequired](#onauthrequired) is kept in Security's props.
 
 ```jsx
 import { OktaAuth } from '@okta/okta-auth-js';

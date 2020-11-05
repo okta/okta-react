@@ -6,11 +6,6 @@ import Security from "../../src/Security";
 import { useOktaAuth } from '../../src/OktaContext';
 
 describe('<Security />', () => {
-  const VALID_CONFIG = {
-    issuer: 'https://example.com/oauth2/default',
-    clientId: 'foo',
-    redirectUri: 'https://example.com'
-  };
   let oktaAuth;
   let initialAuthState;
   beforeEach(() => {

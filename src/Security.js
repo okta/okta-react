@@ -17,11 +17,6 @@ import OktaContext from './OktaContext';
 import OktaError from './OktaError';
 
 const Security = ({ oktaAuth, onAuthRequired, children }) => { 
-  if (!oktaAuth) {
-    const err = new AuthSdkError('No oktaAuth instance passed to Security Component.');
-    return <OktaError error={err} />;
-  }
-
   const history = useHistory();
   const [authState, setAuthState] = useState(oktaAuth.authStateManager.getAuthState());
 
@@ -47,7 +42,12 @@ const Security = ({ oktaAuth, onAuthRequired, children }) => {
     }
 
     return () => oktaAuth.authStateManager.unsubscribe();
-  }, [oktaAuth]);
+  }, [oktaAuth, history]);
+
+  if (!oktaAuth) {
+    const err = new AuthSdkError('No oktaAuth instance passed to Security Component.');
+    return <OktaError error={err} />;
+  }
 
   return (
     <OktaContext.Provider value={{ 

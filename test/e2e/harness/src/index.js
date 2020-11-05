@@ -33,7 +33,7 @@ const oktaAuth = new OktaAuth({
   disableHttpsCheck: true,
   redirectUri,
   pkce
-})
+});
 
 ReactDOM.render(
   <Router>

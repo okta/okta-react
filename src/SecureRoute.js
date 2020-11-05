@@ -10,22 +10,35 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useOktaAuth } from './OktaContext';
 import { Route, useRouteMatch } from 'react-router-dom';
 
 const SecureRoute = ( props ) => { 
   const { oktaAuth, authState, _onAuthRequired } = useOktaAuth();
   const match = useRouteMatch(props);
+  const pendingRef = useRef({
+    handleLogin: false
+  });
 
   useEffect(() => {
     const handleLogin = async () => {
-      oktaAuth.setOriginalUri();
-      const onAuthRequiredFn = props.onAuthRequired || _onAuthRequired;
-      if (onAuthRequiredFn) {
-        await onAuthRequiredFn(oktaAuth);
-      } else {
-        await oktaAuth.signInWithRedirect();
+      if (pendingRef.current.handleLogin) {
+        return;
+      }
+
+      pendingRef.current.handleLogin = true;
+
+      try {
+        oktaAuth.setOriginalUri();
+        const onAuthRequiredFn = props.onAuthRequired || _onAuthRequired;
+        if (onAuthRequiredFn) {
+          await onAuthRequiredFn(oktaAuth);
+        } else {
+          await oktaAuth.signInWithRedirect();
+        }
+      } finally {
+        pendingRef.current.handleLogin = false;
       }
     };
 
@@ -37,7 +50,14 @@ const SecureRoute = ( props ) => {
     if(!authState.isAuthenticated && !authState.isPending) { 
       handleLogin();
     }  
-  }, [authState.isPending, authState.isAuthenticated, oktaAuth, match]);
+  }, [
+    authState.isPending, 
+    authState.isAuthenticated, 
+    oktaAuth, 
+    match, 
+    props.onAuthRequired, 
+    _onAuthRequired
+  ]);
 
   if (!authState.isAuthenticated) {
     return null;
