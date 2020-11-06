@@ -84,10 +84,10 @@ npm install --save @okta/okta-auth-js
 
 `okta-react` provides the necessary tools to build an integration with most common React-based SPA routers.
 
-- [Security](#security) - Accepts [oktaAuth][Okta Auth SDK] instance (**required**) and addtional [configuration](#configuration-options) as props. This component acts as a [React Context Provider][] that maintains the latest [authState][AuthState] and [oktaAuth][Okta Auth SDK] instance for the downstream consumers. This context can be accessed via the [useOktaAuth](#useoktaauth) React Hook, or the [withOktaAuth](#useoktaauth) Higher Order Component wrapper from it's descendant component.
+- [Security](#security) - Accepts [oktaAuth][Okta Auth SDK] instance (**required**) and additional [configuration](#configuration-options) as props. This component acts as a [React Context Provider][] that maintains the latest [authState][AuthState] and [oktaAuth][Okta Auth SDK] instance for the downstream consumers. This context can be accessed via the [useOktaAuth](#useoktaauth) React Hook, or the [withOktaAuth](#useoktaauth) Higher Order Component wrapper from it's descendant component.
 - [LoginCallback](#logincallback) - A simple component which handles the login callback when the user is redirected back to the application from the Okta login site.  `<LoginCallback>` accepts an optional prop `errorComponent` that will be used to format the output for any error in handling the callback.  This component will be passed an `error` prop that is an error describing the problem.  (see the `<OktaError>` component for the default rendering)
 
-Users of routers other than `react-router` can use [useOktaAuth](#useoktaauth) to see if a `authState.isPending` is false and `authState.isAuthenticated` is true.  If both are false, you can send them to login via `oktaAuth.signInWithRedirect(...)`.  See the implementation of `<LoginCallback>` as an example.
+Users of routers other than `react-router` can use [useOktaAuth](#useoktaauth) to see if a `authState.isPending` is false and `authState.isAuthenticated` is true.  If both are false, you can send them to login via [oktaAuth.signInWithRedirect()](https://github.com/okta/okta-auth-js#signinwithredirectoptions).  See the implementation of `<LoginCallback>` as an example.
 
 ### Available Hooks
 
@@ -106,6 +106,8 @@ This example defines 3 routes:
 - **/** - Anyone can access the home page
 - **/protected** - Protected is only visible to authenticated users
 - **/login/callback** - This is where auth is handled for you after redirection
+
+**Note:** Make sure you have the `/login/callback` url (absolute url) added in your Okta App's configuration.
 
 > A common mistake is to try and apply an authentication requirement to all pages, THEN add an exception for the login page.  This often fails because of how routes are evaluated in most routing packages.  To avoid this problem, declare specific routes or branches of routes that require authentication without exceptions.
 
@@ -185,7 +187,7 @@ export default withOktaAuth(class Home extends Component {
   }
 
   async login() {
-    this.props.oktaAuth.signInWithRedirect('/');
+    this.props.oktaAuth.signInWithRedirect();
   }
 
   async logout() {
@@ -330,7 +332,7 @@ export default MessageList = () => {
 
 #### onAuthRequired
 
-*(optional)* Callback function. Called when authentication is required. If this is not supplied, `okta-react` redirects to Okta. This callback will receive [oktaAuth][Okta Auth SDK] instance as the first function parameter. This is triggered when a `SecureRoute` is accessed without authentication.
+*(optional)* Callback function. Called when authentication is required. If this is not supplied, `okta-react` redirects to Okta. This callback will receive [oktaAuth][Okta Auth SDK] instance as the first function parameter. This is triggered when a [SecureRoute](#secureroute) is accessed without authentication. A common use case for this callback is to redirect users to a custom login route when authentication is required for a [SecureRoute](#secureroute).
 
 #### Example
 
@@ -341,7 +343,7 @@ import { OktaAuth } from '@okta/okta-auth-js';
 const oktaAuth = new OktaAuth({
   issuer: 'https://{yourOktaDomain}.com/oauth2/default',
   clientId: '{clientId}',
-  redirectUri: 'window.location.origin' + '/login/callback'
+  redirectUri: window.location.origin + '/login/callback'
 });
 
 export default App = () => {
@@ -367,9 +369,9 @@ export default App = () => {
 
 #### PKCE Example
 
-Assuming you have configured your application to allow the `Authorization code` grant type, you can implement the PKCE flow with the following steps:
+Assuming you have configured your application to allow the `Authorization code` grant type, you can implement the [PKCE flow](https://github.com/okta/okta-auth-js#pkce) with the following steps:
 
-- Initialize [oktaAuth](Okta Auth SDK) instance with `pkce=true` and pass it to the `Security` component.
+- Initialize [oktaAuth](Okta Auth SDK) instance (with default PKCE configuration as `true`) and pass it to the `Security` component.
 - add `/login/callback` route with [LoginCallback](#logincallback) component to handle login redirect from OKTA.
 
 ```jsx
@@ -378,7 +380,6 @@ import { OktaAuth } from '@okta/okta-auth-js';
 const oktaAuth = new OktaAuth({
   issuer: 'https://{yourOktaDomain}.com/oauth2/default',
   clientId: '{clientId}',
-  pkce: true,
   redirectUri: window.location.origin + '/login/callback',
 });
 
@@ -451,8 +452,8 @@ From version 4.0, the Security component starts to explicitly accept [oktaAuth][
 
 ##### **Note**
 
-- `@okta/okta-auth-js` has been changed as a peerDependency for this SDK. You must add `@okta/okta-auth-js` as a dependency to your project and install it separately from `@okta/okta-react`.
-- [onAuthRequired](#onauthrequired) is kept in Security's props.
+- `@okta/okta-auth-js` is now a peer dependency for this SDK. You must add `@okta/okta-auth-js` as a dependency to your project and install it separately from `@okta/okta-react`.
+- [`<Security>`](#security) still accept [onAuthRequired](#onauthrequired) as a prop.
 
 ```jsx
 import { OktaAuth } from '@okta/okta-auth-js';
@@ -468,7 +469,7 @@ export default () => (
 
 #### Replacing authService instance
 
-The `authService` module has been removed since version 4.0. The [useOktaAuth](#useOktaAuth) hook and [withOktaAuth](#withoktaauth) hoc are exposing `oktaAuth` instead of `authService`.
+The `authService` module has been removed since version 4.0. The [useOktaAuth](#useOktaAuth) hook and [withOktaAuth](#withoktaauth) HOC are exposing `oktaAuth` instead of `authService`.
 
 - Replace `authService` with `oktaAuth` when use [useOktaAuth](#useOktaAuth)
 
@@ -511,7 +512,7 @@ The `oktaAuth` instance exposes similar [public methods](https://github.com/okta
   authService.logout('/goodbye');
   ```
 
-  it can be rewritten as:
+  it should be rewritten as:
 
   ```javascript
   oktaAuth.signOut({ postLogoutRedirectUri: window.location.orign + '/goodbye' });
@@ -533,9 +534,9 @@ The `oktaAuth` instance exposes similar [public methods](https://github.com/okta
   - Change `on` to `oktaAuth.authStateManager.subscribe`
   - `clearAuthState`, `emitAuthState` and `emit` have been removed
 
-- `isAuthenticated` will be true if **both** accessToken **and** idToken are valid
+- By default `isAuthenticated` will be true if **both** accessToken **and** idToken are valid
 
-  If you have a custom `isAuthenticated` function which implements the default logic, you may remove it.
+  If you have a custom `isAuthenticated` function which implements the default logic, you should remove it.
 
 - `getTokenManager` has been removed
 
