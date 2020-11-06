@@ -269,21 +269,6 @@ describe('AuthService', () => {
       return res;
     });
 
-    test('should end up with isPending === false', async () => {
-      expect.assertions(1);
-      const authService = new AuthService({
-        issuer: 'https://foo/oauth2/default',
-        clientId: 'foo',
-        redirectUri: 'foo',
-        history: {
-          push: jest.fn()
-        }
-      });
-      await authService.logout();
-      const authState = authService.getAuthState();
-      expect(authState.isPending).toEqual(false);
-    });
-
     test('can throw', async () => {
       const testError = new Error('test error');
       mockAuthJsInstance.signOut = jest.fn().mockReturnValue(Promise.reject(testError));
@@ -299,24 +284,6 @@ describe('AuthService', () => {
         .then(() => {
           expect(window.location.assign).not.toHaveBeenCalled();
         });
-    });
-
-    test('should emit error when happens', async () => {
-      expect.assertions(2);
-      const testError = new Error('test error');
-      mockAuthJsInstance.signOut = jest.fn().mockReturnValue(Promise.reject(testError));
-      const authService = new AuthService({
-        issuer: 'https://foo/oauth2/default',
-        clientId: 'foo',
-        redirectUri: 'foo',
-        history: {
-          push: jest.fn()
-        }
-      });
-      await authService.logout();
-      const authState = authService.getAuthState();
-      expect(authState.error).toEqual(testError);
-      expect(authState.isPending).toEqual(false);
     });
 
   });

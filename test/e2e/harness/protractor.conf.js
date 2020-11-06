@@ -14,6 +14,9 @@ const SpecReporter = require('jasmine-spec-reporter').SpecReporter;
 const JUnitXmlReporter = require('jasmine-reporters').JUnitXmlReporter;
 const TEST_RESULT_FILE_DIR = '../../../test-reports/e2e';
 
+// eslint-disable-next-line node/no-unpublished-require
+require('../../../env'); // will load environment vars from testenv file and set on process.env
+
 exports.config = {
   allScriptsTimeout: 11000,
   specs: [

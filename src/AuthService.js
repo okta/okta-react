@@ -223,18 +223,9 @@ class AuthService {
   }
 
   async logout(options={}) {
-    let error;
     options = this._convertLogoutPathToOptions(options);
-    try {
-      await this._oktaAuth.signOut(options);
-    } catch (err) {
-      error = err;
-    } finally {
-      this.clearAuthState({ 
-        ...(error && { error }),
-        isPending: false 
-      });
-    }
+    await this._oktaAuth.signOut(options);
+    this.clearAuthState();
   }
 
   async redirect(additionalParams = {}) {
