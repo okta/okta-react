@@ -13,6 +13,7 @@ describe('<Security />', () => {
       isInitialState: true
     };
     oktaAuth = {
+      userAgent: 'okta/okta-auth-js',
       options: {},
       authStateManager: {
         getAuthState: jest.fn().mockImplementation(() => initialAuthState),
@@ -23,7 +24,24 @@ describe('<Security />', () => {
     };
   });
 
-  it('gets initial state from authService and exposes it on the context', () => {
+  it('should set userAgent for oktaAuth', () => {
+    const mockProps = {
+      oktaAuth
+    };
+    mount(<Security {...mockProps} />);
+    expect(oktaAuth.userAgent).toEqual('@okta/okta-react/4.0.0 okta/okta-auth-js');
+  });
+
+  it('should set default restoreOriginalUri callback in oktaAuth.options', () => {
+    oktaAuth.options = {};
+    const mockProps = {
+      oktaAuth
+    };
+    mount(<Security {...mockProps} />);
+    expect(oktaAuth.options.restoreOriginalUri).toBeDefined();
+  });
+
+  it('gets initial state from oktaAuth and exposes it on the context', () => {
     const mockProps = {
       oktaAuth
     };
@@ -172,5 +190,76 @@ describe('<Security />', () => {
     );
     expect(wrapper.find(Security).hasClass('foo bar')).toEqual(true);
     expect(wrapper.find(Security).props().className).toBe('foo bar');
+  });
+
+  describe('render children', () => {
+    const MyComponent = function() {
+      const { authState } = useOktaAuth();
+      if (authState.isPending) {
+        return <div>loading</div>;
+      }
+
+      if (authState.isAuthenticated) {
+        return <div>Authenticated!</div>;
+      }
+
+      return <div>Not authenticated!</div>;
+    };
+
+    it('should render "Authenticated" with preset authState.isAuthenticated as true', () => {
+      initialAuthState = {
+        isAuthenticated: true,
+        isPending: false
+      };
+      const mockProps = {
+        oktaAuth
+      };
+      const wrapper = mount(
+        <Security {...mockProps}>
+          <MyComponent />
+        </Security>
+      );
+      expect(wrapper.find(MyComponent).html()).toBe('<div>Authenticated!</div>');
+    });
+
+    it('should render "Not authenticated" with preset authState.isAuthenticated as false', () => {
+      initialAuthState = {
+        isAuthenticated: false,
+        isPending: false
+      };
+      const mockProps = {
+        oktaAuth
+      };
+      const wrapper = mount(
+        <Security {...mockProps}>
+          <MyComponent />
+        </Security>
+      );
+      expect(wrapper.find(MyComponent).html()).toBe('<div>Not authenticated!</div>');
+    });
+
+    it('should render "loading" with preset authState.isPending as true', () => {
+      initialAuthState = {
+        isPending: true
+      };
+      const mockProps = {
+        oktaAuth
+      };
+      const wrapper = mount(
+        <Security {...mockProps}>
+          <MyComponent />
+        </Security>
+      );
+      expect(wrapper.find(MyComponent).html()).toBe('<div>loading</div>');
+    });
+
+    it('should render error if oktaAuth props is not provided', () => {
+      const wrapper = mount(
+        <Security>
+          <MyComponent />
+        </Security>
+      );
+      expect(wrapper.find(Security).html()).toBe('<p>AuthSdkError: No oktaAuth instance passed to Security Component.</p>');
+    });
   });
 });

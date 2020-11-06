@@ -12,15 +12,24 @@
 
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { toRelativeUrl, AuthSdkError } from '@okta/okta-auth-js';
+import { toRelativeUrl, DEFAULT_AUTH_STATE, AuthSdkError } from '@okta/okta-auth-js';
 import OktaContext from './OktaContext';
 import OktaError from './OktaError';
 
 const Security = ({ oktaAuth, onAuthRequired, children }) => { 
   const history = useHistory();
-  const [authState, setAuthState] = useState(oktaAuth.authStateManager.getAuthState());
+  const [authState, setAuthState] = useState(() => {
+    if (!oktaAuth) {
+      return DEFAULT_AUTH_STATE;
+    }
+    return oktaAuth.authStateManager.getAuthState();
+  });
 
   useEffect(() => {
+    if (!oktaAuth) {
+      return;
+    }
+
     // Add default restoreOriginalUri callback
     if (!oktaAuth.options.restoreOriginalUri) {
       oktaAuth.options.restoreOriginalUri = (_, originalUri) => {
