@@ -2,8 +2,22 @@ import babel from '@rollup/plugin-babel';
 import replace from '@rollup/plugin-replace';
 import cleanup from 'rollup-plugin-cleanup';
 import { terser } from 'rollup-plugin-terser';
+import pkg from "./package.json";
 
 require('./env'); // set variables in process.env
+
+const external = [
+  ...Object.keys(pkg.peerDependencies || {}),
+  ...Object.keys(pkg.dependencies || {}),
+];
+
+const makeExternalPredicate = externalArr => {
+  if (externalArr.length === 0) {
+    return () => false;
+  }
+  const pattern = new RegExp(`^(${externalArr.join("|")})($|/)`);
+  return id => pattern.test(id);
+}
 
 const commonPlugins = [
   replace({
@@ -16,7 +30,7 @@ const commonPlugins = [
 export default [
   {
     input: 'src/index.js',
-    external: ['@okta/okta-auth-js'],
+    external: makeExternalPredicate(external),
     plugins: [
       babel({
         babelrc: false,
@@ -44,6 +58,7 @@ export default [
   },
   {
     input: 'src/index.js',
+    external: makeExternalPredicate(external),
     plugins: [
       babel({
         babelHelpers: 'runtime',
