@@ -5,19 +5,26 @@ const chalk = require('chalk');
 const fs = require('fs');
 
 const NPM_DIR = `dist`;
-const BABEL_CMD = `babel src -d ${NPM_DIR}/src -s`;
+const BABEL_CMD = 'yarn bundle';
+const BANNER_CMD = `yarn banners`;
 
 shell.echo(`Start building...`);
 
 shell.rm(`-Rf`, `${NPM_DIR}/*`);
 
-// Transpile src using babel
+// Bundle with rollup
 if (shell.exec(BABEL_CMD).code !== 0) {
-  shell.echo(chalk.red(`Error: Babel failed`));
+  shell.echo(chalk.red(`Error: Rollup failed`));
   shell.exit(1);
 }
 
-shell.echo(chalk.green(`Babel completed`));
+// Maintain banners
+if (shell.exec(BANNER_CMD).code !== 0) {
+  shell.echo(chalk.red(`Error: Maintain banners failed`));
+  shell.exit(1);
+}
+
+shell.echo(chalk.green(`Bundling completed`));
 
 shell.cp(`-Rf`, [`package.json`, `LICENSE`, `*.md`], `${NPM_DIR}`);
 
