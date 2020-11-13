@@ -38,7 +38,7 @@
   "dependencies": {
     "@babel/runtime": "^7.11.2",
     "@okta/configuration-validation": "^0.4.1",
-    "@okta/okta-auth-js": "^3.2.5"
+    "@okta/okta-auth-js": "^3.2.6"
   },
   "peerDependencies": {
     "react": ">=16.8.0",

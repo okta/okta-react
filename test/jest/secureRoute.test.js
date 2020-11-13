@@ -1,5 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
+import { act } from 'react-dom/test-utils';
 import { MemoryRouter, Route } from 'react-router-dom';
 import SecureRoute from '../../src/SecureRoute';
 import Security from '../../src/Security';
@@ -25,6 +26,51 @@ describe('<SecureRoute />', () => {
       }
     };
     mockProps = { authService };
+  });
+
+  describe('With changing authState', () => {
+    let emitAuthState;
+
+    beforeEach(() => {
+      authService.on = (eventName, cb) => {
+        emitAuthState = () => {
+          act(cb);
+        };
+      };
+    });
+
+    function updateAuthState(newProps = {}) {
+      authState = Object.assign({}, authState, newProps);
+      emitAuthState();
+    }
+
+    it('calls login() only once until user is authenticated', () => {
+      authState.isAuthenticated = false;
+      authState.isPending = false;
+  
+      mount(
+        <MemoryRouter>
+          <Security {...mockProps}>
+            <SecureRoute path="/" />
+          </Security>
+        </MemoryRouter>
+      );
+      expect(authService.login).toHaveBeenCalledTimes(1);
+      authService.login.mockClear();
+
+      updateAuthState({ isPending: true });
+      expect(authService.login).not.toHaveBeenCalled();
+
+      updateAuthState({ isPending: false });
+      expect(authService.login).not.toHaveBeenCalled();
+
+      updateAuthState({ isAuthenticated: true });
+      expect(authService.login).not.toHaveBeenCalled();
+
+      // If the state returns to unauthenticated, the secure route should still work
+      updateAuthState({ isAuthenticated: false });
+      expect(authService.login).toHaveBeenCalledTimes(1);
+    });
   });
 
   describe('isAuthenticated: true', () => {

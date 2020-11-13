@@ -2533,10 +2533,10 @@
   dependencies:
     lodash "^4.17.15"
 
-"@okta/okta-auth-js@^3.2.5":
-  version "3.2.5"
-  resolved "https://registry.yarnpkg.com/@okta/okta-auth-js/-/okta-auth-js-3.2.5.tgz#46ab9f35be37fc58e970997342799fe0a72c3e5e"
-  integrity sha512-QbyRhDrBI9CdKBFpikPFjR2zmwOIQSndx+/g9YVuQ25QrxUnVhq/nAg/EXMQtrOQVtcb99Vx5AIfm1DWnKV31A==
+"@okta/okta-auth-js@^3.2.6":
+  version "3.2.6"
+  resolved "https://registry.yarnpkg.com/@okta/okta-auth-js/-/okta-auth-js-3.2.6.tgz#9eb457ee46576ade2cab9c2524096f0c91f17edf"
+  integrity sha512-4N3XkaHUs2QbUR3ymg+PtoPAGluU3IkBK1kIfoYWeONXTyz0v/PpAKgHDe3RJkvRkDQzvAJDdT6VL29wIYE1ww==
   dependencies:
     Base64 "0.3.0"
     cross-fetch "^3.0.0"
