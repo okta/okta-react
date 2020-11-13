@@ -35,14 +35,14 @@ class App extends Component {
   
   render() {
     const { ISSUER, CLIENT_ID } = process.env;
-    const { pkce, redirectUri } = this.props;
+    const { pkce, redirectUri, customLogin } = this.props;
     return (
       <React.StrictMode>
         <Security issuer={ISSUER}
                   clientId={CLIENT_ID}
                   disableHttpsCheck={true}
                   redirectUri={redirectUri}
-                  onAuthRequired={this.onAuthRequired}
+                  onAuthRequired={customLogin ? this.onAuthRequired : undefined}
                   pkce={pkce}>
           <Switch>
             <Route path='/login' component={CustomLogin}/>

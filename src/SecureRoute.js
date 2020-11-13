@@ -10,23 +10,31 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useOktaAuth } from './OktaContext';
 import { Route, useRouteMatch } from 'react-router-dom';
 
 const SecureRoute = ( props ) => { 
   const { authService, authState } = useOktaAuth();
   const match = useRouteMatch(props);
+  const pendingLogin = useRef(false);
 
   useEffect(() => {
     // Only process logic if the route matches
     if (!match) {
       return;
     }
-    // Start login if and only if app has decided it is not logged inn
-    if(!authState.isAuthenticated && !authState.isPending) { 
+
+    if (authState.isAuthenticated) {
+      pendingLogin.current = false;
+      return;
+    }
+
+    // Start login if app has decided it is not logged in and there is no pending signin
+    if(!authState.isAuthenticated && !authState.isPending && !pendingLogin.current) { 
+      pendingLogin.current = true;
       authService.login();
-    }  
+    }
   }, [authState.isPending, authState.isAuthenticated, authService, match]);
 
   if (!authState.isAuthenticated) {

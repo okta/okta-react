@@ -23,10 +23,11 @@ import { BrowserRouter as Router } from 'react-router-dom';
 const url = new URL(window.location.href);
 const pkce = !!url.searchParams.get('pkce') || url.pathname.indexOf('pkce/callback') >= 0;
 const redirectUri = window.location.origin + (pkce ? '/pkce/callback' : '/implicit/callback');
+const customLogin = !!url.searchParams.get('customLogin');
 
 ReactDOM.render(
   <Router>
-    <App pkce={pkce} redirectUri={redirectUri} />
+    <App pkce={pkce} redirectUri={redirectUri} customLogin={customLogin} />
   </Router>
   , document.getElementById('root')
 );

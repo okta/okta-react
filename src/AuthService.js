@@ -205,6 +205,7 @@ class AuthService {
       return await this.redirect(additionalParams);
     } finally {
       this._pending.handleLogin = null;
+      this.emitAuthState({ ...this.getAuthState(), isPending: false });
     }
   }
 
