@@ -1,3 +1,9 @@
+# 3.0.10
+
+### Bug Fixes
+
+- [#36](https://github.com/okta/okta-react/pull/36) fixes issue with `SecureRoute` that caused multiple calls to `login()`
+
 # 3.0.9
 
 ### Bug Fixes
