@@ -34,7 +34,8 @@ module.exports = {
         'src/**/*',
         'test/jest/**/*',
         'test/e2e/harness/src/**/*',
-        'test/e2e/harness/e2e/**/*'
+        'test/e2e/harness/e2e/**/*',
+        'rollup.config.js'
       ],
       parser: '@babel/eslint-parser',
       parserOptions: {
@@ -48,7 +49,10 @@ module.exports = {
       },
       rules: {
         'node/no-unsupported-features/es-syntax': 0,
-        'node/no-unsupported-features/node-builtins': 0
+        'node/no-unsupported-features/node-builtins': 0,
+        'node/no-unpublished-import': ['error', {
+          'allowModules': devDependencies
+        }]
       }
     },
     {

@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@okta/okta-react": "*",
-    "@okta/okta-auth-js": "^4.0.1",
+    "@okta/okta-auth-js": "^4.1.2",
     "react": "^16.8.0",
     "react-dom": "^16.8.0",
     "react-router": "^5.1.2",
@@ -12,12 +12,6 @@
     "react-scripts": "3.4.0"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.0",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-preset-env": "^1.6.0",
-    "babel-preset-es2015": "^6.24.1",
-    "babel-preset-react-app": "^3.0.2",
     "jasmine-reporters": "^2.2.0",
     "jasmine-spec-reporter": "^4.1.0",
     "protractor": "^5.4.2",
@@ -40,7 +34,7 @@
     "test": "yarn wait:server && yarn protractor",
     "posttest": "yarn kill:port",
     "eject": "react-scripts eject",
-    "protractor": "babel-node ./node_modules/.bin/protractor protractor.conf.js"
+    "protractor": "protractor protractor.conf.js"
   },
   "browserslist": [
     ">0.2%",

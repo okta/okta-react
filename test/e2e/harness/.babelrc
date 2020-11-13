@@ -1,11 +1,7 @@
-{
-  "presets": ["es2015", "react"],
-  "plugins": ["transform-object-rest-spread"],
-  "env": {
-    "development": {
-      "plugins": [
-        "babel-plugin-dynamic-import-node"
-      ]
-    }
-  }
+{ "presets": [
+    ["@babel/preset-env", {
+      "modules": "commonjs"
+    }],
+    "@babel/preset-react"
+  ]
 }
