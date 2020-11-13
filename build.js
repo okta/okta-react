@@ -5,7 +5,7 @@ const chalk = require('chalk');
 const fs = require('fs');
 
 const NPM_DIR = `dist`;
-const BABEL_CMD = 'yarn bundle';
+const BUNDLE_CMD = 'yarn bundle';
 const BANNER_CMD = `yarn banners`;
 
 shell.echo(`Start building...`);
@@ -13,7 +13,7 @@ shell.echo(`Start building...`);
 shell.rm(`-Rf`, `${NPM_DIR}/*`);
 
 // Bundle with rollup
-if (shell.exec(BABEL_CMD).code !== 0) {
+if (shell.exec(BUNDLE_CMD).code !== 0) {
   shell.echo(chalk.red(`Error: Rollup failed`));
   shell.exit(1);
 }
