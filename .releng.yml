@@ -1,0 +1,15 @@
+promotion:
+  master:
+    - merge
+    - tag
+    - npm_promotion
+    - release_notes
+    - bump_versions
+  /(^release$|^preview$|^((?:[0-9]+\.)+[0-9]+)(-[a-zA-Z]{2,3}[0-9]+)?$)/:
+    - merge
+    - tag
+    - npm_promotion
+  /(^hotfix)/:
+    - artifactory_promotion
+  default:
+    - fail
