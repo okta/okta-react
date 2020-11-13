@@ -37,6 +37,8 @@ exports.config = {
     print: function() {}
   },
   onPrepare() {
+    // eslint-disable-next-line node/no-extraneous-require
+    require('@babel/register')();
     browser.ignoreSynchronization = true;
     jasmine.getEnv().addReporter(new SpecReporter({
       spec: {
