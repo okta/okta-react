@@ -17,7 +17,7 @@ const makeExternalPredicate = externalArr => {
   }
   const pattern = new RegExp(`^(${externalArr.join("|")})($|/)`);
   return id => pattern.test(id);
-}
+};
 
 const commonPlugins = [
   replace({

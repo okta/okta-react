@@ -69,11 +69,7 @@ module.exports = {
     },
     {
       // NodeJS build tools
-      files: [
-        'build.js', 
-        'env.js', 
-        'util/**/*'
-      ],
+      files: ['build.js', 'env.js', 'util/**/*'],
       rules: {
         'node/no-unpublished-require': ['error', {
           'allowModules': devDependencies
