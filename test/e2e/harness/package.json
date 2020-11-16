@@ -34,7 +34,7 @@
     "start": "PORT=8080 react-app-rewired start",
     "build": "react-app-rewired build",
     "kill:port": "kill -s TERM $(lsof -t -i:8080 -sTCP:LISTEN) || true",
-    "pretest": "../../../scripts/update_se_drivers.sh 0",
+    "pretest": "node ../../../scripts/update-se-drivers.js",
     "wait:server": "BROWSER=none yarn start & ./node_modules/.bin/wait-on http://localhost:8080",
     "test": "yarn wait:server && yarn protractor",
     "posttest": "yarn kill:port",
