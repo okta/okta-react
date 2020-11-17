@@ -10,7 +10,7 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-import React from 'react';
+import * as React from 'react';
 import ReactDOM from 'react-dom';
 import { OktaAuth } from '@okta/okta-auth-js';
 import './index.css';
@@ -30,7 +30,7 @@ const redirectUri = window.location.origin + (pkce ? '/pkce/callback' : '/implic
 const oktaAuth = new OktaAuth({
   issuer: ISSUER,
   clientId: CLIENT_ID,
-  disableHttpsCheck: true,
+  // disableHttpsCheck: true,
   redirectUri,
   pkce
 });

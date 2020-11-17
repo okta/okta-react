@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "declarationDir": "dist/bundles/types",
+    "target": "ES2019",
+    "sourceMap": true,
+    "jsx": "react",
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "strictFunctionTypes": true
+  },
+  "include": ["src/**/*"],
+}

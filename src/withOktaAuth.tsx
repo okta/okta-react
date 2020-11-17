@@ -9,10 +9,19 @@
  *
  * See the License for the specific language governing permissions and limitations under the License.
  */
-import React, { useContext } from 'react';
 
-const OktaContext = React.createContext();
+import * as React from 'react';
+import { useOktaAuth, IOktaContext } from './OktaContext';
 
-export const useOktaAuth = () => useContext(OktaContext);
+const withOktaAuth = <P extends IOktaContext>(
+  ComponentToWrap: React.ComponentType<P>
+) => { 
+  const WrappedComponent: React.FC<Omit<P, keyof IOktaContext>> = (props) => { 
+    const oktaAuthProps = useOktaAuth();
+    return <ComponentToWrap {...oktaAuthProps as IOktaContext } {...props as P} />;
+  };
+  WrappedComponent.displayName = 'withOktaAuth_' + (ComponentToWrap.displayName || ComponentToWrap.name);
+  return WrappedComponent;
+};
 
-export default OktaContext;
+export default withOktaAuth;

@@ -10,14 +10,17 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-import { Component } from 'react';
-import { withOktaAuth } from '@okta/okta-react';
+import { useEffect } from 'react';
+import { useOktaAuth } from '@okta/okta-react';
 
-export default withOktaAuth(class CustomLogin extends Component {
-  componentDidMount() {
-    this.props.oktaAuth.signInWithRedirect();
-  }
-  render() {
-    return null;
-  }
-});
+const CustomLogin = () => {
+  const { oktaAuth } = useOktaAuth();
+
+  useEffect(() => {
+    oktaAuth.signInWithRedirect();
+  }, [oktaAuth]);
+
+  return null;
+};
+
+export default CustomLogin;

@@ -9,17 +9,19 @@
  *
  * See the License for the specific language governing permissions and limitations under the License.
  */
+import * as React from 'react';
+import { AuthState, OktaAuth } from '@okta/okta-auth-js';
 
-import React from 'react';
-import { useOktaAuth } from './OktaContext';
+export type OnAuthRequiredFunction = (oktaAuth: OktaAuth) => Promise<void>;
 
-const withOktaAuth = (ComponentToWrap) => { 
-  const WrappedComponent = (props) => { 
-    const oktaAuthProps = useOktaAuth();
-    return <ComponentToWrap {...oktaAuthProps } {...props} />;
-  };
-  WrappedComponent.displayName = 'withOktaAuth_' + (ComponentToWrap.displayName || ComponentToWrap.name);
-  return WrappedComponent;
-};
+export interface IOktaContext {
+    oktaAuth: OktaAuth;
+    authState: AuthState;
+    _onAuthRequired: OnAuthRequiredFunction;
+}
 
-export default withOktaAuth;
+const OktaContext = React.createContext<IOktaContext | null>(null);
+
+export const useOktaAuth = () => React.useContext(OktaContext);
+
+export default OktaContext;

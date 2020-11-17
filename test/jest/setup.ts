@@ -1,4 +1,4 @@
-/*
+/*!
  * Copyright (c) 2017-Present, Okta, Inc. and/or its affiliates. All rights reserved.
  * The Okta software accompanied by this notice is provided pursuant to the Apache License, Version 2.0 (the "License.")
  *
@@ -10,25 +10,7 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-import React, { useEffect } from 'react';
-import { useOktaAuth } from './OktaContext';
-import OktaError from './OktaError';
+import * as Enzyme from 'enzyme';
+import * as Adapter from 'enzyme-adapter-react-16';
 
-const LoginCallback = ({ errorComponent }) => { 
-  const { oktaAuth, authState } = useOktaAuth();
-  const authStateReady = !authState.isPending;
-
-  let ErrorReporter = errorComponent || OktaError;
-
-  useEffect(() => {
-    oktaAuth.handleLoginRedirect();
-  }, [oktaAuth]);
-
-  if(authStateReady && authState.error) { 
-    return <ErrorReporter error={authState.error}/>;
-  }
-
-  return null;
-};
-
-export default LoginCallback;
+Enzyme.configure({ adapter: new Adapter() });
