@@ -54,7 +54,6 @@ This library currently supports:
 - [Okta Guide: Sign users into your single-page application](https://developer.okta.com/docs/guides/sign-into-spa/react/before-you-begin/)
   - Step-by-step guide to integrating an existing React application with Okta login.
 - [Strategies for Obtaining Tokens](https://github.com/okta/okta-auth-js#strategies-for-obtaining-tokens)
-  - To know more about how to obtain tokens depen on different router strategies please check specific section of `okta-auth-js`  
 
 ## Installation
 
