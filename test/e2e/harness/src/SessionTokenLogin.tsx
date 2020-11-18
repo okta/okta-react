@@ -10,17 +10,17 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-import React, { useState, ChangeEvent, FormEvent } from 'react';
+import * as React from 'react';
 import { AuthTransaction } from '@okta/okta-auth-js';
 import { useOktaAuth } from '@okta/okta-react';
 
 const SessionTokenLogin = () => {
   const { oktaAuth } = useOktaAuth();
-  const [sessionToken, setSessionToken] = useState<string | undefined>(undefined);
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [sessionToken, setSessionToken] = React.useState<string | undefined>(undefined);
+  const [username, setUsername] = React.useState('');
+  const [password, setPassword] = React.useState('');
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
     oktaAuth.signInWithCredentials({
@@ -35,8 +35,8 @@ const SessionTokenLogin = () => {
       console.log('Found an error', err);
     });
   };
-  const handleUsernameChange = (e: ChangeEvent<HTMLInputElement>) => setUsername(e.target.value);
-  const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value);
+  const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => setUsername(e.target.value);
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value);
 
   if (sessionToken) {
     return null;

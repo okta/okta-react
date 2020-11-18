@@ -11,13 +11,13 @@
  */
 
 // implement with "useOktaAuth" hook
-import React, { useState } from 'react';
+import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { useOktaAuth } from '@okta/okta-react';
 
 const Home = () => {
   const { oktaAuth, authState } = useOktaAuth();
-  const [renewMessage, setRenewMessage] = useState('');
+  const [renewMessage, setRenewMessage] = React.useState('');
 
   const login = async () => oktaAuth.signInWithRedirect({ originalUri: '/protected' });
   const logout = async () => oktaAuth.signOut();

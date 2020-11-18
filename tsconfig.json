@@ -6,7 +6,6 @@
     "sourceMap": true,
     "jsx": "react",
     "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true,
     "strictFunctionTypes": true
   },
   "include": ["src/**/*"],

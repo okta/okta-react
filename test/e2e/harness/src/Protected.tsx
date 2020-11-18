@@ -11,14 +11,14 @@
  */
 
 // implement with "withOktaAuth" HOC
-import React, { useEffect, useState } from 'react';
+import * as React from 'react';
 import { OktaAuth } from '@okta/okta-auth-js';
 import { withOktaAuth } from '@okta/okta-react';
 
 const Protected: React.FC<{ oktaAuth: OktaAuth }> = ({ oktaAuth }) => {
-  const [userInfo, setUserInfo] = useState('');
+  const [userInfo, setUserInfo] = React.useState('');
 
-  useEffect(() => {
+  React.useEffect(() => {
     const fetchUser = async () => {
       const claims = await oktaAuth.getUser();
       const userinfo = JSON.stringify(claims, null, 4);

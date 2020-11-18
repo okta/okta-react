@@ -11,7 +11,7 @@
  */
 
 import * as React from 'react';
-import ReactDOM from 'react-dom';
+import * as ReactDOM from 'react-dom';
 import { OktaAuth } from '@okta/okta-auth-js';
 import './index.css';
 import App from './App';
