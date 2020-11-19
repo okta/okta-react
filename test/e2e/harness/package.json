@@ -15,6 +15,7 @@
     "react-scripts": "3.4.0"
   },
   "devDependencies": {
+    "eslint-plugin-jasmine": "^4.1.1",
     "jasmine-reporters": "^2.2.0",
     "jasmine-spec-reporter": "^4.1.0",
     "protractor": "^5.4.2",

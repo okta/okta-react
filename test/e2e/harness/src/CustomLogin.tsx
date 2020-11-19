@@ -10,13 +10,13 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-import { useEffect } from 'react';
+import * as React from 'react';
 import { useOktaAuth } from '@okta/okta-react';
 
-const CustomLogin = () => {
+const CustomLogin: React.FC = () => {
   const { oktaAuth } = useOktaAuth();
 
-  useEffect(() => {
+  React.useEffect(() => {
     oktaAuth.signInWithRedirect();
   }, [oktaAuth]);
 

@@ -20,7 +20,7 @@ const LoginCallback: React.FC<{
   const { oktaAuth, authState } = useOktaAuth();
   const authStateReady = !authState.isPending;
 
-  let ErrorReporter = errorComponent || OktaError;
+  const ErrorReporter = errorComponent || OktaError;
 
   React.useEffect(() => {
     oktaAuth.handleLoginRedirect();

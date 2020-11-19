@@ -15,7 +15,7 @@ import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { useOktaAuth } from '@okta/okta-react';
 
-const Home = () => {
+const Home: React.FC = () => {
   const { oktaAuth, authState } = useOktaAuth();
   const [renewMessage, setRenewMessage] = React.useState('');
 

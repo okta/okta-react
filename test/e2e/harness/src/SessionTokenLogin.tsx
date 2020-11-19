@@ -14,7 +14,7 @@ import * as React from 'react';
 import { AuthTransaction } from '@okta/okta-auth-js';
 import { useOktaAuth } from '@okta/okta-react';
 
-const SessionTokenLogin = () => {
+const SessionTokenLogin: React.FC = () => {
   const { oktaAuth } = useOktaAuth();
   const [sessionToken, setSessionToken] = React.useState<string | undefined>(undefined);
   const [username, setUsername] = React.useState('');
