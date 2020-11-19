@@ -31,10 +31,11 @@ module.exports = {
         'config-overrides.js',
         'protractor.conf.js'
       ],
-      extends: [
-        'eslint:recommended',
-        'plugin:node/recommended-script',
-      ],
+      plugins: ['node'],
+      env: {
+        node: true,
+        es6: true
+      },
       rules: {
         'node/no-unpublished-require': ['error', {
           'allowModules': devDependencies
