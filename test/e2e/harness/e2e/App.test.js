@@ -10,6 +10,7 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
+/* global process */
 import {
   AppPage,
   OktaSignInPage,
@@ -32,7 +33,7 @@ describe('React + Okta App', () => {
 
   describe('implicit flow', () => {
 
-    it('should redirect to Okta for login when trying to access a protected page', () => {
+    it('should redirect to Okta for login when trying to access a protected page (implicit)', () => {
       protectedPage.navigateTo('?state=bar#baz');
   
       oktaLoginPage.waitUntilVisible();
@@ -45,18 +46,18 @@ describe('React + Okta App', () => {
       expect(protectedPage.getLogoutButton().isPresent()).toBeTruthy();
   
       protectedPage.waitForElement('userinfo-container');
-      protectedPage.getUserInfo().getText()
+      return protectedPage.getUserInfo().getText()
       .then(userInfo => {
         expect(userInfo).toContain('email');
+      }).finally(() => {
+        // Logout
+        protectedPage.getLogoutButton().click();
+          
+        appPage.waitUntilLoggedOut();
       });
-
-      // Logout
-      protectedPage.getLogoutButton().click();
-  
-      appPage.waitUntilLoggedOut();
     });
   
-    it('should redirect to Okta for login', () => {
+    it('should redirect to Okta for login (implicit)', () => {
       appPage.navigateTo();
   
       appPage.waitUntilVisible();
@@ -85,7 +86,7 @@ describe('React + Okta App', () => {
 
   describe('PKCE flow', () => {
 
-    it('should redirect to Okta for login when trying to access a protected page', () => {
+    it('should redirect to Okta for login when trying to access a protected page (pkce)', () => {
       protectedPage.navigateTo('?pkce=1&state=bar#baz');
   
       oktaLoginPage.waitUntilVisible();
@@ -98,18 +99,19 @@ describe('React + Okta App', () => {
       expect(protectedPage.getLogoutButton().isPresent()).toBeTruthy();
   
       protectedPage.waitForElement('userinfo-container');
-      protectedPage.getUserInfo().getText()
+      return protectedPage.getUserInfo().getText()
       .then(userInfo => {
         expect(userInfo).toContain('email');
+      })
+      .finally(() => {
+        // Logout
+        protectedPage.getLogoutButton().click();
+          
+        appPage.waitUntilLoggedOut();
       });
-
-      // Logout
-      protectedPage.getLogoutButton().click();
-  
-      appPage.waitUntilLoggedOut();
     });
   
-    it('should redirect to Okta for login', () => {
+    it('should redirect to Okta for login (pkce)', () => {
       appPage.navigateTo('/?pkce=1');
   
       appPage.waitUntilVisible();

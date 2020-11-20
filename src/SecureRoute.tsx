@@ -10,16 +10,21 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-import React, { useEffect, useRef } from 'react';
-import { useOktaAuth } from './OktaContext';
-import { Route, useRouteMatch } from 'react-router-dom';
+import * as React from 'react';
+import { useOktaAuth, OnAuthRequiredFunction } from './OktaContext';
+import { Route, useRouteMatch, RouteProps } from 'react-router-dom';
 
-const SecureRoute = ( props ) => { 
+const SecureRoute: React.FC<{
+  onAuthRequired?: OnAuthRequiredFunction;
+} & RouteProps & React.HTMLAttributes<HTMLDivElement>> = ({ 
+  onAuthRequired, 
+  ...routeProps 
+}) => { 
   const { oktaAuth, authState, _onAuthRequired } = useOktaAuth();
-  const match = useRouteMatch(props);
-  const pendingLogin = useRef(false);
+  const match = useRouteMatch(routeProps);
+  const pendingLogin = React.useRef(false);
 
-  useEffect(() => {
+  React.useEffect(() => {
     const handleLogin = async () => {
       if (pendingLogin.current) {
         return;
@@ -28,7 +33,7 @@ const SecureRoute = ( props ) => {
       pendingLogin.current = true;
 
       oktaAuth.setOriginalUri();
-      const onAuthRequiredFn = props.onAuthRequired || _onAuthRequired;
+      const onAuthRequiredFn = onAuthRequired || _onAuthRequired;
       if (onAuthRequiredFn) {
         await onAuthRequiredFn(oktaAuth);
       } else {
@@ -49,8 +54,15 @@ const SecureRoute = ( props ) => {
     // Start login if app has decided it is not logged in and there is no pending signin
     if(!authState.isAuthenticated && !authState.isPending) { 
       handleLogin();
-    }
-  }, [authState.isPending, authState.isAuthenticated, authService, match]);
+    }  
+  }, [
+    authState.isPending, 
+    authState.isAuthenticated, 
+    oktaAuth, 
+    match, 
+    onAuthRequired, 
+    _onAuthRequired
+  ]);
 
   if (!authState.isAuthenticated) {
     return null;
@@ -58,7 +70,7 @@ const SecureRoute = ( props ) => {
 
   return (
     <Route
-      { ...props }
+      { ...routeProps }
     />
   );
 };
