@@ -36,7 +36,7 @@ const oktaAuth = new OktaAuth({
 
 ReactDOM.render(
   <Router>
-    <App oktaAuth={oktaAuth} />
+    <App oktaAuth={oktaAuth} customLogin={customLogin} />
   </Router>
   , document.getElementById('root')
 );

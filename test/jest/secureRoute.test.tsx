@@ -31,6 +31,7 @@ describe('<SecureRoute />', () => {
       authStateManager: {
         getAuthState: jest.fn().mockImplementation(() => authState),
         subscribe: jest.fn(),
+        unsubscribe: jest.fn(),
         updateAuthState: jest.fn(),
       },
       isLoginRedirect: jest.fn().mockImplementation(() => false),
@@ -45,9 +46,9 @@ describe('<SecureRoute />', () => {
     let emitAuthState;
 
     beforeEach(() => {
-      authService.on = (eventName, cb) => {
+      oktaAuth.authStateManager.subscribe = (cb) => {
         emitAuthState = () => {
-          act(cb);
+          act(cb.bind(null, authState));
         };
       };
     });
@@ -68,21 +69,21 @@ describe('<SecureRoute />', () => {
           </Security>
         </MemoryRouter>
       );
-      expect(authService.login).toHaveBeenCalledTimes(1);
-      authService.login.mockClear();
+      expect(oktaAuth.signInWithRedirect).toHaveBeenCalledTimes(1);
+      oktaAuth.signInWithRedirect.mockClear();
 
       updateAuthState({ isPending: true });
-      expect(authService.login).not.toHaveBeenCalled();
+      expect(oktaAuth.signInWithRedirect).not.toHaveBeenCalled();
 
       updateAuthState({ isPending: false });
-      expect(authService.login).not.toHaveBeenCalled();
+      expect(oktaAuth.signInWithRedirect).not.toHaveBeenCalled();
 
       updateAuthState({ isAuthenticated: true });
-      expect(authService.login).not.toHaveBeenCalled();
+      expect(oktaAuth.signInWithRedirect).not.toHaveBeenCalled();
 
       // If the state returns to unauthenticated, the secure route should still work
       updateAuthState({ isAuthenticated: false });
-      expect(authService.login).toHaveBeenCalledTimes(1);
+      expect(oktaAuth.signInWithRedirect).toHaveBeenCalledTimes(1);
     });
   });
 
