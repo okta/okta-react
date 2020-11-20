@@ -10,7 +10,7 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-import React from 'react';
+import * as React from 'react';
 import { mount } from 'enzyme';
 import LoginCallback from '../../src/LoginCallback';
 import Security from '../../src/Security';
@@ -97,12 +97,12 @@ describe('<LoginCallback />', () => {
       authState.error = { has: 'errorData' };
 
       const MyErrorComponent = ({ error }) => { 
-        return (<p>Override: {error.has}</p>);
+      return (<p>Override: {error.has}</p>);
       };
 
       const wrapper = mount(
         <Security {...mockProps}>
-          <LoginCallback errorComponent={MyErrorComponent}/>
+          <LoginCallback errorComponent={MyErrorComponent} />
         </Security>
       );
       expect(wrapper.text()).toBe('Override: errorData');

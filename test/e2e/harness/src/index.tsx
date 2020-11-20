@@ -10,12 +10,11 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-import React from 'react';
-import ReactDOM from 'react-dom';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import { OktaAuth } from '@okta/okta-auth-js';
 import './index.css';
 import App from './App';
-import registerServiceWorker from './registerServiceWorker';
 import { BrowserRouter as Router } from 'react-router-dom';
 
 const { ISSUER, CLIENT_ID } = process.env;
@@ -30,7 +29,6 @@ const redirectUri = window.location.origin + (pkce ? '/pkce/callback' : '/implic
 const oktaAuth = new OktaAuth({
   issuer: ISSUER,
   clientId: CLIENT_ID,
-  disableHttpsCheck: true,
   redirectUri,
   pkce
 });
@@ -41,4 +39,3 @@ ReactDOM.render(
   </Router>
   , document.getElementById('root')
 );
-registerServiceWorker();

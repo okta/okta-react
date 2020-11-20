@@ -10,18 +10,23 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-import React, { useEffect, useRef } from 'react';
-import { useOktaAuth } from './OktaContext';
-import { Route, useRouteMatch } from 'react-router-dom';
+import * as React from 'react';
+import { useOktaAuth, OnAuthRequiredFunction } from './OktaContext';
+import { Route, useRouteMatch, RouteProps } from 'react-router-dom';
 
-const SecureRoute = ( props ) => { 
+const SecureRoute: React.FC<{
+  onAuthRequired?: OnAuthRequiredFunction;
+} & RouteProps & React.HTMLAttributes<HTMLDivElement>> = ({ 
+  onAuthRequired, 
+  ...routeProps 
+}) => { 
   const { oktaAuth, authState, _onAuthRequired } = useOktaAuth();
-  const match = useRouteMatch(props);
-  const pendingRef = useRef({
+  const match = useRouteMatch(routeProps);
+  const pendingRef = React.useRef({
     handleLogin: false
   });
 
-  useEffect(() => {
+  React.useEffect(() => {
     const handleLogin = async () => {
       if (pendingRef.current.handleLogin) {
         return;
@@ -31,7 +36,7 @@ const SecureRoute = ( props ) => {
 
       try {
         oktaAuth.setOriginalUri();
-        const onAuthRequiredFn = props.onAuthRequired || _onAuthRequired;
+        const onAuthRequiredFn = onAuthRequired || _onAuthRequired;
         if (onAuthRequiredFn) {
           await onAuthRequiredFn(oktaAuth);
         } else {
@@ -55,7 +60,7 @@ const SecureRoute = ( props ) => {
     authState.isAuthenticated, 
     oktaAuth, 
     match, 
-    props.onAuthRequired, 
+    onAuthRequired, 
     _onAuthRequired
   ]);
 
@@ -65,7 +70,7 @@ const SecureRoute = ( props ) => {
 
   return (
     <Route
-      { ...props }
+      { ...routeProps }
     />
   );
 };
