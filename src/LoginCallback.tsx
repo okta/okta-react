@@ -10,17 +10,19 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-import React, { useEffect } from 'react';
+import * as React from 'react';
 import { useOktaAuth } from './OktaContext';
 import OktaError from './OktaError';
 
-const LoginCallback = ({ errorComponent }) => { 
+const LoginCallback: React.FC<{ 
+  errorComponent?: React.ComponentType<{ error: Error }>
+}> = ({ errorComponent }) => { 
   const { oktaAuth, authState } = useOktaAuth();
   const authStateReady = !authState.isPending;
 
-  let ErrorReporter = errorComponent || OktaError;
+  const ErrorReporter = errorComponent || OktaError;
 
-  useEffect(() => {
+  React.useEffect(() => {
     oktaAuth.handleLoginRedirect();
   }, [oktaAuth]);
 

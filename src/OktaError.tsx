@@ -10,9 +10,9 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-import React from 'react';
+import * as React from 'react';
 
-const OktaError = ({ error }) => { 
+const OktaError: React.FC<{ error: Error }> = ({ error }) => { 
   if(error.name && error.message) { 
     return <p>{error.name}: {error.message}</p>;
   }

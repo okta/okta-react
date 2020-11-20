@@ -7,6 +7,13 @@ module.exports = {
     './src/**',
     '!./test/**'
   ],
+  globals: {
+    'ts-jest': {
+      diagnostics: {
+        warnOnly: true
+      }
+    }
+  },
   reporters: [
     'default',
     'jest-junit'
@@ -19,7 +26,8 @@ module.exports = {
     './test/jest'
   ],
   setupFiles: [
-    './test/jest/setup.js'
+    './test/jest/setup.ts'
   ],
-  testEnvironment: 'jsdom'
+  testEnvironment: 'jsdom',
+  transform: { '^.+\\.tsx?$': 'ts-jest' }
 };

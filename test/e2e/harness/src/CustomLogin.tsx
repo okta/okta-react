@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2020-Present, Okta, Inc. and/or its affiliates. All rights reserved.
+/*!
+ * Copyright (c) 2017-Present, Okta, Inc. and/or its affiliates. All rights reserved.
  * The Okta software accompanied by this notice is provided pursuant to the Apache License, Version 2.0 (the "License.")
  *
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
@@ -10,16 +10,17 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-import React from 'react';
-import { useOktaAuth } from './OktaContext';
+import * as React from 'react';
+import { useOktaAuth } from '@okta/okta-react';
 
-const withOktaAuth = (ComponentToWrap) => { 
-  const WrappedComponent = (props) => { 
-    const oktaAuthProps = useOktaAuth();
-    return <ComponentToWrap {...oktaAuthProps } {...props} />;
-  };
-  WrappedComponent.displayName = 'withOktaAuth_' + (ComponentToWrap.displayName || ComponentToWrap.name);
-  return WrappedComponent;
+const CustomLogin: React.FC = () => {
+  const { oktaAuth } = useOktaAuth();
+
+  React.useEffect(() => {
+    oktaAuth.signInWithRedirect();
+  }, [oktaAuth]);
+
+  return null;
 };
 
-export default withOktaAuth;
+export default CustomLogin;

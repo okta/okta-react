@@ -10,7 +10,7 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-import React from 'react';
+import * as React from 'react';
 import { mount } from 'enzyme';
 import { act } from 'react-dom/test-utils';
 import { MemoryRouter } from "react-router-dom";
@@ -267,7 +267,7 @@ describe('<Security />', () => {
 
     it('should render error if oktaAuth props is not provided', () => {
       const wrapper = mount(
-        <Security>
+        <Security oktaAuth={null}>
           <MyComponent />
         </Security>
       );

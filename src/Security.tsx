@@ -10,29 +10,42 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-import React, { useState, useEffect } from 'react';
+import * as React from 'react';
 import { useHistory } from 'react-router-dom';
-import { toRelativeUrl, DEFAULT_AUTH_STATE, AuthSdkError } from '@okta/okta-auth-js';
-import OktaContext from './OktaContext';
+import { toRelativeUrl, AuthSdkError, OktaAuth } from '@okta/okta-auth-js';
+import OktaContext, { OnAuthRequiredFunction } from './OktaContext';
 import OktaError from './OktaError';
 
-const Security = ({ oktaAuth, onAuthRequired, children }) => { 
+const Security: React.FC<{
+  oktaAuth: OktaAuth, 
+  onAuthRequired?: OnAuthRequiredFunction,
+  children?: React.ReactNode
+} & React.HTMLAttributes<HTMLDivElement>> = ({ 
+  oktaAuth, 
+  onAuthRequired, 
+  children 
+}) => { 
   const history = useHistory();
-  const [authState, setAuthState] = useState(() => {
+  const [authState, setAuthState] = React.useState(() => {
     if (!oktaAuth) {
-      return DEFAULT_AUTH_STATE;
+      return { 
+        isPending: true,
+        isAuthenticated: false,
+        idToken: null,
+        accessToken: null,
+      };
     }
     return oktaAuth.authStateManager.getAuthState();
   });
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (!oktaAuth) {
       return;
     }
 
     // Add default restoreOriginalUri callback
     if (!oktaAuth.options.restoreOriginalUri) {
-      oktaAuth.options.restoreOriginalUri = (_, originalUri) => {
+      oktaAuth.options.restoreOriginalUri = async (_, originalUri) => {
         history.replace(toRelativeUrl(originalUri, window.location.origin));
       };
     }
