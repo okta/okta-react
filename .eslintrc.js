@@ -29,7 +29,10 @@ module.exports = {
         'env.js', 
         'util/**/*', 
         'config-overrides.js',
-        'protractor.conf.js'
+        'protractor.conf.js',
+        '.eslintrc.js',
+        'babel.config.js',
+        'jest.config.js'
       ],
       plugins: ['node'],
       env: {

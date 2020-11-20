@@ -2,6 +2,3 @@ node_modules
 /dist
 /scripts
 build
-babel.config.js
-jest.config.js
-.eslintrc.js
