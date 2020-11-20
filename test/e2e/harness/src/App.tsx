@@ -19,7 +19,10 @@ import Protected from './Protected';
 import CustomLogin from './CustomLogin';
 import SessionTokenLogin from './SessionTokenLogin';
 
-const App: React.FC<{ oktaAuth: OktaAuth }> = ({ oktaAuth }) => {
+const App: React.FC<{ 
+  oktaAuth: OktaAuth, 
+  customLogin: boolean 
+}> = ({ oktaAuth, customLogin }) => {
   const history = useHistory();
 
   const onAuthRequired = async () => {
@@ -30,7 +33,7 @@ const App: React.FC<{ oktaAuth: OktaAuth }> = ({ oktaAuth }) => {
     <React.StrictMode>
       <Security
         oktaAuth={oktaAuth}
-        onAuthRequired={onAuthRequired}
+        onAuthRequired={customLogin ? onAuthRequired : undefined}
       >
         <Switch>
           <Route path='/login' component={CustomLogin}/>
