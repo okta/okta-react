@@ -10,6 +10,8 @@
 ### Features
 
 - [#8](https://github.com/okta/okta-react/pull/8) Accepts `onAuthRequired` prop in `SecureRoute` component to override the existing callback for the route
+- [#39](https://github.com/okta/okta-react/pull/39) Exposes ES module bundle from package `module` field
+- [#44](https://github.com/okta/okta-react/pull/44) Adds support for Typescript
 
 # 3.0.8
 
