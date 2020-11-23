@@ -13,9 +13,10 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
 import { act } from 'react-dom/test-utils';
-import { MemoryRouter } from "react-router-dom";
-import Security from "../../src/Security";
+import { MemoryRouter } from 'react-router-dom';
+import Security from '../../src/Security';
 import { useOktaAuth } from '../../src/OktaContext';
+import * as pkg from '../../package.json';
 
 describe('<Security />', () => {
   let oktaAuth;
@@ -41,7 +42,7 @@ describe('<Security />', () => {
       oktaAuth
     };
     mount(<Security {...mockProps} />);
-    expect(oktaAuth.userAgent).toEqual('@okta/okta-react/4.0.0 okta/okta-auth-js');
+    expect(oktaAuth.userAgent).toEqual(`${pkg.name}/${pkg.version} okta/okta-auth-js`);
   });
 
   it('should set default restoreOriginalUri callback in oktaAuth.options', () => {
