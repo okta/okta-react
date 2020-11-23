@@ -6,7 +6,8 @@
     "sourceMap": true,
     "jsx": "react",
     "moduleResolution": "node",
-    "strictFunctionTypes": true
+    "strictFunctionTypes": true,
+    "resolveJsonModule": true
   },
   "include": ["src/**/*"],
 }
