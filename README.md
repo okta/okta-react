@@ -65,9 +65,12 @@ Install `@okta/okta-react`
 npm install --save @okta/okta-react
 ```
 
-Install peer dependency `@okta/okta-auth-js`
+Install peer dependencies
 
 ```bash
+npm install --save react
+npm install --save react-dom
+npm install --save react-router-dom
 npm install --save @okta/okta-auth-js
 ```
 
