@@ -65,9 +65,12 @@ Install `@okta/okta-react`
 npm install --save @okta/okta-react
 ```
 
-Install peer dependency `@okta/okta-auth-js`
+Install peer dependencies
 
 ```bash
+npm install --save react
+npm install --save react-dom
+npm install --save react-router-dom
 npm install --save @okta/okta-auth-js
 ```
 
@@ -151,6 +154,7 @@ export default App;
 ```jsx
 import React from 'react';
 import { SecureRoute, Security, LoginCallback } from '@okta/okta-react';
+import { OktaAuth } from '@okta/okta-auth-js';
 import Home from './Home';
 import Protected from './Protected';
 
