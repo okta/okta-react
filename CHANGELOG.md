@@ -1,3 +1,9 @@
+# 4.1.0
+
+### Other
+
+- [#56](https://github.com/okta/okta-react/pull/56)`OktaContext::OnAuthRequiredFunction` return type is updated to `Promise<void> | void`
+
 # 4.0.0
 
 ### Breaking Changes
