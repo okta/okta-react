@@ -12,7 +12,7 @@
 import * as React from 'react';
 import { AuthState, OktaAuth } from '@okta/okta-auth-js';
 
-export type OnAuthRequiredFunction = (oktaAuth: OktaAuth) => Promise<void>;
+export type OnAuthRequiredFunction = (oktaAuth: OktaAuth) => Promise<void> | void;
 
 export interface IOktaContext {
     oktaAuth: OktaAuth;
