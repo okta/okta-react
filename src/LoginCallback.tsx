@@ -19,7 +19,7 @@ interface LoginCallbackProps {
   loadingComponent?: React.ReactElement;
 }
 
-const LoginCallback: React.FC<LoginCallbackProps> = ({ errorComponent, loadingComponent }) => { 
+const LoginCallback: React.FC<LoginCallbackProps> = ({ errorComponent, loadingComponent = null }) => { 
   const { oktaAuth, authState } = useOktaAuth();
   const authStateReady = !authState.isPending;
 
