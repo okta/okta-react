@@ -20,7 +20,7 @@ interface LoginCallbackProps {
   loadingComponent?: React.ReactElement;
 }
 
-const LoginCallback: React.FC<LoginCallbackProps> = ({ errorComponent, loadingComponent, onAuthResume }) => { 
+const LoginCallback: React.FC<LoginCallbackProps> = ({ errorComponent, loadingComponent = null, onAuthResume }) => { 
   const { oktaAuth, authState } = useOktaAuth();
   const [callbackError, setCallbackError] = React.useState(null);
 
