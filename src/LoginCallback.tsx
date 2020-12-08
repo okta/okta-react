@@ -14,10 +14,13 @@ import * as React from 'react';
 import { useOktaAuth, OnAuthResumeFunction } from './OktaContext';
 import OktaError from './OktaError';
 
-const LoginCallback: React.FC<{ 
-  errorComponent?: React.ComponentType<{ error: Error }>,
-  onAuthResume?: OnAuthResumeFunction,
-}> = ({ errorComponent, onAuthResume }) => { 
+interface LoginCallbackProps {
+  errorComponent?: React.ComponentType<{ error: Error }>;
+  onAuthResume?: OnAuthResumeFunction;
+  loadingComponent?: React.ReactElement;
+}
+
+const LoginCallback: React.FC<LoginCallbackProps> = ({ errorComponent, loadingComponent, onAuthResume }) => { 
   const { oktaAuth, authState } = useOktaAuth();
   const [callbackError, setCallbackError] = React.useState(null);
 
@@ -43,7 +46,7 @@ const LoginCallback: React.FC<{
     return <ErrorReporter error={displayError}/>;
   }
 
-  return null;
+  return loadingComponent;
 };
 
 export default LoginCallback;
