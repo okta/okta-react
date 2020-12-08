@@ -14,9 +14,12 @@ import * as React from 'react';
 import { useOktaAuth } from './OktaContext';
 import OktaError from './OktaError';
 
-const LoginCallback: React.FC<{ 
-  errorComponent?: React.ComponentType<{ error: Error }>
-}> = ({ errorComponent }) => { 
+interface LoginCallbackProps {
+  errorComponent?: React.ComponentType<{ error: Error }>;
+  loadingComponent?: React.ReactElement;
+}
+
+const LoginCallback: React.FC<LoginCallbackProps> = ({ errorComponent, loadingComponent }) => { 
   const { oktaAuth, authState } = useOktaAuth();
   const authStateReady = !authState.isPending;
 
@@ -26,11 +29,11 @@ const LoginCallback: React.FC<{
     oktaAuth.handleLoginRedirect();
   }, [oktaAuth]);
 
-  if(authStateReady && authState.error) { 
+  if (authStateReady && authState.error) { 
     return <ErrorReporter error={authState.error}/>;
   }
 
-  return null;
+  return loadingComponent;
 };
 
 export default LoginCallback;
