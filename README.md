@@ -303,17 +303,20 @@ export default MessageList = () => {
 
   useEffect( () => { 
     if(authState.isAuthenticated) { 
-      try {
-        const response = await fetch('http://localhost:{serverPort}/api/messages', {
-          headers: {
-            Authorization: 'Bearer ' + authState.accessToken
-          }
-        });
-        const data = await response.json();
-        setMessages( data.messages );
-      } catch (err) {
-        // handle error as needed
+      const apiCall = async () => {
+        try {
+          const response = await fetch('http://localhost:{serverPort}/api/messages', {
+            headers: {
+              Authorization: 'Bearer ' + authState.accessToken.accessToken
+            }
+          });
+          const data = await response.json();
+          setMessages( data.messages );
+        } catch (err) {
+          // handle error as needed
+        }
       }
+      apiCall();
     }
   }, [authState] );
 
