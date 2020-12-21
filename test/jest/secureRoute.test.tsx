@@ -13,7 +13,7 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
 import { act } from 'react-dom/test-utils';
-import { MemoryRouter, Route } from 'react-router-dom';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import SecureRoute from '../../src/SecureRoute';
 import Security from '../../src/Security';
 
@@ -94,28 +94,16 @@ describe('<SecureRoute />', () => {
       authState.isPending = false;
     });
 
-    it('will render wrapped component using "component"', () => {
+    it('will render wrapped component using "element"', () => {
       const MyComponent = function() { return <div>hello world</div>; };
       const wrapper = mount(
         <MemoryRouter>
           <Security {...mockProps}>
-            <SecureRoute
-              component={MyComponent}
-            />
-          </Security>
-        </MemoryRouter>
-      );
-      expect(wrapper.find(MyComponent).html()).toBe('<div>hello world</div>');
-    });
-
-    it('will render wrapped component using "render"', () => {
-      const MyComponent = function() { return <div>hello world</div>; };
-      const wrapper = mount(
-        <MemoryRouter>
-          <Security {...mockProps}>
-            <SecureRoute
-              render={ () => <MyComponent/> }
-            />
+            <Routes>
+              <SecureRoute
+                element={<MyComponent />}
+              />
+            </Routes>
           </Security>
         </MemoryRouter>
       );
@@ -127,9 +115,11 @@ describe('<SecureRoute />', () => {
       const wrapper = mount(
         <MemoryRouter>
           <Security {...mockProps}>
-            <SecureRoute>
-              <MyComponent/>
-            </SecureRoute>
+            <Routes>
+              <SecureRoute>
+                <MyComponent/>
+              </SecureRoute>
+            </Routes>
           </Security>
         </MemoryRouter>
       );
@@ -144,28 +134,16 @@ describe('<SecureRoute />', () => {
       authState.isPending = false;
     });
 
-    it('will not render wrapped component using "component"', () => {
+    it('will not render wrapped component using "element"', () => {
       const MyComponent = function() { return <div>hello world</div>; };
       const wrapper = mount(
         <MemoryRouter>
           <Security {...mockProps}>
-            <SecureRoute
-              component={MyComponent}
-            />
-          </Security>
-        </MemoryRouter>
-      );
-      expect(wrapper.find(MyComponent).length).toBe(0);
-    });
-
-    it('will not render wrapped component using "render"', () => {
-      const MyComponent = function() { return <div>hello world</div>; };
-      const wrapper = mount(
-        <MemoryRouter>
-          <Security {...mockProps}>
-            <SecureRoute
-              render={ () => <MyComponent/> }
-            />
+            <Routes>
+              <SecureRoute
+                element={<MyComponent />}
+              />
+            </Routes>
           </Security>
         </MemoryRouter>
       );
@@ -173,17 +151,19 @@ describe('<SecureRoute />', () => {
     });
 
     it('will not render wrapped component with children', () => {
-      const MyComponent = function() { return <div>hello world</div>; };
-      const wrapper = mount(
-        <MemoryRouter>
-          <Security {...mockProps}>
-            <SecureRoute>
-              <MyComponent/>
-            </SecureRoute>
-          </Security>
-        </MemoryRouter>
-      );
-      expect(wrapper.find(MyComponent).length).toBe(0);
+       const MyComponent = function() { return <div>hello world</div>; };
+       const wrapper = mount(
+         <MemoryRouter>
+           <Security {...mockProps}>
+             <Routes>
+              <SecureRoute>
+                <MyComponent/>
+              </SecureRoute>
+             </Routes>
+           </Security>
+         </MemoryRouter>
+       );
+       expect(wrapper.find(MyComponent).length).toBe(0);
     });
 
     describe('isPending: false', () => {
@@ -197,7 +177,9 @@ describe('<SecureRoute />', () => {
           mount(
             <MemoryRouter>
               <Security {...mockProps}>
-                <SecureRoute path="/" />
+                <Routes>
+                  <SecureRoute path="/" />
+                </Routes>
               </Security>
             </MemoryRouter>
           );
@@ -210,7 +192,9 @@ describe('<SecureRoute />', () => {
           mount(
             <MemoryRouter>
               <Security {...mockProps} onAuthRequired={onAuthRequired}>
-                <SecureRoute path="/" />
+                <Routes>
+                  <SecureRoute path="/" />
+                </Routes>
               </Security>
             </MemoryRouter>
           );
@@ -225,7 +209,9 @@ describe('<SecureRoute />', () => {
           mount(
             <MemoryRouter>
               <Security {...mockProps} onAuthRequired={onAuthRequired1}>
-                <SecureRoute path="/" onAuthRequired={onAuthRequired2} />
+                <Routes>
+                  <SecureRoute path="/" onAuthRequired={onAuthRequired2} />
+                </Routes>
               </Security>
             </MemoryRouter>
           );
@@ -241,7 +227,9 @@ describe('<SecureRoute />', () => {
           mount(
             <MemoryRouter>
               <Security {...mockProps}>
-                <SecureRoute path="/other" />
+                <Routes>
+                  <SecureRoute path="/other" />
+                </Routes>
               </Security>
             </MemoryRouter>
           );
@@ -261,7 +249,9 @@ describe('<SecureRoute />', () => {
         mount(
           <MemoryRouter>
             <Security {...mockProps}>
-              <SecureRoute />
+              <Routes>
+                <SecureRoute />
+              </Routes>
             </Security>
           </MemoryRouter>
         );
@@ -281,10 +271,12 @@ describe('<SecureRoute />', () => {
       const wrapper = mount(
         <MemoryRouter>
           <Security {...mockProps}>
-            <SecureRoute
-              path='/'
-              component={MyComponent}
-            />
+            <Routes>
+              <SecureRoute
+                path='/'
+                element={<MyComponent />}
+              />
+            </Routes>
           </Security>
         </MemoryRouter>
       );
@@ -292,99 +284,37 @@ describe('<SecureRoute />', () => {
       expect(wrapper.find(MyComponent).html()).toBe('<div>hello world</div>');
     });
 
-    it('should accept an "exact" prop and pass it to an internal Route', () => {
+    it('should accept a "caseSensitive" prop and pass it to an internal Route', () => {
       const wrapper = mount(
         <MemoryRouter>
           <Security {...mockProps}>
-            <SecureRoute
-              exact={true}
-              path='/'
-              component={MyComponent}
-            />
+            <Routes>
+              <SecureRoute
+                caseSensitive={true}
+                path='/'
+                element={<MyComponent />}
+              />
+            </Routes>
           </Security>
         </MemoryRouter>
       );
       const secureRoute = wrapper.find(SecureRoute);
-      expect(secureRoute.find(Route).props().exact).toBe(true);
+      expect(secureRoute.find(Route).props().caseSensitive).toBe(true);
       expect(wrapper.find(MyComponent).html()).toBe('<div>hello world</div>');
     });
 
-    it('should accept a "strict" prop and pass it to an internal Route', () => {
-      const wrapper = mount(
-        <MemoryRouter>
-          <Security {...mockProps}>
-            <SecureRoute
-              strict={true}
-              path='/'
-              component={MyComponent}
-            />
-          </Security>
-        </MemoryRouter>
-      );
-      const secureRoute = wrapper.find(SecureRoute);
-      expect(secureRoute.find(Route).props().strict).toBe(true);
-      expect(wrapper.find(MyComponent).html()).toBe('<div>hello world</div>');
-    });
-
-    it('should accept a "sensitive" prop and pass it to an internal Route', () => {
-      const wrapper = mount(
-        <MemoryRouter>
-          <Security {...mockProps}>
-            <SecureRoute
-              sensitive={true}
-              path='/'
-              component={MyComponent}
-            />
-          </Security>
-        </MemoryRouter>
-      );
-      const secureRoute = wrapper.find(SecureRoute);
-      expect(secureRoute.find(Route).props().sensitive).toBe(true);
-      expect(wrapper.find(MyComponent).html()).toBe('<div>hello world</div>');
-    });
-
-    it('should pass react-router props to an component', () => {
-      authState.isAuthenticated = true;
-      const MyComponent = function(props) { return <div>{ props.history ? 'has history' : 'lacks history'}</div>; };
-      const wrapper = mount(
-        <MemoryRouter>
-          <Security {...mockProps}>
-            <SecureRoute
-              path='/'
-              component={MyComponent}
-            />
-          </Security>
-        </MemoryRouter>
-      );
-      expect(wrapper.find(MyComponent).html()).toBe('<div>has history</div>');
-    });
-
-    it('should pass react-router props to a render call', () => {
-      authState.isAuthenticated = true;
-      const MyComponent = function(props) { return <div>{ props.history ? 'has history' : 'lacks history'}</div>; };
-      const wrapper = mount(
-        <MemoryRouter>
-          <Security {...mockProps}>
-            <SecureRoute
-              path='/'
-              render = {props => <MyComponent {...props} />}
-            />
-          </Security>
-        </MemoryRouter>
-      );
-      expect(wrapper.find(MyComponent).html()).toBe('<div>has history</div>');
-    });
-
-    it('should pass props using the "render" prop', () => {
+    it('should pass props using the "element" prop', () => {
       authState.isAuthenticated = true;
       const MyComponent = function(props) { return <div>{ props.someProp ? 'has someProp' : 'lacks someProp'}</div>; };
       const wrapper = mount(
         <MemoryRouter>
           <Security {...mockProps}>
-            <SecureRoute
-              path='/'
-              render={ () => <MyComponent someProp={true}/> }
-            />
+            <Routes>
+              <SecureRoute
+                path='/'
+                element={<MyComponent someProp={true} />}
+              />
+            </Routes>
           </Security>
         </MemoryRouter>
       );
