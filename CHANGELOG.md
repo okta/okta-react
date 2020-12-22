@@ -6,6 +6,7 @@
   - Added `navigate` prop to `Security`
   - Added required `useOktaAuth` prop to `SecureRoute`
   - `SecureRoute` is not exported by default
+- Use ES6 modules as main entry point instead of rollup bundle
 
 # 4.1.0
 
