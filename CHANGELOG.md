@@ -1,3 +1,12 @@
+# 5.0.0
+
+### Breaking Changes
+
+- Removed coupling from `react-router`:
+  - Added `navigate` prop to `Security`
+  - Added required `useOktaAuth` prop to `SecureRoute`
+  - `SecureRoute` is not exported by default
+
 # 4.1.0
 
 ### Other

@@ -1,9 +1,10 @@
 {
   "compilerOptions": {
     "declaration": true,
-    "declarationDir": "dist/bundles/types",
+    "declarationDir": "dist/types",
     "target": "ES2019",
-    "sourceMap": true,
+    "outDir": "dist/src",
+    "sourceMap": false,
     "jsx": "react",
     "moduleResolution": "node",
     "strictFunctionTypes": true,

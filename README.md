@@ -121,28 +121,34 @@ This example defines 3 routes:
 // src/App.js
 
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
-import { SecureRoute, Security, LoginCallback } from '@okta/okta-react';
+import { BrowserRouter as Router, Route, withRouter } from 'react-router-dom';
+import { Security, LoginCallback, useOktaAuth } from '@okta/okta-react';
+import _SecureRoute from '@okta/okta-react/src/SecureRoute';
 import { OktaAuth } from '@okta/okta-auth-js';
 import Home from './Home';
 import Protected from './Protected';
 
+const SecureRoute = (props) => <_SecureRoute useOktaAuth={useOktaAuth} {...props} />;
 const oktaAuth = new OktaAuth({
   issuer: 'https://{yourOktaDomain}.com/oauth2/default',
   clientId: '{clientId}',
   redirectUri: window.location.origin + '/login/callback'
 });
-class App extends Component {
+class SecureApp extends Component {
   render() {
     return (
-      <Router>
-        <Security oktaAuth={oktaAuth}>
-          <Route path='/' exact={true} component={Home}/>
-          <SecureRoute path='/protected' component={Protected}/>
-          <Route path='/login/callback' component={LoginCallback} />
-        </Security>
-      </Router>
+      <Security oktaAuth={oktaAuth} navigate={this.props.history.push}>
+        <Route path='/' exact={true} component={Home}/>
+        <SecureRoute path='/protected' component={Protected}/>
+        <Route path='/login/callback' component={LoginCallback} />
+      </Security>
     );
+  }
+}
+const AppWithRouterAccess = withRouter(SecureApp);
+class App extends Component {
+  render() {
+    return (<Router><AppWithRouterAccess/></Router>);
   }
 }
 
@@ -153,25 +159,31 @@ export default App;
 
 ```jsx
 import React from 'react';
-import { SecureRoute, Security, LoginCallback } from '@okta/okta-react';
+import { Security, LoginCallback, useOktaAuth } from '@okta/okta-react';
+import _SecureRoute from '@okta/okta-react/src/SecureRoute';
 import { OktaAuth } from '@okta/okta-auth-js';
+import { useHistory } from 'react-router-dom';
 import Home from './Home';
 import Protected from './Protected';
 
+const SecureRoute = (props) => <_SecureRoute useOktaAuth={useOktaAuth} {...props} />;
 const oktaAuth = new OktaAuth({
   issuer: 'https://{yourOktaDomain}.com/oauth2/default',
   clientId: '{clientId}',
   redirectUri: window.location.origin + '/login/callback'
 });
-const App = () => (
-  <Router>
-    <Security oktaAuth={oktaAuth}>
-      <Route path='/' exact={true} component={Home}/>
-      <SecureRoute path='/protected' component={Protected}/>
-      <Route path='/login/callback' component={LoginCallback} />
-    </Security>
-  </Router>
-);
+const App = () => {
+  const history = useHistory();
+  return (
+    <Router>
+      <Security oktaAuth={oktaAuth} navigate={history.push} >
+        <Route path='/' exact={true} component={Home}/>
+        <SecureRoute path='/protected' component={Protected}/>
+        <Route path='/login/callback' component={LoginCallback} />
+      </Security>
+    </Router>
+  );
+};
 
 export default App;
 ```
@@ -342,6 +354,10 @@ export default MessageList = () => {
 
 *(optional)* Callback function. Called when authentication is required. If this is not supplied, `okta-react` redirects to Okta. This callback will receive [oktaAuth][Okta Auth SDK] instance as the first function parameter. This is triggered when a [SecureRoute](#secureroute) is accessed without authentication. A common use case for this callback is to redirect users to a custom login route when authentication is required for a [SecureRoute](#secureroute).
 
+#### navigate
+
+*(optional)* Router-specific function to navigate to passed relative URL programmatically.
+
 #### Example
 
 ```jsx
@@ -367,6 +383,7 @@ export default App = () => {
     <Security
       oktaAuth={oktaAuth}
       onAuthRequired={customAuthHandler}
+      navigate={history.push}
     >
       <Route path='/login' component={CustomLoginComponent}>
       {/* some routes here */}
@@ -384,6 +401,7 @@ Assuming you have configured your application to allow the `Authorization code` 
 
 ```jsx
 import { OktaAuth } from '@okta/okta-auth-js';
+import { useHistory } from 'react-router-dom';
 
 const oktaAuth = new OktaAuth({
   issuer: 'https://{yourOktaDomain}.com/oauth2/default',
@@ -391,19 +409,17 @@ const oktaAuth = new OktaAuth({
   redirectUri: window.location.origin + '/login/callback',
 });
 
-class App extends Component {
-  render() {
+export default App = () => {
+  const history = useHistory();
     return (
       <Router>
-        <Security oktaAuth={oktaAuth}>
+        <Security oktaAuth={oktaAuth} navigate={history.push}>
           <Route path='/' exact={true} component={Home}/>
           <Route path='/login/callback' component={LoginCallback} />
         </Security>
       </Router>
     );
-  }
-}
-
+};
 ```
 
 ### `SecureRoute`
@@ -411,6 +427,8 @@ class App extends Component {
 `SecureRoute` ensures that a route is only rendered if the user is authenticated. If the user is not authenticated, it calls [onAuthRequired](#onauthrequired) if it exists, otherwise, it redirects to Okta.
 
 `SecureRoute` accepts `onAuthRequired` as an optional prop, it overrides [onAuthRequired](#onauthrequired) from the [Security](#security) component if exists.
+
+From version 5.0, `SecureRoute` requires `useOktaAuth` prop.
   
 `SecureRoute` integrates with `react-router`.  Other routers will need their own methods to ensure authentication using the hooks/HOC props provided by this SDK.
 
@@ -451,6 +469,32 @@ export default MyComponent = () => {
 ```
 
 ## Migrating between versions
+
+### Migrating from 4.x to 5.x
+
+From version 5.0, to remove coupling with `react-router`, you need to pass `navigate` prop to `Security`.
+For `react-router`:
+```jsx
+import { useHistory } from 'react-router-dom';
+
+export default App = () => {
+  const history = useHistory();
+    return (
+      <Router>
+        <Security oktaAuth={oktaAuth} navigate={history.push}>
+          // children component
+        </Security>
+      </Router>
+    );
+};
+```
+Also to use `SecureRoute`:
+```jsx
+import { useOktaAuth } from '@okta/okta-react';
+import _SecureRoute from '@okta/okta-react/src/SecureRoute';
+const SecureRoute = (props) => <_SecureRoute useOktaAuth={useOktaAuth} {...props} />;
+```
+
 
 ### Migrating from 3.x to 4.x
 
