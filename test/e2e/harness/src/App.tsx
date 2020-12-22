@@ -13,11 +13,14 @@
 import * as React from 'react';
 import { Route, Switch, useHistory } from 'react-router-dom';
 import { OktaAuth } from '@okta/okta-auth-js';
-import { Security, LoginCallback, SecureRoute } from '@okta/okta-react';
+import { Security, LoginCallback, useOktaAuth } from '@okta/okta-react';
+import _SecureRoute, { SecureRouteType } from '@okta/okta-react/src/SecureRoute';
 import Home from './Home';
 import Protected from './Protected';
 import CustomLogin from './CustomLogin';
 import SessionTokenLogin from './SessionTokenLogin';
+
+const SecureRoute: SecureRouteType = (props) => <_SecureRoute {...props} useOktaAuth={useOktaAuth} />;
 
 const App: React.FC<{ 
   oktaAuth: OktaAuth, 
@@ -38,7 +41,7 @@ const App: React.FC<{
         <Switch>
           <Route path='/login' component={CustomLogin}/>
           <Route path='/sessionToken-login' component={SessionTokenLogin}/>
-          <SecureRoute exact path='/protected' component={Protected}/>
+          <SecureRoute exact path='/protected' component={Protected} />
           <Route path='/implicit/callback' component={LoginCallback} />
           <Route path='/pkce/callback' component={LoginCallback} />
           <Route path='/' component={Home}/>

@@ -128,7 +128,7 @@ import { OktaAuth } from '@okta/okta-auth-js';
 import Home from './Home';
 import Protected from './Protected';
 
-const SecureRoute = (props) => <_SecureRoute useOktaAuth={useOktaAuth} {...props} />;
+const SecureRoute = (props) => <_SecureRoute {...props} useOktaAuth={useOktaAuth} />;
 const oktaAuth = new OktaAuth({
   issuer: 'https://{yourOktaDomain}.com/oauth2/default',
   clientId: '{clientId}',
@@ -137,7 +137,7 @@ const oktaAuth = new OktaAuth({
 class SecureApp extends Component {
   render() {
     return (
-      <Security oktaAuth={oktaAuth} navigate={this.props.history.push}>
+      <Security oktaAuth={oktaAuth} navigate={this.props.history.replace}>
         <Route path='/' exact={true} component={Home}/>
         <SecureRoute path='/protected' component={Protected}/>
         <Route path='/login/callback' component={LoginCallback} />
@@ -166,7 +166,7 @@ import { useHistory } from 'react-router-dom';
 import Home from './Home';
 import Protected from './Protected';
 
-const SecureRoute = (props) => <_SecureRoute useOktaAuth={useOktaAuth} {...props} />;
+const SecureRoute = (props) => <_SecureRoute {...props} useOktaAuth={useOktaAuth} />;
 const oktaAuth = new OktaAuth({
   issuer: 'https://{yourOktaDomain}.com/oauth2/default',
   clientId: '{clientId}',
@@ -176,7 +176,7 @@ const App = () => {
   const history = useHistory();
   return (
     <Router>
-      <Security oktaAuth={oktaAuth} navigate={history.push} >
+      <Security oktaAuth={oktaAuth} navigate={history.replace} >
         <Route path='/' exact={true} component={Home}/>
         <SecureRoute path='/protected' component={Protected}/>
         <Route path='/login/callback' component={LoginCallback} />
@@ -383,7 +383,7 @@ export default App = () => {
     <Security
       oktaAuth={oktaAuth}
       onAuthRequired={customAuthHandler}
-      navigate={history.push}
+      navigate={history.replace}
     >
       <Route path='/login' component={CustomLoginComponent}>
       {/* some routes here */}
@@ -413,7 +413,7 @@ export default App = () => {
   const history = useHistory();
     return (
       <Router>
-        <Security oktaAuth={oktaAuth} navigate={history.push}>
+        <Security oktaAuth={oktaAuth} navigate={history.replace}>
           <Route path='/' exact={true} component={Home}/>
           <Route path='/login/callback' component={LoginCallback} />
         </Security>
@@ -472,7 +472,7 @@ export default MyComponent = () => {
 
 ### Migrating from 4.x to 5.x
 
-From version 5.0, to remove coupling with `react-router`, you need to pass `navigate` prop to `Security`.
+From version 5.0 you need to pass `navigate` prop to `Security`.
 For `react-router`:
 ```jsx
 import { useHistory } from 'react-router-dom';
@@ -481,18 +481,18 @@ export default App = () => {
   const history = useHistory();
     return (
       <Router>
-        <Security oktaAuth={oktaAuth} navigate={history.push}>
+        <Security oktaAuth={oktaAuth} navigate={history.replace}>
           // children component
         </Security>
       </Router>
     );
 };
 ```
-Also to use `SecureRoute`:
+Also to use `SecureRoute` you need to pass `useOktaAuth` prop:
 ```jsx
 import { useOktaAuth } from '@okta/okta-react';
 import _SecureRoute from '@okta/okta-react/src/SecureRoute';
-const SecureRoute = (props) => <_SecureRoute useOktaAuth={useOktaAuth} {...props} />;
+const SecureRoute = (props) => <_SecureRoute {...props} useOktaAuth={useOktaAuth} />;
 ```
 
 
