@@ -14,7 +14,7 @@ import { AuthState, OktaAuth } from '@okta/okta-auth-js';
 
 export type OnAuthRequiredFunction = (oktaAuth: OktaAuth) => Promise<void> | void;
 
-export type NavigateFunction = (url: String) => void;
+export type NavigateFunction = (url: string) => void;
 
 export interface IOktaContext {
     oktaAuth: OktaAuth;
