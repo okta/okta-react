@@ -13,10 +13,11 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
 import { act } from 'react-dom/test-utils';
-import { MemoryRouter, Route, RouteProps } from 'react-router-dom';
+import { MemoryRouter, Route, RouteProps, useHistory } from 'react-router-dom';
 import SecureReactRoute from '../../src/SecureRoute';
 import Security from '../../src/Security';
 import { useOktaAuth } from '../../src/OktaContext';
+
 const SecureRoute = (props) => <SecureReactRoute {...props} useOktaAuth={useOktaAuth} />;
 
 describe('<SecureRoute />', () => {
@@ -41,7 +42,12 @@ describe('<SecureRoute />', () => {
       signInWithRedirect: jest.fn(),
       setOriginalUri: jest.fn()
     };
-    mockProps = { oktaAuth };
+    mockProps = {
+      oktaAuth,
+      navigate: (url) => {
+        location.href = url;
+      }
+    };
   });
 
   describe('With changing authState', () => {

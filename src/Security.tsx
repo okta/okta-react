@@ -19,7 +19,7 @@ const Security: React.FC<{
   oktaAuth: OktaAuth, 
   onAuthRequired?: OnAuthRequiredFunction,
   children?: React.ReactNode,
-  navigate?: NavigateFunction
+  navigate: NavigateFunction
 } & React.HTMLAttributes<HTMLDivElement>> = ({ 
   oktaAuth, 
   onAuthRequired, 
@@ -47,10 +47,7 @@ const Security: React.FC<{
     if (!oktaAuth.options.restoreOriginalUri) {
       oktaAuth.options.restoreOriginalUri = async (_, originalUri) => {
         const relativeUrl = toRelativeUrl(originalUri, window.location.origin);
-        if (navigate)
-          navigate(relativeUrl);
-        else
-          location.href = relativeUrl;
+        navigate(relativeUrl);
       };
     }
 

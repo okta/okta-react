@@ -37,6 +37,7 @@ const App: React.FC<{
       <Security
         oktaAuth={oktaAuth}
         onAuthRequired={customLogin ? onAuthRequired : undefined}
+        navigate={history.replace}
       >
         <Switch>
           <Route path='/login' component={CustomLogin}/>
