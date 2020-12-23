@@ -123,12 +123,12 @@ This example defines 3 routes:
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, withRouter } from 'react-router-dom';
 import { Security, LoginCallback, useOktaAuth } from '@okta/okta-react';
-import _SecureRoute from '@okta/okta-react/src/SecureRoute';
+import SecureReactRoute from '@okta/okta-react/react-router/SecureRoute';
 import { OktaAuth } from '@okta/okta-auth-js';
 import Home from './Home';
 import Protected from './Protected';
 
-const SecureRoute = (props) => <_SecureRoute {...props} useOktaAuth={useOktaAuth} />;
+const SecureRoute = (props) => <SecureReactRoute {...props} useOktaAuth={useOktaAuth} />;
 const oktaAuth = new OktaAuth({
   issuer: 'https://{yourOktaDomain}.com/oauth2/default',
   clientId: '{clientId}',
@@ -160,13 +160,13 @@ export default App;
 ```jsx
 import React from 'react';
 import { Security, LoginCallback, useOktaAuth } from '@okta/okta-react';
-import _SecureRoute from '@okta/okta-react/src/SecureRoute';
+import SecureReactRoute from '@okta/okta-react/react-router/SecureRoute';
 import { OktaAuth } from '@okta/okta-auth-js';
 import { useHistory } from 'react-router-dom';
 import Home from './Home';
 import Protected from './Protected';
 
-const SecureRoute = (props) => <_SecureRoute {...props} useOktaAuth={useOktaAuth} />;
+const SecureRoute = (props) => <SecureReactRoute {...props} useOktaAuth={useOktaAuth} />;
 const oktaAuth = new OktaAuth({
   issuer: 'https://{yourOktaDomain}.com/oauth2/default',
   clientId: '{clientId}',
@@ -491,8 +491,8 @@ export default App = () => {
 Also to use `SecureRoute` you need to pass `useOktaAuth` prop:
 ```jsx
 import { useOktaAuth } from '@okta/okta-react';
-import _SecureRoute from '@okta/okta-react/src/SecureRoute';
-const SecureRoute = (props) => <_SecureRoute {...props} useOktaAuth={useOktaAuth} />;
+import SecureReactRoute from '@okta/okta-react/react-router/SecureRoute';
+const SecureRoute = (props) => <SecureReactRoute {...props} useOktaAuth={useOktaAuth} />;
 ```
 
 
