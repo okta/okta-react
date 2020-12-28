@@ -39,7 +39,7 @@ const Security: React.FC<{
   });
 
   React.useEffect(() => {
-    if (!oktaAuth) {
+    if (!oktaAuth || !navigate) {
       return;
     }
 
@@ -69,6 +69,11 @@ const Security: React.FC<{
 
   if (!oktaAuth) {
     const err = new AuthSdkError('No oktaAuth instance passed to Security Component.');
+    return <OktaError error={err} />;
+  }
+
+  if (!navigate) {
+    const err = new AuthSdkError('No navigate function passed to Security Component.');
     return <OktaError error={err} />;
   }
 

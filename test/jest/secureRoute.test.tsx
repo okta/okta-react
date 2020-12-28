@@ -13,7 +13,7 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
 import { act } from 'react-dom/test-utils';
-import { MemoryRouter, Route, RouteProps, useHistory } from 'react-router-dom';
+import { MemoryRouter, Route, RouteProps } from 'react-router-dom';
 import SecureReactRoute from '../../src/SecureRoute';
 import Security from '../../src/Security';
 import { useOktaAuth } from '../../src/OktaContext';
@@ -24,6 +24,9 @@ describe('<SecureRoute />', () => {
   let oktaAuth;
   let authState;
   let mockProps;
+  const navigate = (url) => {
+    location.href = url;
+  };
 
   beforeEach(() => {
     authState = {
@@ -44,9 +47,7 @@ describe('<SecureRoute />', () => {
     };
     mockProps = {
       oktaAuth,
-      navigate: (url) => {
-        location.href = url;
-      }
+      navigate
     };
   });
 
