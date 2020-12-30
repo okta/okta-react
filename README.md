@@ -474,8 +474,11 @@ export default MyComponent = () => {
 
 ### Migrating from 4.x to 5.x
 
-From version 5.0 you need to pass `navigate` prop to `Security`.
-For `react-router` 5.* use `navigate={history.replace}`:
+There are three notable changes required to your application code when migrating from `okta-react 4.x` to `okta-react 5.x`:
+
+#### Pass a `navigate` prop to the `Security` component
+Value of `navigate` prop should be a function that takes `path` parameter and performs navigation to specified location programmatically.
+For `react-router 5.*` use `navigate={history.replace}`:
 ```jsx
 import { useHistory } from 'react-router-dom';
 
@@ -490,7 +493,16 @@ export default App = () => {
     );
 };
 ```
-Also to use `SecureRoute` you need to pass `useOktaAuth` prop:
+
+#### Import `SecureRoute` from the new location
+`SecureRoute` is specific for using `react-router` and should be imported as follows:
+```jsx
+import SecureRoute from '@okta/okta-react/react-router/SecureRoute';
+```
+
+#### Pass a `useOktaAuth` prop to the `SecureRoute` cmponent
+Value of this prop should be equal to `useOktaAuth` hook function imported from `@okta/okta-react`.
+Exampple:
 ```jsx
 import { useOktaAuth } from '@okta/okta-react';
 import SecureRoute from '@okta/okta-react/react-router/SecureRoute';
@@ -503,7 +515,6 @@ export default App = () => (
   </Router>
 };
 ```
-
 
 ### Migrating from 3.x to 4.x
 
