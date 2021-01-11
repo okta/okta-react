@@ -14,11 +14,8 @@ import * as React from 'react';
 import { mount } from 'enzyme';
 import { act } from 'react-dom/test-utils';
 import { MemoryRouter, Route, RouteProps } from 'react-router-dom';
-import SecureReactRoute from '../../src/SecureRoute';
+import SecureRoute from '../../src/SecureRoute';
 import Security from '../../src/Security';
-import { useOktaAuth } from '../../src/OktaContext';
-
-const SecureRoute = (props) => <SecureReactRoute {...props} useOktaAuth={useOktaAuth} />;
 
 describe('<SecureRoute />', () => {
   let oktaAuth;

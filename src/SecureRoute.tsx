@@ -11,17 +11,15 @@
  */
 
 import * as React from 'react';
-import { OnAuthRequiredFunction, IOktaContext } from './OktaContext';
+import { useOktaAuth, OnAuthRequiredFunction } from './OktaContext';
 import { Route, useRouteMatch, RouteProps } from 'react-router-dom';
 
 export type SecureRouteType = React.FC<{
   onAuthRequired?: OnAuthRequiredFunction;
-  useOktaAuth: () => IOktaContext;
 } & RouteProps & React.HTMLAttributes<HTMLDivElement>>;
 
 const SecureRoute: SecureRouteType = ({ 
   onAuthRequired, 
-  useOktaAuth,
   ...routeProps 
 }) => { 
   const { oktaAuth, authState, _onAuthRequired } = useOktaAuth();

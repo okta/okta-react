@@ -78,6 +78,8 @@ npm install --save @okta/okta-auth-js
 
 `okta-react` provides the means to connect a React SPA with Okta OIDC information.  Most commonly, you will connect to a router library such as [react-router][].
 
+*Impotant!* If you use `react-router` you need to import all components from `@okta/okta-react/react-router`. Otherwise import from `@okta/okta-react`.
+
 ### React-Router components (optional)
 
 `okta-react` provides a number of pre-built components to connect a `react-router`-based SPA to Okta OIDC information.  You can use these components directly, or use them as a basis for building your own components.
@@ -122,8 +124,7 @@ This example defines 3 routes:
 
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, withRouter } from 'react-router-dom';
-import { Security, LoginCallback, useOktaAuth } from '@okta/okta-react';
-import SecureRoute from '@okta/okta-react/react-router/SecureRoute';
+import { Security, LoginCallback, useOktaAuth, SecureRoute } from '@okta/okta-react/react-router';
 import { OktaAuth } from '@okta/okta-auth-js';
 import Home from './Home';
 import Protected from './Protected';
@@ -138,7 +139,7 @@ class SecureApp extends Component {
     return (
       <Security oktaAuth={oktaAuth} navigate={this.props.history.replace}>
         <Route path='/' exact={true} component={Home} />
-        <SecureRoute useOktaAuth={useOktaAuth} path='/protected' component={Protected} />
+        <SecureRoute path='/protected' component={Protected} />
         <Route path='/login/callback' component={LoginCallback} />
       </Security>
     );
@@ -158,8 +159,7 @@ export default App;
 
 ```jsx
 import React from 'react';
-import { Security, LoginCallback, useOktaAuth } from '@okta/okta-react';
-import SecureRoute from '@okta/okta-react/react-router/SecureRoute';
+import { Security, LoginCallback, useOktaAuth, SecureRoute } from '@okta/okta-react/react-router';
 import { OktaAuth } from '@okta/okta-auth-js';
 import { useHistory } from 'react-router-dom';
 import Home from './Home';
@@ -176,7 +176,7 @@ const App = () => {
     <Router>
       <Security oktaAuth={oktaAuth} navigate={history.replace} >
         <Route path='/' exact={true} component={Home} />
-        <SecureRoute useOktaAuth={useOktaAuth} path='/protected' component={Protected} />
+        <SecureRoute path='/protected' component={Protected} />
         <Route path='/login/callback' component={LoginCallback} />
       </Security>
     </Router>
@@ -425,14 +425,13 @@ export default App = () => {
 `SecureRoute` ensures that a route is only rendered if the user is authenticated. If the user is not authenticated, it calls [onAuthRequired](#onauthrequired) if it exists, otherwise, it redirects to Okta.
 
 `SecureRoute` accepts `onAuthRequired` as an optional prop, it overrides [onAuthRequired](#onauthrequired) from the [Security](#security) component if exists.
-
-From version 5.0, `SecureRoute` requires `useOktaAuth` prop. 
-`SecureRoute` should be imported as follows:
-```jsx
-import SecureRoute from '@okta/okta-react/react-router/SecureRoute';
-```
   
 `SecureRoute` integrates with `react-router`.  Other routers will need their own methods to ensure authentication using the hooks/HOC props provided by this SDK.
+
+If you use `react-router`, you need to import from `@okta/okta-react/react-router` instead of `@okta/okta-react`:
+```jsx
+import { Security, SecureRoute } from '@okta/okta-react/react-router';
+```
 
 As with `Route` from `react-router-dom`, `<SecureRoute>` can take one of:
 
@@ -474,7 +473,7 @@ export default MyComponent = () => {
 
 ### Migrating from 4.x to 5.x
 
-There are three notable changes required to your application code when migrating from `okta-react 4.x` to `okta-react 5.x`:
+There are two notable changes required to your application code when migrating from `okta-react 4.x` to `okta-react 5.x`:
 
 #### Pass a `navigate` prop to the `Security` component
 Value of `navigate` prop should be a function that takes `path` parameter and performs navigation to specified location programmatically.
@@ -494,27 +493,16 @@ export default App = () => {
 };
 ```
 
-#### Import `SecureRoute` from the new location
-`SecureRoute` is specific for using `react-router` and should be imported as follows:
+#### New location for import
+If you use `react-router`, import all components from the new location `@okta/okta-react/react-router`:
 ```jsx
-import SecureRoute from '@okta/okta-react/react-router/SecureRoute';
+import { Security, SecureRoute } from '@okta/okta-react/react-router';
 ```
-
-#### Pass a `useOktaAuth` prop to the `SecureRoute` cmponent
-Value of this prop should be equal to `useOktaAuth` hook function imported from `@okta/okta-react`.
-Exampple:
+Otherwise import from `@okta/okta-react`:
 ```jsx
-import { useOktaAuth } from '@okta/okta-react';
-import SecureRoute from '@okta/okta-react/react-router/SecureRoute';
-
-export default App = () => (
-  <Router>
-    <Security oktaAuth={oktaAuth} navigate={history.replace} >
-      <SecureRoute useOktaAuth={useOktaAuth} path='/protected' component={Protected} />
-    </Security>
-  </Router>
-};
+import { Security } from '@okta/okta-react';
 ```
+`SecureRoute` can't be imported from `@okta/okta-react`.
 
 ### Migrating from 3.x to 4.x
 

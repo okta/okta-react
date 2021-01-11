@@ -13,7 +13,7 @@
 // implement with "useOktaAuth" hook
 import * as React from 'react';
 import { Link } from 'react-router-dom';
-import { useOktaAuth } from '@okta/okta-react';
+import { useOktaAuth } from '@okta/okta-react/react-router';
 
 const Home: React.FC = () => {
   const { oktaAuth, authState } = useOktaAuth();

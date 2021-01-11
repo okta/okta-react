@@ -12,7 +12,7 @@
 
 import * as React from 'react';
 import { AuthTransaction } from '@okta/okta-auth-js';
-import { useOktaAuth } from '@okta/okta-react';
+import { useOktaAuth } from '@okta/okta-react/react-router';
 
 const SessionTokenLogin: React.FC = () => {
   const { oktaAuth } = useOktaAuth();

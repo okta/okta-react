@@ -1,4 +1,4 @@
-/*!
+/*
  * Copyright (c) 2017-Present, Okta, Inc. and/or its affiliates. All rights reserved.
  * The Okta software accompanied by this notice is provided pursuant to the Apache License, Version 2.0 (the "License.")
  *
@@ -10,17 +10,17 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-import * as React from 'react';
-import { useOktaAuth } from '@okta/okta-react/react-router';
+import Security from './Security';
+import withOktaAuth from './withOktaAuth';
+import OktaContext, { useOktaAuth } from './OktaContext';
+import LoginCallback from './LoginCallback';
+import SecureRoute from './SecureRoute';
 
-const CustomLogin: React.FC = () => {
-  const { oktaAuth } = useOktaAuth();
-
-  React.useEffect(() => {
-    oktaAuth.signInWithRedirect();
-  }, [oktaAuth]);
-
-  return null;
+export {
+  Security,
+  withOktaAuth,
+  useOktaAuth,
+  OktaContext,
+  LoginCallback,
+  SecureRoute
 };
-
-export default CustomLogin;
