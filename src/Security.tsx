@@ -11,8 +11,7 @@
  */
 
 import * as React from 'react';
-import { useHistory } from 'react-router-dom';
-import { toRelativeUrl, AuthSdkError, OktaAuth } from '@okta/okta-auth-js';
+import { AuthSdkError, OktaAuth } from '@okta/okta-auth-js';
 import OktaContext, { OnAuthRequiredFunction } from './OktaContext';
 import OktaError from './OktaError';
 
@@ -23,9 +22,8 @@ const Security: React.FC<{
 } & React.HTMLAttributes<HTMLDivElement>> = ({ 
   oktaAuth, 
   onAuthRequired, 
-  children 
+  children
 }) => { 
-  const history = useHistory();
   const [authState, setAuthState] = React.useState(() => {
     if (!oktaAuth) {
       return { 
@@ -41,13 +39,6 @@ const Security: React.FC<{
   React.useEffect(() => {
     if (!oktaAuth) {
       return;
-    }
-
-    // Add default restoreOriginalUri callback
-    if (!oktaAuth.options.restoreOriginalUri) {
-      oktaAuth.options.restoreOriginalUri = async (_, originalUri) => {
-        history.replace(toRelativeUrl(originalUri, window.location.origin));
-      };
     }
 
     // Add okta-react userAgent
