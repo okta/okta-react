@@ -14,13 +14,10 @@ import { AuthState, OktaAuth } from '@okta/okta-auth-js';
 
 export type OnAuthRequiredFunction = (oktaAuth: OktaAuth) => Promise<void> | void;
 
-export type NavigateFunction = (url: string) => void;
-
 export interface IOktaContext {
     oktaAuth: OktaAuth;
     authState: AuthState;
     _onAuthRequired: OnAuthRequiredFunction;
-    navigate: NavigateFunction;
 }
 
 const OktaContext = React.createContext<IOktaContext | null>(null);

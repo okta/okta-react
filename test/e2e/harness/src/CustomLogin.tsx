@@ -11,7 +11,7 @@
  */
 
 import * as React from 'react';
-import { useOktaAuth } from '@okta/okta-react/react-router';
+import { useOktaAuth } from '@okta/okta-react';
 
 const CustomLogin: React.FC = () => {
   const { oktaAuth } = useOktaAuth();

@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@okta/okta-auth-js": "^4.1.2",
-    "@okta/okta-react": "file:./dist",
+    "@okta/okta-react": "*",
     "@types/node": "^14.14.7",
     "@types/react": "^16.9.56",
     "@types/react-dom": "^16.9.9",

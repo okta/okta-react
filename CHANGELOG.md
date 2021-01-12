@@ -2,10 +2,8 @@
 
 ### Breaking Changes
 
-- Removed coupling from `react-router`:
-  - Added required `navigate` prop to `Security`
-  - `SecureRoute` is not exported to `@okta/okta-react`
-  - You need to import `@okta/okta-react/react-router` if you use `react-router`
+- `SecureRoute` is not exported to `@okta/okta-react`. Use `import SecureRoute from '@okta/okta-react/SecureRoute'`
+- Use ES6 modules as main entry point instead of rollup bundle
 
 # 4.1.0
 

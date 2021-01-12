@@ -9,7 +9,7 @@ const BUNDLE_CMD = 'yarn bundle';
 const BANNER_CMD = `yarn banners`;
 const TSC_CMD = 'tsc';
 const TYPES_DIR = `${NPM_DIR}/types`;
-const SRC_DIR = `${NPM_DIR}/react-router`;
+const SRC_DIR = `${NPM_DIR}/src`;
 
 shell.echo(`Start building...`);
 
@@ -26,10 +26,7 @@ if (shell.exec(TSC_CMD).code !== 0) {
   shell.echo(chalk.red(`Error: Compiling ES6 modules failed`));
   shell.exit(1);
 }
-shell.mv(`${SRC_DIR}/indexForReactRouter.js`, `${SRC_DIR}/index.js`);
 shell.cp(`-Rf`, `${TYPES_DIR}/*`, SRC_DIR);
-shell.rm(`${TYPES_DIR}/indexForReactRouter.d.ts`);
-shell.mv(`${SRC_DIR}/indexForReactRouter.d.ts`, `${SRC_DIR}/index.d.ts`);
 
 // Maintain banners
 if (shell.exec(BANNER_CMD).code !== 0) {

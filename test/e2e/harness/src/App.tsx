@@ -13,7 +13,8 @@
 import * as React from 'react';
 import { Route, Switch, useHistory } from 'react-router-dom';
 import { OktaAuth } from '@okta/okta-auth-js';
-import { Security, LoginCallback, SecureRoute } from '@okta/okta-react/react-router';
+import { Security, LoginCallback } from '@okta/okta-react';
+import SecureRoute from '@okta/okta-react/SecureRoute';
 import Home from './Home';
 import Protected from './Protected';
 import CustomLogin from './CustomLogin';
@@ -34,7 +35,6 @@ const App: React.FC<{
       <Security
         oktaAuth={oktaAuth}
         onAuthRequired={customLogin ? onAuthRequired : undefined}
-        navigate={history.replace}
       >
         <Switch>
           <Route path='/login' component={CustomLogin}/>

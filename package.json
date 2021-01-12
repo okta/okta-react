@@ -1,6 +1,6 @@
 {
   "name": "@okta/okta-react",
-  "version": "5.0.0",
+  "version": "4.2.0",
   "description": "React support for Okta",
   "private": true,
   "scripts": {
@@ -25,8 +25,7 @@
   "keywords": [
     "oauth2"
   ],
-  "main": "dist/bundles/okta-react.cjs.js",
-  "module": "dist/bundles/okta-react.esm.js",
+  "main": "dist/src",
   "types": "dist/types",
   "author": "",
   "license": "Apache-2.0",
