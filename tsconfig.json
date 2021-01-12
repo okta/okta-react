@@ -3,7 +3,7 @@
     "declaration": true,
     "declarationDir": "dist/types",
     "target": "ES2019",
-    "outDir": "dist/react-router",
+    "outDir": "dist/src",
     "sourceMap": false,
     "jsx": "react",
     "moduleResolution": "node",

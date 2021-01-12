@@ -226,8 +226,7 @@ describe('<Security />', () => {
         isPending: false
       };
       const mockProps = {
-        oktaAuth,
-        navigate
+        oktaAuth
       };
       const wrapper = mount(
         <Security {...mockProps}>
@@ -243,8 +242,7 @@ describe('<Security />', () => {
         isPending: false
       };
       const mockProps = {
-        oktaAuth,
-        navigate
+        oktaAuth
       };
       const wrapper = mount(
         <Security {...mockProps}>
@@ -259,8 +257,7 @@ describe('<Security />', () => {
         isPending: true
       };
       const mockProps = {
-        oktaAuth,
-        navigate
+        oktaAuth
       };
       const wrapper = mount(
         <Security {...mockProps}>
@@ -272,20 +269,11 @@ describe('<Security />', () => {
 
     it('should render error if oktaAuth props is not provided', () => {
       const wrapper = mount(
-        <Security oktaAuth={null} navigate={navigate}>
+        <Security oktaAuth={null}>
           <MyComponent />
         </Security>
       );
       expect(wrapper.find(Security).html()).toBe('<p>AuthSdkError: No oktaAuth instance passed to Security Component.</p>');
-    });
-
-    it('should render error if navigate prop is not provided', () => {
-      const wrapper = mount(
-        <Security oktaAuth={oktaAuth} navigate={null}>
-          <MyComponent />
-        </Security>
-      );
-      expect(wrapper.find(Security).html()).toBe('<p>AuthSdkError: No navigate function passed to Security Component.</p>');
     });
   });
 });

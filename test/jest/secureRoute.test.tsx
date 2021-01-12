@@ -39,9 +39,7 @@ describe('<SecureRoute />', () => {
       signInWithRedirect: jest.fn(),
       setOriginalUri: jest.fn()
     };
-    mockProps = {
-      oktaAuth
-    };
+    mockProps = { oktaAuth };
   });
 
   describe('With changing authState', () => {
