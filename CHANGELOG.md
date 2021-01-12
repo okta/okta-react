@@ -1,3 +1,9 @@
+# 5.0.0
+
+### Breaking Changes
+
+- [#71](https://github.com/okta/okta-react/pull/71) Removes adding default `restoreOriginalUri` callback in `Security`
+
 # 4.1.0
 
 ### Other
