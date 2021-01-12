@@ -45,15 +45,6 @@ describe('<Security />', () => {
     expect(oktaAuth.userAgent).toEqual(`${pkg.name}/${pkg.version} okta/okta-auth-js`);
   });
 
-  it('should set default restoreOriginalUri callback in oktaAuth.options', () => {
-    oktaAuth.options = {};
-    const mockProps = {
-      oktaAuth
-    };
-    mount(<Security {...mockProps} />);
-    expect(oktaAuth.options.restoreOriginalUri).toBeDefined();
-  });
-
   it('gets initial state from oktaAuth and exposes it on the context', () => {
     const mockProps = {
       oktaAuth
