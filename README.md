@@ -123,7 +123,7 @@ This example defines 3 routes:
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { Security, LoginCallback } from '@okta/okta-react';
-import SecureRoute from '@okta/okta-react/SecureRoute';
+import SecureRoute from '@okta/okta-react/src/SecureRoute';
 import { OktaAuth } from '@okta/okta-auth-js';
 import Home from './Home';
 import Protected from './Protected';
@@ -155,7 +155,7 @@ export default App;
 ```jsx
 import React from 'react';
 import { Security, LoginCallback } from '@okta/okta-react';
-import SecureRoute from '@okta/okta-react/SecureRoute';
+import SecureRoute from '@okta/okta-react/src/SecureRoute';
 import { OktaAuth } from '@okta/okta-auth-js';
 import Home from './Home';
 import Protected from './Protected';
@@ -417,7 +417,7 @@ class App extends Component {
 
 From veriosn 5.0 you need to import `SecureRoute` as follows:
 ```jsx
-import SecureRoute from '@okta/okta-react/SecureRoute';
+import SecureRoute from '@okta/okta-react/src/SecureRoute';
 ```
 
 As with `Route` from `react-router-dom`, `<SecureRoute>` can take one of:
@@ -465,7 +465,7 @@ export default MyComponent = () => {
 
 `SecureRoute` can't be imported from `@okta/okta-react`. You need to import `SecureRoute` as follows:
 ```jsx
-import SecureRoute from '@okta/okta-react/SecureRoute';
+import SecureRoute from '@okta/okta-react/src/SecureRoute';
 ```
 
 ### Migrating from 3.x to 4.x

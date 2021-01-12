@@ -14,14 +14,12 @@ import * as React from 'react';
 import { useOktaAuth, OnAuthRequiredFunction } from './OktaContext';
 import { Route, useRouteMatch, RouteProps } from 'react-router-dom';
 
-export type SecureRouteType = React.FC<{
-  onAuthRequired?: OnAuthRequiredFunction;
-} & RouteProps & React.HTMLAttributes<HTMLDivElement>>;
-
-const SecureRoute: SecureRouteType = ({ 
-  onAuthRequired, 
-  ...routeProps 
-}) => { 
+const SecureRoute: React.FC<{
+    onAuthRequired?: OnAuthRequiredFunction;
+  } & RouteProps & React.HTMLAttributes<HTMLDivElement>> = ({ 
+    onAuthRequired, 
+    ...routeProps 
+  }) => { 
   const { oktaAuth, authState, _onAuthRequired } = useOktaAuth();
   const match = useRouteMatch(routeProps);
   const pendingLogin = React.useRef(false);

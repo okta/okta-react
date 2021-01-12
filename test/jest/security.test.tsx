@@ -21,7 +21,6 @@ import * as pkg from '../../package.json';
 describe('<Security />', () => {
   let oktaAuth;
   let initialAuthState;
-
   beforeEach(() => {
     initialAuthState = {
       isInitialState: true

@@ -22,7 +22,7 @@ const Security: React.FC<{
 } & React.HTMLAttributes<HTMLDivElement>> = ({ 
   oktaAuth, 
   onAuthRequired, 
-  children
+  children 
 }) => { 
   const [authState, setAuthState] = React.useState(() => {
     if (!oktaAuth) {
