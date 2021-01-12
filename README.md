@@ -122,7 +122,7 @@ This example defines 3 routes:
 
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import { Security, LoginCallback, useOktaAuth } from '@okta/okta-react';
+import { Security, LoginCallback } from '@okta/okta-react';
 import SecureRoute from '@okta/okta-react/SecureRoute';
 import { OktaAuth } from '@okta/okta-auth-js';
 import Home from './Home';
@@ -154,7 +154,7 @@ export default App;
 
 ```jsx
 import React from 'react';
-import { Security, LoginCallback, useOktaAuth } from '@okta/okta-react';
+import { Security, LoginCallback } from '@okta/okta-react';
 import SecureRoute from '@okta/okta-react/SecureRoute';
 import { OktaAuth } from '@okta/okta-auth-js';
 import Home from './Home';

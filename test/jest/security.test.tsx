@@ -21,9 +21,6 @@ import * as pkg from '../../package.json';
 describe('<Security />', () => {
   let oktaAuth;
   let initialAuthState;
-  const navigate = (url) => {
-    location.href = url;
-  };
 
   beforeEach(() => {
     initialAuthState = {
@@ -43,8 +40,7 @@ describe('<Security />', () => {
 
   it('should set userAgent for oktaAuth', () => {
     const mockProps = {
-      oktaAuth,
-      navigate
+      oktaAuth
     };
     mount(<Security {...mockProps} />);
     expect(oktaAuth.userAgent).toEqual(`${pkg.name}/${pkg.version} okta/okta-auth-js`);
@@ -53,8 +49,7 @@ describe('<Security />', () => {
   it('should set default restoreOriginalUri callback in oktaAuth.options', () => {
     oktaAuth.options = {};
     const mockProps = {
-      oktaAuth,
-      navigate
+      oktaAuth
     };
     mount(<Security {...mockProps} />);
     expect(oktaAuth.options.restoreOriginalUri).toBeDefined();
@@ -62,8 +57,7 @@ describe('<Security />', () => {
 
   it('gets initial state from oktaAuth and exposes it on the context', () => {
     const mockProps = {
-      oktaAuth,
-      navigate
+      oktaAuth
     };
     const MyComponent = jest.fn().mockImplementation(() => {
       const oktaProps = useOktaAuth();
@@ -93,8 +87,7 @@ describe('<Security />', () => {
       callback(newAuthState);
     });
     const mockProps = {
-      oktaAuth,
-      navigate
+      oktaAuth
     };
 
     const MyComponent = jest.fn()
@@ -127,8 +120,7 @@ describe('<Security />', () => {
   it('should not call updateAuthState when in login redirect state', () => {
     oktaAuth.isLoginRedirect = jest.fn().mockImplementation(() => true);
     const mockProps = {
-      oktaAuth,
-      navigate
+      oktaAuth
     };
     mount(
       <MemoryRouter>
@@ -161,8 +153,7 @@ describe('<Security />', () => {
       callback(mockAuthStates[stateCount]);
     });
     const mockProps = {
-      oktaAuth,
-      navigate
+      oktaAuth
     };
     const MyComponent = jest.fn()
       // first call
@@ -204,8 +195,7 @@ describe('<Security />', () => {
 
   it('should accept a className prop and render a component using the className', () => {
     const mockProps = {
-      oktaAuth,
-      navigate
+      oktaAuth
     };
     const wrapper = mount(
       <MemoryRouter>

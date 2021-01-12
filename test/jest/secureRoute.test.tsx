@@ -21,9 +21,6 @@ describe('<SecureRoute />', () => {
   let oktaAuth;
   let authState;
   let mockProps;
-  const navigate = (url) => {
-    location.href = url;
-  };
 
   beforeEach(() => {
     authState = {
@@ -43,8 +40,7 @@ describe('<SecureRoute />', () => {
       setOriginalUri: jest.fn()
     };
     mockProps = {
-      oktaAuth,
-      navigate
+      oktaAuth
     };
   });
 

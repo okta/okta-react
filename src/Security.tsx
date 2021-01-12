@@ -12,19 +12,17 @@
 
 import * as React from 'react';
 import { toRelativeUrl, AuthSdkError, OktaAuth } from '@okta/okta-auth-js';
-import OktaContext, { OnAuthRequiredFunction, NavigateFunction } from './OktaContext';
+import OktaContext, { OnAuthRequiredFunction } from './OktaContext';
 import OktaError from './OktaError';
 
 const Security: React.FC<{
   oktaAuth: OktaAuth, 
   onAuthRequired?: OnAuthRequiredFunction,
-  children?: React.ReactNode,
-  navigate: NavigateFunction
+  children?: React.ReactNode
 } & React.HTMLAttributes<HTMLDivElement>> = ({ 
   oktaAuth, 
   onAuthRequired, 
-  children,
-  navigate
+  children
 }) => { 
   const [authState, setAuthState] = React.useState(() => {
     if (!oktaAuth) {
@@ -39,7 +37,7 @@ const Security: React.FC<{
   });
 
   React.useEffect(() => {
-    if (!oktaAuth || !navigate) {
+    if (!oktaAuth) {
       return;
     }
 
@@ -47,7 +45,7 @@ const Security: React.FC<{
     if (!oktaAuth.options.restoreOriginalUri) {
       oktaAuth.options.restoreOriginalUri = async (_, originalUri) => {
         const relativeUrl = toRelativeUrl(originalUri, window.location.origin);
-        navigate(relativeUrl);
+        // navigate to relativeUrl
       };
     }
 
@@ -72,17 +70,11 @@ const Security: React.FC<{
     return <OktaError error={err} />;
   }
 
-  if (!navigate) {
-    const err = new AuthSdkError('No navigate function passed to Security Component.');
-    return <OktaError error={err} />;
-  }
-
   return (
     <OktaContext.Provider value={{ 
       oktaAuth, 
       authState, 
-      _onAuthRequired: onAuthRequired,
-      navigate
+      _onAuthRequired: onAuthRequired
     }}>
       {children}
     </OktaContext.Provider>
