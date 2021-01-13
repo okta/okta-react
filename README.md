@@ -216,7 +216,7 @@ export default withOktaAuth(class Home extends Component {
 const Home = () => {
   const { oktaAuth, authState } = useOktaAuth();
 
-  const login = async () => oktaAuth.signInWithRedirect('/');
+  const login = async () => oktaAuth.signInWithRedirect();
   const logout = async () => oktaAuth.signOut('/');
 
   if(authState.isPending) {
