@@ -127,7 +127,7 @@ import { OktaAuth, toRelativeUrl } from '@okta/okta-auth-js';
 import Home from './Home';
 import Protected from './Protected';
 
-class SecureApp extends Component {
+class App extends Component {
   constructor(props) {
     super(props);
     this.oktaAuth = new OktaAuth({
@@ -151,14 +151,12 @@ class SecureApp extends Component {
   }
 }
 
-const AppWithRouterAccess = withRouter(SecureApp);
-class App extends Component {
+const AppWithRouterAccess = withRouter(App);
+export default class extends Component {
   render() {
     return (<Router><AppWithRouterAccess/></Router>);
   }
 }
-
-export default App;
 ```
 
 #### Creating React Router Routes with function-based components
@@ -483,7 +481,35 @@ export default MyComponent = () => {
 
 ### Migrating from 4.x to 5.x
 
-From version 5.0, the Security component have required prop [restoreOriginalUri](#restoreoriginaluri). See [example](#example) of implementation of this callback for `react-router`.
+From version 5.0, the Security component requires prop [restoreOriginalUri](#restoreoriginaluri). Example of implementation of this callback for `react-router`:
+
+```jsx
+import { Security } from '@okta/okta-react';
+import { useHistory } from 'react-router-dom';
+import { OktaAuth, toRelativeUrl } from '@okta/okta-auth-js';
+
+const oktaAuth = new OktaAuth({
+  issuer: 'https://{yourOktaDomain}.com/oauth2/default',
+  clientId: '{clientId}',
+  redirectUri: window.location.origin + '/login/callback'
+});
+
+export default App = () => {
+  const history = useHistory();
+  const restoreOriginalUri = async (_oktaAuth, originalUri) => {
+    history.replace(toRelativeUrl(originalUri, window.location.origin));
+  };
+
+  return (
+    <Security
+      oktaAuth={oktaAuth}
+      restoreOriginalUri={restoreOriginalUri}
+    >
+      {/* some routes here */}
+    </Security>
+  );
+};
+```
 
 ### Migrating from 3.x to 4.x
 
@@ -502,7 +528,7 @@ import { Security } from '@okta/okta-react';
 
 const oktaAuth = new OktaAuth(oidcConfig);
 export default () => (
-  <Security oktaAuth={oktaAuth} onAuthRequired={customAuthHandler} restoreOriginalUri={restoreOriginalUri}>
+  <Security oktaAuth={oktaAuth} onAuthRequired={customAuthHandler}>
     // children component
   </Security>
 );

@@ -2,7 +2,7 @@
 
 ### Breaking Changes
 
-- [#71](https://github.com/okta/okta-react/pull/71) Added required prop `restoreOriginalUri` to `Security`
+- [#71](https://github.com/okta/okta-react/pull/71) Adds required prop `restoreOriginalUri` to `Security` that will override `restoreOriginalUri` callback of `oktaAuth`
 
 # 4.1.0
 
