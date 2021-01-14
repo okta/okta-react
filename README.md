@@ -481,6 +481,10 @@ export default MyComponent = () => {
 
 ## Migrating between versions
 
+### Migrating from 4.x to 5.x
+
+From version 5.0, the Security component have required prop [restoreOriginalUri](#restoreoriginaluri). See [example](#example) of implementation of this callback for `react-router`.
+
 ### Migrating from 3.x to 4.x
 
 #### Updating the Security component
