@@ -5,5 +5,8 @@ if [ "${TRAVIS_EVENT_TYPE}" = "cron" ] ; then
     yarn test:e2e
 else
     # run the lint, unit and e2e tests (on chrome headless)
+    rm -f ./node_modules/@okta/okta-react
+    mkdir ./node_modules/@okta/okta-react
+    cp -r ./dist/ ./node_modules/@okta/okta-react/
     yarn test
 fi

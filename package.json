@@ -25,7 +25,7 @@
   "keywords": [
     "oauth2"
   ],
-  "main": "dist/src",
+  "main": "dist/lib",
   "types": "dist/types",
   "author": "",
   "license": "Apache-2.0",

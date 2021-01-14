@@ -3,7 +3,7 @@
     "declaration": true,
     "declarationDir": "dist/types",
     "target": "ES2019",
-    "outDir": "dist/src",
+    "outDir": "dist/lib",
     "sourceMap": false,
     "jsx": "react",
     "moduleResolution": "node",

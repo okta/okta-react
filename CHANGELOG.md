@@ -2,7 +2,7 @@
 
 ### Breaking Changes
 
-- `SecureRoute` is not exported to `@okta/okta-react`. Use `import SecureRoute from '@okta/okta-react/src/SecureRoute'`
+- `SecureRoute` is not exported to `@okta/okta-react`. Use `import SecureRoute from '@okta/okta-react/lib/SecureRoute'`
 - Use ES6 modules as main entry point instead of rollup bundle
 
 # 4.1.0
