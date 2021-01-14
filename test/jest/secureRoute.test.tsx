@@ -21,6 +21,9 @@ describe('<SecureRoute />', () => {
   let oktaAuth;
   let authState;
   let mockProps;
+  const restoreOriginalUri = async (_, url) => {
+    location.href = url;
+  };
 
   beforeEach(() => {
     authState = {
@@ -39,7 +42,10 @@ describe('<SecureRoute />', () => {
       signInWithRedirect: jest.fn(),
       setOriginalUri: jest.fn()
     };
-    mockProps = { oktaAuth };
+    mockProps = {
+      oktaAuth, 
+      restoreOriginalUri
+    };
   });
 
   describe('With changing authState', () => {

@@ -2,7 +2,7 @@
 
 ### Breaking Changes
 
-- [#71](https://github.com/okta/okta-react/pull/71) Removes adding default `restoreOriginalUri` callback in `Security`
+- [#71](https://github.com/okta/okta-react/pull/71) Added required prop `restoreOriginalUri` to `Security`
 
 # 4.1.0
 

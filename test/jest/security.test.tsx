@@ -21,6 +21,9 @@ import * as pkg from '../../package.json';
 describe('<Security />', () => {
   let oktaAuth;
   let initialAuthState;
+  const restoreOriginalUri = async (_, url) => {
+    location.href = url;
+  };
   beforeEach(() => {
     initialAuthState = {
       isInitialState: true
@@ -39,15 +42,27 @@ describe('<Security />', () => {
 
   it('should set userAgent for oktaAuth', () => {
     const mockProps = {
-      oktaAuth
+      oktaAuth,
+      restoreOriginalUri
     };
     mount(<Security {...mockProps} />);
     expect(oktaAuth.userAgent).toEqual(`${pkg.name}/${pkg.version} okta/okta-auth-js`);
   });
 
+  it('should set default restoreOriginalUri callback in oktaAuth.options', () => {
+    oktaAuth.options = {};
+    const mockProps = {
+      oktaAuth,
+      restoreOriginalUri
+    };
+    mount(<Security {...mockProps} />);
+    expect(oktaAuth.options.restoreOriginalUri).toBeDefined();
+  });
+
   it('gets initial state from oktaAuth and exposes it on the context', () => {
     const mockProps = {
-      oktaAuth
+      oktaAuth,
+      restoreOriginalUri
     };
     const MyComponent = jest.fn().mockImplementation(() => {
       const oktaProps = useOktaAuth();
@@ -77,7 +92,8 @@ describe('<Security />', () => {
       callback(newAuthState);
     });
     const mockProps = {
-      oktaAuth
+      oktaAuth,
+      restoreOriginalUri
     };
 
     const MyComponent = jest.fn()
@@ -110,7 +126,8 @@ describe('<Security />', () => {
   it('should not call updateAuthState when in login redirect state', () => {
     oktaAuth.isLoginRedirect = jest.fn().mockImplementation(() => true);
     const mockProps = {
-      oktaAuth
+      oktaAuth,
+      restoreOriginalUri
     };
     mount(
       <MemoryRouter>
@@ -143,7 +160,8 @@ describe('<Security />', () => {
       callback(mockAuthStates[stateCount]);
     });
     const mockProps = {
-      oktaAuth
+      oktaAuth,
+      restoreOriginalUri
     };
     const MyComponent = jest.fn()
       // first call
@@ -185,7 +203,8 @@ describe('<Security />', () => {
 
   it('should accept a className prop and render a component using the className', () => {
     const mockProps = {
-      oktaAuth
+      oktaAuth,
+      restoreOriginalUri
     };
     const wrapper = mount(
       <MemoryRouter>
@@ -216,7 +235,8 @@ describe('<Security />', () => {
         isPending: false
       };
       const mockProps = {
-        oktaAuth
+        oktaAuth,
+        restoreOriginalUri
       };
       const wrapper = mount(
         <Security {...mockProps}>
@@ -232,7 +252,8 @@ describe('<Security />', () => {
         isPending: false
       };
       const mockProps = {
-        oktaAuth
+        oktaAuth,
+        restoreOriginalUri
       };
       const wrapper = mount(
         <Security {...mockProps}>
@@ -247,7 +268,8 @@ describe('<Security />', () => {
         isPending: true
       };
       const mockProps = {
-        oktaAuth
+        oktaAuth,
+        restoreOriginalUri
       };
       const wrapper = mount(
         <Security {...mockProps}>
@@ -258,12 +280,29 @@ describe('<Security />', () => {
     });
 
     it('should render error if oktaAuth props is not provided', () => {
+      const mockProps = {
+        oktaAuth: null,
+        restoreOriginalUri
+      };
       const wrapper = mount(
-        <Security oktaAuth={null}>
+        <Security {...mockProps}>
           <MyComponent />
         </Security>
       );
       expect(wrapper.find(Security).html()).toBe('<p>AuthSdkError: No oktaAuth instance passed to Security Component.</p>');
+    });
+
+    it('should render error if restoreOriginalUri prop is not provided', () => {
+      const mockProps = {
+        oktaAuth,
+        restoreOriginalUri: null
+      };
+      const wrapper = mount(
+        <Security {...mockProps}>
+          <MyComponent />
+        </Security>
+      );
+      expect(wrapper.find(Security).html()).toBe('<p>AuthSdkError: No restoreOriginalUri callback passed to Security Component.</p>');
     });
   });
 });

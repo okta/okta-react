@@ -12,17 +12,19 @@
 
 import * as React from 'react';
 import { AuthSdkError, OktaAuth } from '@okta/okta-auth-js';
-import OktaContext, { OnAuthRequiredFunction } from './OktaContext';
+import OktaContext, { OnAuthRequiredFunction, RestoreOriginalUriFunction } from './OktaContext';
 import OktaError from './OktaError';
 
 const Security: React.FC<{
   oktaAuth: OktaAuth, 
   onAuthRequired?: OnAuthRequiredFunction,
-  children?: React.ReactNode
+  children?: React.ReactNode,
+  restoreOriginalUri: RestoreOriginalUriFunction
 } & React.HTMLAttributes<HTMLDivElement>> = ({ 
   oktaAuth, 
   onAuthRequired, 
-  children
+  children,
+  restoreOriginalUri
 }) => { 
   const [authState, setAuthState] = React.useState(() => {
     if (!oktaAuth) {
@@ -37,9 +39,14 @@ const Security: React.FC<{
   });
 
   React.useEffect(() => {
-    if (!oktaAuth) {
+    if (!oktaAuth || !restoreOriginalUri) {
       return;
     }
+
+    // Add default restoreOriginalUri callback
+    oktaAuth.options.restoreOriginalUri = async (oktaAuth: any, originalUri: string) => {
+      restoreOriginalUri(oktaAuth, originalUri);
+    };
 
     // Add okta-react userAgent
     oktaAuth.userAgent = `${process.env.PACKAGE_NAME}/${process.env.PACKAGE_VERSION} ${oktaAuth.userAgent}`;
@@ -55,10 +62,15 @@ const Security: React.FC<{
     }
 
     return () => oktaAuth.authStateManager.unsubscribe();
-  }, [oktaAuth]);
+  }, [oktaAuth, restoreOriginalUri]);
 
   if (!oktaAuth) {
     const err = new AuthSdkError('No oktaAuth instance passed to Security Component.');
+    return <OktaError error={err} />;
+  }
+
+  if (!restoreOriginalUri) {
+    const err = new AuthSdkError('No restoreOriginalUri callback passed to Security Component.');
     return <OktaError error={err} />;
   }
 
