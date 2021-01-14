@@ -9,7 +9,7 @@ const BUNDLE_CMD = 'yarn bundle';
 const BANNER_CMD = `yarn banners`;
 const TSC_CMD = 'tsc';
 const TYPES_DIR = `${NPM_DIR}/types`;
-const SRC_DIR = `${NPM_DIR}`;
+const SRC_DIR = `${NPM_DIR}/src`;
 
 shell.echo(`Start building...`);
 
