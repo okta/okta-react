@@ -111,28 +111,28 @@ describe('React + Okta App', () => {
       });
     });
   
-    // it('should redirect to Okta for login (pkce)', () => {
-    //   appPage.navigateTo('/?pkce=1');
+    it('should redirect to Okta for login (pkce)', () => {
+      appPage.navigateTo('/?pkce=1');
   
-    //   appPage.waitUntilVisible();
-    //   expect(appPage.getLoginFlow().getText()).toBe('PKCE');
-    //   appPage.getLoginButton().click();
+      appPage.waitUntilVisible();
+      expect(appPage.getLoginFlow().getText()).toBe('PKCE');
+      appPage.getLoginButton().click();
   
-    //   oktaLoginPage.waitUntilVisible();
+      oktaLoginPage.waitUntilVisible();
   
-    //   oktaLoginPage.signIn({
-    //     username: process.env.USERNAME,
-    //     password: process.env.PASSWORD
-    //   });
+      oktaLoginPage.signIn({
+        username: process.env.USERNAME,
+        password: process.env.PASSWORD
+      });
   
-    //   appPage.waitUntilVisible();
-    //   expect(protectedPage.getLogoutButton().isPresent()).toBeTruthy();
+      appPage.waitUntilVisible();
+      expect(protectedPage.getLogoutButton().isPresent()).toBeTruthy();
   
-    //   // Logout
-    //   appPage.getLogoutButton().click();
+      // Logout
+      appPage.getLogoutButton().click();
   
-    //   appPage.waitUntilLoggedOut();
-    // });
+      appPage.waitUntilLoggedOut();
+    });
   });
 
   describe('Okta session token flow', () => {
