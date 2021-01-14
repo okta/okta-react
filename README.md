@@ -481,7 +481,7 @@ export default MyComponent = () => {
 
 ### Migrating from 4.x to 5.x
 
-From version 5.0, the Security component requires prop [restoreOriginalUri](#restoreoriginaluri). Example of implementation of this callback for `react-router`:
+From version 5.0, the Security component explicitly requires prop [restoreOriginalUri](#restoreoriginaluri). Example of implementation of this callback for `react-router`:
 
 ```jsx
 import { Security } from '@okta/okta-react';

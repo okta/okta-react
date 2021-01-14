@@ -16,15 +16,15 @@ import OktaContext, { OnAuthRequiredFunction, RestoreOriginalUriFunction } from 
 import OktaError from './OktaError';
 
 const Security: React.FC<{
-  oktaAuth: OktaAuth, 
+  oktaAuth: OktaAuth,
+  restoreOriginalUri: RestoreOriginalUriFunction, 
   onAuthRequired?: OnAuthRequiredFunction,
-  children?: React.ReactNode,
-  restoreOriginalUri: RestoreOriginalUriFunction
+  children?: React.ReactNode
 } & React.HTMLAttributes<HTMLDivElement>> = ({ 
-  oktaAuth, 
+  oktaAuth,
+  restoreOriginalUri, 
   onAuthRequired, 
-  children,
-  restoreOriginalUri
+  children
 }) => { 
   const [authState, setAuthState] = React.useState(() => {
     if (!oktaAuth) {
