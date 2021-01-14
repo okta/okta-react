@@ -8,5 +8,6 @@ else
     rm -f ./node_modules/@okta/okta-react
     mkdir ./node_modules/@okta/okta-react
     cp -r ./dist/ ./node_modules/@okta/okta-react/
+    ls ./node_modules/@okta/okta-react/
     yarn test
 fi
