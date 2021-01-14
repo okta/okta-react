@@ -57,29 +57,29 @@ describe('React + Okta App', () => {
       });
     });
   
-    // it('should redirect to Okta for login (implicit)', () => {
-    //   appPage.navigateTo();
+    it('should redirect to Okta for login (implicit)', () => {
+      appPage.navigateTo();
   
-    //   appPage.waitUntilVisible();
+      appPage.waitUntilVisible();
   
-    //   expect(appPage.getLoginFlow().getText()).toBe('implicit');
-    //   appPage.getLoginButton().click();
+      expect(appPage.getLoginFlow().getText()).toBe('implicit');
+      appPage.getLoginButton().click();
   
-    //   oktaLoginPage.waitUntilVisible();
+      oktaLoginPage.waitUntilVisible();
   
-    //   oktaLoginPage.signIn({
-    //     username: process.env.USERNAME,
-    //     password: process.env.PASSWORD
-    //   });
+      oktaLoginPage.signIn({
+        username: process.env.USERNAME,
+        password: process.env.PASSWORD
+      });
   
-    //   appPage.waitUntilVisible();
-    //   expect(protectedPage.getLogoutButton().isPresent()).toBeTruthy();
+      appPage.waitUntilVisible();
+      expect(protectedPage.getLogoutButton().isPresent()).toBeTruthy();
   
-    //   // Logout
-    //   appPage.getLogoutButton().click();
+      // Logout
+      appPage.getLogoutButton().click();
   
-    //   appPage.waitUntilLoggedOut();
-    // });
+      appPage.waitUntilLoggedOut();
+    });
 
 
   });
