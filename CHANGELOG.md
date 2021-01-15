@@ -4,10 +4,6 @@
 
 - [#26](https://github.com/okta/okta-react/pull/26) Added support for `react-router` 6 beta
 
-### Breaking Changes
-
-- [#26](https://github.com/okta/okta-react/pull/26) Added `navigate` prop to `Security`to remove coupling from `react-router`
-
 # 4.1.0
 
 ### Other

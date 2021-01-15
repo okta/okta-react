@@ -12,18 +12,16 @@
 
 import * as React from 'react';
 import { toRelativeUrl, AuthSdkError, OktaAuth } from '@okta/okta-auth-js';
-import OktaContext, { OnAuthRequiredFunction, NavigateFunction } from './OktaContext';
+import OktaContext, { OnAuthRequiredFunction } from './OktaContext';
 import OktaError from './OktaError';
 
 const Security: React.FC<{
   oktaAuth: OktaAuth, 
   onAuthRequired?: OnAuthRequiredFunction,
-  navigate?: NavigateFunction,
   children?: React.ReactNode
 } & React.HTMLAttributes<HTMLDivElement>> = ({ 
   oktaAuth, 
   onAuthRequired, 
-  navigate,
   children 
 }) => {
   const [authState, setAuthState] = React.useState(() => {
@@ -46,11 +44,9 @@ const Security: React.FC<{
     // Add default restoreOriginalUri callback
     if (!oktaAuth.options.restoreOriginalUri) {
       oktaAuth.options.restoreOriginalUri = async (_, originalUri) => {
-        const relativUrl = toRelativeUrl(originalUri, window.location.origin);
-        if (navigate)
-          navigate(relativUrl);
-        else
-          location.href = relativUrl;
+        //todo: use required restoreOriginalUri prop (see PR #71)
+        const relativeUrl = toRelativeUrl(originalUri, window.location.origin);
+        window.location.href = relativeUrl;
       };
     }
 
@@ -79,8 +75,7 @@ const Security: React.FC<{
     <OktaContext.Provider value={{ 
       oktaAuth, 
       authState, 
-      _onAuthRequired: onAuthRequired,
-      navigate
+      _onAuthRequired: onAuthRequired
     }}>
       {children}
     </OktaContext.Provider>

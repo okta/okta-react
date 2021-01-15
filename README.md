@@ -346,10 +346,6 @@ export default MessageList = () => {
 
 *(optional)* Callback function. Called when authentication is required. If this is not supplied, `okta-react` redirects to Okta. This callback will receive [oktaAuth][Okta Auth SDK] instance as the first function parameter. This is triggered when a [SecureRoute](#secureroute) is accessed without authentication. A common use case for this callback is to redirect users to a custom login route when authentication is required for a [SecureRoute](#secureroute).
 
-#### navigate
-
-*(optional)* Router-specific function to navigate to passed relative URL programmatically.
-
 #### Example
 
 ```jsx
@@ -376,7 +372,6 @@ export default App = () => {
       <Security
         oktaAuth={oktaAuth}
         onAuthRequired={customAuthHandler}
-        navigate={navigate}
       >
         <Routes>
           <Route path='/login' element={<CustomLoginComponent />}>
