@@ -1,3 +1,9 @@
+# 5.0.0
+
+### Features
+
+- [#26](https://github.com/okta/okta-react/pull/26) Added support for `react-router` 6 beta
+
 # 4.1.0
 
 ### Other

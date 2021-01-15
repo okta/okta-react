@@ -11,7 +11,7 @@
  */
 
 import * as React from 'react';
-import { Route, Switch, useHistory } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import { OktaAuth } from '@okta/okta-auth-js';
 import { Security, LoginCallback, SecureRoute } from '@okta/okta-react';
 import Home from './Home';
@@ -19,14 +19,14 @@ import Protected from './Protected';
 import CustomLogin from './CustomLogin';
 import SessionTokenLogin from './SessionTokenLogin';
 
-const App: React.FC<{ 
-  oktaAuth: OktaAuth, 
-  customLogin: boolean 
+const App: React.FC<{
+  oktaAuth: OktaAuth;
+  customLogin: boolean;
 }> = ({ oktaAuth, customLogin }) => {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const onAuthRequired = async () => {
-    history.push('/login');
+    navigate('/login');
   };
 
   return (
@@ -35,14 +35,14 @@ const App: React.FC<{
         oktaAuth={oktaAuth}
         onAuthRequired={customLogin ? onAuthRequired : undefined}
       >
-        <Switch>
-          <Route path='/login' component={CustomLogin}/>
-          <Route path='/sessionToken-login' component={SessionTokenLogin}/>
-          <SecureRoute exact path='/protected' component={Protected}/>
-          <Route path='/implicit/callback' component={LoginCallback} />
-          <Route path='/pkce/callback' component={LoginCallback} />
-          <Route path='/' component={Home}/>
-        </Switch>
+        <Routes>
+          <Route path='/login' element={<CustomLogin />}/>
+          <Route path='/sessionToken-login' element={<SessionTokenLogin />}/>
+          <SecureRoute path='/protected' element={<Protected />}/>
+          <Route path='/implicit/callback' element={<LoginCallback />} />
+          <Route path='/pkce/callback' element={<LoginCallback />} />
+          <Route path='/*' element={<Home />}/>
+        </Routes>
       </Security>
       <a href="/?pkce=1">PKCE Flow</a> | <a href="/">Implicit Flow</a>
     </React.StrictMode>

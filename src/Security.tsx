@@ -11,7 +11,6 @@
  */
 
 import * as React from 'react';
-import { useHistory } from 'react-router-dom';
 import { toRelativeUrl, AuthSdkError, OktaAuth } from '@okta/okta-auth-js';
 import OktaContext, { OnAuthRequiredFunction } from './OktaContext';
 import OktaError from './OktaError';
@@ -24,8 +23,7 @@ const Security: React.FC<{
   oktaAuth, 
   onAuthRequired, 
   children 
-}) => { 
-  const history = useHistory();
+}) => {
   const [authState, setAuthState] = React.useState(() => {
     if (!oktaAuth) {
       return { 
@@ -46,7 +44,9 @@ const Security: React.FC<{
     // Add default restoreOriginalUri callback
     if (!oktaAuth.options.restoreOriginalUri) {
       oktaAuth.options.restoreOriginalUri = async (_, originalUri) => {
-        history.replace(toRelativeUrl(originalUri, window.location.origin));
+        //todo: use required restoreOriginalUri prop (see PR #71)
+        const relativeUrl = toRelativeUrl(originalUri, window.location.origin);
+        window.location.href = relativeUrl;
       };
     }
 
@@ -64,7 +64,7 @@ const Security: React.FC<{
     }
 
     return () => oktaAuth.authStateManager.unsubscribe();
-  }, [oktaAuth, history]);
+  }, [oktaAuth]);
 
   if (!oktaAuth) {
     const err = new AuthSdkError('No oktaAuth instance passed to Security Component.');
