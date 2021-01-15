@@ -19,6 +19,9 @@ describe('<LoginCallback />', () => {
   let oktaAuth;
   let authState;
   let mockProps;
+  const restoreOriginalUri = async (_, url) => {
+    location.href = url;
+  };
   beforeEach(() => {
     authState = {
       isPending: true
@@ -33,7 +36,10 @@ describe('<LoginCallback />', () => {
       isLoginRedirect: jest.fn().mockImplementation(() => false),
       handleLoginRedirect: jest.fn()
     };
-    mockProps = { oktaAuth };
+    mockProps = {
+      oktaAuth, 
+      restoreOriginalUri
+    };
   });
 
   it('renders the component', () => {
