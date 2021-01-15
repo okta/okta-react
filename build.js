@@ -7,6 +7,9 @@ const fs = require('fs');
 const NPM_DIR = `dist`;
 const BUNDLE_CMD = 'yarn bundle';
 const BANNER_CMD = `yarn banners`;
+const TSC_CMD = 'tsc';
+const TYPES_DIR = `${NPM_DIR}/types`;
+const SRC_DIR = `${NPM_DIR}/lib`;
 
 shell.echo(`Start building...`);
 
@@ -17,6 +20,13 @@ if (shell.exec(BUNDLE_CMD).code !== 0) {
   shell.echo(chalk.red(`Error: Rollup failed`));
   shell.exit(1);
 }
+
+// Compile ES6 modules
+if (shell.exec(TSC_CMD).code !== 0) {
+  shell.echo(chalk.red(`Error: Compiling ES6 modules failed`));
+  shell.exit(1);
+}
+shell.cp(`-Rf`, `${TYPES_DIR}/*`, SRC_DIR);
 
 // Maintain banners
 if (shell.exec(BANNER_CMD).code !== 0) {

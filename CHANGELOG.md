@@ -3,6 +3,8 @@
 ### Breaking Changes
 
 - [#71](https://github.com/okta/okta-react/pull/71) Adds required prop `restoreOriginalUri` to `Security` that will override `restoreOriginalUri` callback of `oktaAuth`
+- [#74](https://github.com/okta/okta-react/pull/74) `SecureRoute` is not exported to `@okta/okta-react`. Use `import SecureRoute from '@okta/okta-react/lib/SecureRoute'`
+- [#74](https://github.com/okta/okta-react/pull/74) Use ES6 modules as main entry point instead of rollup bundle
 
 # 4.1.1
 

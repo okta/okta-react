@@ -25,9 +25,8 @@
   "keywords": [
     "oauth2"
   ],
-  "main": "dist/bundles/okta-react.cjs.js",
-  "module": "dist/bundles/okta-react.esm.js",
-  "types": "dist/bundles/types",
+  "main": "dist/lib",
+  "types": "dist/types",
   "author": "",
   "license": "Apache-2.0",
   "bugs": {

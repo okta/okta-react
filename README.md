@@ -122,7 +122,8 @@ This example defines 3 routes:
 
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, withRouter } from 'react-router-dom';
-import { SecureRoute, Security, LoginCallback } from '@okta/okta-react';
+import { Security, LoginCallback } from '@okta/okta-react';
+import SecureRoute from '@okta/okta-react/lib/SecureRoute';
 import { OktaAuth, toRelativeUrl } from '@okta/okta-auth-js';
 import Home from './Home';
 import Protected from './Protected';
@@ -163,7 +164,8 @@ export default class extends Component {
 
 ```jsx
 import React from 'react';
-import { SecureRoute, Security, LoginCallback } from '@okta/okta-react';
+import { Security, LoginCallback } from '@okta/okta-react';
+import SecureRoute from '@okta/okta-react/lib/SecureRoute';
 import { OktaAuth, toRelativeUrl } from '@okta/okta-auth-js';
 import { useHistory } from 'react-router-dom';
 import Home from './Home';
@@ -431,7 +433,6 @@ class App extends Component {
     );
   }
 }
-
 ```
 
 ### `SecureRoute`
@@ -441,6 +442,11 @@ class App extends Component {
 `SecureRoute` accepts `onAuthRequired` as an optional prop, it overrides [onAuthRequired](#onauthrequired) from the [Security](#security) component if exists.
   
 `SecureRoute` integrates with `react-router`.  Other routers will need their own methods to ensure authentication using the hooks/HOC props provided by this SDK.
+
+From veriosn 5.0 you need to import `SecureRoute` as follows:
+```jsx
+import SecureRoute from '@okta/okta-react/lib/SecureRoute';
+```
 
 As with `Route` from `react-router-dom`, `<SecureRoute>` can take one of:
 
@@ -482,6 +488,8 @@ export default MyComponent = () => {
 
 ### Migrating from 4.x to 5.x
 
+#### Updating the Security component
+
 From version 5.0, the Security component explicitly requires prop [restoreOriginalUri](#restoreoriginaluri) to decouple from `react-router`. 
 Example of implementation of this callback for `react-router`:
 
@@ -511,6 +519,13 @@ export default App = () => {
     </Security>
   );
 };
+```
+
+#### New location for import
+
+`SecureRoute` can't be imported from `@okta/okta-react`. You need to import `SecureRoute` as follows:
+```jsx
+import SecureRoute from '@okta/okta-react/lib/SecureRoute';
 ```
 
 ### Migrating from 3.x to 4.x
