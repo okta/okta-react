@@ -169,13 +169,14 @@ import { useHistory } from 'react-router-dom';
 import Home from './Home';
 import Protected from './Protected';
 
+const oktaAuth = new OktaAuth({
+  issuer: 'https://{yourOktaDomain}.com/oauth2/default',
+  clientId: '{clientId}',
+  redirectUri: window.location.origin + '/login/callback'
+});
+
 const App = () => {
   const history = useHistory();
-  const oktaAuth = new OktaAuth({
-    issuer: 'https://{yourOktaDomain}.com/oauth2/default',
-    clientId: '{clientId}',
-    redirectUri: window.location.origin + '/login/callback'
-  });
   const restoreOriginalUri = async (_oktaAuth, originalUri) => {
     history.replace(toRelativeUrl(originalUri, window.location.origin));
   };
@@ -481,7 +482,8 @@ export default MyComponent = () => {
 
 ### Migrating from 4.x to 5.x
 
-From version 5.0, the Security component explicitly requires prop [restoreOriginalUri](#restoreoriginaluri). Example of implementation of this callback for `react-router`:
+From version 5.0, the Security component explicitly requires prop [restoreOriginalUri](#restoreoriginaluri) to decouple from `react-router`. 
+Example of implementation of this callback for `react-router`:
 
 ```jsx
 import { Security } from '@okta/okta-react';

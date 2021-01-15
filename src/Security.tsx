@@ -45,7 +45,7 @@ const Security: React.FC<{
 
     // Add default restoreOriginalUri callback
     if (oktaAuth.options.restoreOriginalUri && restoreOriginalUri) {
-      console.warn('Two restoreOriginalUri callbacks provied: one from prop to Security, another one from oktaAuth options. Please remove second one.');
+      console.warn('Two custom restoreOriginalUri callbacks are detected. The one from the OktaAuth configuration will be overridden by the provided restoreOriginalUri prop from the Security component.');
     }
     oktaAuth.options.restoreOriginalUri = async (oktaAuth: any, originalUri: string) => {
       restoreOriginalUri(oktaAuth, originalUri);
