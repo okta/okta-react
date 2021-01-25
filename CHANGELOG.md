@@ -1,3 +1,9 @@
+# 4.1.1
+
+### Bug Fixes
+
+- [#56](https://github.com/okta/okta-react/pull/68) Fixes `basename` duplication on navigate from callback route.
+
 # 4.1.0
 
 ### Other
