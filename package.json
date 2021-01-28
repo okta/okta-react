@@ -85,7 +85,6 @@
     "jasmine-spec-reporter": "~4.1.0",
     "jest": "^26.4.2",
     "jest-junit": "^11.1.0",
-    "lerna": "^3.22.1",
     "polished": "^1.7.0",
     "prop-types": "^15.5.10",
     "protractor": "^5.4.2",
