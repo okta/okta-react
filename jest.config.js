@@ -29,5 +29,5 @@ module.exports = {
     './test/jest/setup.ts'
   ],
   testEnvironment: 'jsdom',
-  transform: { '^.+\\.tsx?$': 'ts-jest' }
+  transform: { '^.+\\.tsx?$': 'ts-jest' },
 };

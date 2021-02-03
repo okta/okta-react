@@ -13,7 +13,8 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
 import { act } from 'react-dom/test-utils';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter, Router } from 'react-router-dom';
+import { createBrowserHistory } from 'history';
 import Security from '../../src/Security';
 import { useOktaAuth } from '../../src/OktaContext';
 import * as pkg from '../../package.json';
@@ -274,5 +275,59 @@ describe('<Security />', () => {
       );
       expect(wrapper.find(Security).html()).toBe('<p>AuthSdkError: No oktaAuth instance passed to Security Component.</p>');
     });
+  });
+
+  describe('basename logic in default restoreOriginalUri implementation', () => {
+    it('removes basename from original URI before navigating', async () => {
+      const history = createBrowserHistory({
+        basename: '/basename'
+      });
+      const navigateSpy = jest.spyOn(history, 'replace');
+
+      renderRouterWithSecurity(history);
+      await oktaAuth.options.restoreOriginalUri(null, 'http://localhost/basename/profile?queryParam=1');
+      expect(navigateSpy).toBeCalledWith('/profile?queryParam=1');
+    });
+
+    it('handles nested basename path', async () => {
+      const history = createBrowserHistory({
+        basename: '/siteRoot/app1'
+      });
+      const navigateSpy = jest.spyOn(history, 'replace');
+
+      renderRouterWithSecurity(history);
+      await oktaAuth.options.restoreOriginalUri(null, 'http://localhost/siteRoot/app1/profile#anchor');
+      expect(navigateSpy).toBeCalledWith('/profile#anchor');
+    });
+
+    it("handles Router configuration with baseanme set to '/'", async () => {
+      const history = createBrowserHistory({
+        basename: '/'
+      });
+      const navigateSpy = jest.spyOn(history, 'replace');
+
+      renderRouterWithSecurity(history);
+      await oktaAuth.options.restoreOriginalUri(null, 'http://localhost/profile?queryParam=1');
+      expect(navigateSpy).toBeCalledWith('/profile?queryParam=1');
+    });
+
+    it('handles Router configuration without basename property set', async () => {
+      const history = createBrowserHistory({});
+      const navigateSpy = jest.spyOn(history, 'replace');
+
+      renderRouterWithSecurity(history);
+      await oktaAuth.options.restoreOriginalUri(null, 'http://localhost/profile?queryParam=1');
+      expect(navigateSpy).toBeCalledWith('/profile?queryParam=1');
+    });
+
+    const renderRouterWithSecurity = function (history) {
+      mount(
+        <Router history={history}>
+          <Security oktaAuth={oktaAuth}>
+            <></>
+          </Security>
+        </Router>
+      );
+    };
   });
 });
