@@ -14,3 +14,6 @@ import * as Enzyme from 'enzyme';
 import * as Adapter from 'enzyme-adapter-react-16';
 
 Enzyme.configure({ adapter: new Adapter() });
+
+// eslint-disable-next-line @typescript-eslint/no-empty-function
+global.console.warn = function() {};
