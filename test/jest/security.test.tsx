@@ -14,6 +14,7 @@ import * as React from 'react';
 import { mount } from 'enzyme';
 import { act } from 'react-dom/test-utils';
 import { MemoryRouter, Router } from 'react-router-dom';
+import { toRelativeUrl } from '@okta/okta-auth-js';
 import { createBrowserHistory } from 'history';
 import Security from '../../src/Security';
 import { useOktaAuth } from '../../src/OktaContext';
@@ -351,9 +352,17 @@ describe('<Security />', () => {
     });
 
     const renderRouterWithSecurity = function (history) {
+      const mockProps = {
+        oktaAuth,
+        restoreOriginalUri: async (_, originalUri) => {
+          const basepath = history.createHref({});
+          const originalUriWithoutBasepath = originalUri.replace(basepath, '/');
+          history.replace(toRelativeUrl(originalUriWithoutBasepath, window.location.origin));
+        }
+      };
       mount(
         <Router history={history}>
-          <Security oktaAuth={oktaAuth}>
+          <Security {...mockProps}>
             <></>
           </Security>
         </Router>
