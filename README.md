@@ -40,6 +40,21 @@ This library currently supports:
 - [OAuth 2.0 Implicit Flow](https://tools.ietf.org/html/rfc6749#section-1.3.2)
 - [OAuth 2.0 Authorization Code Flow](https://tools.ietf.org/html/rfc6749#section-1.3.1) with [Proof Key for Code Exchange (PKCE)](https://tools.ietf.org/html/rfc7636) 
 
+## Release Status
+
+:heavy_check_mark: The current stable major version series is: `5.x`
+
+| Version   | Status                           |
+| -------   | -------------------------------- |
+| `5.x`     | :heavy_check_mark: Stable        |
+| `4.x`     | :warning: Retiring on 2021-10    |
+| `3.x`     | :x: Retired                      |
+| `2.x`     | :x: Retired                      |
+| `1.x`     | :x: Retired                      |
+
+The latest release can always be found on the [releases page][github-releases].
+
+
 ## Getting Started
 
 - If you do not already have a **Developer Edition Account**, you can create one at [https://developer.okta.com/signup/](https://developer.okta.com/signup/).
