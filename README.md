@@ -359,7 +359,7 @@ export default MessageList = () => {
 
 #### restoreOriginalUri
 
-*(required)* Callback function. Called to restore original () during [oktaAuth.handleLoginRedirect()](https://github.com/okta/okta-auth-js#handleloginredirecttokens) is called. Will override [restoreOriginalUri option of oktaAuth](https://github.com/okta/okta-auth-js#restoreoriginaluri)
+*(required)* Callback function. Called to restore original URI during [oktaAuth.handleLoginRedirect()](https://github.com/okta/okta-auth-js#handleloginredirecttokens) is called. Will override [restoreOriginalUri option of oktaAuth](https://github.com/okta/okta-auth-js#restoreoriginaluri)
 
 #### onAuthRequired
 
@@ -511,6 +511,15 @@ export default App = () => {
     </Security>
   );
 };
+```
+
+**Note:** If you use `basename` prop for `<BrowserRouter>`, use this implementation to fix `basename` duplication problem:
+```jsx
+  const restoreOriginalUri = async (_oktaAuth, originalUri) => {
+    const basepath = history.createHref({});
+    const originalUriWithoutBasepath = originalUri.replace(basepath, '/');
+    history.replace(toRelativeUrl(originalUriWithoutBasepath, window.location.origin));
+  };
 ```
 
 ### Migrating from 3.x to 4.x
