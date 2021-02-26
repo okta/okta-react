@@ -12,6 +12,15 @@
 [![npm version](https://img.shields.io/npm/v/@okta/okta-react.svg?style=flat-square)](https://www.npmjs.com/package/@okta/okta-react)
 [![build status](https://img.shields.io/travis/okta/okta-react/master.svg?style=flat-square)](https://travis-ci.org/okta/okta-react)
 
+* [Release status](#release-status)
+* [Getting started](#getting-started)
+* [Installation](#installation)
+* [Usage](#usage)
+* [Reference](#reference)
+* [Migrating between versions](#migrating-between-versions)
+* [Contributing](#contributing)
+* [Development](#development)
+
 Okta React SDK builds on top of the [Okta Auth SDK][].
 
 This SDK is a toolkit to build Okta integration with many common "router" packages, such as [react-router][], [reach-router][], and others.
