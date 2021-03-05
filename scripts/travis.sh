@@ -4,6 +4,7 @@ if [ "${TRAVIS_EVENT_TYPE}" = "cron" ] ; then
 	yarn pretest
     yarn test:e2e
 else
-    # run the lint, unit and e2e tests (on chrome headless)
-    yarn test
+    # run the lint, unit tests
+    yarn lint
+    yarn test:unit
 fi
