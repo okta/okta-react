@@ -12,6 +12,15 @@
 [![npm version](https://img.shields.io/npm/v/@okta/okta-react.svg?style=flat-square)](https://www.npmjs.com/package/@okta/okta-react)
 [![build status](https://img.shields.io/travis/okta/okta-react/master.svg?style=flat-square)](https://travis-ci.org/okta/okta-react)
 
+* [Release status](#release-status)
+* [Getting started](#getting-started)
+* [Installation](#installation)
+* [Usage](#usage)
+* [Reference](#reference)
+* [Migrating between versions](#migrating-between-versions)
+* [Contributing](#contributing)
+* [Development](#development)
+
 Okta React SDK builds on top of the [Okta Auth SDK][].
 
 This SDK is a toolkit to build Okta integration with many common "router" packages, such as [react-router][], [reach-router][], and others.
@@ -39,6 +48,21 @@ This library currently supports:
 
 - [OAuth 2.0 Implicit Flow](https://tools.ietf.org/html/rfc6749#section-1.3.2)
 - [OAuth 2.0 Authorization Code Flow](https://tools.ietf.org/html/rfc6749#section-1.3.1) with [Proof Key for Code Exchange (PKCE)](https://tools.ietf.org/html/rfc7636) 
+
+## Release Status
+
+:heavy_check_mark: The current stable major version series is: `5.x`
+
+| Version   | Status                           |
+| -------   | -------------------------------- |
+| `5.x`     | :heavy_check_mark: Stable        |
+| `4.x`     | :warning: Retiring on 2021-12-09 |
+| `3.x`     | :warning: Retiring on 2021-08-20 |
+| `2.x`     | :x: Retired                      |
+| `1.x`     | :x: Retired                      |
+
+The latest release can always be found on the [releases page][github-releases].
+
 
 ## Getting Started
 
@@ -359,7 +383,7 @@ export default MessageList = () => {
 
 #### restoreOriginalUri
 
-*(required)* Callback function. Called to restore original () during [oktaAuth.handleLoginRedirect()](https://github.com/okta/okta-auth-js#handleloginredirecttokens) is called. Will override [restoreOriginalUri option of oktaAuth](https://github.com/okta/okta-auth-js#restoreoriginaluri)
+*(required)* Callback function. Called to restore original URI during [oktaAuth.handleLoginRedirect()](https://github.com/okta/okta-auth-js#handleloginredirecttokens) is called. Will override [restoreOriginalUri option of oktaAuth](https://github.com/okta/okta-auth-js#restoreoriginaluri)
 
 #### onAuthRequired
 
@@ -511,6 +535,16 @@ export default App = () => {
     </Security>
   );
 };
+```
+
+**Note:** If you use `basename` prop for `<BrowserRouter>`, use this implementation to fix `basename` duplication problem:
+```jsx
+  import { toRelativeUrl } from '@okta/okta-auth-js';
+  const restoreOriginalUri = async (_oktaAuth, originalUri) => {
+    const basepath = history.createHref({});
+    const originalUriWithoutBasepath = originalUri.replace(basepath, '/');
+    history.replace(toRelativeUrl(originalUriWithoutBasepath, window.location.origin));
+  };
 ```
 
 ### Migrating from 3.x to 4.x
