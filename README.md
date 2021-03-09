@@ -56,8 +56,8 @@ This library currently supports:
 | Version   | Status                           |
 | -------   | -------------------------------- |
 | `5.x`     | :heavy_check_mark: Stable        |
-| `4.x`     | :warning: Retiring on 2021-10    |
-| `3.x`     | :x: Retired                      |
+| `4.x`     | :warning: Retiring on 2021-12-09 |
+| `3.x`     | :warning: Retiring on 2021-08-20 |
 | `2.x`     | :x: Retired                      |
 | `1.x`     | :x: Retired                      |
 
