@@ -539,6 +539,7 @@ export default App = () => {
 
 **Note:** If you use `basename` prop for `<BrowserRouter>`, use this implementation to fix `basename` duplication problem:
 ```jsx
+  import { toRelativeUrl } from '@okta/okta-auth-js';
   const restoreOriginalUri = async (_oktaAuth, originalUri) => {
     const basepath = history.createHref({});
     const originalUriWithoutBasepath = originalUri.replace(basepath, '/');
