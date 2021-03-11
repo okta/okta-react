@@ -12,6 +12,15 @@
 [![npm version](https://img.shields.io/npm/v/@okta/okta-react.svg?style=flat-square)](https://www.npmjs.com/package/@okta/okta-react)
 [![build status](https://img.shields.io/travis/okta/okta-react/master.svg?style=flat-square)](https://travis-ci.org/okta/okta-react)
 
+* [Release status](#release-status)
+* [Getting started](#getting-started)
+* [Installation](#installation)
+* [Usage](#usage)
+* [Reference](#reference)
+* [Migrating between versions](#migrating-between-versions)
+* [Contributing](#contributing)
+* [Development](#development)
+
 Okta React SDK builds on top of the [Okta Auth SDK][].
 
 This SDK is a toolkit to build Okta integration with many common "router" packages, such as [react-router][], [reach-router][], and others.
@@ -39,6 +48,21 @@ This library currently supports:
 
 - [OAuth 2.0 Implicit Flow](https://tools.ietf.org/html/rfc6749#section-1.3.2)
 - [OAuth 2.0 Authorization Code Flow](https://tools.ietf.org/html/rfc6749#section-1.3.1) with [Proof Key for Code Exchange (PKCE)](https://tools.ietf.org/html/rfc7636) 
+
+## Release Status
+
+:heavy_check_mark: The current stable major version series is: `5.x`
+
+| Version   | Status                           |
+| -------   | -------------------------------- |
+| `5.x`     | :heavy_check_mark: Stable        |
+| `4.x`     | :warning: Retiring on 2021-12-09 |
+| `3.x`     | :warning: Retiring on 2021-08-20 |
+| `2.x`     | :x: Retired                      |
+| `1.x`     | :x: Retired                      |
+
+The latest release can always be found on the [releases page][github-releases].
+
 
 ## Getting Started
 
@@ -121,32 +145,42 @@ This example defines 3 routes:
 // src/App.js
 
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, withRouter } from 'react-router-dom';
 import { SecureRoute, Security, LoginCallback } from '@okta/okta-react';
-import { OktaAuth } from '@okta/okta-auth-js';
+import { OktaAuth, toRelativeUrl } from '@okta/okta-auth-js';
 import Home from './Home';
 import Protected from './Protected';
 
-const oktaAuth = new OktaAuth({
-  issuer: 'https://{yourOktaDomain}.com/oauth2/default',
-  clientId: '{clientId}',
-  redirectUri: window.location.origin + '/login/callback'
-});
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.oktaAuth = new OktaAuth({
+      issuer: 'https://{yourOktaDomain}.com/oauth2/default',
+      clientId: '{clientId}',
+      redirectUri: window.location.origin + '/login/callback'
+    });
+    this.restoreOriginalUri = async (_oktaAuth, originalUri) => {
+      props.history.replace(toRelativeUrl(originalUri, window.location.origin));
+    };
+  }
+
   render() {
     return (
-      <Router>
-        <Security oktaAuth={oktaAuth}>
-          <Route path='/' exact={true} component={Home}/>
-          <SecureRoute path='/protected' component={Protected}/>
-          <Route path='/login/callback' component={LoginCallback} />
-        </Security>
-      </Router>
+      <Security oktaAuth={this.oktaAuth} restoreOriginalUri={this.restoreOriginalUri} >
+        <Route path='/' exact={true} component={Home} />
+        <SecureRoute path='/protected' component={Protected} />
+        <Route path='/login/callback' component={LoginCallback} />
+      </Security>
     );
   }
 }
 
-export default App;
+const AppWithRouterAccess = withRouter(App);
+export default class extends Component {
+  render() {
+    return (<Router><AppWithRouterAccess/></Router>);
+  }
+}
 ```
 
 #### Creating React Router Routes with function-based components
@@ -154,7 +188,8 @@ export default App;
 ```jsx
 import React from 'react';
 import { SecureRoute, Security, LoginCallback } from '@okta/okta-react';
-import { OktaAuth } from '@okta/okta-auth-js';
+import { OktaAuth, toRelativeUrl } from '@okta/okta-auth-js';
+import { useHistory } from 'react-router-dom';
 import Home from './Home';
 import Protected from './Protected';
 
@@ -163,15 +198,23 @@ const oktaAuth = new OktaAuth({
   clientId: '{clientId}',
   redirectUri: window.location.origin + '/login/callback'
 });
-const App = () => (
-  <Router>
-    <Security oktaAuth={oktaAuth}>
-      <Route path='/' exact={true} component={Home}/>
-      <SecureRoute path='/protected' component={Protected}/>
-      <Route path='/login/callback' component={LoginCallback} />
-    </Security>
-  </Router>
-);
+
+const App = () => {
+  const history = useHistory();
+  const restoreOriginalUri = async (_oktaAuth, originalUri) => {
+    history.replace(toRelativeUrl(originalUri, window.location.origin));
+  };
+
+  return (
+    <Router>
+      <Security oktaAuth={oktaAuth} restoreOriginalUri={restoreOriginalUri}>
+        <Route path='/' exact={true} component={Home} />
+        <SecureRoute path='/protected' component={Protected} />
+        <Route path='/login/callback' component={LoginCallback} />
+      </Security>
+    </Router>
+  );
+};
 
 export default App;
 ```
@@ -338,6 +381,10 @@ export default MessageList = () => {
 
 *(required)* The pre-initialized [oktaAuth][Okta Auth SDK] instance. See [Configuration Reference](https://github.com/okta/okta-auth-js#configuration-reference) for details of how to initialize the instance.
 
+#### restoreOriginalUri
+
+*(required)* Callback function. Called to restore original URI during [oktaAuth.handleLoginRedirect()](https://github.com/okta/okta-auth-js#handleloginredirecttokens) is called. Will override [restoreOriginalUri option of oktaAuth](https://github.com/okta/okta-auth-js#restoreoriginaluri)
+
 #### onAuthRequired
 
 *(optional)* Callback function. Called when authentication is required. If this is not supplied, `okta-react` redirects to Okta. This callback will receive [oktaAuth][Okta Auth SDK] instance as the first function parameter. This is triggered when a [SecureRoute](#secureroute) is accessed without authentication. A common use case for this callback is to redirect users to a custom login route when authentication is required for a [SecureRoute](#secureroute).
@@ -346,7 +393,7 @@ export default MessageList = () => {
 
 ```jsx
 import { useHistory } from 'react-router-dom';
-import { OktaAuth } from '@okta/okta-auth-js';
+import { OktaAuth, toRelativeUrl } from '@okta/okta-auth-js';
 
 const oktaAuth = new OktaAuth({
   issuer: 'https://{yourOktaDomain}.com/oauth2/default',
@@ -363,10 +410,15 @@ export default App = () => {
     history.push('/login');
   };
 
+  const restoreOriginalUri = async (_oktaAuth, originalUri) => {
+    history.replace(toRelativeUrl(originalUri, window.location.origin));
+  };
+
   return (
     <Security
       oktaAuth={oktaAuth}
       onAuthRequired={customAuthHandler}
+      restoreOriginalUri={restoreOriginalUri}
     >
       <Route path='/login' component={CustomLoginComponent}>
       {/* some routes here */}
@@ -395,8 +447,8 @@ class App extends Component {
   render() {
     return (
       <Router>
-        <Security oktaAuth={oktaAuth}>
-          <Route path='/' exact={true} component={Home}/>
+        <Security oktaAuth={oktaAuth} restoreOriginalUri={restoreOriginalUri}>
+          <Route path='/' exact={true} component={Home} />
           <Route path='/login/callback' component={LoginCallback} />
         </Security>
       </Router>
@@ -451,6 +503,49 @@ export default MyComponent = () => {
 ```
 
 ## Migrating between versions
+
+### Migrating from 4.x to 5.x
+
+From version 5.0, the Security component explicitly requires prop [restoreOriginalUri](#restoreoriginaluri) to decouple from `react-router`. 
+Example of implementation of this callback for `react-router`:
+
+```jsx
+import { Security } from '@okta/okta-react';
+import { useHistory } from 'react-router-dom';
+import { OktaAuth, toRelativeUrl } from '@okta/okta-auth-js';
+
+const oktaAuth = new OktaAuth({
+  issuer: 'https://{yourOktaDomain}.com/oauth2/default',
+  clientId: '{clientId}',
+  redirectUri: window.location.origin + '/login/callback'
+});
+
+export default App = () => {
+  const history = useHistory();
+  const restoreOriginalUri = async (_oktaAuth, originalUri) => {
+    history.replace(toRelativeUrl(originalUri, window.location.origin));
+  };
+
+  return (
+    <Security
+      oktaAuth={oktaAuth}
+      restoreOriginalUri={restoreOriginalUri}
+    >
+      {/* some routes here */}
+    </Security>
+  );
+};
+```
+
+**Note:** If you use `basename` prop for `<BrowserRouter>`, use this implementation to fix `basename` duplication problem:
+```jsx
+  import { toRelativeUrl } from '@okta/okta-auth-js';
+  const restoreOriginalUri = async (_oktaAuth, originalUri) => {
+    const basepath = history.createHref({});
+    const originalUriWithoutBasepath = originalUri.replace(basepath, '/');
+    history.replace(toRelativeUrl(originalUriWithoutBasepath, window.location.origin));
+  };
+```
 
 ### Migrating from 3.x to 4.x
 

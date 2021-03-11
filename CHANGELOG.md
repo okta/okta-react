@@ -1,3 +1,9 @@
+# 5.0.0
+
+### Breaking Changes
+
+- [#71](https://github.com/okta/okta-react/pull/71) Adds required prop `restoreOriginalUri` to `Security` that will override `restoreOriginalUri` callback of `oktaAuth`
+
 # 4.1.1
 
 ### Bug Fixes

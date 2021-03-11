@@ -13,8 +13,7 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
 import { act } from 'react-dom/test-utils';
-import { MemoryRouter, Router } from 'react-router-dom';
-import { createBrowserHistory } from 'history';
+import { MemoryRouter } from 'react-router-dom';
 import Security from '../../src/Security';
 import { useOktaAuth } from '../../src/OktaContext';
 import * as pkg from '../../package.json';
@@ -22,6 +21,9 @@ import * as pkg from '../../package.json';
 describe('<Security />', () => {
   let oktaAuth;
   let initialAuthState;
+  const restoreOriginalUri = async (_, url) => {
+    location.href = url;
+  };
   beforeEach(() => {
     initialAuthState = {
       isInitialState: true
@@ -40,7 +42,8 @@ describe('<Security />', () => {
 
   it('should set userAgent for oktaAuth', () => {
     const mockProps = {
-      oktaAuth
+      oktaAuth,
+      restoreOriginalUri
     };
     mount(<Security {...mockProps} />);
     expect(oktaAuth.userAgent).toEqual(`${pkg.name}/${pkg.version} okta/okta-auth-js`);
@@ -49,7 +52,8 @@ describe('<Security />', () => {
   it('should set default restoreOriginalUri callback in oktaAuth.options', () => {
     oktaAuth.options = {};
     const mockProps = {
-      oktaAuth
+      oktaAuth,
+      restoreOriginalUri
     };
     mount(<Security {...mockProps} />);
     expect(oktaAuth.options.restoreOriginalUri).toBeDefined();
@@ -57,7 +61,8 @@ describe('<Security />', () => {
 
   it('gets initial state from oktaAuth and exposes it on the context', () => {
     const mockProps = {
-      oktaAuth
+      oktaAuth,
+      restoreOriginalUri
     };
     const MyComponent = jest.fn().mockImplementation(() => {
       const oktaProps = useOktaAuth();
@@ -87,7 +92,8 @@ describe('<Security />', () => {
       callback(newAuthState);
     });
     const mockProps = {
-      oktaAuth
+      oktaAuth,
+      restoreOriginalUri
     };
 
     const MyComponent = jest.fn()
@@ -120,7 +126,8 @@ describe('<Security />', () => {
   it('should not call updateAuthState when in login redirect state', () => {
     oktaAuth.isLoginRedirect = jest.fn().mockImplementation(() => true);
     const mockProps = {
-      oktaAuth
+      oktaAuth,
+      restoreOriginalUri
     };
     mount(
       <MemoryRouter>
@@ -153,7 +160,8 @@ describe('<Security />', () => {
       callback(mockAuthStates[stateCount]);
     });
     const mockProps = {
-      oktaAuth
+      oktaAuth,
+      restoreOriginalUri
     };
     const MyComponent = jest.fn()
       // first call
@@ -195,7 +203,8 @@ describe('<Security />', () => {
 
   it('should accept a className prop and render a component using the className', () => {
     const mockProps = {
-      oktaAuth
+      oktaAuth,
+      restoreOriginalUri
     };
     const wrapper = mount(
       <MemoryRouter>
@@ -226,7 +235,8 @@ describe('<Security />', () => {
         isPending: false
       };
       const mockProps = {
-        oktaAuth
+        oktaAuth,
+        restoreOriginalUri
       };
       const wrapper = mount(
         <Security {...mockProps}>
@@ -242,7 +252,8 @@ describe('<Security />', () => {
         isPending: false
       };
       const mockProps = {
-        oktaAuth
+        oktaAuth,
+        restoreOriginalUri
       };
       const wrapper = mount(
         <Security {...mockProps}>
@@ -257,7 +268,8 @@ describe('<Security />', () => {
         isPending: true
       };
       const mockProps = {
-        oktaAuth
+        oktaAuth,
+        restoreOriginalUri
       };
       const wrapper = mount(
         <Security {...mockProps}>
@@ -268,66 +280,29 @@ describe('<Security />', () => {
     });
 
     it('should render error if oktaAuth props is not provided', () => {
+      const mockProps = {
+        oktaAuth: null,
+        restoreOriginalUri
+      };
       const wrapper = mount(
-        <Security oktaAuth={null}>
+        <Security {...mockProps}>
           <MyComponent />
         </Security>
       );
       expect(wrapper.find(Security).html()).toBe('<p>AuthSdkError: No oktaAuth instance passed to Security Component.</p>');
     });
-  });
 
-  describe('basename logic in default restoreOriginalUri implementation', () => {
-    it('removes basename from original URI before navigating', async () => {
-      const history = createBrowserHistory({
-        basename: '/basename'
-      });
-      const navigateSpy = jest.spyOn(history, 'replace');
-
-      renderRouterWithSecurity(history);
-      await oktaAuth.options.restoreOriginalUri(null, 'http://localhost/basename/profile?queryParam=1');
-      expect(navigateSpy).toBeCalledWith('/profile?queryParam=1');
-    });
-
-    it('handles nested basename path', async () => {
-      const history = createBrowserHistory({
-        basename: '/siteRoot/app1'
-      });
-      const navigateSpy = jest.spyOn(history, 'replace');
-
-      renderRouterWithSecurity(history);
-      await oktaAuth.options.restoreOriginalUri(null, 'http://localhost/siteRoot/app1/profile#anchor');
-      expect(navigateSpy).toBeCalledWith('/profile#anchor');
-    });
-
-    it("handles Router configuration with baseanme set to '/'", async () => {
-      const history = createBrowserHistory({
-        basename: '/'
-      });
-      const navigateSpy = jest.spyOn(history, 'replace');
-
-      renderRouterWithSecurity(history);
-      await oktaAuth.options.restoreOriginalUri(null, 'http://localhost/profile?queryParam=1');
-      expect(navigateSpy).toBeCalledWith('/profile?queryParam=1');
-    });
-
-    it('handles Router configuration without basename property set', async () => {
-      const history = createBrowserHistory({});
-      const navigateSpy = jest.spyOn(history, 'replace');
-
-      renderRouterWithSecurity(history);
-      await oktaAuth.options.restoreOriginalUri(null, 'http://localhost/profile?queryParam=1');
-      expect(navigateSpy).toBeCalledWith('/profile?queryParam=1');
-    });
-
-    const renderRouterWithSecurity = function (history) {
-      mount(
-        <Router history={history}>
-          <Security oktaAuth={oktaAuth}>
-            <></>
-          </Security>
-        </Router>
+    it('should render error if restoreOriginalUri prop is not provided', () => {
+      const mockProps = {
+        oktaAuth,
+        restoreOriginalUri: null
+      };
+      const wrapper = mount(
+        <Security {...mockProps}>
+          <MyComponent />
+        </Security>
       );
-    };
+      expect(wrapper.find(Security).html()).toBe('<p>AuthSdkError: No restoreOriginalUri callback passed to Security Component.</p>');
+    });
   });
 });

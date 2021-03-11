@@ -13,7 +13,7 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
 import { act } from 'react-dom/test-utils';
-import { MemoryRouter, Route } from 'react-router-dom';
+import { MemoryRouter, Route, RouteProps } from 'react-router-dom';
 import SecureRoute from '../../src/SecureRoute';
 import Security from '../../src/Security';
 
@@ -21,6 +21,9 @@ describe('<SecureRoute />', () => {
   let oktaAuth;
   let authState;
   let mockProps;
+  const restoreOriginalUri = async (_, url) => {
+    location.href = url;
+  };
 
   beforeEach(() => {
     authState = {
@@ -39,7 +42,10 @@ describe('<SecureRoute />', () => {
       signInWithRedirect: jest.fn(),
       setOriginalUri: jest.fn()
     };
-    mockProps = { oktaAuth };
+    mockProps = {
+      oktaAuth, 
+      restoreOriginalUri
+    };
   });
 
   describe('With changing authState', () => {
@@ -305,7 +311,8 @@ describe('<SecureRoute />', () => {
         </MemoryRouter>
       );
       const secureRoute = wrapper.find(SecureRoute);
-      expect(secureRoute.find(Route).props().exact).toBe(true);
+      const props: RouteProps = secureRoute.find(Route).props();
+      expect(props.exact).toBe(true);
       expect(wrapper.find(MyComponent).html()).toBe('<div>hello world</div>');
     });
 
@@ -322,7 +329,8 @@ describe('<SecureRoute />', () => {
         </MemoryRouter>
       );
       const secureRoute = wrapper.find(SecureRoute);
-      expect(secureRoute.find(Route).props().strict).toBe(true);
+      const props: RouteProps = secureRoute.find(Route).props();
+      expect(props.strict).toBe(true);
       expect(wrapper.find(MyComponent).html()).toBe('<div>hello world</div>');
     });
 
@@ -339,7 +347,8 @@ describe('<SecureRoute />', () => {
         </MemoryRouter>
       );
       const secureRoute = wrapper.find(SecureRoute);
-      expect(secureRoute.find(Route).props().sensitive).toBe(true);
+      const props: RouteProps = secureRoute.find(Route).props();
+      expect(props.sensitive).toBe(true);
       expect(wrapper.find(MyComponent).html()).toBe('<div>hello world</div>');
     });
 

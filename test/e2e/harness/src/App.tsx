@@ -12,7 +12,7 @@
 
 import * as React from 'react';
 import { Route, Switch, useHistory } from 'react-router-dom';
-import { OktaAuth } from '@okta/okta-auth-js';
+import { OktaAuth, toRelativeUrl } from '@okta/okta-auth-js';
 import { Security, LoginCallback, SecureRoute } from '@okta/okta-react';
 import Home from './Home';
 import Protected from './Protected';
@@ -29,11 +29,16 @@ const App: React.FC<{
     history.push('/login');
   };
 
+  const restoreOriginalUri = async (_oktaAuth: OktaAuth, originalUri: string) => {
+    history.replace(toRelativeUrl(originalUri, window.location.origin));
+  };
+
   return (
     <React.StrictMode>
       <Security
         oktaAuth={oktaAuth}
         onAuthRequired={customLogin ? onAuthRequired : undefined}
+        restoreOriginalUri={restoreOriginalUri}
       >
         <Switch>
           <Route path='/login' component={CustomLogin}/>
