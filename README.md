@@ -476,6 +476,36 @@ As with `Route` from `react-router-dom`, `<SecureRoute>` can take one of:
 
 `LoginCallback` handles the callback after the redirect to and back from the Okta-hosted login page. By default, it parses the tokens from the uri, stores them, then redirects to `/`. If a `SecureRoute` caused the redirect, then the callback redirects to the secured route. For more advanced cases, this component can be copied to your own source tree and modified as needed.
 
+#### errorComponent
+
+By default, LoginCallback will display any errors from `authState.error`.  If you wish to customise the display of such error messages, you can pass your own component as an `errorComponent` prop to `<LoginCallback>`.  The `authState.error` value will be passed to the `errorComponent` as the `error` prop.
+
+#### onAuthResume
+
+In special cases where an external auth (such as a social IDP) redirects back to your application AND your Okta sign-in policies require additional authentication factors before authentication is complete, the redirect to your application redirectUri callback will be an `interaction_required` error.  Such an error can be handled like any other error, or you can pass an `onAuthResume` function as a prop to `<LoginCallback>`.  `onAuthResume` is expected to handle the `interaction_required`.  Most commonly (for this not-common situation) you will want your application to resume the login.  If using the Okta SignIn Widget, redirecting to your login route will allow the widget to automatically resume your authentication transaction.
+
+```jsx
+// Example assumes you are using react-router and a customer-hosted Okta SignIn Widget
+// This is wherever you have your <Security> component, which must be inside your <Router> for react-router
+  const onAuthResume = async () => { 
+    history.push('/login');
+  };
+
+return (
+  <Security
+    oktaAuth={oktaAuth}
+    restoreOriginalUri={restoreOriginalUri}
+  >
+    <Switch>
+      <SecureRoute path='/protected' component={Protected} />
+      <Route path='/login/callback' render={ (props) => <LoginCallback {...props} onAuthResume={ onAuthResume } /> } />
+      <Route path='/login' component={CustomLogin} />
+      <Route path='/' component={Home} />
+    </Switch>
+  </Security>
+);
+```
+
 ### `withOktaAuth`
 
 `withOktaAuth` is a [higher-order component][] which injects an [oktaAuth][Okta Auth SDK] instance and an [authState][AuthState] object as props into the component. Function-based components will want to use the `useOktaAuth` hook instead.  These props provide a way for components to make decisions based on [authState][AuthState] or to call [Okta Auth SDK][] methods, such as `.signInWithRedirect()` or `.signOut()`.  Components wrapped in `withOktaAuth()` need to be a child or descendant of a `<Security>` component to have the necessary context.
