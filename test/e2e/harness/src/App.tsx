@@ -17,16 +17,22 @@ import { Security, LoginCallback, SecureRoute } from '@okta/okta-react';
 import Home from './Home';
 import Protected from './Protected';
 import CustomLogin from './CustomLogin';
+import WidgetLogin from './WidgetLogin';
 import SessionTokenLogin from './SessionTokenLogin';
 
 const App: React.FC<{ 
   oktaAuth: OktaAuth, 
-  customLogin: boolean 
-}> = ({ oktaAuth, customLogin }) => {
+  customLogin: boolean, 
+  baseUrl: string,
+}> = ({ oktaAuth, customLogin, baseUrl }) => {
   const history = useHistory();
 
   const onAuthRequired = async () => {
     history.push('/login');
+  };
+
+  const onAuthResume = async () => { 
+    history.push('/widget-login');
   };
 
   const restoreOriginalUri = async (_oktaAuth: OktaAuth, originalUri: string) => {
@@ -41,12 +47,13 @@ const App: React.FC<{
         restoreOriginalUri={restoreOriginalUri}
       >
         <Switch>
-          <Route path='/login' component={CustomLogin}/>
-          <Route path='/sessionToken-login' component={SessionTokenLogin}/>
-          <SecureRoute exact path='/protected' component={Protected}/>
+          <Route path='/login' component={CustomLogin} />
+          <Route path='/widget-login' render={ (props) => <WidgetLogin {...props} baseUrl={baseUrl} /> }/>
+          <Route path='/sessionToken-login' component={SessionTokenLogin} />
+          <SecureRoute exact path='/protected' component={Protected} />
           <Route path='/implicit/callback' component={LoginCallback} />
-          <Route path='/pkce/callback' component={LoginCallback} />
-          <Route path='/' component={Home}/>
+          <Route path='/pkce/callback' render={ (props) => <LoginCallback {...props} onAuthResume={ onAuthResume } /> } />
+          <Route path='/' component={Home} />
         </Switch>
       </Security>
       <a href="/?pkce=1">PKCE Flow</a> | <a href="/">Implicit Flow</a>

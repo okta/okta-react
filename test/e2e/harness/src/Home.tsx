@@ -44,6 +44,7 @@ const Home: React.FC = () => {
       <Link to='/'>Home</Link><br/>
       <Link to='/protected'>Protected</Link><br/>
       <Link to='/sessionToken-login'>Session Token Login</Link><br/>
+      <Link to='/widget-login'>Widget Login</Link><br/>
       {button}
       { authState.isAuthenticated ? <button id="renew-id-token-button" onClick={renewToken('idToken')}>Renew ID Token</button> : null }
       { authState.isAuthenticated ? <button id="renew-access-token-button" onClick={renewToken('accessToken')}>Renew Access Token</button> : null }

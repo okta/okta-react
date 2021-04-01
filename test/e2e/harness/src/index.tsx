@@ -26,6 +26,7 @@ const url = new URL(window.location.href);
 const pkce = !!url.searchParams.get('pkce') || url.pathname.indexOf('pkce/callback') >= 0;
 const redirectUri = window.location.origin + (pkce ? '/pkce/callback' : '/implicit/callback');
 const customLogin = !!url.searchParams.get('customLogin');
+const baseUrl =  ISSUER?.split('/oauth2')[0] || 'ISSUER-NOT-SUPPLIED';
 
 const oktaAuth = new OktaAuth({
   issuer: ISSUER,
@@ -36,7 +37,7 @@ const oktaAuth = new OktaAuth({
 
 ReactDOM.render(
   <Router>
-    <App oktaAuth={oktaAuth} customLogin={customLogin} />
+    <App oktaAuth={oktaAuth} customLogin={customLogin} baseUrl={baseUrl} />
   </Router>
   , document.getElementById('root')
 );
