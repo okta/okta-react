@@ -51,14 +51,11 @@ const SecureRoute: React.FC<{
       return;
     }
 
-    try { 
     // Start login if app has decided it is not logged in and there is no pending signin
     if(!authState.isAuthenticated && !authState.isPending) { 
       handleLogin();
     }  
-  } catch (err) { 
-    console.log(err);
-  }
+
   }, [
     authState.isPending, 
     authState.isAuthenticated, 
