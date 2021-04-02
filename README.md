@@ -1,4 +1,5 @@
 [Okta Auth SDK]: https://github.com/okta/okta-auth-js
+[Okta SignIn Widget]: https://github.com/okta/okta-signin-widget
 [AuthState]: https://github.com/okta/okta-auth-js#authstatemanager
 [react-router]: https://github.com/ReactTraining/react-router
 [reach-router]: https://reach.tech/router
@@ -475,6 +476,40 @@ As with `Route` from `react-router-dom`, `<SecureRoute>` can take one of:
 ### `LoginCallback`
 
 `LoginCallback` handles the callback after the redirect to and back from the Okta-hosted login page. By default, it parses the tokens from the uri, stores them, then redirects to `/`. If a `SecureRoute` caused the redirect, then the callback redirects to the secured route. For more advanced cases, this component can be copied to your own source tree and modified as needed.
+
+#### errorComponent
+
+By default, LoginCallback will display any errors from `authState.error`.  If you wish to customise the display of such error messages, you can pass your own component as an `errorComponent` prop to `<LoginCallback>`.  The `authState.error` value will be passed to the `errorComponent` as the `error` prop.
+
+#### onAuthResume
+
+When an external auth (such as a social IDP) redirects back to your application AND your Okta sign-in policies require additional authentication factors before authentication is complete, the redirect to your application redirectUri callback will be an `interaction_required` error.  
+
+An `interaction_required` error is an indication that you should resume the authentication flow.  You can pass an `onAuthResume` function as a prop to `<LoginCallback>`, and the `<LoginCallback>` will call the `onAuthResume` function when an `interaction_required` error is returned to the redirectUri of your application.  
+
+If using the [Okta SignIn Widget][], redirecting to your login route will allow the widget to automatically resume your authentication transaction.
+
+```jsx
+// Example assumes you are using react-router with a customer-hosted Okta SignIn Widget on your /login route
+// This code is wherever you have your <Security> component, which must be inside your <Router> for react-router
+  const onAuthResume = async () => { 
+    history.push('/login');
+  };
+
+return (
+  <Security
+    oktaAuth={oktaAuth}
+    restoreOriginalUri={restoreOriginalUri}
+  >
+    <Switch>
+      <SecureRoute path='/protected' component={Protected} />
+      <Route path='/login/callback' render={ (props) => <LoginCallback {...props} onAuthResume={ onAuthResume } /> } />
+      <Route path='/login' component={CustomLogin} />
+      <Route path='/' component={Home} />
+    </Switch>
+  </Security>
+);
+```
 
 ### `withOktaAuth`
 

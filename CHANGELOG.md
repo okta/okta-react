@@ -1,3 +1,8 @@
+# 5.1.0
+
+### Features
+- [#104](https://github.com/okta/okta-react/pull/104) Adds support for `onAuthResume` to `LoginCallback` for `interaction_required` OAuth errors (requires okta-auth-js 4.8+)
+
 # 5.0.0
 
 ### Breaking Changes

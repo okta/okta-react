@@ -34,7 +34,8 @@ describe('<LoginCallback />', () => {
         updateAuthState: jest.fn(),
       },
       isLoginRedirect: jest.fn().mockImplementation(() => false),
-      handleLoginRedirect: jest.fn()
+      isInteractionRequired: jest.fn().mockImplementation( () => false ),
+      handleLoginRedirect: jest.fn().mockImplementation( () => Promise.resolve() ),
     };
     mockProps = {
       oktaAuth, 
@@ -112,6 +113,39 @@ describe('<LoginCallback />', () => {
         </Security>
       );
       expect(wrapper.text()).toBe('Override: errorData');
+    });
+
+    it('will not trigger a passed onAuthResume when isInteractionRequired is false', () => { 
+      const resumeFunction = jest.fn();
+      const wrapper = mount(
+        <Security {...mockProps}>
+          <LoginCallback onAuthResume={resumeFunction}/>
+        </Security>
+      );
+      expect(resumeFunction).not.toHaveBeenCalled();
+      expect(wrapper.text()).toBe('');
+    });
+
+    it('will trigger a passed onAuthResume function when isInteractionRequired is true', () => {
+      oktaAuth.isInteractionRequired = jest.fn().mockImplementation( () => true );
+      const resumeFunction = jest.fn();
+      const wrapper = mount(
+        <Security {...mockProps}>
+          <LoginCallback onAuthResume={resumeFunction}/>
+        </Security>
+      );
+      expect(resumeFunction).toHaveBeenCalled();
+      expect(wrapper.text()).toBe(''); // no output since we expect to be redirected
+    });
+
+    it('will treat isInteractionRequired like a normal error if not onAuthResume is passed', () => { 
+      oktaAuth.isInteractionRequired = jest.fn().mockImplementation( () => true );
+      const wrapper = mount(
+        <Security {...mockProps}>
+          <LoginCallback />
+        </Security>
+      );
+      expect(wrapper.text()).toBe(''); // TODO: should be noticed as an error OKTA-361608
     });
 
   });

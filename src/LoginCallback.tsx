@@ -11,19 +11,28 @@
  */
 
 import * as React from 'react';
-import { useOktaAuth } from './OktaContext';
+import { useOktaAuth, OnAuthResumeFunction } from './OktaContext';
 import OktaError from './OktaError';
 
 const LoginCallback: React.FC<{ 
-  errorComponent?: React.ComponentType<{ error: Error }>
-}> = ({ errorComponent }) => { 
+  errorComponent?: React.ComponentType<{ error: Error }>,
+  onAuthResume?: OnAuthResumeFunction,
+}> = ({ errorComponent, onAuthResume }) => { 
   const { oktaAuth, authState } = useOktaAuth();
   const authStateReady = !authState.isPending;
-
   const ErrorReporter = errorComponent || OktaError;
 
   React.useEffect(() => {
-    oktaAuth.handleLoginRedirect();
+
+    if (onAuthResume && oktaAuth.isInteractionRequired?.() ) {
+      onAuthResume();
+      return;
+    }
+    oktaAuth.handleLoginRedirect()
+    .catch( err => { 
+      console.log(err); //TODO: handle these errors OKTA-361608
+    });  
+
   }, [oktaAuth]);
 
   if(authStateReady && authState.error) { 

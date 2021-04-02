@@ -55,6 +55,7 @@ const SecureRoute: React.FC<{
     if(!authState.isAuthenticated && !authState.isPending) { 
       handleLogin();
     }  
+
   }, [
     authState.isPending, 
     authState.isAuthenticated, 
