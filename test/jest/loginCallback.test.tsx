@@ -12,6 +12,7 @@
 
 import * as React from 'react';
 import { mount } from 'enzyme';
+import { act } from 'react-dom/test-utils';
 import LoginCallback from '../../src/LoginCallback';
 import Security from '../../src/Security';
 
@@ -138,16 +139,44 @@ describe('<LoginCallback />', () => {
       expect(wrapper.text()).toBe(''); // no output since we expect to be redirected
     });
 
-    it('will treat isInteractionRequired like a normal error if not onAuthResume is passed', () => { 
-      oktaAuth.isInteractionRequired = jest.fn().mockImplementation( () => true );
+    it('renders errors caught from handleLoginRedirect', async () => {
+      const errorMsg = 'error on callback';
+      authState.isPending = true;
+      authState.isAuthenticated = false;
+      oktaAuth.handleLoginRedirect.mockImplementation(() => {
+        return Promise.reject(new Error(errorMsg));
+      });
       const wrapper = mount(
         <Security {...mockProps}>
           <LoginCallback />
         </Security>
       );
-      expect(wrapper.text()).toBe(''); // TODO: should be noticed as an error OKTA-361608
+      return await act(async () => {
+        await wrapper.update(); // set state
+        await wrapper.update(); // render error
+        expect(wrapper.text()).toBe('Error: ' + errorMsg);
+      });
     });
 
+    it('will treat isInteractionRequired like a normal error if not onAuthResume is passed', async () => { 
+      oktaAuth.isInteractionRequired = jest.fn().mockImplementation( () => true );
+      const errorMsg = 'error on callback';
+      authState.isPending = true;
+      authState.isAuthenticated = false;
+      oktaAuth.handleLoginRedirect.mockImplementation(() => {
+        return Promise.reject(new Error(errorMsg));
+      });
+      const wrapper = mount(
+        <Security {...mockProps}>
+          <LoginCallback />
+        </Security>
+      );
+      return await act(async () => {
+        await wrapper.update(); // set state
+        await wrapper.update(); // render error
+        expect(wrapper.text()).toBe('Error: ' + errorMsg);
+      });
+    });
   });
 
 });

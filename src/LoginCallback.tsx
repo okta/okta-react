@@ -19,24 +19,24 @@ const LoginCallback: React.FC<{
   onAuthResume?: OnAuthResumeFunction,
 }> = ({ errorComponent, onAuthResume }) => { 
   const { oktaAuth, authState } = useOktaAuth();
+  const [callbackError, setCallbackError] = React.useState(null);
+
   const authStateReady = !authState.isPending;
   const ErrorReporter = errorComponent || OktaError;
-
   React.useEffect(() => {
-
     if (onAuthResume && oktaAuth.isInteractionRequired?.() ) {
       onAuthResume();
       return;
     }
-    oktaAuth.handleLoginRedirect()
-    .catch( err => { 
-      console.log(err); //TODO: handle these errors OKTA-361608
-    });  
-
+    oktaAuth.handleLoginRedirect().catch(e => {
+      setCallbackError(e);
+    });
   }, [oktaAuth]);
 
-  if(authStateReady && authState.error) { 
-    return <ErrorReporter error={authState.error}/>;
+  const authError = authStateReady ? authState.error : null;
+  const displayError = callbackError || authError;
+  if (displayError) { 
+    return <ErrorReporter error={displayError}/>;
   }
 
   return null;
