@@ -1,3 +1,8 @@
+# 5.1.1
+
+### Bug Fixes
+
+- [#105](https://github.com/okta/okta-react/pull/105) Catches and displays errors in `LoginCallback`
 # 5.1.0
 
 ### Features
