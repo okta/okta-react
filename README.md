@@ -190,7 +190,7 @@ export default class extends Component {
 import React from 'react';
 import { SecureRoute, Security, LoginCallback } from '@okta/okta-react';
 import { OktaAuth, toRelativeUrl } from '@okta/okta-auth-js';
-import { useHistory } from 'react-router-dom';
+import { BrowserRouter as Router, Route, useHistory } from 'react-router-dom';
 import Home from './Home';
 import Protected from './Protected';
 
@@ -207,17 +207,21 @@ const App = () => {
   };
 
   return (
-    <Router>
-      <Security oktaAuth={oktaAuth} restoreOriginalUri={restoreOriginalUri}>
-        <Route path='/' exact={true} component={Home} />
-        <SecureRoute path='/protected' component={Protected} />
-        <Route path='/login/callback' component={LoginCallback} />
-      </Security>
-    </Router>
+    <Security oktaAuth={oktaAuth} restoreOriginalUri={restoreOriginalUri}>
+      <Route path='/' exact={true} component={Home} />
+      <SecureRoute path='/protected' component={Protected} />
+      <Route path='/login/callback' component={LoginCallback} />
+    </Security>
   );
 };
 
-export default App;
+const AppWithRouterAccess = () => (
+  <Router>
+    <App />
+  </Router>
+);
+
+export default AppWithRouterAccesss;
 ```
 
 #### Show Login and Logout Buttons (class-based)
@@ -447,12 +451,10 @@ const oktaAuth = new OktaAuth({
 class App extends Component {
   render() {
     return (
-      <Router>
-        <Security oktaAuth={oktaAuth} restoreOriginalUri={restoreOriginalUri}>
-          <Route path='/' exact={true} component={Home} />
-          <Route path='/login/callback' component={LoginCallback} />
-        </Security>
-      </Router>
+      <Security oktaAuth={oktaAuth} restoreOriginalUri={restoreOriginalUri}>
+        <Route path='/' exact={true} component={Home} />
+        <Route path='/login/callback' component={LoginCallback} />
+      </Security>
     );
   }
 }
