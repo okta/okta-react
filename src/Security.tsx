@@ -54,9 +54,10 @@ const Security: React.FC<{
     oktaAuth.userAgent = `${process.env.PACKAGE_NAME}/${process.env.PACKAGE_VERSION} ${oktaAuth.userAgent}`;
 
     // Update Security provider with latest authState
-    oktaAuth.authStateManager.subscribe((authState) => {
+    const handler = (authState) => {
       setAuthState(authState);
-    });
+    };
+    oktaAuth.authStateManager.subscribe(handler);
 
     // Trigger an initial change event to make sure authState is latest
     if (!oktaAuth.isLoginRedirect()) {
@@ -66,7 +67,7 @@ const Security: React.FC<{
     }
 
     return () => {
-      oktaAuth.authStateManager.unsubscribe();
+      oktaAuth.authStateManager.unsubscribe(handler);
       oktaAuth.stop();
     };
   }, [oktaAuth, restoreOriginalUri]);
