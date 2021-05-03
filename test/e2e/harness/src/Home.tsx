@@ -27,15 +27,15 @@ const Home: React.FC = () => {
       .catch(e => setRenewMessage(`Error renewing ${tokenName}: ${e}`));
   }
 
+  if (!authState) {
+    return null;
+  }
+
   const button = authState.isAuthenticated ?
       <button id="logout-button" onClick={logout}>Logout</button> :
       <button id="login-button" onClick={login}>Login</button>;
 
   const pkce = oktaAuth.isPKCE();
-
-  if (authState.isPending) {
-    return null;
-  }
 
   return (
     <div>

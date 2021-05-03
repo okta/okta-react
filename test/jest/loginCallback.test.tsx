@@ -24,9 +24,7 @@ describe('<LoginCallback />', () => {
     location.href = url;
   };
   beforeEach(() => {
-    authState = {
-      isPending: true
-    };
+    authState = null;
     oktaAuth = {
       options: {},
       authStateManager: {
@@ -37,6 +35,7 @@ describe('<LoginCallback />', () => {
       isLoginRedirect: jest.fn().mockImplementation(() => false),
       isInteractionRequired: jest.fn().mockImplementation( () => false ),
       handleLoginRedirect: jest.fn().mockImplementation( () => Promise.resolve() ),
+      start: jest.fn(),
     };
     mockProps = {
       oktaAuth, 
@@ -55,8 +54,9 @@ describe('<LoginCallback />', () => {
   });
 
   it('calls handleLoginRedirect when authState is resolved', () => {
-    authState.isPending = false;
-    authState.isAuthorized = true;
+    authState = {
+      isAuthorized: true
+    }
 
     mount(
       <Security {...mockProps}>
@@ -76,20 +76,11 @@ describe('<LoginCallback />', () => {
       expect(wrapper.text()).toBe('');
     });
 
-    it('does not render errors while authState.isPending', () => { 
-      authState.error = new Error('oh drat!');
-      const wrapper = mount(
-        <Security {...mockProps}>
-          <LoginCallback />
-        </Security>
-      );
-      expect(wrapper.text()).toBe('');
-    });
-
-    it('renders errors while authState is not pending and there is an error', () => { 
-      authState.isPending = false;
-      authState.isAuthenticated = true;
-      authState.error = new Error('oh drat!');
+    it('renders errors if there is an error', () => {
+      authState = {
+        isAuthenticated: true,
+        error: new Error('oh drat!')
+      };
 
       const wrapper = mount(
         <Security {...mockProps}>
@@ -99,10 +90,11 @@ describe('<LoginCallback />', () => {
       expect(wrapper.text()).toBe('Error: oh drat!');
     });
 
-    it('can be passed a custom component to render', () => { 
-      authState.isPending = false;
-      authState.isAuthenticated = true;
-      authState.error = { has: 'errorData' };
+    it('can be passed a custom component to render', () => {
+      authState = {
+        isAuthenticated: true,
+        error: { has: 'errorData' }
+      };
 
       const MyErrorComponent = ({ error }) => { 
       return (<p>Override: {error.has}</p>);
@@ -141,8 +133,9 @@ describe('<LoginCallback />', () => {
 
     it('renders errors caught from handleLoginRedirect', async () => {
       const errorMsg = 'error on callback';
-      authState.isPending = true;
-      authState.isAuthenticated = false;
+      authState = {
+        isAuthenticated: false
+      };
       oktaAuth.handleLoginRedirect.mockImplementation(() => {
         return Promise.reject(new Error(errorMsg));
       });
@@ -161,8 +154,9 @@ describe('<LoginCallback />', () => {
     it('will treat isInteractionRequired like a normal error if not onAuthResume is passed', async () => { 
       oktaAuth.isInteractionRequired = jest.fn().mockImplementation( () => true );
       const errorMsg = 'error on callback';
-      authState.isPending = true;
-      authState.isAuthenticated = false;
+      authState = {
+        isAuthenticated: false
+      };
       oktaAuth.handleLoginRedirect.mockImplementation(() => {
         return Promise.reject(new Error(errorMsg));
       });

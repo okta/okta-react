@@ -13,6 +13,7 @@
 import * as React from 'react';
 import { useOktaAuth, OnAuthRequiredFunction } from './OktaContext';
 import { Route, useRouteMatch, RouteProps } from 'react-router-dom';
+import { toRelativeUrl } from '@okta/okta-auth-js';
 
 const SecureRoute: React.FC<{
   onAuthRequired?: OnAuthRequiredFunction;
@@ -32,7 +33,8 @@ const SecureRoute: React.FC<{
 
       pendingLogin.current = true;
 
-      oktaAuth.setOriginalUri();
+      const originalUri = toRelativeUrl(window.location.href, window.location.origin);
+      oktaAuth.setOriginalUri(originalUri);
       const onAuthRequiredFn = onAuthRequired || _onAuthRequired;
       if (onAuthRequiredFn) {
         await onAuthRequiredFn(oktaAuth);
@@ -46,26 +48,30 @@ const SecureRoute: React.FC<{
       return;
     }
 
+    if (!authState) {
+      return;
+    }
+
     if (authState.isAuthenticated) {
       pendingLogin.current = false;
       return;
     }
 
     // Start login if app has decided it is not logged in and there is no pending signin
-    if(!authState.isAuthenticated && !authState.isPending) { 
+    if(!authState.isAuthenticated) { 
       handleLogin();
     }  
 
   }, [
-    authState.isPending, 
-    authState.isAuthenticated, 
+    !!authState,
+    authState ? authState.isAuthenticated : null, 
     oktaAuth, 
     match, 
     onAuthRequired, 
     _onAuthRequired
   ]);
 
-  if (!authState.isAuthenticated) {
+  if (!authState || !authState.isAuthenticated) {
     return null;
   }
 

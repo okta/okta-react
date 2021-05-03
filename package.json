@@ -40,7 +40,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.11.2",
-    "@okta/okta-auth-js": "^4.8.0"
+    "@okta/okta-auth-js": "^5.0.0"
   },
   "peerDependencies": {
     "@types/react-router-dom": "^5.1.6",

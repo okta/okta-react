@@ -116,7 +116,7 @@ npm install --save @okta/okta-auth-js
 - [Security](#security) - Accepts [oktaAuth][Okta Auth SDK] instance (**required**) and additional [configuration](#configuration-options) as props. This component acts as a [React Context Provider][] that maintains the latest [authState][AuthState] and [oktaAuth][Okta Auth SDK] instance for the downstream consumers. This context can be accessed via the [useOktaAuth](#useoktaauth) React Hook, or the [withOktaAuth](#useoktaauth) Higher Order Component wrapper from it's descendant component.
 - [LoginCallback](#logincallback) - A simple component which handles the login callback when the user is redirected back to the application from the Okta login site.  `<LoginCallback>` accepts an optional prop `errorComponent` that will be used to format the output for any error in handling the callback.  This component will be passed an `error` prop that is an error describing the problem.  (see the `<OktaError>` component for the default rendering)
 
-Users of routers other than `react-router` can use [useOktaAuth](#useoktaauth) to see if a `authState.isPending` is false and `authState.isAuthenticated` is true.  If both are false, you can send them to login via [oktaAuth.signInWithRedirect()](https://github.com/okta/okta-auth-js#signinwithredirectoptions).  See the implementation of `<LoginCallback>` as an example.
+Users of routers other than `react-router` can use [useOktaAuth](#useoktaauth) to see if `authState.isAuthenticated` is true.  If it is false, you can send them to login via [oktaAuth.signInWithRedirect()](https://github.com/okta/okta-auth-js#signinwithredirectoptions).  See the implementation of `<LoginCallback>` as an example.
 
 ### Available Hooks
 
@@ -248,7 +248,7 @@ export default withOktaAuth(class Home extends Component {
   }
 
   render() {
-    if (this.props.authState.isPending) return <div>Loading...</div>;
+    if (!this.props.authState) return <div>Loading...</div>;
     return this.props.authState.isAuthenticated ?
       <button onClick={this.logout}>Logout</button> :
       <button onClick={this.login}>Login</button>;
@@ -267,7 +267,7 @@ const Home = () => {
   const login = async () => oktaAuth.signInWithRedirect();
   const logout = async () => oktaAuth.signOut('/');
 
-  if(authState.isPending) {
+  if(!authState) {
     return <div>Loading...</div>;
   }
 
@@ -529,7 +529,7 @@ import { useOktaAuth } from '@okta/okta-react';
 
 export default MyComponent = () => { 
   const { authState } = useOktaAuth();
-  if( authState.isPending ) { 
+  if( !authState ) { 
     return <div>Loading...</div>;
   }
   if( authState.isAuthenticated ) { 
@@ -712,7 +712,7 @@ Two complications of the 1.x series of this SDK have been simplified in the 2.x 
 - These functions were asynchronous (because the retrieval layer underneath them can be asynchronous) which made avoiding race conditions in renders/re-renders tricky.
 - Recognizing when authentication had yet to be decided versus when it had been decided and was not authenticated was an unclear difference between `null`, `true`, and `false`.
 
-To resolve these the `authService` object holds the authentication information and provides it synchronously (following the first async determination) as an `authState` object.  While waiting on that first determination, the `authState` object has an explicit `.isPending` property.  When the authentication updates the [authService](#authservice) object will emit an `authStateChange` event after which a new [authState](#authstate) object is available.
+To resolve these the `authService` object holds the authentication information and provides it synchronously (following the first async determination) as an `authState` object.  While waiting on that first determination, the `authState` object is null.  When the authentication updates the [authService](#authservice) object will emit an `authStateChange` event after which a new [authState](#authstate) object is available.
 
 Any component that was using `withAuth()` to get the `auth` object and called the properties above has two options to migrate to the new SDK:
 1. Replace the use of `withAuth()` with [withOktaAuth()](#withoktaauth), and replace any of these asynchronous calls to the `auth` methods with the values of the related [authState](#authstate) properties. 

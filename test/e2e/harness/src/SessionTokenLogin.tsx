@@ -29,7 +29,8 @@ const SessionTokenLogin: React.FC = () => {
     })
     .then((res: AuthTransaction) => {
       setSessionToken(res.sessionToken);
-      oktaAuth.signInWithRedirect({sessionToken: res.sessionToken});
+      oktaAuth.setOriginalUri('/');
+      oktaAuth.token.getWithRedirect({sessionToken: res.sessionToken});
     })
     .catch((err: Error) => {
       console.log('Found an error', err);
