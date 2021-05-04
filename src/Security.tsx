@@ -61,7 +61,10 @@ const Security: React.FC<{
       oktaAuth.start();
     }
 
-    return () => oktaAuth.authStateManager.unsubscribe();
+    return () => {
+      oktaAuth.authStateManager.unsubscribe();
+      oktaAuth.stop();
+    };
   }, [oktaAuth, restoreOriginalUri]);
 
   if (!oktaAuth) {
