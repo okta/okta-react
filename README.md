@@ -52,10 +52,11 @@ This library currently supports:
 
 ## Release Status
 
-:heavy_check_mark: The current stable major version series is: `5.x`
+:heavy_check_mark: The current stable major version series is: `6.x`
 
 | Version   | Status                           |
 | -------   | -------------------------------- |
+| `6.x`     | :heavy_check_mark: Stable        |
 | `5.x`     | :heavy_check_mark: Stable        |
 | `4.x`     | :warning: Retiring on 2021-12-09 |
 | `3.x`     | :warning: Retiring on 2021-08-20 |
@@ -540,6 +541,14 @@ export default MyComponent = () => {
 ```
 
 ## Migrating between versions
+
+### Migrating from 5.x to 6.x
+
+`@okta/okta-react` 6.x requires `@okta/okta-auth-js` 5.x (see [notes for migration](https://github.com/okta/okta-auth-js/#from-4x-to-5x)). Some chnages affects `@okta/okta-react`:
+- Initial `AuthState` is null
+- Removed `isPending` from `AuthState`
+- Default value for `originalUri` is null
+
 
 ### Migrating from 4.x to 5.x
 

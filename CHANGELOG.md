@@ -1,8 +1,19 @@
+# 6.0.0
+
+### Breaking Changes
+
+- [#120](https://github.com/okta/okta-react/pull/120) Requires [@okta/okta-auth-js 5.x](https://github.com/okta/okta-auth-js/#from-4x-to-5x)
+  - Initial `AuthState` is null
+  - Removed `isPending` from `AuthState`
+  - Default value for `originalUri` is null
+  
+
 # 5.1.1
 
 ### Bug Fixes
 
 - [#105](https://github.com/okta/okta-react/pull/105) Catches and displays errors in `LoginCallback`
+
 # 5.1.0
 
 ### Features
