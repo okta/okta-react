@@ -544,7 +544,7 @@ export default MyComponent = () => {
 
 ### Migrating from 5.x to 6.x
 
-`@okta/okta-react` 6.x requires `@okta/okta-auth-js` 5.x (see [notes for migration](https://github.com/okta/okta-auth-js/#from-4x-to-5x)). Some chnages affects `@okta/okta-react`:
+`@okta/okta-react` 6.x requires `@okta/okta-auth-js` 5.x (see [notes for migration](https://github.com/okta/okta-auth-js/#from-4x-to-5x)). Some changes affects `@okta/okta-react`:
 - Initial `AuthState` is null
 - Removed `isPending` from `AuthState`
 - Default value for `originalUri` is null
