@@ -117,7 +117,7 @@ npm install --save @okta/okta-auth-js
 - [Security](#security) - Accepts [oktaAuth][Okta Auth SDK] instance (**required**) and additional [configuration](#configuration-options) as props. This component acts as a [React Context Provider][] that maintains the latest [authState][AuthState] and [oktaAuth][Okta Auth SDK] instance for the downstream consumers. This context can be accessed via the [useOktaAuth](#useoktaauth) React Hook, or the [withOktaAuth](#useoktaauth) Higher Order Component wrapper from it's descendant component.
 - [LoginCallback](#logincallback) - A simple component which handles the login callback when the user is redirected back to the application from the Okta login site.  `<LoginCallback>` accepts an optional prop `errorComponent` that will be used to format the output for any error in handling the callback.  This component will be passed an `error` prop that is an error describing the problem.  (see the `<OktaError>` component for the default rendering)
 
-Users of routers other than `react-router` can use [useOktaAuth](#useoktaauth) to see if `authState.isAuthenticated` is true.  If it is false, you can send them to login via [oktaAuth.signInWithRedirect()](https://github.com/okta/okta-auth-js#signinwithredirectoptions).  See the implementation of `<LoginCallback>` as an example.
+Users of routers other than `react-router` can use [useOktaAuth](#useoktaauth) to see if `authState` is not null and `authState.isAuthenticated` is true.  If it is false, you can send them to login via [oktaAuth.signInWithRedirect()](https://github.com/okta/okta-auth-js#signinwithredirectoptions).  See the implementation of `<LoginCallback>` as an example.
 
 ### Available Hooks
 
@@ -125,7 +125,7 @@ These hooks can be used in a component that is a descendant of a `Security` comp
 
 - [useOktaAuth](#useoktaauth) - gives an object with two properties:
   - `oktaAuth` - the [Okta Auth SDK][] instance.
-  - `authState` - the [AuthState][] object that shows the current authentication state of the user to your app
+  - `authState` - the [AuthState][] object that shows the current authentication state of the user to your app (initial state is `null`).
 
 ### Minimal Example in React Router
 
