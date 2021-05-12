@@ -146,6 +146,7 @@ describe('<LoginCallback />', () => {
       );
       return await act(async () => {
         await wrapper.update(); // set state
+        await wrapper.update();
         await wrapper.update(); // render error
         expect(wrapper.text()).toBe('Error: ' + errorMsg);
       });
@@ -167,6 +168,7 @@ describe('<LoginCallback />', () => {
       );
       return await act(async () => {
         await wrapper.update(); // set state
+        await wrapper.update();
         await wrapper.update(); // render error
         expect(wrapper.text()).toBe('Error: ' + errorMsg);
       });
