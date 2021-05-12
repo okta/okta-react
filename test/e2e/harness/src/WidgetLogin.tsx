@@ -43,7 +43,6 @@ const WidgetLogin: React.FC<{
       { el: widgetRef.current },
       (res: any) => { // eslint-disable-line @typescript-eslint/no-explicit-any
         console.log(res);
-        oktaAuth.setOriginalUri('/');
         oktaAuth.handleLoginRedirect(res.tokens);
       },
       (err: any) => { // eslint-disable-line @typescript-eslint/no-explicit-any
