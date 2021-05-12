@@ -36,7 +36,7 @@ const App: React.FC<{
   };
 
   const restoreOriginalUri = async (_oktaAuth: OktaAuth, originalUri: string) => {
-    history.replace(toRelativeUrl(originalUri, window.location.origin));
+    history.replace(toRelativeUrl(originalUri || '/', window.location.origin));
   };
 
   return (

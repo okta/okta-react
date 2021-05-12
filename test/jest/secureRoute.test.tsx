@@ -26,9 +26,7 @@ describe('<SecureRoute />', () => {
   };
 
   beforeEach(() => {
-    authState = {
-      isPending: true
-    };
+    authState = null;
     oktaAuth = {
       options: {},
       authStateManager: {
@@ -40,7 +38,8 @@ describe('<SecureRoute />', () => {
       isLoginRedirect: jest.fn().mockImplementation(() => false),
       handleLoginRedirect: jest.fn(),
       signInWithRedirect: jest.fn(),
-      setOriginalUri: jest.fn()
+      setOriginalUri: jest.fn(),
+      start: jest.fn(),
     };
     mockProps = {
       oktaAuth, 
@@ -60,13 +59,14 @@ describe('<SecureRoute />', () => {
     });
 
     function updateAuthState(newProps = {}) {
-      authState = Object.assign({}, authState, newProps);
+      authState = Object.assign({}, authState || {}, newProps);
       emitAuthState();
     }
 
     it('calls login() only once until user is authenticated', () => {
-      authState.isAuthenticated = false;
-      authState.isPending = false;
+      authState = {
+        isAuthenticated: false
+      }
   
       mount(
         <MemoryRouter>
@@ -78,10 +78,10 @@ describe('<SecureRoute />', () => {
       expect(oktaAuth.signInWithRedirect).toHaveBeenCalledTimes(1);
       oktaAuth.signInWithRedirect.mockClear();
 
-      updateAuthState({ isPending: true });
+      updateAuthState(null);
       expect(oktaAuth.signInWithRedirect).not.toHaveBeenCalled();
 
-      updateAuthState({ isPending: false });
+      updateAuthState({});
       expect(oktaAuth.signInWithRedirect).not.toHaveBeenCalled();
 
       updateAuthState({ isAuthenticated: true });
@@ -96,8 +96,9 @@ describe('<SecureRoute />', () => {
   describe('isAuthenticated: true', () => {
 
     beforeEach(() => {
-      authState.isAuthenticated = true;
-      authState.isPending = false;
+      authState = {
+        isAuthenticated: true
+      };
     });
 
     it('will render wrapped component using "component"', () => {
@@ -146,8 +147,9 @@ describe('<SecureRoute />', () => {
   describe('isAuthenticated: false', () => {
 
     beforeEach(() => {
-      authState.isAuthenticated = false;
-      authState.isPending = false;
+      authState = {
+        isAuthenticated: false
+      };
     });
 
     it('will not render wrapped component using "component"', () => {
@@ -192,10 +194,10 @@ describe('<SecureRoute />', () => {
       expect(wrapper.find(MyComponent).length).toBe(0);
     });
 
-    describe('isPending: false', () => {
+    describe('authState is not null', () => {
 
       beforeEach(() => {
-        authState.isPending = false;
+        authState = {};
       });
 
       describe('route matches', () => {
@@ -257,10 +259,10 @@ describe('<SecureRoute />', () => {
       });
     });
 
-    describe('isPending: true', () => {
+    describe('authState is null', () => {
 
       beforeEach(() => {
-        authState.isPending = true;
+        authState = null;
       });
 
       it('does not call signInWithRedirect()', () => {
@@ -279,8 +281,9 @@ describe('<SecureRoute />', () => {
   describe('when authenticated', () => { 
     const MyComponent = function() { return <div>hello world</div>; };
     beforeEach(() => {
-      authState.isPending = false;
-      authState.isAuthenticated = true;
+      authState = {
+        isAuthenticated: true
+      };
     });
 
     it('should accept a "path" prop and render a component', () => {

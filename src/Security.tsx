@@ -28,12 +28,7 @@ const Security: React.FC<{
 }) => { 
   const [authState, setAuthState] = React.useState(() => {
     if (!oktaAuth) {
-      return { 
-        isPending: true,
-        isAuthenticated: false,
-        idToken: null,
-        accessToken: null,
-      };
+      return null;
     }
     return oktaAuth.authStateManager.getAuthState();
   });
@@ -61,10 +56,15 @@ const Security: React.FC<{
 
     // Trigger an initial change event to make sure authState is latest
     if (!oktaAuth.isLoginRedirect()) {
-      oktaAuth.authStateManager.updateAuthState();
+      // Calculates initial auth state and fires change event for listeners
+      // Also starts the token auto-renew service
+      oktaAuth.start();
     }
 
-    return () => oktaAuth.authStateManager.unsubscribe();
+    return () => {
+      oktaAuth.authStateManager.unsubscribe();
+      oktaAuth.stop();
+    };
   }, [oktaAuth, restoreOriginalUri]);
 
   if (!oktaAuth) {
