@@ -37,6 +37,10 @@ const Security: React.FC<{
     }
     return oktaAuth.authStateManager.getAuthState();
   });
+  const [oktaAuthMajorVersion] = React.useState(() => {
+    const majorVersion = oktaAuth?.userAgent?.split('/')[1]?.split('.')[0];
+    return majorVersion;
+  });
 
   React.useEffect(() => {
     if (!oktaAuth || !restoreOriginalUri) {
@@ -77,9 +81,8 @@ const Security: React.FC<{
     return <OktaError error={err} />;
   }
 
-  const oktaAuthMajorVersion = oktaAuth.userAgent?.split('/')[1]?.split('.')[0];
-  if (oktaAuthMajorVersion 
-      && oktaAuthMajorVersion !== process.env.AUTH_JS_MAJOR_VERSION 
+  
+  if (oktaAuthMajorVersion !== process.env.AUTH_JS_MAJOR_VERSION 
       // skip in test as version and userAgent are dynamic
       && process.env.NODE_ENV !== 'test') {
     const err = new AuthSdkError(`
