@@ -1,3 +1,9 @@
+# 5.1.2
+
+### Bug Fixes
+
+- [#122](https://github.com/okta/okta-react/pull/122) Locks the SDK with installed okta-auth-js major version
+
 # 5.1.1
 
 ### Bug Fixes
