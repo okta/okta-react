@@ -39,10 +39,10 @@
     "yarn": "^1.7.0"
   },
   "dependencies": {
-    "@babel/runtime": "^7.11.2",
-    "@okta/okta-auth-js": "^5.0.0"
+    "@babel/runtime": "^7.11.2"
   },
   "peerDependencies": {
+    "@okta/okta-auth-js": "^5.0.1",
     "@types/react-router-dom": "^5.1.6",
     "react": ">=16.8.0",
     "react-dom": ">=16.8.0",
