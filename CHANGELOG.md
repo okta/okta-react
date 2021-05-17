@@ -1,3 +1,9 @@
+# 5.1.3
+
+### Other
+
+- [#128](https://github.com/okta/okta-react/pull/128) Adds okta-auth-js as peer dependency
+
 # 5.1.2
 
 ### Bug Fixes
