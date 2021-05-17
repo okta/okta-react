@@ -7,7 +7,7 @@ const semver = require('semver');
 const PACKAGE = require('./package.json');
 process.env.PACKAGE_NAME = PACKAGE.name;
 process.env.PACKAGE_VERSION = PACKAGE.version;
-const authJsVersion = PACKAGE.dependencies['@okta/okta-auth-js'];
+const authJsVersion = PACKAGE.peerDependencies['@okta/okta-auth-js'];
 process.env.AUTH_JS_MAJOR_VERSION = semver.minVersion(authJsVersion).major;
 
 // Read environment variables from "testenv". Override environment vars if they are already set.
