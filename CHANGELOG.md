@@ -6,6 +6,7 @@
   - Initial `AuthState` is null
   - Removed `isPending` from `AuthState`
   - Default value for `originalUri` is null
+- [#127](https://github.com/okta/okta-react/pull/127) Moves @okta/okta-auth-js from dependencies list to peerDependencies
   
 # 5.1.2
 
