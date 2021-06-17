@@ -383,6 +383,16 @@ export default MessageList = () => {
 
 `<Security>` is the top-most component of okta-react. It accepts [oktaAuth][Okta Auth SDK] instance and addtional configuration options as props.
 
+**Note:** The `<Security>` component should be wrapped within a `<Router>` component, if routing library like `react-router` is used in the app.
+
+```javascript
+<Router>
+  <Security {...props}>
+    ...
+  </Security>
+<Router>
+```
+
 #### oktaAuth
 
 *(required)* The pre-initialized [oktaAuth][Okta Auth SDK] instance. See [Configuration Reference](https://github.com/okta/okta-auth-js#configuration-reference) for details of how to initialize the instance.
