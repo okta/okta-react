@@ -162,7 +162,7 @@ class App extends Component {
       redirectUri: window.location.origin + '/login/callback'
     });
     this.restoreOriginalUri = async (_oktaAuth, originalUri) => {
-      props.history.replace(toRelativeUrl(originalUri, window.location.origin));
+      props.history.replace(toRelativeUrl(originalUri || '/', window.location.origin));
     };
   }
 
@@ -204,7 +204,7 @@ const oktaAuth = new OktaAuth({
 const App = () => {
   const history = useHistory();
   const restoreOriginalUri = async (_oktaAuth, originalUri) => {
-    history.replace(toRelativeUrl(originalUri, window.location.origin));
+    history.replace(toRelativeUrl(originalUri || '/', window.location.origin));
   };
 
   return (
@@ -417,7 +417,7 @@ export default App = () => {
   };
 
   const restoreOriginalUri = async (_oktaAuth, originalUri) => {
-    history.replace(toRelativeUrl(originalUri, window.location.origin));
+    history.replace(toRelativeUrl(originalUri || '/', window.location.origin));
   };
 
   return (
