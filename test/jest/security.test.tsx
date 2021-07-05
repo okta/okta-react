@@ -34,9 +34,11 @@ describe('<Security />', () => {
       authStateManager: {
         getAuthState: jest.fn().mockImplementation(() => initialAuthState),
         subscribe: jest.fn(),
+        unsubscribe: jest.fn(),
       },
       isLoginRedirect: jest.fn().mockImplementation(() => false),
       start: jest.fn(),
+      stop: jest.fn(),
     };
   });
 
@@ -147,18 +149,28 @@ describe('<Security />', () => {
         fromEventDispatch: true
       }
     ];
-    let callback;
+    let callbacks = [];
     let stateCount = 0;
+    callbacks.push(() => {
+      // dummy subscriber that should be preserved after `<Security />` unmount
+    });
     oktaAuth.authStateManager.getAuthState.mockImplementation( () => { 
       return mockAuthStates[stateCount];
     });
     oktaAuth.authStateManager.subscribe.mockImplementation(fn => {
-      callback = fn;
+      callbacks.push(fn);
+    });
+    oktaAuth.authStateManager.unsubscribe.mockImplementation(fn => {
+      const index = callbacks.indexOf(fn);
+      if (index !== -1) {
+        callbacks.splice(index, 1);
+      }
     });
     oktaAuth.start.mockImplementation(() => {
       stateCount++;
-      callback(mockAuthStates[stateCount]);
+      callbacks.map(fn => fn(mockAuthStates[stateCount]));
     });
+    oktaAuth.stop.mockImplementation(() => {});
     const mockProps = {
       oktaAuth,
       restoreOriginalUri
@@ -183,22 +195,27 @@ describe('<Security />', () => {
         return null;
       });
 
-    mount(
+    const component = mount(
       <MemoryRouter>
         <Security {...mockProps}>
           <MyComponent />
         </Security>
       </MemoryRouter>
     );
+    expect(callbacks.length).toEqual(2);
     expect(oktaAuth.authStateManager.subscribe).toHaveBeenCalledTimes(1);
     expect(oktaAuth.start).toHaveBeenCalledTimes(1);
     expect(MyComponent).toHaveBeenCalledTimes(2);
     MyComponent.mockClear();
     act(() => {
       stateCount++;
-      callback(mockAuthStates[stateCount]);
+      callbacks.map(fn => fn(mockAuthStates[stateCount]));
     });
     expect(MyComponent).toHaveBeenCalledTimes(1);
+
+    component.unmount();
+    expect(oktaAuth.stop).toHaveBeenCalledTimes(1);
+    expect(callbacks.length).toEqual(1);
   });
 
   it('should accept a className prop and render a component using the className', () => {
