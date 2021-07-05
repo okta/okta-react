@@ -1,3 +1,9 @@
+# 6.1.1
+
+### Bug Fixes
+
+- [#112](https://github.com/okta/okta-react/pull/112) Only unsubscribe the `AuthStateManager` handler subscribed by `<Security />`
+
 # 6.0.0
 
 ### Breaking Changes
