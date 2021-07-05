@@ -149,7 +149,7 @@ describe('<Security />', () => {
         fromEventDispatch: true
       }
     ];
-    let callbacks = [];
+    const callbacks = [];
     let stateCount = 0;
     callbacks.push(() => {
       // dummy subscriber that should be preserved after `<Security />` unmount
@@ -170,7 +170,6 @@ describe('<Security />', () => {
       stateCount++;
       callbacks.map(fn => fn(mockAuthStates[stateCount]));
     });
-    oktaAuth.stop.mockImplementation(() => {});
     const mockProps = {
       oktaAuth,
       restoreOriginalUri
