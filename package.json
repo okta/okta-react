@@ -1,6 +1,6 @@
 {
   "name": "@okta/okta-react",
-  "version": "6.0.0",
+  "version": "6.0.1",
   "description": "React support for Okta",
   "private": true,
   "scripts": {
