@@ -97,7 +97,7 @@ describe('<LoginCallback />', () => {
       };
 
       const MyErrorComponent = ({ error }) => { 
-      return (<p>Override: {error.has}</p>);
+        return (<p>Override: {error.has}</p>);
       };
 
       const wrapper = mount(
@@ -172,6 +172,58 @@ describe('<LoginCallback />', () => {
         await wrapper.update(); // render error
         expect(wrapper.text()).toBe('Error: ' + errorMsg);
       });
+    });
+  });
+
+  describe('shows loading', () => {
+    it('does not render loading by default', () => { 
+      const wrapper = mount(
+        <Security {...mockProps}>
+          <LoginCallback />
+        </Security>
+      );
+      expect(wrapper.text()).toBe('');
+    });
+
+    it('custom loading component can be passed to render during loading', () => {
+      const MyLoadingComponent = (<p>loading...</p>);
+
+      const wrapper = mount(
+        <Security {...mockProps}>
+          <LoginCallback loadingComponent={MyLoadingComponent}/>
+        </Security>
+      );
+      expect(wrapper.text()).toBe('loading...');
+    });
+
+    it('does not render loading component on error', () => {
+      authState = {
+        isAuthenticated: true,
+        error: new Error('oh drat!')
+      };
+      const MyLoadingComponent = (<p>loading...</p>);
+
+      const wrapper = mount(
+        <Security {...mockProps}>
+          <LoginCallback loadingComponent={MyLoadingComponent}/>
+        </Security>
+      );
+      expect(wrapper.text()).toBe('Error: oh drat!');
+    });
+
+    it('renders loading component if onAuthResume is passed', async () => { 
+      oktaAuth.isInteractionRequired = jest.fn().mockImplementation( () => true );
+      const resumeFunction = jest.fn();
+      const MyLoadingComponent = (<p>loading...</p>);
+      jest.spyOn(React, 'useEffect').mockImplementation(f => f())
+
+      const wrapper = mount(
+        <Security {...mockProps}>
+          <LoginCallback onAuthResume={resumeFunction} loadingComponent={MyLoadingComponent}/>
+        </Security>
+      );
+      expect(resumeFunction).toHaveBeenCalled();
+      expect(wrapper.text()).toBe('loading...');
     });
   });
 
