@@ -10,8 +10,16 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-export { AppPage } from './page-objects/app.po';
-export { OktaSignInPage } from './page-objects/okta-signin.po';
-export { ProtectedPage } from './page-objects/protected.po';
-export { SessionTokenSignInPage } from './page-objects/sessionToken-signin.po';
-export { LoginCallbackPage } from './page-objects/login-callback.po';
+import { by, element } from 'protractor';
+import { Util } from '../util';
+
+export class LoginCallbackPage {
+    waitUntilVisible() {
+      Util.waitElement(this.loadingComponent());
+    }
+
+    loadingComponent() {
+      return element(by.id('login-callback-loading'));
+    }
+
+}
