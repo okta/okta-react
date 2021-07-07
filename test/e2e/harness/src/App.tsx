@@ -48,11 +48,19 @@ const App: React.FC<{
       >
         <Switch>
           <Route path='/login' component={CustomLogin} />
-          <Route path='/widget-login' render={ (props) => <WidgetLogin {...props} baseUrl={baseUrl} /> }/>
+          <Route path='/widget-login' render={ (props) => 
+            <WidgetLogin {...props} baseUrl={baseUrl} />
+          } />
           <Route path='/sessionToken-login' component={SessionTokenLogin} />
           <SecureRoute exact path='/protected' component={Protected} />
           <Route path='/implicit/callback' component={LoginCallback} />
-          <Route path='/pkce/callback' render={ (props) => <LoginCallback {...props} onAuthResume={ onAuthResume } /> } />
+          <Route path='/pkce/callback' render={ (props) => 
+            <LoginCallback 
+              {...props} 
+              onAuthResume={ onAuthResume } 
+              loadingComponent={ <p id='login-callback-loading'>Loading...</p> }
+            />
+          } />
           <Route path='/' component={Home} />
         </Switch>
       </Security>
