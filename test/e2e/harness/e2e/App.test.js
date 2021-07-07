@@ -15,7 +15,8 @@ import {
   AppPage,
   OktaSignInPage,
   ProtectedPage,
-  SessionTokenSignInPage
+  SessionTokenSignInPage,
+  LoginCallbackPage
 } from './page-objects';
 
 describe('React + Okta App', () => {
@@ -23,12 +24,14 @@ describe('React + Okta App', () => {
   let oktaLoginPage;
   let protectedPage;
   let sessionTokenSignInPage;
+  let loginCallbackPage;
 
   beforeEach(() => {
     appPage = new AppPage();
     oktaLoginPage = new OktaSignInPage();
     protectedPage = new ProtectedPage();
     sessionTokenSignInPage = new SessionTokenSignInPage();
+    loginCallbackPage = new LoginCallbackPage();
   });
 
   describe('implicit flow', () => {
@@ -95,6 +98,7 @@ describe('React + Okta App', () => {
         password: process.env.PASSWORD
       });
   
+      loginCallbackPage.waitUntilVisible();
       protectedPage.waitUntilVisible('?pkce=1&state=bar#baz');
       expect(protectedPage.getLogoutButton().isPresent()).toBeTruthy();
   
@@ -125,6 +129,7 @@ describe('React + Okta App', () => {
         password: process.env.PASSWORD
       });
   
+      loginCallbackPage.waitUntilVisible();
       appPage.waitUntilVisible();
       expect(protectedPage.getLogoutButton().isPresent()).toBeTruthy();
   
