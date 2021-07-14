@@ -82,14 +82,10 @@ const Security: React.FC<{
     return <OktaError error={err} />;
   }
 
-  
   if (oktaAuthMajorVersion !== process.env.AUTH_JS_MAJOR_VERSION 
-      // skip in test as version and userAgent are dynamic
-      && process.env.NODE_ENV !== 'test') {
-    const err = new AuthSdkError(`
-      Passed in oktaAuth is not compatible with the SDK,
-      okta-auth-js version ${process.env.AUTH_JS_MAJOR_VERSION}.x is the current supported version.
-    `);
+      // use SKIP_VERSION_CHECK flag to control version check in tests
+      && process.env.SKIP_VERSION_CHECK !== '1') {
+    const err = new AuthSdkError(`Passed in oktaAuth is not compatible with the SDK, okta-auth-js version ${process.env.AUTH_JS_MAJOR_VERSION}.x is the current supported version.`);
     return <OktaError error={err} />;
   }
 

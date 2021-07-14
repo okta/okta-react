@@ -51,6 +51,27 @@ describe('<Security />', () => {
     expect(oktaAuth.userAgent).toEqual(`${pkg.name}/${pkg.version} okta/okta-auth-js`);
   });
 
+  describe('throws version not match error', () => {
+    // turn off SKIP_VERSION_CHECK to test the functionality
+    beforeEach(() => {
+      process.env.SKIP_VERSION_CHECK = '0';
+    });
+    afterEach(() => {
+      process.env.SKIP_VERSION_CHECK = '1';
+    });
+    it('throws runtime error when passed in authJS version not match version from deps list', () => {
+      oktaAuth.userAgent = 'okta-auth-js/9999.0.0'; // intentional large mock version
+      const mockProps = {
+        oktaAuth,
+        restoreOriginalUri
+      };
+      // mock auth-js version from dependencies
+      process.env.AUTH_JS_MAJOR_VERSION = '5';
+      const wrapper = mount(<Security {...mockProps} />);
+      expect(wrapper.find(Security).html()).toBe(`<p>AuthSdkError: Passed in oktaAuth is not compatible with the SDK, okta-auth-js version 5.x is the current supported version.</p>`);
+    });
+  });
+
   it('should set default restoreOriginalUri callback in oktaAuth.options', () => {
     oktaAuth.options = {};
     const mockProps = {
