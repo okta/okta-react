@@ -40,7 +40,7 @@ const LoginCallback: React.FC<LoginCallbackProps> = ({ errorComponent, loadingCo
     });
   }, [oktaAuth]);
 
-  const authError = authStateReady ? authState.error : null;
+  const authError = authStateReady ? authState!.error : null;
   const displayError = callbackError || authError;
   if (displayError) { 
     return <ErrorReporter error={displayError}/>;
