@@ -7,7 +7,8 @@
     "jsx": "react",
     "moduleResolution": "node",
     "strictFunctionTypes": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "strict": true
   },
   "include": ["src/**/*"],
 }
