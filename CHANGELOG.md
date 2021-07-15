@@ -1,3 +1,9 @@
+# 6.1.0
+
+### Features
+
+- [#67](https://github.com/okta/okta-react/pull/67) Adds `loadingComponent` prop to `LoginCallback` component
+
 # 6.0.1
 
 ### Bug Fixes
