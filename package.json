@@ -14,7 +14,7 @@
     "pretest:e2e": "node ./scripts/update-se-drivers.js",
     "test": "yarn lint && yarn test:unit && yarn test:e2e",
     "test:e2e": "yarn --cwd test/e2e/harness test",
-    "test:unit": "jest",
+    "test:unit": "SKIP_VERSION_CHECK=1 jest",
     "bundle": "rollup -c",
     "dev": "yarn bundle --watch"
   },
