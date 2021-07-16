@@ -19,12 +19,12 @@ export type RestoreOriginalUriFunction = (oktaAuth: OktaAuth, originalUri: strin
 
 export interface IOktaContext {
     oktaAuth: OktaAuth;
-    authState: AuthState;
-    _onAuthRequired: OnAuthRequiredFunction;
+    authState: AuthState | null;
+    _onAuthRequired?: OnAuthRequiredFunction;
 }
 
 const OktaContext = React.createContext<IOktaContext | null>(null);
 
-export const useOktaAuth = (): IOktaContext => React.useContext(OktaContext);
+export const useOktaAuth = (): IOktaContext => React.useContext(OktaContext) as IOktaContext;
 
 export default OktaContext;

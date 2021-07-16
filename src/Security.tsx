@@ -11,7 +11,7 @@
  */
 
 import * as React from 'react';
-import { AuthSdkError, OktaAuth } from '@okta/okta-auth-js';
+import { AuthSdkError, OktaAuth, AuthState } from '@okta/okta-auth-js';
 import OktaContext, { OnAuthRequiredFunction, RestoreOriginalUriFunction } from './OktaContext';
 import OktaError from './OktaError';
 
@@ -54,7 +54,7 @@ const Security: React.FC<{
     oktaAuth.userAgent = `${process.env.PACKAGE_NAME}/${process.env.PACKAGE_VERSION} ${oktaAuth.userAgent}`;
 
     // Update Security provider with latest authState
-    const handler = (authState) => {
+    const handler = (authState: AuthState) => {
       setAuthState(authState);
     };
     oktaAuth.authStateManager.subscribe(handler);

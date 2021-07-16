@@ -1,3 +1,9 @@
+# 6.1.1
+
+### Bug Fixes
+
+- [#146](https://github.com/okta/okta-react/pull/146) Fixed TypeScript definitions
+
 # 6.1.0
 
 ### Features
