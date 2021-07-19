@@ -24,7 +24,6 @@ const LoginCallback: React.FC<LoginCallbackProps> = ({ errorComponent, loadingCo
   const { oktaAuth, authState } = useOktaAuth();
   const [callbackError, setCallbackError] = React.useState(null);
 
-  const authStateReady = !!authState;
   const ErrorReporter = errorComponent || OktaError;
   React.useEffect(() => {
     if (onAuthResume && oktaAuth.isInteractionRequired?.() ) {
@@ -40,7 +39,7 @@ const LoginCallback: React.FC<LoginCallbackProps> = ({ errorComponent, loadingCo
     });
   }, [oktaAuth]);
 
-  const authError = authStateReady ? authState.error : null;
+  const authError = authState?.error;
   const displayError = callbackError || authError;
   if (displayError) { 
     return <ErrorReporter error={displayError}/>;
