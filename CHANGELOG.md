@@ -1,19 +1,12 @@
-# 6.1.1
-
-### Bug Fixes
-
-- [#146](https://github.com/okta/okta-react/pull/146) Fixed TypeScript definitions
-
 # 6.1.0
 
 ### Features
 
 - [#67](https://github.com/okta/okta-react/pull/67) Adds `loadingComponent` prop to `LoginCallback` component
 
-# 6.0.1
-
 ### Bug Fixes
 
+- [#146](https://github.com/okta/okta-react/pull/146) Fixed TypeScript definitions
 - [#112](https://github.com/okta/okta-react/pull/112) Only unsubscribe the `AuthStateManager` handler subscribed by `<Security />`
 
 # 6.0.0
