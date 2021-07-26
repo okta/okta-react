@@ -1,3 +1,9 @@
+# 3.0.11
+
+### Bug Fixes
+
+- [#150](https://github.com/okta/okta-react/pull/150) fixes issue with displaying error in `LoginCallback`
+
 # 3.0.10
 
 ### Bug Fixes

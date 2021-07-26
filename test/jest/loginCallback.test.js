@@ -16,6 +16,7 @@ describe('<LoginCallback />', () => {
       updateAuthState: jest.fn(),
       getAuthState: jest.fn().mockImplementation(() => authState),
       handleAuthentication: jest.fn(),
+      _pending: {},
       _oktaAuth: {
         token: {
           isLoginRedirect: jest.fn().mockImplementation(() => false)

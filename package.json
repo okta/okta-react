@@ -1,6 +1,6 @@
 {
   "name": "@okta/okta-react",
-  "version": "3.0.10",
+  "version": "3.0.11",
   "description": "React support for Okta",
   "private": true,
   "scripts": {
@@ -12,6 +12,7 @@
     "lint:report": "eslint -f checkstyle -o ./test-reports/lint/eslint-checkstyle-result.xml .",
     "prepare": "yarn build",
     "start": "yarn --cwd test/e2e/harness start",
+    "pretest:e2e": "node ./scripts/update-se-drivers.js",
     "test": "yarn lint && yarn test:unit && yarn test:e2e",
     "test:e2e": "yarn --cwd test/e2e/harness test",
     "test:unit": "jest"
@@ -52,6 +53,7 @@
     "@babel/plugin-transform-runtime": "^7.11.5",
     "@babel/preset-env": "^7.11.5",
     "@babel/preset-react": "^7.10.4",
+    "axios": "^0.21.0",
     "babel-jest": "^26.3.0",
     "babel-plugin-transform-inline-environment-variables": "^0.4.3",
     "chalk": "^4.1.0",

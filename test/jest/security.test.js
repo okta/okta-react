@@ -21,6 +21,7 @@ describe('<Security />', () => {
       on: jest.fn(),
       updateAuthState: jest.fn(),
       getAuthState: jest.fn().mockImplementation(() => initialAuthState),
+      _pending: {},
       _oktaAuth: {
         token: {
           isLoginRedirect: jest.fn().mockImplementation(() => false)
