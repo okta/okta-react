@@ -58,7 +58,7 @@ const App: React.FC<{
             <LoginCallback 
               {...props} 
               onAuthResume={ onAuthResume } 
-              loadingComponent={ <p id='login-callback-loading'>Loading...</p> }
+              loadingElement={ <p id='login-callback-loading'>Loading...</p> }
             />
           } />
           <Route path='/' component={Home} />

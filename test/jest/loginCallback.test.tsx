@@ -185,41 +185,41 @@ describe('<LoginCallback />', () => {
       expect(wrapper.text()).toBe('');
     });
 
-    it('custom loading component can be passed to render during loading', () => {
-      const MyLoadingComponent = (<p>loading...</p>);
+    it('custom loading element can be passed to render during loading', () => {
+      const MyLoadingElement = (<p>loading...</p>);
 
       const wrapper = mount(
         <Security {...mockProps}>
-          <LoginCallback loadingComponent={MyLoadingComponent}/>
+          <LoginCallback loadingElement={MyLoadingElement}/>
         </Security>
       );
       expect(wrapper.text()).toBe('loading...');
     });
 
-    it('does not render loading component on error', () => {
+    it('does not render loading element on error', () => {
       authState = {
         isAuthenticated: true,
         error: new Error('oh drat!')
       };
-      const MyLoadingComponent = (<p>loading...</p>);
+      const MyLoadingElement = (<p>loading...</p>);
 
       const wrapper = mount(
         <Security {...mockProps}>
-          <LoginCallback loadingComponent={MyLoadingComponent}/>
+          <LoginCallback loadingElement={MyLoadingElement}/>
         </Security>
       );
       expect(wrapper.text()).toBe('Error: oh drat!');
     });
 
-    it('renders loading component if onAuthResume is passed', async () => { 
+    it('renders loading element if onAuthResume is passed', async () => { 
       oktaAuth.isInteractionRequired = jest.fn().mockImplementation( () => true );
       const resumeFunction = jest.fn();
-      const MyLoadingComponent = (<p>loading...</p>);
+      const MyLoadingElement = (<p>loading...</p>);
       jest.spyOn(React, 'useEffect').mockImplementation(f => f())
 
       const wrapper = mount(
         <Security {...mockProps}>
-          <LoginCallback onAuthResume={resumeFunction} loadingComponent={MyLoadingComponent}/>
+          <LoginCallback onAuthResume={resumeFunction} loadingElement={MyLoadingElement}/>
         </Security>
       );
       expect(resumeFunction).toHaveBeenCalled();
