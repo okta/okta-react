@@ -484,6 +484,10 @@ As with `Route` from `react-router-dom`, `<SecureRoute>` can take one of:
 
 By default, LoginCallback will display any errors from `authState.error`.  If you wish to customise the display of such error messages, you can pass your own component as an `errorComponent` prop to `<LoginCallback>`.  The `authState.error` value will be passed to the `errorComponent` as the `error` prop.
 
+#### loadingElement
+
+By default, LoginCallback will display nothing during handling the callback. If you wish to customize this, you can pass your React element (not component) as `loadingElement` prop to `<LoginCallback>`. Example: `<p>Loading...</p>`
+
 #### onAuthResume
 
 When an external auth (such as a social IDP) redirects back to your application AND your Okta sign-in policies require additional authentication factors before authentication is complete, the redirect to your application redirectUri callback will be an `interaction_required` error.  

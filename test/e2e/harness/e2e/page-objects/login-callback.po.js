@@ -15,10 +15,10 @@ import { Util } from '../util';
 
 export class LoginCallbackPage {
     waitUntilVisible() {
-      Util.waitElement(this.loadingComponent());
+      Util.waitElement(this.loadingElement());
     }
 
-    loadingComponent() {
+    loadingElement() {
       return element(by.id('login-callback-loading'));
     }
 

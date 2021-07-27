@@ -2,7 +2,7 @@
 
 ### Features
 
-- [#67](https://github.com/okta/okta-react/pull/67) Adds `loadingComponent` prop to `LoginCallback` component
+- [#67](https://github.com/okta/okta-react/pull/67) Adds `loadingElement` prop to `LoginCallback` component
 
 ### Bug Fixes
 
