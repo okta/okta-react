@@ -8,6 +8,7 @@
 
 - [#146](https://github.com/okta/okta-react/pull/146) Fixed TypeScript definitions
 - [#112](https://github.com/okta/okta-react/pull/112) Only unsubscribe the `AuthStateManager` handler subscribed by `<Security />`
+- [#152](https://github.com/okta/okta-react/pull/152) Fix token auto renew by using @okta/okta-auth-js ^5.2.3
 
 # 6.0.0
 
