@@ -16,7 +16,8 @@
     "test:e2e": "yarn --cwd test/e2e/harness test",
     "test:unit": "SKIP_VERSION_CHECK=1 jest",
     "bundle": "rollup -c",
-    "dev": "yarn bundle --watch"
+    "dev": "yarn bundle --watch",
+    "generate": "yarn workspace @okta/generator generate"
   },
   "repository": {
     "type": "git",
@@ -103,6 +104,8 @@
   },
   "workspaces": [
     "./",
+    "env",
+    "generator",
     "test/e2e/harness"
   ]
 }

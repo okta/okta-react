@@ -7,3 +7,6 @@ testenv
 yalc.lock
 .yarnrc
 .yarn
+
+// TODO: remove
+generated
