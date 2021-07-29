@@ -17,7 +17,10 @@ module.exports = {
     es6: true
   },
   rules: {
-    'jasmine/new-line-before-expect': 0
+    'jasmine/new-line-before-expect': 0,
+    'protractor/missing-wait-message': 0,
+    'protractor/no-browser-sleep': 0,
+    'protractor/no-get-in-it': 0
   },
   globals: {
     '$': true
