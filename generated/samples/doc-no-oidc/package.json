@@ -5,8 +5,8 @@
   "dependencies": {
     "@okta/okta-auth-js": "^5.2.3",
     "@okta/okta-react": "*",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
+    "react": "^16.8.0",
+    "react-dom": "^16.8.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^4.0.1"
   },
