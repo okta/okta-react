@@ -1,38 +1,38 @@
 module.exports = [
   {
-    pkgName: '@okta/samples.react.okta-hosted-login',
+    name: '@okta/samples.react.okta-hosted-login',
     type: 'github-sample',
     useSiw: false,
     excludeAction: /^doc-/,
-    features: [
-      'okta-hosted-login/basic-auth'
+    specs: [
+      'okta-hosted-login'
     ]
   },
   {
-    pkgName: '@okta/samples.react.custom-login',
+    name: '@okta/samples.react.custom-login',
     type: 'github-sample',
     useSiw: true,
     excludeAction: /^doc-/,
-    features: [
-      'custom-login/basic-auth'
+    specs: [
+      'custom-login'
     ]
   },
   {
-    pkgName: '@okta/samples.react.doc-signin-widget',
+    name: '@okta/samples.react.doc-signin-widget',
     type: 'doc-sample',
     useSiw: true,
     excludeAction: /^github-/,
     features: [
-      'doc-signin-widget/basic-auth'
+      'doc-signin-widget'
     ]
   },
   {
-    pkgName: '@okta/samples.react.doc-no-oidc',
+    name: '@okta/samples.react.doc-no-oidc',
     type: 'doc-sample',
     useSiw: false,
     excludeAction: /^github-/,
     features: [
-      'doc-no-oidc/basic-auth'
+      'doc-no-oidc'
     ]
   }
 ];
