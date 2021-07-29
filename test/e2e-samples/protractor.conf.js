@@ -13,7 +13,6 @@
 
 // Protractor configuration file, see link for more information
 // https://github.com/angular/protractor/blob/master/lib/config.ts
-/* global jasmine */
 const jasmineReporters = require('jasmine-reporters');
 const sampleConfigs = require('@okta/generator/config');
 const env = require('@okta/env');

@@ -22,5 +22,8 @@
     "minimist": "^1.2.5",
     "webdriver-manager": "^12.1.4",
     "url": "^0.11.0"
+  },
+  "devDependencies": {
+    "eslint-plugin-protractor": "^2.1.1"
   }
 }

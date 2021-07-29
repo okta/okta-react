@@ -12,13 +12,7 @@
 
 'use strict';
 
-const { browser } = require('protractor');
-const util = require('./shared/util');
-
-function input(field) {
-  const inputWrap = `o-form-input-${field}`;
-  return $(`${util.se(inputWrap)} input`);
-} 
+const util = require('./shared/util'); 
 
 class OktaSignInPage {
 

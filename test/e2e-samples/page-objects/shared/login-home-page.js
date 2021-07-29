@@ -17,11 +17,11 @@ const util = require('./util');
 class LoginHomePage {
 
   constructor() {
-  	this.$loginButton = $('#login-button');
+    this.$loginButton = $('#login-button');
 
     // For asp.net webforms you can't have ids with hyphens
     // https://stackoverflow.com/questions/25919471/how-to-get-html-control-by-id-that-has-hyphens
-  	if (__dirname.indexOf('samples-aspnet-webforms') > -1) {
+    if (__dirname.indexOf('samples-aspnet-webforms') > -1) {
       this.$loginButton = $('#loginButton');
     }
   }

@@ -21,9 +21,9 @@ import WidgetLogin from './WidgetLogin';
 import SessionTokenLogin from './SessionTokenLogin';
 
 const App: React.FC<{ 
-  oktaAuth: OktaAuth, 
-  customLogin: boolean, 
-  baseUrl: string,
+  oktaAuth: OktaAuth; 
+  customLogin: boolean; 
+  baseUrl: string;
 }> = ({ oktaAuth, customLogin, baseUrl }) => {
   const history = useHistory();
 
