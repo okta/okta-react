@@ -74,8 +74,8 @@ const getSamplesConfig = () => {
     oktaAuthJsVersion: getPublishedModuleVersion(`@okta/okta-auth-js`)
   };
   return samplesConfig.map(config => {
-    const pkgNameParts = config.pkgName.split('.');
-    const name = pkgNameParts[pkgNameParts.length - 1];
+    const nameParts = config.name.split('.');
+    const name = nameParts[nameParts.length - 1];
     const dest = `samples/${name}`;
     return { ...config, ...versions, name, dest };
   });
