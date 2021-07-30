@@ -18,21 +18,18 @@ class AuthenticatedHomePage {
 
   constructor() {
     this.$profileButton = $('#profile-button');
+    this.$protectedButton = $('a[href="/protected"]');
     this.$logoutButton = $('#logout-button');
     this.$textContainer = $('.text.container');
-
-    // For asp.net webforms you can't have ids with hyphens
-    // https://stackoverflow.com/questions/25919471/how-to-get-html-control-by-id-that-has-hyphens
-    if (__dirname.indexOf('samples-aspnet-webforms') > -1) {
-      this.$profileButton = $('#profileButton');
-      this.$logoutButton = $('#logoutButton');
-    }
-
     this.$messagesLink = element(by.partialLinkText('Messages'));
   }
 
   waitForPageLoad() {
     return util.wait(this.$logoutButton);
+  }
+
+  waitForProtectedButton() {
+    return util.wait(this.$protectedButton);
   }
 
   logout() {
@@ -41,6 +38,10 @@ class AuthenticatedHomePage {
 
   viewProfile() {
     return this.$profileButton.click();
+  }
+
+  viewProtectedPage() {
+    return this.$protectedButton.click();
   }
 
   viewMessages() {

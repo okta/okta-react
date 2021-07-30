@@ -2204,15 +2204,16 @@
     core-js "^3.15.1"
     jsonpath-plus "^5.1.0"
 
-"@okta/okta-signin-widget@^5.8.4":
-  version "5.8.4"
-  resolved "https://registry.yarnpkg.com/@okta/okta-signin-widget/-/okta-signin-widget-5.8.4.tgz#89abe06fe53e42e7551d9bc3b39310a90b8399b4"
-  integrity sha512-UQS36yJtMTkqj3QG0o+g4FdspMcPF4mctJi6r9t1RPtIS0IoYHC0apylb6QyzsUh/b2Gxc+PRu2poHW9K2zvfg==
+"@okta/okta-signin-widget@^5.9.0":
+  version "5.9.0"
+  resolved "https://registry.yarnpkg.com/@okta/okta-signin-widget/-/okta-signin-widget-5.9.0.tgz#86467908960de99d6da9e8f945670f74ab2426c0"
+  integrity sha512-mDM4zKkFjldkC8ysOAIDqPM0yI7auk3dJuh6L01M4TM7eqaoO8L7qNlfbKivVY8+OEh1nv+MpHFIcj+64sqHwQ==
   dependencies:
     "@babel/polyfill" "^7.10.1"
     "@babel/runtime" "^7.10.3"
     cross-fetch "^3.0.4"
     handlebars "^4.5.3"
+    jquery "^3.6.0"
     q "1.4.1"
     u2f-api-polyfill "0.4.3"
     underscore "1.13.1"
@@ -10905,7 +10906,7 @@ joi@^9.2.0:
     moment "2.x.x"
     topo "2.x.x"
 
-jquery@x.*:
+jquery@^3.6.0, jquery@x.*:
   version "3.6.0"
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.6.0.tgz#c72a09f15c1bdce142f49dbf1170bdf8adac2470"
   integrity sha512-JVzAR/AjBvVt2BmYhxRCSYysDsPcssdmTFnzyLEts9qNwmjmu4JTAMYubEfwVOSwpQ1I1sKKFcxhZCI2buerfw==

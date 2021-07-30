@@ -1,5 +1,5 @@
 /*!
- * Copyright (c) 2015-2018, Okta, Inc. and/or its affiliates. All rights reserved.
+ * Copyright (c) 2015-Present, Okta, Inc. and/or its affiliates. All rights reserved.
  * The Okta software accompanied by this notice is provided pursuant to the Apache License, Version 2.0 (the "License.")
  *
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
@@ -12,21 +12,29 @@
 
 'use strict';
 
-const util = require('./util');
+const util = require('./shared/util');
 
-class LoginHomePage {
+class DirectAuthLoginInPage {
 
   constructor() {
-    this.$loginButton = $('#login-button');
+    this.usernameInput = $('#username');
+    this.passwordInput = $('#password');
+    this.submitButton = $('button[type=submit]');
   }
 
   waitForPageLoad() {
-    return util.wait(this.$loginButton);
+    return util.wait(this.usernameInput);
   }
 
-  clickLoginButton() {
-    return this.$loginButton.click();
+  login(username, password) {
+    this.usernameInput.sendKeys(username);
+    this.passwordInput.sendKeys(password);
+    return this.submitButton.click();
+  }
+
+  urlContains(str) {
+    return util.urlContains(str);
   }
 }
 
-module.exports = LoginHomePage;
+module.exports = DirectAuthLoginInPage;
