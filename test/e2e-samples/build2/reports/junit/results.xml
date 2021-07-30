@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<testsuites disabled="0" errors="0" failures="0" tests="2" time="2.666">
- <testsuite name="Doc Direct Auth Flow" timestamp="2021-07-30T10:49:59" hostname="localhost" time="2.666" errors="0" tests="2" skipped="0" disabled="0" failures="0">
-  <testcase classname="Doc Direct Auth Flow" name="can login with user credentials" time="2.011" />
-  <testcase classname="Doc Direct Auth Flow" name="can log the user out" time="0.585" />
- </testsuite>
-</testsuites>
