@@ -5,7 +5,7 @@ source ${OKTA_HOME}/${REPO}/scripts/setup.sh
 setup_service google-chrome-stable 83.0.4103.61-1
 
 export TEST_SUITE_TYPE="junit"
-export TEST_RESULT_FILE_DIR="${REPO}/test-reports/e2e"
+export TEST_RESULT_FILE_DIR="${REPO}/test-reports/e2e-samples"
 
 export ISSUER=https://samples-javascript.okta.com/oauth2/default
 export SPA_CLIENT_ID=0oapmwm72082GXal14x6
