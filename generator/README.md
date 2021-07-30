@@ -25,11 +25,31 @@ Other exported tasks:
 
 ## Templates structure
 
-// TODO
+As mentioned in the [Hygen generator](#hygen-generator) section, each direct subdirectorie under `_templates` are [generators](http://www.hygen.io/docs/generators/), it contains templates for a specific module.
+
+- env: generates env module to load environment variables
+
+- samples: contains all samples templates, during code generation, it renders templates from folders other than `overwrite` first, then renders overwrite templates to generate the final samples.
+
+- test-harness: contains templates for the test harness app
 
 ## How to make changes
 
-// TODO
+**Note:** dev mode is avaiable for sample development, try `yarn dev:samples`.
+
+### Change a file
+
+Template name follows the generated file name with `.t` suffix to distinguish the template files from the generated files. When changes are needed, you can search the template file in the IDE, then make changes accordingly.
+
+### Add a new sample
+
+- add config to `config.js`, you may want to add the `type` and `excludeAction` fields based on if the sample belongs to `doc-sample` or `github-sample`.
+
+- start `dev:samples` task by running `yarn dev:samples`
+
+- add templates under `_templates/samples`
+
+- add e2e tests to protect the newly added sample under @okta/test.e2e-samples
 
 ## Commands
 
