@@ -71,13 +71,22 @@ const buildEnv = options => {
 const getSamplesConfig = () => {
   const versions = {
     siwVersion: getPublishedModuleVersion('@okta/okta-signin-widget'),
-    oktaAuthJsVersion: getPublishedModuleVersion(`@okta/okta-auth-js`)
+    oktaAuthJsVersion: getPublishedModuleVersion(`@okta/okta-auth-js`),
+    // keep only one react version in this monorepo to get rid of multiple react versions issue
+    // keep version under 17 to run unit tests
+    reactVersion: '16.8.0' 
   };
   return samplesConfig.map(config => {
     const nameParts = config.name.split('.');
     const name = nameParts[nameParts.length - 1];
     const dest = `samples/${name}`;
-    return { ...config, ...versions, name, dest };
+    return { 
+      ...config, 
+      ...versions, 
+      name, 
+      pkgName: config.name, 
+      dest 
+    };
   });
 };
 

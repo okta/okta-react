@@ -77,7 +77,8 @@ const getOverwriteBuildTasks = () =>
 const defaultTask = series(
   cleanTask,
   parallel(...getCommonBuildTasks()),
-  parallel(...getOverwriteBuildTasks())
+  parallel(...getOverwriteBuildTasks()),
+  installTask
 );
 
 const devSamplesTask = series(

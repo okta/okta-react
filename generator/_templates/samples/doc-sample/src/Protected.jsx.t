@@ -5,6 +5,6 @@ to: ../generated/<%= dest %>/src/Protected.jsx
 
 import React from 'react';
 
-const Home = () => <h3>Protected</h3>;
+const Home = () => <h3 id="protected">Protected</h3>;
 
 export default Home;

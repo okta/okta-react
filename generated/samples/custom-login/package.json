@@ -1,11 +1,11 @@
 {
-  "name": "custom-login",
+  "name": "@okta/samples.react.custom-login",
   "version": "0.3.0",
   "private": true,
   "dependencies": {
     "@okta/okta-auth-js": "^5.2.3",
     "@okta/okta-react": "*",
-    "@okta/okta-signin-widget": "^5.8.4",
+    "@okta/okta-signin-widget": "^5.9.0",
     "colors": "^1.4.0",
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^2.0.3",

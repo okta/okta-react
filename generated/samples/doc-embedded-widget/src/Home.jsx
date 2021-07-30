@@ -34,7 +34,7 @@ const Home = () => {
     <div id="home">
       <Link to="/">Home</Link>
       <br />
-      <Link to="/protected">Protected</Link>
+      <Link id="protected" to="/protected">Protected</Link>
       <br />
       {
         authState.isAuthenticated

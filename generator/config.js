@@ -18,21 +18,21 @@ module.exports = [
     ]
   },
   {
-    name: '@okta/samples.react.doc-signin-widget',
+    name: '@okta/samples.react.doc-embedded-widget',
     type: 'doc-sample',
     useSiw: true,
     excludeAction: /^github-/,
-    features: [
-      'doc-signin-widget'
+    specs: [
+      'doc-embedded-widget'
     ]
   },
   {
-    name: '@okta/samples.react.doc-no-oidc',
+    name: '@okta/samples.react.doc-direct-auth',
     type: 'doc-sample',
     useSiw: false,
     excludeAction: /^github-/,
-    features: [
-      'doc-no-oidc'
+    specs: [
+      'doc-direct-auth'
     ]
   }
 ];

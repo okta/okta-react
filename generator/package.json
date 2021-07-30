@@ -6,8 +6,7 @@
   "scripts": {
     "gulp": "HYGEN_OVERWRITE=1 gulp",
     "generate": "HYGEN_OVERWRITE=1 gulp",
-    "generate:react": "HYGEN_OVERWRITE=1 gulp generate:react && gulp install",
-    "dev:react": "HYGEN_OVERWRITE=1 gulp dev:react"
+    "dev:samples": "HYGEN_OVERWRITE=1 gulp dev:samples"
   },
   "engines": {
     "node": ">=12.0.0"

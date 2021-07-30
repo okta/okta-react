@@ -1,10 +1,11 @@
 {
-  "name": "doc-no-oidc",
+  "name": "@okta/samples.react.doc-embedded-widget",
   "version": "0.3.0",
   "private": true,
   "dependencies": {
     "@okta/okta-auth-js": "^5.2.3",
     "@okta/okta-react": "*",
+    "@okta/okta-signin-widget": "^5.9.0",
     "react": "^16.8.0",
     "react-dom": "^16.8.0",
     "react-router-dom": "^5.2.0",

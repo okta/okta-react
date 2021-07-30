@@ -2,7 +2,7 @@
 to: ../generated/<%= dest %>/package.json
 ---
 {
-  "name": "<%= name %>",
+  "name": "<%= pkgName %>",
   "version": "0.3.0",
   "private": true,
   "dependencies": {
@@ -17,7 +17,7 @@ to: ../generated/<%= dest %>/package.json
     "semantic-ui-react": "^2.0.3",
     "text-encoding": "^0.7.0",
 <% } -%>
-    "react": "^16.8.0",
+    "react": "^<%= reactVersion %>",
     "react-dom": "^16.8.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^4.0.1"

@@ -1,11 +1,10 @@
 {
-  "name": "doc-signin-widget",
+  "name": "@okta/samples.react.doc-direct-auth",
   "version": "0.3.0",
   "private": true,
   "dependencies": {
     "@okta/okta-auth-js": "^5.2.3",
     "@okta/okta-react": "*",
-    "@okta/okta-signin-widget": "^5.8.4",
     "react": "^16.8.0",
     "react-dom": "^16.8.0",
     "react-router-dom": "^5.2.0",
