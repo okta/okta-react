@@ -24,6 +24,7 @@ to: ../generated/<%= dest %>/package.json
   },
   "scripts": {
     "start": "cross-env PORT=8080 react-app-rewired start",
+    "start:browser:none": "BROWSER=none yarn start",
     "build": "react-app-rewired build",
     "test": "react-scripts test --watchAll=false",
     "eject": "react-scripts eject",
