@@ -1,7 +1,6 @@
 const fs = require('fs');
 const path = require('path');
 const shell = require('shelljs');
-const samplesConfig = require('../config');
 
 const getHygenCommand = (base, options) => {
   return Object.keys(options).reduce((acc, curr) => {
@@ -42,7 +41,6 @@ const buildHygenAction = (action, config) => {
   });
 };
 
-
 const getPublishedModuleVersion = (module, cb) => {
   const stdout = shell.exec(`yarn info ${module} dist-tags --json`, { silent: true });
   const distTags = JSON.parse(stdout);
@@ -52,42 +50,14 @@ const getPublishedModuleVersion = (module, cb) => {
   return version;
 };
 
-const install = () => {
-  shell.exec('yarn install --ignore-scripts');
-};
-
-const buildEnv = options => {
-  return new Promise((resolve, reject) => {
-    const command = getHygenCommand(`yarn hygen env new`, options);
-    shell.exec(command, (code, stdout, stderr) => {
-      if (code !== 0) {
-        reject(new Error(stderr));
-      }
-      resolve(stdout);
-    });
-  });
-};
-
-const getSamplesConfig = () => {
-  const versions = {
+const getVersions = () => {
+  return {
     siwVersion: getPublishedModuleVersion('@okta/okta-signin-widget'),
     oktaAuthJsVersion: getPublishedModuleVersion(`@okta/okta-auth-js`),
     // keep only one react version in this monorepo to get rid of multiple react versions issue
     // keep version under 17 to run unit tests
     reactVersion: '16.8.0' 
   };
-  return samplesConfig.map(config => {
-    const nameParts = config.name.split('.');
-    const name = nameParts[nameParts.length - 1];
-    const dest = `samples/${name}`;
-    return { 
-      ...config, 
-      ...versions, 
-      name, 
-      pkgName: config.name, 
-      dest 
-    };
-  });
 };
 
 module.exports = {
@@ -95,8 +65,6 @@ module.exports = {
   getHygenActions,
   getHygenAction,
   buildHygenAction,
-  buildEnv,
-  getPublishedModuleVersion,
-  install,
-  getSamplesConfig
+  getVersions,
+  getPublishedModuleVersion
 };
