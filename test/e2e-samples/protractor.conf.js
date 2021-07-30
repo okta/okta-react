@@ -13,10 +13,13 @@
 
 // Protractor configuration file, see link for more information
 // https://github.com/angular/protractor/blob/master/lib/config.ts
-const jasmineReporters = require('jasmine-reporters');
+const SpecReporter = require('jasmine-spec-reporter').SpecReporter;
+const JUnitXmlReporter = require('jasmine-reporters').JUnitXmlReporter;
 const sampleConfigs = require('@okta/generator/config');
 const env = require('@okta/env');
 env.setEnvironmentVarsFromTestEnv();
+
+const TEST_RESULT_FILE_DIR = '../../../test-reports/e2e-samples';
 
 function getProtractorConfig() {
   const sampleName = process.env.SAMPLE_NAME;
@@ -43,10 +46,17 @@ function getProtractorConfig() {
       appPort: process.env.PORT || 8080,
       appTimeOut: process.env.TIMEOUT || 1000
     },
-    framework: 'jasmine2',
+    allScriptsTimeout: 11000,
+    directConnect: true,
+    framework: 'jasmine',
     onPrepare() {
-      jasmine.getEnv().addReporter(new jasmineReporters.JUnitXmlReporter({
-        savePath: 'build2/reports/junit',
+      jasmine.getEnv().addReporter(new SpecReporter({
+        spec: {
+          displayStacktrace: true
+        }
+      }));
+      jasmine.getEnv().addReporter(new JUnitXmlReporter({
+        savePath: TEST_RESULT_FILE_DIR,
         filePrefix: 'results',
       }));
     },
@@ -55,7 +65,7 @@ function getProtractorConfig() {
     capabilities: {
       browserName: 'chrome',
       chromeOptions: { 
-        args: ['--headless', '--disable-gpu', '--window-size=800,600']
+        args: ['headless', 'disable-gpu', 'window-size=1600x1200', 'no-sandbox']
       }
     }
   };

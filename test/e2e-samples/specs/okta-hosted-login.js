@@ -48,6 +48,8 @@ describe('Okta Hosted Login Flow', () => {
       console.log('Setting default wait time for code to 5 seconds')
       process.env.CODE_WAIT_TIME = 5000;
     }
+
+    browser.get(appRoot);
   });
 
   afterAll(() => {
@@ -57,7 +59,6 @@ describe('Okta Hosted Login Flow', () => {
   });
 
   it('can login with Okta as the IDP', () => {   
-    browser.get(appRoot);
     loginHomePage.waitForPageLoad();
 
     loginHomePage.clickLoginButton();
@@ -91,7 +92,6 @@ describe('Okta Hosted Login Flow', () => {
   });
 
   it('can log the user out', () => {
-    browser.get(appRoot);
     authenticatedHomePage.waitForPageLoad();
     authenticatedHomePage.logout();
     loginHomePage.waitForPageLoad();
@@ -103,7 +103,6 @@ describe('Okta Hosted Login Flow', () => {
       return;
     }
 
-    await browser.get(appRoot);
     await loginHomePage.waitForPageLoad();
 
     await loginHomePage.clickLoginButton();
@@ -200,7 +199,6 @@ describe('Okta Hosted Login Flow', () => {
       return;
     }
 
-    browser.get(appRoot);
     loginHomePage.waitForPageLoad();
 
     loginHomePage.clickLoginButton();
