@@ -1,12 +1,8 @@
 const { src } = require('gulp');
 const clean = require('gulp-clean');
-const shell = require('shelljs');
+const { install } = require('./util');
 
 const BUILD_DIR = '../generated';
-
-const install = () => {
-  shell.exec('yarn install --ignore-scripts');
-};
 
 const cleanTask = () => 
   src(`${BUILD_DIR}`, { read: false, allowEmpty: true })

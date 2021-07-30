@@ -60,11 +60,16 @@ const getVersions = () => {
   };
 };
 
+const install = () => {
+  shell.exec('yarn install --ignore-scripts');
+};
+
 module.exports = {
   getHygenCommand,
   getHygenActions,
   getHygenAction,
   buildHygenAction,
   getVersions,
-  getPublishedModuleVersion
+  getPublishedModuleVersion,
+  install,
 };

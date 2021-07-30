@@ -10,6 +10,7 @@ const {
   getHygenCommand,
   buildHygenAction,
   getVersions,
+  install,
 } = require('./util');
 const configs = require('../config');
 
