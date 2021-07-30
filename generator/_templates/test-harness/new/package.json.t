@@ -2,6 +2,7 @@
 to: ../test/e2e/harness/package.json
 ---
 {
+  "comment": "IMPORTANT: THIS FILE IS GENERATED, CHANGES SHOULD BE MADE WITHIN '@okta/generator'",
   "name": "@okta/okta-react-test-harness",
   "version": "0.0.8",
   "private": true,
