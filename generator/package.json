@@ -6,6 +6,7 @@
   "scripts": {
     "gulp": "HYGEN_OVERWRITE=1 gulp",
     "generate": "HYGEN_OVERWRITE=1 gulp",
+    "generate:samples": "HYGEN_OVERWRITE=1 gulp generate:samples",
     "dev:samples": "HYGEN_OVERWRITE=1 gulp dev:samples"
   },
   "engines": {

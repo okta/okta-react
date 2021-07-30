@@ -2,14 +2,11 @@
 
 source ${OKTA_HOME}/${REPO}/scripts/setup.sh
 
-setup_service xvfb start
-setup_service java 1.8.222
-setup_service google-chrome-stable 87.0.4280.66-1
+setup_service google-chrome-stable 83.0.4103.61-1
 
 export TEST_SUITE_TYPE="junit"
 export TEST_RESULT_FILE_DIR="${REPO}/test-reports/e2e"
 
-export BROWSER=none
 export ISSUER=https://samples-javascript.okta.com/oauth2/default
 export SPA_CLIENT_ID=0oapmwm72082GXal14x6
 export USERNAME=george@acme.com
