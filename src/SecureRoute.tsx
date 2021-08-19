@@ -11,19 +11,22 @@
  */
 
 import * as React from 'react';
-import { useOktaAuth, OnAuthRequiredFunction } from './OktaContext';
+import { useOktaAuth, OnAuthRequiredFunction, OnAuthExpiredFunction } from './OktaContext';
 import { Route, useRouteMatch, RouteProps } from 'react-router-dom';
 import { toRelativeUrl } from '@okta/okta-auth-js';
 
 const SecureRoute: React.FC<{
   onAuthRequired?: OnAuthRequiredFunction;
+  onAuthExpired?: OnAuthExpiredFunction;
 } & RouteProps & React.HTMLAttributes<HTMLDivElement>> = ({ 
-  onAuthRequired, 
+  onAuthRequired,
+  onAuthExpired,
   ...routeProps 
 }) => { 
-  const { oktaAuth, authState, _onAuthRequired } = useOktaAuth();
+  const { oktaAuth, authState, _onAuthRequired, _onAuthExpired } = useOktaAuth();
   const match = useRouteMatch(routeProps);
   const pendingLogin = React.useRef(false);
+  const hasAuthenticated = React.useRef(false);
 
   React.useEffect(() => {
     const handleLogin = async () => {
@@ -31,10 +34,25 @@ const SecureRoute: React.FC<{
         return;
       }
 
-      pendingLogin.current = true;
-
+      // Save the current route before any redirection
       const originalUri = toRelativeUrl(window.location.href, window.location.origin);
       oktaAuth.setOriginalUri(originalUri);
+
+      // We have previously signed in
+      const hasExpired = hasAuthenticated.current === true;
+      if (hasExpired) {
+        const onAuthExpiredFn = onAuthExpired || _onAuthExpired;
+        if (onAuthExpiredFn) {
+          await onAuthExpiredFn(oktaAuth);
+        } else {
+          // There is no default behavior.
+          // App should define an `onAuthExpired` handler to render some type of UI (for example a modal overlay) with a link to signin again.
+        }
+        return;
+      }
+
+      // First-time loading this route, do the auth flow
+      pendingLogin.current = true;
       const onAuthRequiredFn = onAuthRequired || _onAuthRequired;
       if (onAuthRequiredFn) {
         await onAuthRequiredFn(oktaAuth);
@@ -54,13 +72,12 @@ const SecureRoute: React.FC<{
 
     if (authState.isAuthenticated) {
       pendingLogin.current = false;
+      hasAuthenticated.current = true;
       return;
     }
 
-    // Start login if app has decided it is not logged in and there is no pending signin
-    if(!authState.isAuthenticated) { 
-      handleLogin();
-    }  
+    // isAuthenticated is false
+    handleLogin();
 
   }, [
     !!authState,
@@ -68,10 +85,16 @@ const SecureRoute: React.FC<{
     oktaAuth, 
     match, 
     onAuthRequired, 
-    _onAuthRequired
+    _onAuthRequired,
+    onAuthExpired,
+    _onAuthExpired
   ]);
 
-  if (!authState || !authState.isAuthenticated) {
+  // If the user has authenticated on this route (since component load), the component will be rendered.
+  // It is possible that the app's tokens have expired or been removed since that point in time.
+  // App should define an `onAuthExpired` handler to render some type of UI (for example a modal overlay) with a link to signin again.
+  const shouldRender = (authState && authState.isAuthenticated) || hasAuthenticated.current;
+  if (!shouldRender) {
     return null;
   }
 
