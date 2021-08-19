@@ -32,7 +32,10 @@ const oktaAuth = new OktaAuth({
   issuer: ISSUER,
   clientId: CLIENT_ID,
   redirectUri,
-  pkce
+  pkce,
+  tokenManager: {
+    autoRenew: false
+  }
 });
 
 ReactDOM.render(

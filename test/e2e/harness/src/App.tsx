@@ -35,6 +35,10 @@ const App: React.FC<{
     history.push('/widget-login');
   };
 
+  const onAuthExpired = () => {
+    console.error('onAuthExpired');
+  }
+
   const restoreOriginalUri = async (_oktaAuth: OktaAuth, originalUri: string) => {
     history.replace(toRelativeUrl(originalUri || '/', window.location.origin));
   };
@@ -44,6 +48,7 @@ const App: React.FC<{
       <Security
         oktaAuth={oktaAuth}
         onAuthRequired={customLogin ? onAuthRequired : undefined}
+        onAuthExpired={onAuthExpired}
         restoreOriginalUri={restoreOriginalUri}
       >
         <Switch>

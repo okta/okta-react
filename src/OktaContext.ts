@@ -14,6 +14,7 @@ import { AuthState, OktaAuth } from '@okta/okta-auth-js';
 
 export type OnAuthRequiredFunction = (oktaAuth: OktaAuth) => Promise<void> | void;
 export type OnAuthResumeFunction = () => void;
+export type OnAuthExpiredFunction = (oktaAuth: OktaAuth) => Promise<void> | void;
 
 export type RestoreOriginalUriFunction = (oktaAuth: OktaAuth, originalUri: string) => Promise<void> | void;
 
@@ -21,6 +22,7 @@ export interface IOktaContext {
     oktaAuth: OktaAuth;
     authState: AuthState | null;
     _onAuthRequired?: OnAuthRequiredFunction;
+    _onAuthExpired?: OnAuthExpiredFunction;
 }
 
 const OktaContext = React.createContext<IOktaContext | null>(null);
