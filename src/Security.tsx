@@ -11,7 +11,7 @@
  */
 
 import * as React from 'react';
-import { AuthSdkError, OktaAuth, AuthState } from '@okta/okta-auth-js';
+import { AuthSdkError, AuthState, OktaAuth } from '@okta/okta-auth-js';
 import OktaContext, { OnAuthRequiredFunction, RestoreOriginalUriFunction } from './OktaContext';
 import OktaError from './OktaError';
 
@@ -33,7 +33,12 @@ const Security: React.FC<{
     return oktaAuth.authStateManager.getAuthState();
   });
   const [oktaAuthMajorVersion] = React.useState(() => {
-    const majorVersion = oktaAuth?.userAgent?.split('/')[1]?.split('.')[0];
+    if (!oktaAuth || !oktaAuth._oktaUserAgent) {
+      return null;
+    }
+
+    const oktaAuthVersion = oktaAuth._oktaUserAgent.getVersion();
+    const majorVersion = oktaAuthVersion?.split('.')[0];
     return majorVersion;
   });
 
@@ -51,7 +56,11 @@ const Security: React.FC<{
     };
 
     // Add okta-react userAgent
-    oktaAuth.userAgent = `${process.env.PACKAGE_NAME}/${process.env.PACKAGE_VERSION} ${oktaAuth.userAgent}`;
+    if (oktaAuth._oktaUserAgent) {
+      oktaAuth._oktaUserAgent.addEnvironment(`${process.env.PACKAGE_NAME}/${process.env.PACKAGE_VERSION}`);
+    } else {
+      console.warn('_oktaUserAgent is not available on auth SDK instance. Please use okta-auth-js@^5.3.1 .');
+    }
 
     // Update Security provider with latest authState
     const handler = (authState: AuthState) => {
