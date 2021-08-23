@@ -16,7 +16,8 @@ import { act } from 'react-dom/test-utils';
 import { MemoryRouter } from 'react-router-dom';
 import Security from '../../src/Security';
 import { useOktaAuth } from '../../src/OktaContext';
-import * as pkg from '../../package.json';
+
+console.warn = jest.fn();
 
 describe('<Security />', () => {
   let oktaAuth;
@@ -25,11 +26,17 @@ describe('<Security />', () => {
     location.href = url;
   };
   beforeEach(() => {
+    jest.clearAllMocks();
+
     initialAuthState = {
       isInitialState: true
     };
     oktaAuth = {
-      userAgent: 'okta/okta-auth-js',
+      _oktaUserAgent: {
+        addEnvironment: jest.fn(),
+        getHttpHeader: jest.fn(),
+        getVersion: jest.fn()
+      },
       options: {},
       authStateManager: {
         getAuthState: jest.fn().mockImplementation(() => initialAuthState),
@@ -42,13 +49,28 @@ describe('<Security />', () => {
     };
   });
 
-  it('should set userAgent for oktaAuth', () => {
+  it('adds an environmemnt to oktaAuth\'s _oktaUserAgent', () => {
+    const addEnvironmentSpy = jest.spyOn(oktaAuth._oktaUserAgent, 'addEnvironment');
+
     const mockProps = {
       oktaAuth,
       restoreOriginalUri
     };
     mount(<Security {...mockProps} />);
-    expect(oktaAuth.userAgent).toEqual(`${pkg.name}/${pkg.version} okta/okta-auth-js`);
+    expect(addEnvironmentSpy).toBeCalledWith(`${process.env.PACKAGE_NAME}/${process.env.PACKAGE_VERSION}`);
+  });
+
+  it('logs a warning in case _oktaUserAgent is not available on auth SDK instance', () => {
+    const oktaAuthWithoutUserAgent = {
+      ...oktaAuth
+    };
+    delete oktaAuthWithoutUserAgent['_oktaUserAgent'];
+    const mockProps = {
+      oktaAuth: oktaAuthWithoutUserAgent,
+      restoreOriginalUri
+    };
+    mount(<Security {...mockProps} />);
+    expect(console.warn).toBeCalled();
   });
 
   describe('throws version not match error', () => {
@@ -63,6 +85,25 @@ describe('<Security />', () => {
       oktaAuth.userAgent = 'okta-auth-js/9999.0.0'; // intentional large mock version
       const mockProps = {
         oktaAuth,
+        restoreOriginalUri
+      };
+      // mock auth-js version from dependencies
+      process.env.AUTH_JS_MAJOR_VERSION = '5';
+      const wrapper = mount(<Security {...mockProps} />);
+      expect(wrapper.find(Security).html()).toBe(`<p>AuthSdkError: Passed in oktaAuth is not compatible with the SDK, okta-auth-js version 5.x is the current supported version.</p>`);
+    });
+
+    it('can get okta-auth version from _oktaUserAgent property', () => {
+      const oktaAuthWithMismatchingSDKVersion = {
+        ...oktaAuth,
+        _oktaUserAgent: {
+          addEnvironment: jest.fn(),
+          getVersion: jest.fn().mockReturnValue('okta-auth-js/9999.0.0') // intentional large mock version
+        }
+      };
+
+      const mockProps = {
+        oktaAuth: oktaAuthWithMismatchingSDKVersion,
         restoreOriginalUri
       };
       // mock auth-js version from dependencies
