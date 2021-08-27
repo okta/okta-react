@@ -2087,10 +2087,10 @@
     core-js "^3.15.1"
     jsonpath-plus "^5.1.0"
 
-"@okta/okta-signin-widget@^5.9.4":
-  version "5.9.4"
-  resolved "https://registry.yarnpkg.com/@okta/okta-signin-widget/-/okta-signin-widget-5.9.4.tgz#4e5e6f7be4385b1c5094b618eb5185f3d2668fae"
-  integrity sha512-jTbf3hFJsb2PMetNqMknQTB88HjtTFmAnEjmso8S2q13EuY6ZMxII2vaZUjJzEHTLVLsnGy0Qhkn8l/HwwqUJA==
+"@okta/okta-signin-widget@^5.10.0":
+  version "5.10.0"
+  resolved "https://registry.yarnpkg.com/@okta/okta-signin-widget/-/okta-signin-widget-5.10.0.tgz#b8d57344b64db18fdf34587eece739d17699d584"
+  integrity sha512-ZvkUTF/bnWV6M3zEFU+zQ+MhwfOmT8jbvjRZARFs46iZBrx4V73FvbEuDA0MeUtQK1HF0PSB2mQkJDAhqGQYug==
   dependencies:
     "@babel/polyfill" "^7.10.1"
     "@babel/runtime" "^7.10.3"
