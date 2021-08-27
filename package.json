@@ -10,13 +10,15 @@
     "lint": "eslint .",
     "lint:report": "eslint -f checkstyle -o ./test-reports/lint/eslint-checkstyle-result.xml .",
     "prepare": "yarn build",
-    "start": "yarn --cwd test/e2e/harness start",
-    "pretest:e2e": "node ./scripts/update-se-drivers.js",
+    "start": "yarn workspace @okta/okta-react-test-harness start",
     "test": "yarn lint && yarn test:unit && yarn test:e2e",
-    "test:e2e": "yarn --cwd test/e2e/harness test",
+    "test:e2e": "yarn workspace @okta/okta-react-test-harness test",
+    "test:e2e:samples": "yarn workspace @okta/test.e2e-samples test",
     "test:unit": "SKIP_VERSION_CHECK=1 jest",
     "bundle": "rollup -c",
-    "dev": "yarn bundle --watch"
+    "dev": "yarn bundle --watch",
+    "generate": "yarn workspace @okta/generator generate",
+    "dev:samples": "yarn workspace @okta/generator dev:samples"
   },
   "repository": {
     "type": "git",
@@ -87,6 +89,7 @@
     "polished": "^1.7.0",
     "prop-types": "^15.5.10",
     "protractor": "^5.4.2",
+    "react": "^16.8.0",
     "rimraf": "^2.6.2",
     "rollup": "^2.33.1",
     "rollup-plugin-cleanup": "^3.2.1",
@@ -103,6 +106,10 @@
   },
   "workspaces": [
     "./",
-    "test/e2e/harness"
+    "env",
+    "generator",
+    "generated/**/*",
+    "test/e2e/harness",
+    "test/e2e-samples"
   ]
 }

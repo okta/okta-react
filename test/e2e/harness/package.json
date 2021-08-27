@@ -1,9 +1,10 @@
 {
+  "comment": "IMPORTANT: THIS FILE IS GENERATED, CHANGES SHOULD BE MADE WITHIN '@okta/generator'",
   "name": "@okta/okta-react-test-harness",
   "version": "0.0.8",
   "private": true,
   "dependencies": {
-    "@okta/okta-auth-js": "^5.2.3",
+    "@okta/okta-auth-js": "^5.4.0",
     "@okta/okta-react": "*",
     "@types/node": "^14.14.7",
     "@types/react": "^16.9.56",

@@ -18,7 +18,7 @@ declare global {
 }
 
 const WidgetLogin: React.FC<{
-  baseUrl: string,
+  baseUrl: string;
 }> = (baseUrl) => {
   const { oktaAuth } = useOktaAuth();
   const widgetRef = React.useRef<HTMLDivElement | null>(null);

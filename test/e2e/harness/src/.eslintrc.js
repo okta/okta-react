@@ -16,15 +16,9 @@ module.exports = {
     'plugin:@typescript-eslint/eslint-recommended',
     'plugin:@typescript-eslint/recommended'
   ],
-  overrides: [
-    {
-      files: [
-        '.eslintrc.js'
-      ],
-      rules: {
-        '@typescript-eslint/no-var-requires': 0,
-        '@typescript-eslint/no-unused-vars': 0
-      }
-    }
-  ]
+  rules: {
+    '@typescript-eslint/no-var-requires': 0,
+    '@typescript-eslint/no-unused-vars': 0,
+    '@typescript-eslint/explicit-function-return-type': 0
+  }
 };
