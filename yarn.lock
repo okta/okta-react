@@ -2056,10 +2056,10 @@
     mkdirp "^1.0.4"
     rimraf "^3.0.2"
 
-"@okta/okta-auth-js@^5.2.3":
-  version "5.3.0"
-  resolved "https://registry.yarnpkg.com/@okta/okta-auth-js/-/okta-auth-js-5.3.0.tgz#37405a274446e2d5205d2c824c2c633b1e1c5721"
-  integrity sha512-emEv2pgMWVAVz+uDnNsTPfA2UJqqgFRW7u4/ACxwUaAfxTz+02CcS0853WEkMPCxPErFribp7GvElTlv9zcxsg==
+"@okta/okta-auth-js@^5.4.0":
+  version "5.4.0"
+  resolved "https://registry.yarnpkg.com/@okta/okta-auth-js/-/okta-auth-js-5.4.0.tgz#f57519b2bc8ea1200c43e31cb4924d576ec6d059"
+  integrity sha512-JXFAhEM0cTjsn9SzhhmZK6bDlat93E8KC8c8v2XeZBJYDDuIrbyS9h2psN4K/gmaGoSu0v+vmFVXBlLBwiaEHA==
   dependencies:
     "@babel/runtime" "^7.12.5"
     "@okta/okta-idx-js" "0.19.0"
@@ -2087,16 +2087,15 @@
     core-js "^3.15.1"
     jsonpath-plus "^5.1.0"
 
-"@okta/okta-signin-widget@^5.9.0":
-  version "5.9.0"
-  resolved "https://registry.yarnpkg.com/@okta/okta-signin-widget/-/okta-signin-widget-5.9.0.tgz#86467908960de99d6da9e8f945670f74ab2426c0"
-  integrity sha512-mDM4zKkFjldkC8ysOAIDqPM0yI7auk3dJuh6L01M4TM7eqaoO8L7qNlfbKivVY8+OEh1nv+MpHFIcj+64sqHwQ==
+"@okta/okta-signin-widget@^5.9.4":
+  version "5.9.4"
+  resolved "https://registry.yarnpkg.com/@okta/okta-signin-widget/-/okta-signin-widget-5.9.4.tgz#4e5e6f7be4385b1c5094b618eb5185f3d2668fae"
+  integrity sha512-jTbf3hFJsb2PMetNqMknQTB88HjtTFmAnEjmso8S2q13EuY6ZMxII2vaZUjJzEHTLVLsnGy0Qhkn8l/HwwqUJA==
   dependencies:
     "@babel/polyfill" "^7.10.1"
     "@babel/runtime" "^7.10.3"
     cross-fetch "^3.0.4"
     handlebars "^4.5.3"
-    jquery "^3.6.0"
     q "1.4.1"
     u2f-api-polyfill "0.4.3"
     underscore "1.13.1"
@@ -10881,7 +10880,7 @@ joi@^9.2.0:
     moment "2.x.x"
     topo "2.x.x"
 
-jquery@^3.6.0, jquery@x.*:
+jquery@x.*:
   version "3.6.0"
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.6.0.tgz#c72a09f15c1bdce142f49dbf1170bdf8adac2470"
   integrity sha512-JVzAR/AjBvVt2BmYhxRCSYysDsPcssdmTFnzyLEts9qNwmjmu4JTAMYubEfwVOSwpQ1I1sKKFcxhZCI2buerfw==
