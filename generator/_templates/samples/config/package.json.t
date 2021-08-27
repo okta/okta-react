@@ -18,7 +18,7 @@ to: ../generated/<%= dest %>/package.json
     "text-encoding": "^0.7.0",
 <% } -%>
     "react": "^<%= reactVersion %>",
-    "react-dom": "^16.8.0",
+    "react-dom": "^<%= reactVersion %>",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^4.0.1"
   },
