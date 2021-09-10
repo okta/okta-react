@@ -3,7 +3,7 @@
   "version": "0.3.0",
   "private": true,
   "dependencies": {
-    "@okta/okta-auth-js": "^5.4.0",
+    "@okta/okta-auth-js": "^5.4.3",
     "@okta/okta-react": "*",
     "react": "^16.8.0",
     "react-dom": "^16.8.0",
