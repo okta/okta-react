@@ -1,3 +1,8 @@
+# 6.2.0
+
+### Other
+- [#159](https://github.com/okta/okta-react/pull/155) Updates internal dependency
+
 # 6.1.0
 
 ### Features
