@@ -15,7 +15,7 @@ import { mount } from 'enzyme';
 import { act } from 'react-dom/test-utils';
 import { MemoryRouter } from 'react-router-dom';
 import Security from '../../src/Security';
-import { useOktaAuth } from '../../src/OktaContext';
+import { OnAuthRequiredState, useOktaAuth } from '../../src/OktaContext';
 
 console.warn = jest.fn();
 
@@ -43,7 +43,6 @@ describe('<Security />', () => {
         subscribe: jest.fn(),
         unsubscribe: jest.fn(),
       },
-      isLoginRedirect: jest.fn().mockImplementation(() => false),
       start: jest.fn(),
       stop: jest.fn(),
     };
@@ -57,7 +56,7 @@ describe('<Security />', () => {
       restoreOriginalUri
     };
     mount(<Security {...mockProps} />);
-    expect(addEnvironmentSpy).toBeCalledWith(`${process.env.PACKAGE_NAME}/${process.env.PACKAGE_VERSION}`);
+    expect(addEnvironmentSpy).toHaveBeenCalledWith(`${process.env.PACKAGE_NAME}/${process.env.PACKAGE_VERSION}`);
   });
 
   it('logs a warning in case _oktaUserAgent is not available on auth SDK instance', () => {
@@ -70,7 +69,7 @@ describe('<Security />', () => {
       restoreOriginalUri
     };
     mount(<Security {...mockProps} />);
-    expect(console.warn).toBeCalled();
+    expect(console.warn).toHaveBeenCalled();
   });
 
   describe('throws version not match error', () => {
@@ -187,20 +186,6 @@ describe('<Security />', () => {
     expect(MyComponent).toHaveBeenCalledTimes(2);
   });
 
-  it('should not call start when in login redirect state', () => {
-    oktaAuth.isLoginRedirect = jest.fn().mockImplementation(() => true);
-    const mockProps = {
-      oktaAuth,
-      restoreOriginalUri
-    };
-    mount(
-      <MemoryRouter>
-        <Security {...mockProps} />
-      </MemoryRouter>
-    );
-    expect(oktaAuth.start).not.toHaveBeenCalled();
-  });
-
   it('subscribes to "authStateChange" and updates the context', () => {
     const mockAuthStates = [
       initialAuthState,
@@ -241,18 +226,21 @@ describe('<Security />', () => {
       .mockImplementationOnce(() => {
         const oktaProps = useOktaAuth();
         expect(oktaProps.authState).toBe(initialAuthState);
+        expect(oktaProps._onAuthRequiredState).toBe(null);
         return null;
       })
       // second call
       .mockImplementationOnce(() => {
         const oktaProps = useOktaAuth();
         expect(oktaProps.authState).toBe(mockAuthStates[1]);
+        expect(oktaProps._onAuthRequiredState).toBe(OnAuthRequiredState.Initialized);
         return null;
       })
       // third call
       .mockImplementationOnce(() => {
         const oktaProps = useOktaAuth();
         expect(oktaProps.authState).toBe(mockAuthStates[2]);
+        expect(oktaProps._onAuthRequiredState).toBe(OnAuthRequiredState.Updated);
         return null;
       });
 
@@ -263,16 +251,16 @@ describe('<Security />', () => {
         </Security>
       </MemoryRouter>
     );
-    expect(callbacks.length).toEqual(2);
-    expect(oktaAuth.authStateManager.subscribe).toHaveBeenCalledTimes(1);
-    expect(oktaAuth.start).toHaveBeenCalledTimes(1);
-    expect(MyComponent).toHaveBeenCalledTimes(2);
-    MyComponent.mockClear();
+    // mock authState update after mounted
     act(() => {
       stateCount++;
       callbacks.map(fn => fn(mockAuthStates[stateCount]));
     });
-    expect(MyComponent).toHaveBeenCalledTimes(1);
+
+    expect(callbacks.length).toEqual(2);
+    expect(oktaAuth.authStateManager.subscribe).toHaveBeenCalledTimes(1);
+    expect(oktaAuth.start).toHaveBeenCalledTimes(1);
+    expect(MyComponent).toHaveBeenCalledTimes(3);
 
     component.unmount();
     expect(oktaAuth.stop).toHaveBeenCalledTimes(1);

@@ -12,7 +12,15 @@
 import * as React from 'react';
 import { AuthState, OktaAuth } from '@okta/okta-auth-js';
 
-export type OnAuthRequiredFunction = (oktaAuth: OktaAuth) => Promise<void> | void;
+export enum OnAuthRequiredState {
+    Initialized = 'INITIALIZED',
+    Updated = 'UPDATED'
+}
+
+export type OnAuthRequiredFunction = (
+    oktaAuth: OktaAuth, 
+    options: { state: OnAuthRequiredState }
+) => Promise<void> | void;
 export type OnAuthResumeFunction = () => void;
 
 export type RestoreOriginalUriFunction = (oktaAuth: OktaAuth, originalUri: string) => Promise<void> | void;
@@ -21,6 +29,7 @@ export interface IOktaContext {
     oktaAuth: OktaAuth;
     authState: AuthState | null;
     _onAuthRequired?: OnAuthRequiredFunction;
+    _onAuthRequiredState: OnAuthRequiredState | null;
 }
 
 const OktaContext = React.createContext<IOktaContext | null>(null);

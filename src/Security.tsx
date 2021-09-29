@@ -12,7 +12,11 @@
 
 import * as React from 'react';
 import { AuthSdkError, AuthState, OktaAuth } from '@okta/okta-auth-js';
-import OktaContext, { OnAuthRequiredFunction, RestoreOriginalUriFunction } from './OktaContext';
+import OktaContext, { 
+  OnAuthRequiredFunction, 
+  RestoreOriginalUriFunction,
+  OnAuthRequiredState
+} from './OktaContext';
 import OktaError from './OktaError';
 
 const Security: React.FC<{
@@ -41,6 +45,7 @@ const Security: React.FC<{
     const majorVersion = oktaAuthVersion?.split('.')[0];
     return majorVersion;
   });
+  const onAuthRequiredState = React.useRef<OnAuthRequiredState | null>(null);
 
   React.useEffect(() => {
     if (!oktaAuth || !restoreOriginalUri) {
@@ -64,16 +69,15 @@ const Security: React.FC<{
 
     // Update Security provider with latest authState
     const handler = (authState: AuthState) => {
+      onAuthRequiredState.current = onAuthRequiredState.current === OnAuthRequiredState.Initialized 
+        ? OnAuthRequiredState.Updated 
+        : OnAuthRequiredState.Initialized;
       setAuthState(authState);
     };
     oktaAuth.authStateManager.subscribe(handler);
 
-    // Trigger an initial change event to make sure authState is latest
-    if (!oktaAuth.isLoginRedirect()) {
-      // Calculates initial auth state and fires change event for listeners
-      // Also starts the token auto-renew service
-      oktaAuth.start();
-    }
+    // Start services
+    oktaAuth.start();
 
     return () => {
       oktaAuth.authStateManager.unsubscribe(handler);
@@ -102,7 +106,8 @@ const Security: React.FC<{
     <OktaContext.Provider value={{ 
       oktaAuth, 
       authState, 
-      _onAuthRequired: onAuthRequired
+      _onAuthRequired: onAuthRequired,
+      _onAuthRequiredState: onAuthRequiredState.current
     }}>
       {children}
     </OktaContext.Provider>

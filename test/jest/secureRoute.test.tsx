@@ -16,6 +16,7 @@ import { act } from 'react-dom/test-utils';
 import { MemoryRouter, Route, RouteProps } from 'react-router-dom';
 import SecureRoute from '../../src/SecureRoute';
 import Security from '../../src/Security';
+import { OnAuthRequiredState } from '../../src/OktaContext';
 
 describe('<SecureRoute />', () => {
   let oktaAuth;
@@ -215,6 +216,9 @@ describe('<SecureRoute />', () => {
   
         it('calls onAuthRequired if provided from Security', () => {
           const onAuthRequired = jest.fn();
+          jest.spyOn(React, 'useRef')
+            .mockReturnValueOnce({ current: OnAuthRequiredState.Initialized });
+
           mount(
             <MemoryRouter>
               <Security {...mockProps} onAuthRequired={onAuthRequired}>
@@ -224,12 +228,14 @@ describe('<SecureRoute />', () => {
           );
           expect(oktaAuth.setOriginalUri).toHaveBeenCalled();
           expect(oktaAuth.signInWithRedirect).not.toHaveBeenCalled();
-          expect(onAuthRequired).toHaveBeenCalledWith(oktaAuth);
+          expect(onAuthRequired).toHaveBeenCalledWith(oktaAuth, { state: OnAuthRequiredState.Initialized });
         });
 
         it('calls onAuthRequired from SecureRoute if provide from both Security and SecureRoute', () => {
           const onAuthRequired1 = jest.fn();
           const onAuthRequired2 = jest.fn();
+          jest.spyOn(React, 'useRef')
+            .mockReturnValueOnce({ current: OnAuthRequiredState.Initialized });
           mount(
             <MemoryRouter>
               <Security {...mockProps} onAuthRequired={onAuthRequired1}>
@@ -240,7 +246,7 @@ describe('<SecureRoute />', () => {
           expect(oktaAuth.setOriginalUri).toHaveBeenCalled();
           expect(oktaAuth.signInWithRedirect).not.toHaveBeenCalled();
           expect(onAuthRequired1).not.toHaveBeenCalled();
-          expect(onAuthRequired2).toHaveBeenCalledWith(oktaAuth);
+          expect(onAuthRequired2).toHaveBeenCalledWith(oktaAuth, { state: OnAuthRequiredState.Initialized });
         });
       });
 
