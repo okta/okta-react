@@ -393,7 +393,12 @@ export default MessageList = () => {
 
 #### onAuthRequired
 
-*(optional)* Callback function. Called when authentication is required. If this is not supplied, `okta-react` redirects to Okta. This callback will receive [oktaAuth][Okta Auth SDK] instance as the first function parameter. This is triggered when a [SecureRoute](#secureroute) is accessed without authentication. A common use case for this callback is to redirect users to a custom login route when authentication is required for a [SecureRoute](#secureroute).
+*(optional)* Callback function. Called when authentication is required. If this is not supplied, `okta-react` redirects to Okta. This callback will receive [oktaAuth][Okta Auth SDK] instance as the first function parameter and an options object as the second parameter. This is triggered when a [SecureRoute](#secureroute) is accessed without authentication. A common use case for this callback is to redirect users to a custom login route when authentication is required for a [SecureRoute](#secureroute).
+
+- options:
+  - state: The state that when `authState` is updated. It can be either:
+    - `OnAuthRequiredState.Initialized`: when `authState` is updated during app initial load
+    - `OnAuthRequiredState.Updated`: when `authState` is updated with tokens auto renew process
 
 #### Example
 
@@ -410,10 +415,13 @@ const oktaAuth = new OktaAuth({
 export default App = () => {
   const history = useHistory();
 
-  const customAuthHandler = (oktaAuth) => {
-    // Redirect to the /login page that has a CustomLoginComponent
-    // This example is specific to React-Router
-    history.push('/login');
+  const customAuthHandler = (oktaAuth, options) => {
+    // Provide custom auth approach based on option.state
+    if (option.state === OnAuthRequiredState.Initialized) {
+      // ...
+    } else if (option.state === OnAuthRequiredState.Updated) {
+      // ...
+    }
   };
 
   const restoreOriginalUri = async (_oktaAuth, originalUri) => {

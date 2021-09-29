@@ -1,3 +1,9 @@
+# 6.3.0
+
+### Features
+
+- [#166](https://github.com/okta/okta-react/pull/166) Adds options with `OnAuthRequiredState` to `onAuthRequired` callback, so custom authentication approach can be provided based on when authState is updated
+
 # 6.2.0
 
 ### Other
