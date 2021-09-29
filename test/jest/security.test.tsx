@@ -15,7 +15,7 @@ import { mount } from 'enzyme';
 import { act } from 'react-dom/test-utils';
 import { MemoryRouter } from 'react-router-dom';
 import Security from '../../src/Security';
-import { useOktaAuth } from '../../src/OktaContext';
+import { AUTHSTATE_STATUS, useOktaAuth } from '../../src/OktaContext';
 
 console.warn = jest.fn();
 
@@ -226,18 +226,21 @@ describe('<Security />', () => {
       .mockImplementationOnce(() => {
         const oktaProps = useOktaAuth();
         expect(oktaProps.authState).toBe(initialAuthState);
+        expect(oktaProps._authStateStatus).toBe(null);
         return null;
       })
       // second call
       .mockImplementationOnce(() => {
         const oktaProps = useOktaAuth();
         expect(oktaProps.authState).toBe(mockAuthStates[1]);
+        expect(oktaProps._authStateStatus).toBe(AUTHSTATE_STATUS.INITIALIZED);
         return null;
       })
       // third call
       .mockImplementationOnce(() => {
         const oktaProps = useOktaAuth();
         expect(oktaProps.authState).toBe(mockAuthStates[2]);
+        expect(oktaProps._authStateStatus).toBe(AUTHSTATE_STATUS.UPDATED);
         return null;
       });
 
@@ -248,16 +251,16 @@ describe('<Security />', () => {
         </Security>
       </MemoryRouter>
     );
-    expect(callbacks.length).toEqual(2);
-    expect(oktaAuth.authStateManager.subscribe).toHaveBeenCalledTimes(1);
-    expect(oktaAuth.start).toHaveBeenCalledTimes(1);
-    expect(MyComponent).toHaveBeenCalledTimes(2);
-    MyComponent.mockClear();
+    // mock authState update after mounted
     act(() => {
       stateCount++;
       callbacks.map(fn => fn(mockAuthStates[stateCount]));
     });
-    expect(MyComponent).toHaveBeenCalledTimes(1);
+
+    expect(callbacks.length).toEqual(2);
+    expect(oktaAuth.authStateManager.subscribe).toHaveBeenCalledTimes(1);
+    expect(oktaAuth.start).toHaveBeenCalledTimes(1);
+    expect(MyComponent).toHaveBeenCalledTimes(3);
 
     component.unmount();
     expect(oktaAuth.stop).toHaveBeenCalledTimes(1);

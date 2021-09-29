@@ -45,7 +45,7 @@ const Security: React.FC<{
     const majorVersion = oktaAuthVersion?.split('.')[0];
     return majorVersion;
   });
-  const [authStateStatus, setAuthStateStatus] = React.useState<AUTHSTATE_STATUS | null>(null);
+  const authStateStatus = React.useRef<AUTHSTATE_STATUS | null>(null);
 
   React.useEffect(() => {
     if (!oktaAuth || !restoreOriginalUri) {
@@ -69,8 +69,9 @@ const Security: React.FC<{
 
     // Update Security provider with latest authState
     const handler = (authState: AuthState) => {
-      const newAuthStateStatus = authStateStatus === AUTHSTATE_STATUS.INITIALIZED ? AUTHSTATE_STATUS.UPDATED : AUTHSTATE_STATUS.INITIALIZED;
-      setAuthStateStatus(newAuthStateStatus);
+      authStateStatus.current = authStateStatus.current === AUTHSTATE_STATUS.INITIALIZED 
+        ? AUTHSTATE_STATUS.UPDATED 
+        : AUTHSTATE_STATUS.INITIALIZED;
       setAuthState(authState);
     };
     oktaAuth.authStateManager.subscribe(handler);
@@ -106,7 +107,7 @@ const Security: React.FC<{
       oktaAuth, 
       authState, 
       _onAuthRequired: onAuthRequired,
-      _authStateStatus: authStateStatus
+      _authStateStatus: authStateStatus.current
     }}>
       {children}
     </OktaContext.Provider>
