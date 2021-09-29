@@ -43,7 +43,6 @@ describe('<Security />', () => {
         subscribe: jest.fn(),
         unsubscribe: jest.fn(),
       },
-      isLoginRedirect: jest.fn().mockImplementation(() => false),
       start: jest.fn(),
       stop: jest.fn(),
     };
@@ -57,7 +56,7 @@ describe('<Security />', () => {
       restoreOriginalUri
     };
     mount(<Security {...mockProps} />);
-    expect(addEnvironmentSpy).toBeCalledWith(`${process.env.PACKAGE_NAME}/${process.env.PACKAGE_VERSION}`);
+    expect(addEnvironmentSpy).toHaveBeenCalledWith(`${process.env.PACKAGE_NAME}/${process.env.PACKAGE_VERSION}`);
   });
 
   it('logs a warning in case _oktaUserAgent is not available on auth SDK instance', () => {
@@ -70,7 +69,7 @@ describe('<Security />', () => {
       restoreOriginalUri
     };
     mount(<Security {...mockProps} />);
-    expect(console.warn).toBeCalled();
+    expect(console.warn).toHaveBeenCalled();
   });
 
   describe('throws version not match error', () => {
@@ -185,20 +184,6 @@ describe('<Security />', () => {
     expect(oktaAuth.authStateManager.subscribe).toHaveBeenCalledTimes(1);
     expect(oktaAuth.start).toHaveBeenCalledTimes(1);
     expect(MyComponent).toHaveBeenCalledTimes(2);
-  });
-
-  it('should not call start when in login redirect state', () => {
-    oktaAuth.isLoginRedirect = jest.fn().mockImplementation(() => true);
-    const mockProps = {
-      oktaAuth,
-      restoreOriginalUri
-    };
-    mount(
-      <MemoryRouter>
-        <Security {...mockProps} />
-      </MemoryRouter>
-    );
-    expect(oktaAuth.start).not.toHaveBeenCalled();
   });
 
   it('subscribes to "authStateChange" and updates the context', () => {
