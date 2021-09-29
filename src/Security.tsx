@@ -15,7 +15,7 @@ import { AuthSdkError, AuthState, OktaAuth } from '@okta/okta-auth-js';
 import OktaContext, { 
   OnAuthRequiredFunction, 
   RestoreOriginalUriFunction,
-  AUTHSTATE_STATUS
+  OnAuthRequiredState
 } from './OktaContext';
 import OktaError from './OktaError';
 
@@ -45,7 +45,7 @@ const Security: React.FC<{
     const majorVersion = oktaAuthVersion?.split('.')[0];
     return majorVersion;
   });
-  const authStateStatus = React.useRef<AUTHSTATE_STATUS | null>(null);
+  const onAuthRequiredState = React.useRef<OnAuthRequiredState | null>(null);
 
   React.useEffect(() => {
     if (!oktaAuth || !restoreOriginalUri) {
@@ -69,9 +69,9 @@ const Security: React.FC<{
 
     // Update Security provider with latest authState
     const handler = (authState: AuthState) => {
-      authStateStatus.current = authStateStatus.current === AUTHSTATE_STATUS.INITIALIZED 
-        ? AUTHSTATE_STATUS.UPDATED 
-        : AUTHSTATE_STATUS.INITIALIZED;
+      onAuthRequiredState.current = onAuthRequiredState.current === OnAuthRequiredState.Initialized 
+        ? OnAuthRequiredState.Updated 
+        : OnAuthRequiredState.Initialized;
       setAuthState(authState);
     };
     oktaAuth.authStateManager.subscribe(handler);
@@ -107,7 +107,7 @@ const Security: React.FC<{
       oktaAuth, 
       authState, 
       _onAuthRequired: onAuthRequired,
-      _authStateStatus: authStateStatus.current
+      _onAuthRequiredState: onAuthRequiredState.current
     }}>
       {children}
     </OktaContext.Provider>

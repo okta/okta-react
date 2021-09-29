@@ -15,7 +15,7 @@ import { mount } from 'enzyme';
 import { act } from 'react-dom/test-utils';
 import { MemoryRouter } from 'react-router-dom';
 import Security from '../../src/Security';
-import { AUTHSTATE_STATUS, useOktaAuth } from '../../src/OktaContext';
+import { OnAuthRequiredState, useOktaAuth } from '../../src/OktaContext';
 
 console.warn = jest.fn();
 
@@ -226,21 +226,21 @@ describe('<Security />', () => {
       .mockImplementationOnce(() => {
         const oktaProps = useOktaAuth();
         expect(oktaProps.authState).toBe(initialAuthState);
-        expect(oktaProps._authStateStatus).toBe(null);
+        expect(oktaProps._onAuthRequiredState).toBe(null);
         return null;
       })
       // second call
       .mockImplementationOnce(() => {
         const oktaProps = useOktaAuth();
         expect(oktaProps.authState).toBe(mockAuthStates[1]);
-        expect(oktaProps._authStateStatus).toBe(AUTHSTATE_STATUS.INITIALIZED);
+        expect(oktaProps._onAuthRequiredState).toBe(OnAuthRequiredState.Initialized);
         return null;
       })
       // third call
       .mockImplementationOnce(() => {
         const oktaProps = useOktaAuth();
         expect(oktaProps.authState).toBe(mockAuthStates[2]);
-        expect(oktaProps._authStateStatus).toBe(AUTHSTATE_STATUS.UPDATED);
+        expect(oktaProps._onAuthRequiredState).toBe(OnAuthRequiredState.Updated);
         return null;
       });
 

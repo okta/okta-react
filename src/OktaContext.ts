@@ -12,14 +12,14 @@
 import * as React from 'react';
 import { AuthState, OktaAuth } from '@okta/okta-auth-js';
 
-export enum AUTHSTATE_STATUS {
-    INITIALIZED = 'INITIALIZED',
-    UPDATED = 'UPDATED'
+export enum OnAuthRequiredState {
+    Initialized = 'INITIALIZED',
+    Updated = 'UPDATED'
 }
 
 export type OnAuthRequiredFunction = (
     oktaAuth: OktaAuth, 
-    options: { state: AUTHSTATE_STATUS }
+    options: { state: OnAuthRequiredState }
 ) => Promise<void> | void;
 export type OnAuthResumeFunction = () => void;
 
@@ -29,7 +29,7 @@ export interface IOktaContext {
     oktaAuth: OktaAuth;
     authState: AuthState | null;
     _onAuthRequired?: OnAuthRequiredFunction;
-    _authStateStatus: AUTHSTATE_STATUS | null;
+    _onAuthRequiredState: OnAuthRequiredState | null;
 }
 
 const OktaContext = React.createContext<IOktaContext | null>(null);
