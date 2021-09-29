@@ -11,7 +11,7 @@
  */
 
 import * as React from 'react';
-import { useOktaAuth, OnAuthRequiredFunction } from './OktaContext';
+import { useOktaAuth, OnAuthRequiredFunction, AUTHSTATE_STATUS } from './OktaContext';
 import { Route, useRouteMatch, RouteProps } from 'react-router-dom';
 import { toRelativeUrl } from '@okta/okta-auth-js';
 
@@ -21,7 +21,12 @@ const SecureRoute: React.FC<{
   onAuthRequired, 
   ...routeProps 
 }) => { 
-  const { oktaAuth, authState, _onAuthRequired } = useOktaAuth();
+  const { 
+    oktaAuth, 
+    authState, 
+    _onAuthRequired, 
+    _authStateStatus
+  } = useOktaAuth();
   const match = useRouteMatch(routeProps);
   const pendingLogin = React.useRef(false);
 
@@ -37,7 +42,7 @@ const SecureRoute: React.FC<{
       oktaAuth.setOriginalUri(originalUri);
       const onAuthRequiredFn = onAuthRequired || _onAuthRequired;
       if (onAuthRequiredFn) {
-        await onAuthRequiredFn(oktaAuth);
+        await onAuthRequiredFn(oktaAuth, { state: _authStateStatus as AUTHSTATE_STATUS });
       } else {
         await oktaAuth.signInWithRedirect();
       }
