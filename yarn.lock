@@ -2077,6 +2077,27 @@
     webcrypto-shim "^0.1.5"
     xhr2 "0.1.3"
 
+"@okta/okta-auth-js@^5.6.0":
+  version "5.6.0"
+  resolved "https://registry.yarnpkg.com/@okta/okta-auth-js/-/okta-auth-js-5.6.0.tgz#0a0b46dbd679ab0777bf338e0ab81ff1dcca1a7f"
+  integrity sha512-FwGJ2tFAl7matIcIoWA6FuwHXkcaMJhV7b7ENPoB6ftcFQHFItm/S5vf5G7g6wIep0ZTHOA7I8loIOE+TtzEBw==
+  dependencies:
+    "@babel/runtime" "^7.12.5"
+    "@okta/okta-idx-js" "0.19.0"
+    "@peculiar/webcrypto" "1.1.6"
+    Base64 "1.1.0"
+    atob "^2.1.2"
+    btoa "^1.2.1"
+    core-js "^3.6.5"
+    cross-fetch "^3.0.6"
+    js-cookie "2.2.1"
+    node-cache "^5.1.2"
+    p-cancelable "^2.0.0"
+    text-encoding "^0.7.0"
+    tiny-emitter "1.1.0"
+    webcrypto-shim "^0.1.5"
+    xhr2 "0.1.3"
+
 "@okta/okta-idx-js@0.19.0":
   version "0.19.0"
   resolved "https://registry.yarnpkg.com/@okta/okta-idx-js/-/okta-idx-js-0.19.0.tgz#f54a6692e530c481d41fac8f4e6d9d1f07683ff5"
@@ -2087,10 +2108,10 @@
     core-js "^3.15.1"
     jsonpath-plus "^5.1.0"
 
-"@okta/okta-signin-widget@^5.10.0":
-  version "5.10.0"
-  resolved "https://registry.yarnpkg.com/@okta/okta-signin-widget/-/okta-signin-widget-5.10.0.tgz#b8d57344b64db18fdf34587eece739d17699d584"
-  integrity sha512-ZvkUTF/bnWV6M3zEFU+zQ+MhwfOmT8jbvjRZARFs46iZBrx4V73FvbEuDA0MeUtQK1HF0PSB2mQkJDAhqGQYug==
+"@okta/okta-signin-widget@^5.12.2":
+  version "5.12.2"
+  resolved "https://registry.yarnpkg.com/@okta/okta-signin-widget/-/okta-signin-widget-5.12.2.tgz#979384e082d29b56528532c3f0a078ba6f3dbd66"
+  integrity sha512-0vpSBYiW6lHRWOtqYYAfQ1etevg6yuC3hvC/V9MIXEWCQ9fkFZDtCzPRzIclMyeEplZJZYohGRs2sxOmNa/dYQ==
   dependencies:
     "@babel/polyfill" "^7.10.1"
     "@babel/runtime" "^7.10.3"
