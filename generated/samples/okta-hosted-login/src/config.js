@@ -15,7 +15,6 @@ const ISSUER = process.env.ISSUER || 'https://{yourOktaDomain}.com/oauth2/defaul
 const OKTA_TESTING_DISABLEHTTPSCHECK = process.env.OKTA_TESTING_DISABLEHTTPSCHECK || false;
 const BASENAME = process.env.PUBLIC_URL || '';
 const REDIRECT_URI = `${window.location.origin}${BASENAME}/login/callback`;
-const REDIRECT_URI = `${window.location.origin}/login/callback`;
 
 export default {
   oidc: {
