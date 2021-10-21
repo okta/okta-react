@@ -67,7 +67,7 @@ const watchTask = () => {
     }
     // get action from change path and execute build action
     const action = getHygenAction(actions, path);
-    console.info(`\nFile ${path} has been changed, build start ... \n`);
+    console.info(`\nFile ${path} has been changed, action: ${action}, build start ... \n`);
     if (action === ACTION_OVERWRITE) {
       samplesConfig
         .filter(config => path.includes(config.name))
