@@ -2056,27 +2056,6 @@
     mkdirp "^1.0.4"
     rimraf "^3.0.2"
 
-"@okta/okta-auth-js@^5.4.0":
-  version "5.4.0"
-  resolved "https://registry.yarnpkg.com/@okta/okta-auth-js/-/okta-auth-js-5.4.0.tgz#f57519b2bc8ea1200c43e31cb4924d576ec6d059"
-  integrity sha512-JXFAhEM0cTjsn9SzhhmZK6bDlat93E8KC8c8v2XeZBJYDDuIrbyS9h2psN4K/gmaGoSu0v+vmFVXBlLBwiaEHA==
-  dependencies:
-    "@babel/runtime" "^7.12.5"
-    "@okta/okta-idx-js" "0.19.0"
-    "@peculiar/webcrypto" "1.1.6"
-    Base64 "1.1.0"
-    atob "^2.1.2"
-    btoa "^1.2.1"
-    core-js "^3.6.5"
-    cross-fetch "^3.0.6"
-    js-cookie "2.2.1"
-    node-cache "^5.1.2"
-    p-cancelable "^2.0.0"
-    text-encoding "^0.7.0"
-    tiny-emitter "1.1.0"
-    webcrypto-shim "^0.1.5"
-    xhr2 "0.1.3"
-
 "@okta/okta-auth-js@^5.6.0":
   version "5.6.0"
   resolved "https://registry.yarnpkg.com/@okta/okta-auth-js/-/okta-auth-js-5.6.0.tgz#0a0b46dbd679ab0777bf338e0ab81ff1dcca1a7f"
