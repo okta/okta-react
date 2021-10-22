@@ -5,17 +5,11 @@ to: ../generated/<%= dest %>/src/Navbar.jsx
 
 import { useOktaAuth } from '@okta/okta-react';
 import React from 'react';
-<% if (useSiw === 'true') { -%>
 import { useHistory, Link } from 'react-router-dom';
-<% } else { -%>
-import { Link } from 'react-router-dom';
-<% } -%>
 import { Container, Icon, Image, Menu } from 'semantic-ui-react';
 
 const Navbar = ({ setCorsErrorModalOpen }) => {
-<% if (useSiw === 'true') { -%>
   const history = useHistory();
-<% } -%>
   const { authState, oktaAuth } = useOktaAuth();
 
   // Note: Can't distinguish CORS error from other network errors
