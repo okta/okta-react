@@ -13,7 +13,8 @@
 const CLIENT_ID = process.env.CLIENT_ID || '{clientId}';
 const ISSUER = process.env.ISSUER || 'https://{yourOktaDomain}.com/oauth2/default';
 const OKTA_TESTING_DISABLEHTTPSCHECK = process.env.OKTA_TESTING_DISABLEHTTPSCHECK || false;
-const REDIRECT_URI = `${window.location.origin}/login/callback`;
+const BASENAME = process.env.PUBLIC_URL || '';
+const REDIRECT_URI = `${window.location.origin}${BASENAME}/login/callback`;
 const USE_INTERACTION_CODE = process.env.USE_INTERACTION_CODE === 'true' || false;
 
 export default {
@@ -28,5 +29,8 @@ export default {
   },
   resourceServer: {
     messagesUrl: 'http://localhost:8000/api/messages',
+  },
+  app: {
+    basename: BASENAME,
   },
 };

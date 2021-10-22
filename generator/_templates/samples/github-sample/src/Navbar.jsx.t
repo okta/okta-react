@@ -5,17 +5,11 @@ to: ../generated/<%= dest %>/src/Navbar.jsx
 
 import { useOktaAuth } from '@okta/okta-react';
 import React from 'react';
-<% if (useSiw === 'true') { -%>
 import { useHistory, Link } from 'react-router-dom';
-<% } else { -%>
-import { Link } from 'react-router-dom';
-<% } -%>
 import { Container, Icon, Image, Menu } from 'semantic-ui-react';
 
 const Navbar = ({ setCorsErrorModalOpen }) => {
-<% if (useSiw === 'true') { -%>
   const history = useHistory();
-<% } -%>
   const { authState, oktaAuth } = useOktaAuth();
 
   // Note: Can't distinguish CORS error from other network errors
@@ -24,8 +18,9 @@ const Navbar = ({ setCorsErrorModalOpen }) => {
   const login = async () => <%- useSiw === 'true' ?  `history.push('/login')` : 'oktaAuth.signInWithRedirect()' %>;
 
   const logout = async () => {
+    const basename = window.location.origin + history.createHref({ pathname: '/' });
     try {
-      await oktaAuth.signOut();
+      await oktaAuth.signOut({ postLogoutRedirectUri: basename });
     } catch (err) {
       if (isCorsError(err)) {
         setCorsErrorModalOpen(true);
@@ -44,7 +39,7 @@ const Navbar = ({ setCorsErrorModalOpen }) => {
       <Menu fixed="top" inverted>
         <Container>
           <Menu.Item header>
-            <Image size="mini" src="/react.svg" />
+            <Image size="mini" src={`${process.env.PUBLIC_URL}/react.svg`} />
             &nbsp;
             <Link to="/">Okta-React Sample Project</Link>
           </Menu.Item>

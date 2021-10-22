@@ -5,6 +5,8 @@ to: ../generated/<%= dest %>/.gitignore
 
 # dependencies
 /node_modules
+package-lock.json
+yarn.lock
 
 # testing
 /coverage
