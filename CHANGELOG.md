@@ -1,3 +1,9 @@
+# 6.3.0
+
+### Features
+
+- [#172](https://github.com/okta/okta-react/pull/172) Adds `errorComponent` prop to `SecureRoute` to handle internal `handleLogin` related errors
+
 # 6.2.0
 
 ### Other

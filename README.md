@@ -466,7 +466,15 @@ class App extends Component {
 
 `SecureRoute` ensures that a route is only rendered if the user is authenticated. If the user is not authenticated, it calls [onAuthRequired](#onauthrequired) if it exists, otherwise, it redirects to Okta.
 
+#### onAuthRequired
+
 `SecureRoute` accepts `onAuthRequired` as an optional prop, it overrides [onAuthRequired](#onauthrequired) from the [Security](#security) component if exists.
+
+#### errorComponent
+
+`SecureRoute` runs internal `handleLogin` process which may throw Error when `authState.isAuthenticated` is false. By default, the Error will be rendered with `OktaError` component. If you wish to customise the display of such error messages, you can pass your own component as an `errorComponent` prop to `<SecureRoute>`.  The error value will be passed to the `errorComponent` as the `error` prop.
+
+#### `react-router` related props
   
 `SecureRoute` integrates with `react-router`.  Other routers will need their own methods to ensure authentication using the hooks/HOC props provided by this SDK.
 
