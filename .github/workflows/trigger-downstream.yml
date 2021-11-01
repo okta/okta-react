@@ -25,4 +25,4 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: dispatch event to downstream repo
-        run: sh ./scripts/trigger-downstream-action.sh ${{secrets.TEST_PAT}}
+        run: sh ./scripts/trigger-downstream-action.sh ${{secrets.OKTA_433527}}
