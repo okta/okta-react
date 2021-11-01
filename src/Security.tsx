@@ -69,11 +69,7 @@ const Security: React.FC<{
     oktaAuth.authStateManager.subscribe(handler);
 
     // Trigger an initial change event to make sure authState is latest
-    if (!oktaAuth.isLoginRedirect()) {
-      // Calculates initial auth state and fires change event for listeners
-      // Also starts the token auto-renew service
-      oktaAuth.start();
-    }
+    oktaAuth.start();
 
     return () => {
       oktaAuth.authStateManager.unsubscribe(handler);

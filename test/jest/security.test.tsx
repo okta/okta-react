@@ -43,7 +43,6 @@ describe('<Security />', () => {
         subscribe: jest.fn(),
         unsubscribe: jest.fn(),
       },
-      isLoginRedirect: jest.fn().mockImplementation(() => false),
       start: jest.fn(),
       stop: jest.fn(),
     };
@@ -185,20 +184,6 @@ describe('<Security />', () => {
     expect(oktaAuth.authStateManager.subscribe).toHaveBeenCalledTimes(1);
     expect(oktaAuth.start).toHaveBeenCalledTimes(1);
     expect(MyComponent).toHaveBeenCalledTimes(2);
-  });
-
-  it('should not call start when in login redirect state', () => {
-    oktaAuth.isLoginRedirect = jest.fn().mockImplementation(() => true);
-    const mockProps = {
-      oktaAuth,
-      restoreOriginalUri
-    };
-    mount(
-      <MemoryRouter>
-        <Security {...mockProps} />
-      </MemoryRouter>
-    );
-    expect(oktaAuth.start).not.toHaveBeenCalled();
   });
 
   it('subscribes to "authStateChange" and updates the context', () => {

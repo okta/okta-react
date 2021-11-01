@@ -14,16 +14,21 @@ import * as React from 'react';
 import { useOktaAuth, OnAuthRequiredFunction } from './OktaContext';
 import { Route, useRouteMatch, RouteProps } from 'react-router-dom';
 import { toRelativeUrl } from '@okta/okta-auth-js';
+import OktaError from './OktaError';
 
 const SecureRoute: React.FC<{
   onAuthRequired?: OnAuthRequiredFunction;
+  errorComponent?: React.ComponentType<{ error: Error }>;
 } & RouteProps & React.HTMLAttributes<HTMLDivElement>> = ({ 
-  onAuthRequired, 
+  onAuthRequired,
+  errorComponent,
   ...routeProps 
 }) => { 
   const { oktaAuth, authState, _onAuthRequired } = useOktaAuth();
   const match = useRouteMatch(routeProps);
   const pendingLogin = React.useRef(false);
+  const [handleLoginError, setHandleLoginError] = React.useState<Error | null>(null);
+  const ErrorReporter = errorComponent || OktaError;
 
   React.useEffect(() => {
     const handleLogin = async () => {
@@ -59,17 +64,22 @@ const SecureRoute: React.FC<{
 
     // Start login if app has decided it is not logged in and there is no pending signin
     if(!authState.isAuthenticated) { 
-      handleLogin();
+      handleLogin().catch(err => {
+        setHandleLoginError(err as Error);
+      });
     }  
 
   }, [
-    !!authState,
-    authState ? authState.isAuthenticated : null, 
+    authState,
     oktaAuth, 
     match, 
     onAuthRequired, 
     _onAuthRequired
   ]);
+
+  if (handleLoginError) {
+    return <ErrorReporter error={handleLoginError} />;
+  }
 
   if (!authState || !authState.isAuthenticated) {
     return null;

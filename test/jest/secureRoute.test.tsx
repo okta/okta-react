@@ -13,9 +13,11 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
 import { act } from 'react-dom/test-utils';
+import { render, unmountComponentAtNode } from 'react-dom';
 import { MemoryRouter, Route, RouteProps } from 'react-router-dom';
 import SecureRoute from '../../src/SecureRoute';
 import Security from '../../src/Security';
+import OktaContext from '../../src/OktaContext';
 
 describe('<SecureRoute />', () => {
   let oktaAuth;
@@ -403,5 +405,66 @@ describe('<SecureRoute />', () => {
       expect(wrapper.find(MyComponent).html()).toBe('<div>has someProp</div>');
     });
 
+  });
+
+  describe('Error handling', () => {
+    let container = null;
+    beforeEach(() => {
+      // setup a DOM element as a render target
+      container = document.createElement('div');
+      document.body.appendChild(container);
+      
+      authState = {
+        isAuthenticated: false
+      };
+
+      oktaAuth.setOriginalUri = jest.fn().mockImplementation(() => {
+        throw new Error(`DOMException: Failed to read the 'sessionStorage' property from 'Window': Access is denied for this document.`);
+      });
+    });
+
+    afterEach(() => {
+      // cleanup on exiting
+      unmountComponentAtNode(container);
+      container.remove();
+      container = null;
+    });
+
+    it('shows error with default OktaError component', async () => {
+      await act(async () => {
+        render(
+          <MemoryRouter>
+            <OktaContext.Provider value={{
+              oktaAuth: oktaAuth,
+              authState
+            }}>
+              <SecureRoute path="/" />
+            </OktaContext.Provider>
+          </MemoryRouter>,
+          container
+        );
+      });
+      expect(container.innerHTML).toBe('<p>Error: DOMException: Failed to read the \'sessionStorage\' property from \'Window\': Access is denied for this document.</p>');
+    });
+
+    it('shows error with provided custom error component', async () => {
+      const CustomErrorComponent = ({ error }) => {
+        return <div>Custom Error: {error.message}</div>;
+      };
+      await act(async () => {
+        render(
+          <MemoryRouter>
+            <OktaContext.Provider value={{
+              oktaAuth: oktaAuth,
+              authState
+            }}>
+              <SecureRoute path="/" errorComponent={CustomErrorComponent} />
+            </OktaContext.Provider>
+          </MemoryRouter>,
+          container
+        );
+      });
+      expect(container.innerHTML).toBe('<div>Custom Error: DOMException: Failed to read the \'sessionStorage\' property from \'Window\': Access is denied for this document.</div>');
+    });
   });
 });
