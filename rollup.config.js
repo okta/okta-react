@@ -33,7 +33,9 @@ const commonPlugins = [
   replace({
     'process.env.PACKAGE_NAME': JSON.stringify(process.env.PACKAGE_NAME),
     'process.env.PACKAGE_VERSION': JSON.stringify(process.env.PACKAGE_VERSION),
-    'process.env.AUTH_JS_MAJOR_VERSION': JSON.stringify(process.env.AUTH_JS_MAJOR_VERSION)
+    'AUTH_JS': JSON.stringify({
+      minSupportedVersion: '5.3.1'
+    })
   }),
   cleanup({ 
     extensions,

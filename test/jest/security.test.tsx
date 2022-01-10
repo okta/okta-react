@@ -80,24 +80,12 @@ describe('<Security />', () => {
     afterEach(() => {
       process.env.SKIP_VERSION_CHECK = '1';
     });
-    it('throws runtime error when passed in authJS version not match version from deps list', () => {
-      oktaAuth.userAgent = 'okta-auth-js/9999.0.0'; // intentional large mock version
-      const mockProps = {
-        oktaAuth,
-        restoreOriginalUri
-      };
-      // mock auth-js version from dependencies
-      process.env.AUTH_JS_MAJOR_VERSION = '5';
-      const wrapper = mount(<Security {...mockProps} />);
-      expect(wrapper.find(Security).html()).toBe(`<p>AuthSdkError: Passed in oktaAuth is not compatible with the SDK, okta-auth-js version 5.x is the current supported version.</p>`);
-    });
-
-    it('can get okta-auth version from _oktaUserAgent property', () => {
+    it('throws runtime error when passed in authJS version is too low', () => {
       const oktaAuthWithMismatchingSDKVersion = {
         ...oktaAuth,
         _oktaUserAgent: {
           addEnvironment: jest.fn(),
-          getVersion: jest.fn().mockReturnValue('okta-auth-js/9999.0.0') // intentional large mock version
+          getVersion: jest.fn().mockReturnValue('1.0.0') // intentional large mock version
         }
       };
 
@@ -105,10 +93,12 @@ describe('<Security />', () => {
         oktaAuth: oktaAuthWithMismatchingSDKVersion,
         restoreOriginalUri
       };
-      // mock auth-js version from dependencies
-      process.env.AUTH_JS_MAJOR_VERSION = '5';
+
       const wrapper = mount(<Security {...mockProps} />);
-      expect(wrapper.find(Security).html()).toBe(`<p>AuthSdkError: Passed in oktaAuth is not compatible with the SDK, okta-auth-js version 5.x is the current supported version.</p>`);
+      expect(wrapper.find(Security).text().trim()).toBe(`AuthSdkError: 
+        Passed in oktaAuth is not compatible with the SDK,
+        minimum supported okta-auth-js version is 5.3.1.`
+      );
     });
   });
 
