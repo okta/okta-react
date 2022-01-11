@@ -97,7 +97,7 @@ Install peer dependencies
 npm install --save react
 npm install --save react-dom
 npm install --save react-router-dom
-npm install --save @okta/okta-auth-js
+npm install --save @okta/okta-auth-js   # requires at least version 5.3.1
 ```
 
 ## Usage

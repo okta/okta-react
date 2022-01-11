@@ -14,6 +14,11 @@ import * as React from 'react';
 import { AuthSdkError, AuthState, OktaAuth } from '@okta/okta-auth-js';
 import OktaContext, { OnAuthRequiredFunction, RestoreOriginalUriFunction } from './OktaContext';
 import OktaError from './OktaError';
+import { compare as compareVersions } from 'compare-versions';
+
+declare const AUTH_JS: {
+  minSupportedVersion: string;
+}
 
 const Security: React.FC<{
   oktaAuth: OktaAuth,
@@ -31,15 +36,6 @@ const Security: React.FC<{
       return null;
     }
     return oktaAuth.authStateManager.getAuthState();
-  });
-  const [oktaAuthMajorVersion] = React.useState(() => {
-    if (!oktaAuth || !oktaAuth._oktaUserAgent) {
-      return null;
-    }
-
-    const oktaAuthVersion = oktaAuth._oktaUserAgent.getVersion();
-    const majorVersion = oktaAuthVersion?.split('.')[0];
-    return majorVersion;
   });
 
   React.useEffect(() => {
@@ -87,11 +83,20 @@ const Security: React.FC<{
     return <OktaError error={err} />;
   }
 
-  if (oktaAuthMajorVersion !== process.env.AUTH_JS_MAJOR_VERSION 
-      // use SKIP_VERSION_CHECK flag to control version check in tests
-      && process.env.SKIP_VERSION_CHECK !== '1') {
-    const err = new AuthSdkError(`Passed in oktaAuth is not compatible with the SDK, okta-auth-js version ${process.env.AUTH_JS_MAJOR_VERSION}.x is the current supported version.`);
-    return <OktaError error={err} />;
+  if (!oktaAuth._oktaUserAgent) {
+    console.warn('_oktaUserAgent is not available on auth SDK instance. Please use okta-auth-js@^5.3.1 .');
+  }
+  else {
+    // use SKIP_VERSION_CHECK flag to control version check in tests
+    const isAuthJsSupported = process.env.SKIP_VERSION_CHECK === '1' ||
+      compareVersions(oktaAuth._oktaUserAgent.getVersion(), AUTH_JS.minSupportedVersion, '>=');
+    if (!isAuthJsSupported) {
+      const err = new AuthSdkError(`
+        Passed in oktaAuth is not compatible with the SDK,
+        minimum supported okta-auth-js version is ${AUTH_JS.minSupportedVersion}.
+      `);
+      return <OktaError error={err} />;
+    }
   }
 
   return (

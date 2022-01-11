@@ -8,6 +8,7 @@ module.exports = {
     '!./test/**'
   ],
   globals: {
+    AUTH_JS: { minSupportedVersion: '5.3.1' },
     'ts-jest': {
       diagnostics: {
         warnOnly: true

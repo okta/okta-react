@@ -1,3 +1,9 @@
+# 6.4.0
+
+### Others
+
+- [#191](https://github.com/okta/okta-react/pull/191) Set `okta-auth-js` minimum supported version as 5.3.1, `AuthSdkError` will be rendered if oktaAuth instance cannot meet the version requirement
+
 # 6.3.0
 
 ### Features
