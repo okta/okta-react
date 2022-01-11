@@ -105,8 +105,8 @@ describe('<Security />', () => {
 
       const wrapper = mount(<Security {...mockProps} />);
       expect(wrapper.find(Security).text().trim()).toBe(`AuthSdkError: 
-        Passed in oktaAuth is not compatible with the SDK,
-        minimum supported okta-auth-js version is 5.3.1.`
+          Passed in oktaAuth is not compatible with the SDK,
+          minimum supported okta-auth-js version is 5.3.1.`
       );
     });
 
