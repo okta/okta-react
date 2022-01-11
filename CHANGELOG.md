@@ -1,3 +1,9 @@
+# 6.4.0
+
+### Others
+
+- [#80](https://github.com/okta/okta-vue/pull/80) Set okta-auth-js minimum supported version as 5.3.1, `AuthSdkError` will be thrown if oktaAuth instance cannot meet the version requirement
+
 # 6.3.0
 
 ### Features
