@@ -83,7 +83,7 @@ const Security: React.FC<{
     return <OktaError error={err} />;
   }
 
-  if (oktaAuth && oktaAuth._oktaUserAgent) {
+  if (oktaAuth) {
     if (!oktaAuth._oktaUserAgent) {
       console.warn('_oktaUserAgent is not available on auth SDK instance. Please use okta-auth-js@^5.3.1 .');
     }
