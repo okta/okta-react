@@ -73,12 +73,21 @@ describe('<Security />', () => {
   });
 
   describe('throws version not match error', () => {
+    let originalConsole;
+
     // turn off SKIP_VERSION_CHECK to test the functionality
     beforeEach(() => {
       process.env.SKIP_VERSION_CHECK = '0';
+
+      originalConsole = global.console;
+      global.console = {
+        ...originalConsole,
+        warn: jest.fn()
+      };
     });
     afterEach(() => {
       process.env.SKIP_VERSION_CHECK = '1';
+      global.console = originalConsole;
     });
     it('throws runtime error when passed in authJS version is too low', () => {
       const oktaAuthWithMismatchingSDKVersion = {
@@ -96,9 +105,24 @@ describe('<Security />', () => {
 
       const wrapper = mount(<Security {...mockProps} />);
       expect(wrapper.find(Security).text().trim()).toBe(`AuthSdkError: 
-        Passed in oktaAuth is not compatible with the SDK,
-        minimum supported okta-auth-js version is 5.3.1.`
+          Passed in oktaAuth is not compatible with the SDK,
+          minimum supported okta-auth-js version is 5.3.1.`
       );
+    });
+
+    it('logs a warning when _oktaUserAgent is not available', () => {
+      const oktaAuthWithMismatchingSDKVersion = {
+        ...oktaAuth,
+        _oktaUserAgent: undefined
+      };
+
+      const mockProps = {
+        oktaAuth: oktaAuthWithMismatchingSDKVersion,
+        restoreOriginalUri
+      };
+
+      mount(<Security {...mockProps} />);
+      expect(global.console.warn).toHaveBeenCalledWith('_oktaUserAgent is not available on auth SDK instance. Please use okta-auth-js@^5.3.1 .');
     });
   });
 

@@ -84,15 +84,20 @@ const Security: React.FC<{
   }
 
   if (oktaAuth && oktaAuth._oktaUserAgent) {
-    // use SKIP_VERSION_CHECK flag to control version check in tests
-    const isAuthJsSupported = process.env.SKIP_VERSION_CHECK === '1' ||
-      compareVersions(oktaAuth._oktaUserAgent.getVersion(), AUTH_JS.minSupportedVersion, '>=');
-    if (!isAuthJsSupported) {
-      const err = new AuthSdkError(`
-        Passed in oktaAuth is not compatible with the SDK,
-        minimum supported okta-auth-js version is ${AUTH_JS.minSupportedVersion}.
-      `);
-      return <OktaError error={err} />;
+    if (!oktaAuth._oktaUserAgent) {
+      console.warn('_oktaUserAgent is not available on auth SDK instance. Please use okta-auth-js@^5.3.1 .');
+    }
+    else {
+      // use SKIP_VERSION_CHECK flag to control version check in tests
+      const isAuthJsSupported = process.env.SKIP_VERSION_CHECK === '1' ||
+        compareVersions(oktaAuth._oktaUserAgent.getVersion(), AUTH_JS.minSupportedVersion, '>=');
+      if (!isAuthJsSupported) {
+        const err = new AuthSdkError(`
+          Passed in oktaAuth is not compatible with the SDK,
+          minimum supported okta-auth-js version is ${AUTH_JS.minSupportedVersion}.
+        `);
+        return <OktaError error={err} />;
+      }
     }
   }
 
