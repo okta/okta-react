@@ -11,7 +11,7 @@ const makeExternalPredicate = () => {
   const externalArr = [
     ...Object.keys(pkg.peerDependencies || {}),
     ...Object.keys(pkg.dependencies || {}),
-  ]
+  ];
 
   if (externalArr.length === 0) {
     return () => false;
