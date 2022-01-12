@@ -1,4 +1,5 @@
 import babel from '@rollup/plugin-babel';
+import resolve from '@rollup/plugin-node-resolve';
 import replace from '@rollup/plugin-replace';
 import cleanup from 'rollup-plugin-cleanup';
 import { terser } from 'rollup-plugin-terser';
@@ -7,11 +8,17 @@ import pkg from "./package.json";
 
 require('./env'); // set variables in process.env
 
+const includeInBundle = [
+  'compare-versions'
+];
+
 const makeExternalPredicate = () => {
   const externalArr = [
     ...Object.keys(pkg.peerDependencies || {}),
     ...Object.keys(pkg.dependencies || {}),
-  ];
+  ].filter(module => !includeInBundle.includes(module));
+
+  console.log(externalArr);
 
   if (externalArr.length === 0) {
     return () => false;
@@ -36,6 +43,9 @@ const commonPlugins = [
     'AUTH_JS': JSON.stringify({
       minSupportedVersion: '5.3.1'
     })
+  }),
+  resolve({
+    resolveOnly: [...includeInBundle]
   }),
   cleanup({ 
     extensions,
