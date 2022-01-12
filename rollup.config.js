@@ -18,8 +18,6 @@ const makeExternalPredicate = () => {
     ...Object.keys(pkg.dependencies || {}),
   ].filter(module => !includeInBundle.includes(module));
 
-  console.log(externalArr);
-
   if (externalArr.length === 0) {
     return () => false;
   }
