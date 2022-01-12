@@ -1,3 +1,9 @@
+$ 6.4.1
+
+### Bug Fixes
+
+- [#193](https://github.com/okta/okta-react/pull/193) Fixes: Cannot find module 'compare-versions' from '../node_modules/@okta/okta-react/bundles/okta-react.cjs.js'
+
 # 6.4.0
 
 ### Others
