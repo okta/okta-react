@@ -23,8 +23,8 @@ const samplesConfig = (() => {
   return configs.map(config => {
     const nameParts = config.name.split('.');
     const name = nameParts[nameParts.length - 1];
-    const dest = `${name}`;
-    return { 
+    const dest = `${config.nested || ''}${name}`;
+    return {
       ...config, 
       ...versions, 
       name, 
