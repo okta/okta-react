@@ -111,6 +111,7 @@
     "generator",
     "generated/**/*",
     "test/e2e/harness",
-    "test/e2e-samples"
+    "test/e2e-samples",
+    "test/apps/**/*"
   ]
 }
