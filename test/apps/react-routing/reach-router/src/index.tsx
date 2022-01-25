@@ -11,15 +11,14 @@
  */
 
 import React from 'react';
-import { Link } from 'react-router-dom';
+import ReactDOM from 'react-dom';
+import './index.css';
+import App from './App';
 
-const Nav = () => {
-  return (
-    <nav>
-      <Link to='/'>Home</Link>
-      <Link to='/protected'>Protected</Link>
-    </nav>
-  );
-}
 
-export default Nav;
+ReactDOM.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+  document.getElementById('root')
+);

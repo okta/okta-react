@@ -11,15 +11,17 @@
  */
 
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { RouteComponentProps } from '@reach/router';
 
-const Nav = () => {
+import logo from '../assets/logo.svg';
+
+const Home: React.FC<RouteComponentProps> = () => {
   return (
-    <nav>
-      <Link to='/'>Home</Link>
-      <Link to='/protected'>Protected</Link>
-    </nav>
+    <>
+      <h1>Home</h1>
+      <img src={logo} className="App-logo" alt="logo" />
+    </>
   );
-}
+};
 
-export default Nav;
+export default Home;

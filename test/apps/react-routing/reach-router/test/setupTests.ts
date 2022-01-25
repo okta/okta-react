@@ -10,16 +10,8 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-import React from 'react';
-import { Link } from 'react-router-dom';
-
-const Nav = () => {
-  return (
-    <nav>
-      <Link to='/'>Home</Link>
-      <Link to='/protected'>Protected</Link>
-    </nav>
-  );
-}
-
-export default Nav;
+// jest-dom adds custom jest matchers for asserting on DOM nodes.
+// allows you to do things like:
+// expect(element).toHaveTextContent(/react/i)
+// learn more: https://github.com/testing-library/jest-dom
+import '@testing-library/jest-dom';
