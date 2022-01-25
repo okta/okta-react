@@ -11,15 +11,27 @@
  */
 
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Router, RouteComponentProps } from '@reach/router';
+import { LoginCallback } from '@okta/okta-react';
+import { SecureRoutes } from './SecureRoutes';
 
-const Nav = () => {
+import Home from '../pages/Home';
+import Protected from '../pages/Protected';
+
+const Random = () => (<h1>Random</h1>)
+
+const OktaLoginCallback: React.FC<RouteComponentProps> = () => (<LoginCallback />);
+
+const AppRoutes = () => {
   return (
-    <nav>
-      <Link to='/'>Home</Link>
-      <Link to='/protected'>Protected</Link>
-    </nav>
+    <Router>
+      <Home path='/' />
+      <OktaLoginCallback path='login/callback' />
+      <SecureRoutes path='protected'>
+        <Protected path='/' />
+      </SecureRoutes>
+    </Router>
   );
-}
+};
 
-export default Nav;
+export default AppRoutes;

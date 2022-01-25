@@ -11,15 +11,11 @@
  */
 
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { render, screen } from '@testing-library/react';
+import App from '../src/App';
 
-const Nav = () => {
-  return (
-    <nav>
-      <Link to='/'>Home</Link>
-      <Link to='/protected'>Protected</Link>
-    </nav>
-  );
-}
-
-export default Nav;
+test('renders learn react link', () => {
+  render(<App />);
+  const linkElement = screen.getByText(/learn react/i);
+  expect(linkElement).toBeInTheDocument();
+});
