@@ -18,8 +18,6 @@ import { SecureRoutes } from './SecureRoutes';
 import Home from '../pages/Home';
 import Protected from '../pages/Protected';
 
-const Random = () => (<h1>Random</h1>)
-
 const OktaLoginCallback: React.FC<RouteComponentProps> = () => (<LoginCallback />);
 
 const AppRoutes = () => {
