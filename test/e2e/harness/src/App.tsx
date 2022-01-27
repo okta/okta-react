@@ -35,7 +35,7 @@ const App: React.FC<{
     history.push('/widget-login');
   };
 
-  const restoreOriginalUri = async (_oktaAuth: OktaAuth, originalUri?: string) => {
+  const restoreOriginalUri = async (_oktaAuth: OktaAuth, originalUri: string) => {
     history.replace(toRelativeUrl(originalUri || '/', window.location.origin));
   };
 
