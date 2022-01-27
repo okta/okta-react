@@ -3,6 +3,7 @@
 ### Bug Fixes
 
 - [#199](https://github.com/okta/okta-react/pull/199) Fixes okta-auth-js peer dependency error
+- [#200](https://github.com/okta/okta-react/pull/200) Fixes: Typescript types when using `react-router-dom` v6 with `okta-react`
 
 # 6.4.1
 
