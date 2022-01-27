@@ -28,7 +28,7 @@ const LoginCallback: React.FC<LoginCallbackProps> = ({ errorComponent, loadingEl
   React.useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore OKTA-464505: backward compatibility support for auth-js@5
-    const isInteractionRequired = oktaAuth.idx.isInteractionRequired || oktaAuth.isInteractionRequired;
+    const isInteractionRequired = oktaAuth.idx.isInteractionRequired || oktaAuth.isInteractionRequired.bind(oktaAuth);
     if (onAuthResume && isInteractionRequired()) {
       onAuthResume();
       return;
