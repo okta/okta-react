@@ -33,9 +33,11 @@ describe('<LoginCallback />', () => {
         updateAuthState: jest.fn(),
       },
       isLoginRedirect: jest.fn().mockImplementation(() => false),
-      isInteractionRequired: jest.fn().mockImplementation( () => false ),
       handleLoginRedirect: jest.fn().mockImplementation( () => Promise.resolve() ),
       start: jest.fn(),
+      idx: {
+        isInteractionRequired: jest.fn().mockImplementation( () => false ),
+      }
     };
     mockProps = {
       oktaAuth, 
@@ -120,7 +122,7 @@ describe('<LoginCallback />', () => {
     });
 
     it('will trigger a passed onAuthResume function when isInteractionRequired is true', () => {
-      oktaAuth.isInteractionRequired = jest.fn().mockImplementation( () => true );
+      oktaAuth.idx.isInteractionRequired = jest.fn().mockImplementation( () => true );
       const resumeFunction = jest.fn();
       const wrapper = mount(
         <Security {...mockProps}>
@@ -153,7 +155,7 @@ describe('<LoginCallback />', () => {
     });
 
     it('will treat isInteractionRequired like a normal error if not onAuthResume is passed', async () => { 
-      oktaAuth.isInteractionRequired = jest.fn().mockImplementation( () => true );
+      oktaAuth.idx.isInteractionRequired = jest.fn().mockImplementation( () => true );
       const errorMsg = 'error on callback';
       authState = {
         isAuthenticated: false
@@ -212,7 +214,7 @@ describe('<LoginCallback />', () => {
     });
 
     it('renders loading element if onAuthResume is passed', async () => { 
-      oktaAuth.isInteractionRequired = jest.fn().mockImplementation( () => true );
+      oktaAuth.idx.isInteractionRequired = jest.fn().mockImplementation( () => true );
       const resumeFunction = jest.fn();
       const MyLoadingElement = (<p>loading...</p>);
       jest.spyOn(React, 'useEffect').mockImplementation(f => f())
