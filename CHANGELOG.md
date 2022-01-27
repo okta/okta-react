@@ -2,7 +2,7 @@
 
 ### Bug Fixes
 
-- [#197](https://github.com/okta/okta-react/pull/197) Fixes okta-auth-js peer dependency error
+- [#199](https://github.com/okta/okta-react/pull/199) Fixes okta-auth-js peer dependency error
 
 # 6.4.1
 
