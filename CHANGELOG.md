@@ -1,3 +1,9 @@
+# 6.4.2
+
+### Bug Fixes
+
+- [#197](https://github.com/okta/okta-react/pull/197) Fixes okta-auth-js peer dependency error
+
 # 6.4.1
 
 ### Bug Fixes
