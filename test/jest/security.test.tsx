@@ -16,7 +16,6 @@ import { act } from 'react-dom/test-utils';
 import { MemoryRouter } from 'react-router-dom';
 import Security from '../../src/Security';
 import { useOktaAuth } from '../../src/OktaContext';
-import { name as packageName, version as packageVersion } from './../../package.json';
 
 console.warn = jest.fn();
 
@@ -57,7 +56,8 @@ describe('<Security />', () => {
       restoreOriginalUri
     };
     mount(<Security {...mockProps} />);
-    expect(addEnvironmentSpy).toBeCalledWith(`${packageName}/${packageVersion}`);
+    // package name and version defined in jest.config.js
+    expect(addEnvironmentSpy).toBeCalledWith(`okta-react-test/3.14.15`);
   });
 
   it('logs a warning in case _oktaUserAgent is not available on auth SDK instance', () => {

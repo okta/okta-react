@@ -32,6 +32,8 @@ const commonPlugins = [
     useTsconfigDeclarationDir: true
   }),
   replace({
+    'PACKAGE_NAME': JSON.stringify(pkg.name),
+    'PACKAGE_VERSION': JSON.stringify(pkg.version),
     'SKIP_VERSION_CHECK': '0',
     'AUTH_JS': JSON.stringify({
       minSupportedVersion: '5.3.1'
