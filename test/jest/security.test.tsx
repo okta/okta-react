@@ -79,6 +79,7 @@ describe('<Security />', () => {
 
     // turn off SKIP_VERSION_CHECK to test the functionality
     beforeEach(() => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       SKIP_VERSION_CHECK = '0';
 
       originalConsole = global.console;
@@ -88,6 +89,7 @@ describe('<Security />', () => {
       };
     });
     afterEach(() => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       SKIP_VERSION_CHECK = '1';
       global.console = originalConsole;
     });
