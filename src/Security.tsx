@@ -20,6 +20,8 @@ declare const AUTH_JS: {
   minSupportedVersion: string;
 }
 
+declare const SKIP_VERSION_CHECK: string;
+
 const Security: React.FC<{
   oktaAuth: OktaAuth,
   restoreOriginalUri: RestoreOriginalUriFunction, 
@@ -88,7 +90,7 @@ const Security: React.FC<{
   }
   else {
     // use SKIP_VERSION_CHECK flag to control version check in tests
-    const isAuthJsSupported = process.env.SKIP_VERSION_CHECK === '1' ||
+    const isAuthJsSupported = SKIP_VERSION_CHECK === '1' ||
       compareVersions(oktaAuth._oktaUserAgent.getVersion(), AUTH_JS.minSupportedVersion, '>=');
     if (!isAuthJsSupported) {
       const err = new AuthSdkError(`

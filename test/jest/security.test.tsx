@@ -19,6 +19,8 @@ import { useOktaAuth } from '../../src/OktaContext';
 
 console.warn = jest.fn();
 
+declare let SKIP_VERSION_CHECK: string;
+
 describe('<Security />', () => {
   let oktaAuth;
   let initialAuthState;
@@ -77,7 +79,7 @@ describe('<Security />', () => {
 
     // turn off SKIP_VERSION_CHECK to test the functionality
     beforeEach(() => {
-      process.env.SKIP_VERSION_CHECK = '0';
+      SKIP_VERSION_CHECK = '0';
 
       originalConsole = global.console;
       global.console = {
@@ -86,7 +88,7 @@ describe('<Security />', () => {
       };
     });
     afterEach(() => {
-      process.env.SKIP_VERSION_CHECK = '1';
+      SKIP_VERSION_CHECK = '1';
       global.console = originalConsole;
     });
     it('throws runtime error when passed in authJS version is too low', () => {

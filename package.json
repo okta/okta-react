@@ -14,7 +14,7 @@
     "test": "yarn lint && yarn test:unit && yarn test:e2e",
     "test:e2e": "yarn workspace @okta/okta-react-test-harness test",
     "test:e2e:samples": "yarn workspace @okta/test.e2e-samples test",
-    "test:unit": "SKIP_VERSION_CHECK=1 jest",
+    "test:unit": "jest",
     "bundle": "rollup -c",
     "dev": "yarn bundle --watch",
     "generate": "yarn workspace @okta/generator generate",
