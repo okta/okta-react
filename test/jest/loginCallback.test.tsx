@@ -66,6 +66,25 @@ describe('<LoginCallback />', () => {
     expect(oktaAuth.handleLoginRedirect).toHaveBeenCalledTimes(1);
   });
 
+  it('calls updateAuthState when handleLoginRedirect fails', async () => {
+    authState = null;
+    const errorMsg = 'error on callback';
+    oktaAuth.handleLoginRedirect.mockImplementation(() => {
+      return Promise.reject(new Error(errorMsg));
+    });
+    const wrapper = mount(
+      <Security {...mockProps}>
+        <LoginCallback />
+      </Security>
+    );
+    return await act(async () => {
+      await wrapper.update(); // handleLoginRedirect
+      await wrapper.update(); // set state
+      expect(oktaAuth.handleLoginRedirect).toHaveBeenCalledTimes(1);
+      expect(oktaAuth.authStateManager.updateAuthState).toHaveBeenCalledTimes(1);
+    });
+  });
+
   describe('shows errors', () => {
     it('does not render errors without an error', () => { 
       const wrapper = mount(

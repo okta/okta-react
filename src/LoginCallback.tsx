@@ -30,12 +30,13 @@ const LoginCallback: React.FC<LoginCallbackProps> = ({ errorComponent, loadingEl
       onAuthResume();
       return;
     }
-    oktaAuth.handleLoginRedirect().then(() => {
-      // In `<Security>` component service was not started in case of login redirect.
-      // Start it now after `restoreOriginalUri` has been called and route changed.
-      oktaAuth.start();
-    }).catch(e => {
+
+    // In case of login redirect service was started in `<Security>` component
+    //  but authState was not updated
+    oktaAuth.handleLoginRedirect().catch(e => {
       setCallbackError(e);
+    }).finally(() => {
+      oktaAuth.authStateManager.updateAuthState();
     });
   }, [oktaAuth]);
 
