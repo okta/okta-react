@@ -9,6 +9,9 @@ module.exports = {
   ],
   globals: {
     AUTH_JS: { minSupportedVersion: '5.3.1' },
+    PACKAGE_NAME: 'okta-react-test',
+    PACKAGE_VERSION: '3.14.15',
+    SKIP_VERSION_CHECK: '1',
     'ts-jest': {
       diagnostics: {
         warnOnly: true

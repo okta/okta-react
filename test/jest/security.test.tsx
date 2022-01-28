@@ -56,7 +56,8 @@ describe('<Security />', () => {
       restoreOriginalUri
     };
     mount(<Security {...mockProps} />);
-    expect(addEnvironmentSpy).toBeCalledWith(`${process.env.PACKAGE_NAME}/${process.env.PACKAGE_VERSION}`);
+    // package name and version defined in jest.config.js
+    expect(addEnvironmentSpy).toBeCalledWith(`okta-react-test/3.14.15`);
   });
 
   it('logs a warning in case _oktaUserAgent is not available on auth SDK instance', () => {
@@ -77,7 +78,8 @@ describe('<Security />', () => {
 
     // turn off SKIP_VERSION_CHECK to test the functionality
     beforeEach(() => {
-      process.env.SKIP_VERSION_CHECK = '0';
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      SKIP_VERSION_CHECK = '0';
 
       originalConsole = global.console;
       global.console = {
@@ -86,7 +88,8 @@ describe('<Security />', () => {
       };
     });
     afterEach(() => {
-      process.env.SKIP_VERSION_CHECK = '1';
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      SKIP_VERSION_CHECK = '1';
       global.console = originalConsole;
     });
     it('throws runtime error when passed in authJS version is too low', () => {
