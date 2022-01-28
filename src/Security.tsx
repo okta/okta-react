@@ -15,6 +15,7 @@ import { AuthSdkError, AuthState, OktaAuth } from '@okta/okta-auth-js';
 import OktaContext, { OnAuthRequiredFunction, RestoreOriginalUriFunction } from './OktaContext';
 import OktaError from './OktaError';
 import { compare as compareVersions } from 'compare-versions';
+import { name as packageName, version as packageVersion } from './../package.json';
 
 declare const AUTH_JS: {
   minSupportedVersion: string;
@@ -55,7 +56,7 @@ const Security: React.FC<{
 
     // Add okta-react userAgent
     if (oktaAuth._oktaUserAgent) {
-      oktaAuth._oktaUserAgent.addEnvironment(`${process.env.PACKAGE_NAME}/${process.env.PACKAGE_VERSION}`);
+      oktaAuth._oktaUserAgent.addEnvironment(`${packageName}/${packageVersion}`);
     } else {
       console.warn('_oktaUserAgent is not available on auth SDK instance. Please use okta-auth-js@^5.3.1 .');
     }
