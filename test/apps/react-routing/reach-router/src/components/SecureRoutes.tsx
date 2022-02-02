@@ -13,7 +13,8 @@
 import React from 'react';
 import { useOktaAuth } from '@okta/okta-react';
 import { toRelativeUrl } from '@okta/okta-auth-js';
-import { RouteComponentProps, useMatch } from '@reach/router';
+import { RouteComponentProps } from '@reach/router';
+import Loading from './Loading';
 
 
 export type SecureRoutesChildProps = React.Component<RouteComponentProps>;
@@ -24,12 +25,11 @@ export type SecureRoutesProps = {
   errorComponent?: React.ComponentType<{ error: Error }>;
 } & RouteComponentProps;
 
-export const SecureRoutes: React.FC<SecureRoutesProps> = ({ errorComponent, children, path }) => {
+export const SecureRoutes: React.FC<SecureRoutesProps> = ({ errorComponent, children }) => {
   const { oktaAuth, authState } = useOktaAuth();
   const isPending = React.useRef(false);
-  const match = useMatch(path);
   const [ error, setError ] = React.useState<Error | null>(null);
-  
+
   React.useEffect(() => {
     const login = async () => {
       if (isPending.current) {
@@ -43,20 +43,12 @@ export const SecureRoutes: React.FC<SecureRoutesProps> = ({ errorComponent, chil
       await oktaAuth.signInWithRedirect();
     };
 
-    if (!match) {
-      return;
-    }
-
-    if (!authState) {
-      return;
-    }
-
-    if (authState.isAuthenticated) {
+    if (authState?.isAuthenticated) {
       isPending.current = false;
       return;
     }
 
-    if (!authState.isAuthenticated) { 
+    if (!authState || !authState.isAuthenticated) { 
       login().catch(err => {
         setError(err);
       });
@@ -69,7 +61,7 @@ export const SecureRoutes: React.FC<SecureRoutesProps> = ({ errorComponent, chil
   }
 
   if (!authState || !authState?.isAuthenticated) {
-    return null;
+    return (<Loading />);
   }
 
   return (children);
