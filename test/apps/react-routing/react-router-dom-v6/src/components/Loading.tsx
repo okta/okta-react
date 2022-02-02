@@ -11,20 +11,11 @@
  */
 
 import React from 'react';
-import { useOktaAuth } from '@okta/okta-react';
-import { Outlet } from 'react-router-dom';
-import Loading from './Loading';
 
-export const RequiredAuth: React.FC = () => {
-  const { oktaAuth, authState } = useOktaAuth();
+const Loading: React.FC = () => {
+  return (
+    <h3>Loading...</h3>
+  );
+};
 
-  if (!authState || !authState?.isAuthenticated) {
-    if (!authState?.isPending) {
-      oktaAuth.signInWithRedirect();
-    }
-
-    return (<Loading />);
-  }
-
-  return (<Outlet />);
-}
+export default Loading;

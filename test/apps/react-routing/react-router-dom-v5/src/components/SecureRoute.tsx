@@ -14,6 +14,7 @@ import React from 'react';
 import { useOktaAuth } from '@okta/okta-react';
 import { toRelativeUrl } from '@okta/okta-auth-js';
 import { Route, RouteProps, useRouteMatch } from 'react-router-dom';
+import Loading from './Loading';
 
 export const SecureRoute: React.FC<{
   errorComponent?: React.ComponentType<{ error: Error }>;
@@ -63,7 +64,7 @@ export const SecureRoute: React.FC<{
   }
 
   if (!authState || !authState?.isAuthenticated) {
-    return null;
+    return (<Loading />);
   }
 
   return (

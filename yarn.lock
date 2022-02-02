@@ -1899,27 +1899,6 @@
     mkdirp "^1.0.4"
     rimraf "^3.0.2"
 
-"@okta/okta-auth-js@5":
-  version "5.11.0"
-  resolved "https://registry.yarnpkg.com/@okta/okta-auth-js/-/okta-auth-js-5.11.0.tgz#44962e0d00deacd02b5b826d2c743be6b044a4f9"
-  integrity sha512-LhT/VDAwIRnDeg78hrzF5BgiD4Q4AtqZoC3aK//Tfr4JFpx/Suy56k/rY8aJMgb82lnrB0J83Wee5nPDMYi1sg==
-  dependencies:
-    "@babel/runtime" "^7.12.5"
-    "@okta/okta-idx-js" "0.23.0"
-    "@peculiar/webcrypto" "1.1.6"
-    Base64 "1.1.0"
-    atob "^2.1.2"
-    btoa "^1.2.1"
-    core-js "^3.6.5"
-    cross-fetch "^3.0.6"
-    js-cookie "2.2.1"
-    node-cache "^5.1.2"
-    p-cancelable "^2.0.0"
-    text-encoding "^0.7.0"
-    tiny-emitter "1.1.0"
-    webcrypto-shim "^0.1.5"
-    xhr2 "0.1.3"
-
 "@okta/okta-auth-js@^6.0.0":
   version "6.0.0"
   resolved "https://registry.yarnpkg.com/@okta/okta-auth-js/-/okta-auth-js-6.0.0.tgz#5ec34f7d92f6c91a3efeef8a6441175693b6fa74"
@@ -1940,16 +1919,6 @@
     tiny-emitter "1.1.0"
     webcrypto-shim "^0.1.5"
     xhr2 "0.1.3"
-
-"@okta/okta-idx-js@0.23.0":
-  version "0.23.0"
-  resolved "https://registry.yarnpkg.com/@okta/okta-idx-js/-/okta-idx-js-0.23.0.tgz#894bce38922537b27f168c78c38b6df3f203f419"
-  integrity sha512-aw4zAuP+xkZPxUXk2yTWLpuQZfGusuoWXyvb1QSMWTNQ4CAwZN40nlurBYOYqYOwQjj1MGqUxEgtDGVQYITcDQ==
-  dependencies:
-    "@babel/runtime" "^7.12.5"
-    "@babel/runtime-corejs3" "^7.12.5"
-    core-js "^3.15.1"
-    jsonpath-plus "^5.1.0"
 
 "@okta/okta-idx-js@0.24.0":
   version "0.24.0"
@@ -14322,10 +14291,10 @@ react-dom@^17.0.2:
     object-assign "^4.1.1"
     scheduler "^0.20.2"
 
-react-error-overlay@^6.0.7, react-error-overlay@^6.0.9:
-  version "6.0.10"
-  resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-6.0.10.tgz#0fe26db4fa85d9dbb8624729580e90e7159a59a6"
-  integrity sha512-mKR90fX7Pm5seCOfz8q9F+66VCc1PGsWSBxKbITjfKVQHMNF2zudxHnMdJiB1fRCb+XsbQV9sO9DCkgsMQgBIA==
+react-error-overlay@6.0.9, react-error-overlay@^6.0.7, react-error-overlay@^6.0.9:
+  version "6.0.9"
+  resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-6.0.9.tgz#3c743010c9359608c375ecd6bc76f35d93995b0a"
+  integrity sha512-nQTTcUu+ATDbrSD1BZHr5kgSD4oF8OFjxun8uAaL8RwPBacGBNPf/yAuVVdx17N8XNzRDMrZ9XcKZHCjPW+9ew==
 
 react-fast-compare@^3.0.1:
   version "3.2.0"
