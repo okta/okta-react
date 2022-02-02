@@ -4,6 +4,7 @@
 ```bash
 $ git clone https://github.com/okta/okta-react.git
 $ yarn
+$ cd ./test/apps/react-routing/react-router-dom-v5
 ```
 
 ## Configure
@@ -15,8 +16,6 @@ REACT_APP_ISSUER=<YOUR ISSUER URL>
 
 ## Start
 ```bash
-$ git clone https://github.com/okta/okta-react.git
-$ yarn
-$ cd ./test/apps/react-routing/react-router-dom-v5
+# from ./test/apps/react-routing/react-router-dom-v5
 $ yarn start
 ```
