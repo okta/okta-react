@@ -18,7 +18,7 @@ import logo from '../assets/logo.svg';
 const Protected: React.FC<RouteComponentProps> = () => {
   return (
     <>
-      <h1>Protected</h1>
+      <h1 className='page-header'>Protected</h1>
       <img src={logo} className="App-logo" alt="logo" />
     </>
   );

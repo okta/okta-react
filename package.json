@@ -105,13 +105,20 @@
     "outputDirectory": "./test-reports/unit/",
     "outputName": "junit-result.xml"
   },
-  "workspaces": [
-    "./",
-    "env",
-    "generator",
-    "generated/**/*",
-    "test/e2e/harness",
-    "test/e2e-samples",
-    "test/apps/**/*"
-  ]
+  "workspaces": {
+    "packages": [
+      "./",
+      "env",
+      "generator",
+      "generated/**/*",
+      "test/e2e/harness",
+      "test/e2e-samples",
+      "test/apps/**/*"
+    ],
+    "nohoist": [
+      "**/@wdio/**",
+      "**/protractor/**",
+      "**/jasmine/**"
+    ]
+  }
 }

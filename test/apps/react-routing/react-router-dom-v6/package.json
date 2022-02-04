@@ -21,10 +21,9 @@
     "web-vitals": "^2.1.0"
   },
   "scripts": {
-    "start": "SKIP_PREFLIGHT_CHECK=true react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "SKIP_PREFLIGHT_CHECK=true react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "yarn workspace @okta/test.app.router.e2e test react-router-v6"
   },
   "browserslist": {
     "production": [
@@ -41,5 +40,8 @@
   "resolutions": {
     "//": "See https://github.com/facebook/create-react-app/issues/11773",
     "react-error-overlay": "6.0.9"
+  },
+  "devDependencies": {
+    "react-app-rewired": "^2.1.11"
   }
 }

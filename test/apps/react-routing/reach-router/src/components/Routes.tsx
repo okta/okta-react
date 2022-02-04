@@ -17,8 +17,9 @@ import { SecureRoutes } from './SecureRoutes';
 
 import Home from '../pages/Home';
 import Protected from '../pages/Protected';
+import Loading from './Loading';
 
-const OktaLoginCallback: React.FC<RouteComponentProps> = () => (<LoginCallback />);
+const OktaLoginCallback: React.FC<RouteComponentProps> = () => (<LoginCallback loadingElement={<Loading />} />);
 
 const AppRoutes = () => {
   return (

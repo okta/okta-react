@@ -12,7 +12,7 @@
 
 import React from 'react';
 
-import { useHistory } from 'react-router-dom';
+import { navigate } from '@reach/router';
 import { Security } from '@okta/okta-react';
 import { OktaAuth, toRelativeUrl } from '@okta/okta-auth-js';
 
@@ -22,14 +22,13 @@ import Routes from './components/Routes';
 
 function App() {
   const oktaAuth = new OktaAuth({
-    issuer: process.env.REACT_APP_ISSUER,
-    clientId: process.env.REACT_APP_CLIENT_ID,
+    issuer: process.env.ISSUER,
+    clientId: process.env.SPA_CLIENT_ID,
     redirectUri: window.location.origin + '/login/callback'
   });
 
-  const history = useHistory();
   const restoreOriginalUri = (_oktaAuth: any,  originalUri: string) => {
-    history.replace(toRelativeUrl(originalUri || '/', window.location.origin));
+    navigate(toRelativeUrl(originalUri || '/', window.location.origin), { replace: true });
   };
 
   return (

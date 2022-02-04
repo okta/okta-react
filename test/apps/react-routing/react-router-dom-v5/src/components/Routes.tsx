@@ -17,12 +17,13 @@ import { SecureRoute } from './SecureRoute';
 
 import Home from '../pages/Home';
 import Protected from '../pages/Protected';
+import Loading from './Loading';
 
 const AppRoutes = () => {
   return (
     <Switch>
       <Route path='/' exact component={Home} />
-      <Route path='login/callback' component={LoginCallback} />
+      <Route path='/login/callback' render={() => (<LoginCallback loadingElement={<Loading />} />)} />
       <SecureRoute path='/protected' component={Protected} />
     </Switch>
   );

@@ -23,8 +23,8 @@ import Routes from './components/Routes';
 
 function App() {
   const oktaAuth = new OktaAuth({
-    issuer: process.env.REACT_APP_ISSUER,
-    clientId: process.env.REACT_APP_CLIENT_ID,
+    issuer: process.env.ISSUER,
+    clientId: process.env.SPA_CLIENT_ID,
     redirectUri: window.location.origin + '/login/callback'
   });
 

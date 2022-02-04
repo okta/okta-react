@@ -14,7 +14,7 @@ import React from 'react';
 
 const Loading: React.FC = () => {
   return (
-    <h3>Loading...</h3>
+    <h3 id='loading-icon'>Loading...</h3>
   );
 };
 
