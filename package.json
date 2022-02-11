@@ -118,7 +118,8 @@
     "nohoist": [
       "**/@wdio/**",
       "**/protractor/**",
-      "**/jasmine/**"
+      "**/jasmine/**",
+      "**/react-app-rewired/**"
     ]
   }
 }
