@@ -10,7 +10,7 @@ const filePatterns = [
   'generated/**/*.{js,jsx,ts,tsx}',
   'dist/bundles/*.{js,jsx,ts,tsx}'
 ];
-const files = globby.sync(path.join(__dirname, '..',`{${filePatterns.join(',')}}`));
+const files = globby.sync([path.join(__dirname, '..',`{${filePatterns.join(',')}}`), '!**/node_modules/**']);
 const bannerSource = fs.readFileSync(bannerSourcePath).toString();
 const copyrightRegex = /(Copyright \(c\) )([0-9]+)-?([0-9]+)?/;
 

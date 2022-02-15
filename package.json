@@ -117,9 +117,7 @@
     ],
     "nohoist": [
       "**/@wdio/**",
-      "**/protractor/**",
-      "**/jasmine/**",
-      "**/react-app-rewired/**"
+      "**/test/e2e/harness/**"
     ]
   }
 }
