@@ -36,6 +36,7 @@ const runTestsOnApp = (app) => {
   Running e2e tests on ${app}
 ## ~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~ ##`
     );
+    routerApp.stderr.on('data', console.error);
 
     let returnCode = 0;
     routerApp.on('exit', function(code) {
@@ -54,6 +55,7 @@ const runTestsOnApp = (app) => {
       resources: [
         'http-get://localhost:4440'
       ],
+      delay: 250,
       timeout: 10000
     })
     .then(() => {
@@ -70,6 +72,10 @@ const runTestsOnApp = (app) => {
         routerApp.kill();
         throw err;
       });
+    })
+    .catch(err => {
+      console.error(err.message);
+      routerApp.kill();
     });
   });
 };
