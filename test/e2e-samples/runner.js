@@ -37,7 +37,7 @@ function runWithConfig(sampleConfig) {
   const server = spawn('yarn', [
     'workspace',
     name,
-    'start:browser:none'
+    'start'
   ], { stdio: 'inherit' });
 
   waitOn({
