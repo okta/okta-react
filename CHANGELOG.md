@@ -1,3 +1,11 @@
+# 6.4.3
+
+### Bug Fixes
+
+- [#213](https://github.com/okta/okta-react/pull/213) 
+  - Avoids build time error when `react-router-dom` v6 is in app dependencies
+  - Throws unsupported error when `SecureRoute` is used with `react-router-dom` v6
+
 # 6.4.2
 
 ### Bug Fixes

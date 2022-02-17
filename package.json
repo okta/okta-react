@@ -46,7 +46,6 @@
   },
   "peerDependencies": {
     "@okta/okta-auth-js": "^5.3.1 || ^6.0.0",
-    "@types/react-router-dom": "^5.1.6",
     "react": ">=16.8.0",
     "react-dom": ">=16.8.0",
     "react-router-dom": ">=5.1.0"
