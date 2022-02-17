@@ -16,7 +16,7 @@ import * as ReactRouterDom from 'react-router-dom';
 import { toRelativeUrl } from '@okta/okta-auth-js';
 import OktaError from './OktaError';
 
-const useMatch = ReactRouterDom['useMatch' in ReactRouterDom ? 'useMatch' : 'useRouteMatch'];
+const useMatch: any = (ReactRouterDom as any)['useMatch' in ReactRouterDom ? 'useMatch' : 'useRouteMatch'];
 
 const SecureRoute: React.FC<{
   onAuthRequired?: OnAuthRequiredFunction;
