@@ -110,6 +110,7 @@
     "env",
     "generator",
     "generated/**/*",
+    "samples/**/*",
     "test/e2e/harness",
     "test/e2e-samples"
   ]
