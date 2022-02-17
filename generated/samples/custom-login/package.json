@@ -3,9 +3,9 @@
   "version": "0.3.0",
   "private": true,
   "dependencies": {
-    "@okta/okta-auth-js": "^6.0.0",
+    "@okta/okta-auth-js": "^6.1.0",
     "@okta/okta-react": "*",
-    "@okta/okta-signin-widget": "^6.0.0",
+    "@okta/okta-signin-widget": "^6.0.1",
     "semantic-ui-css": "2.4.1",
     "semantic-ui-react": "2.0.3",
     "text-encoding": "0.7.0",
