@@ -16,6 +16,8 @@ import * as ReactRouterDom from 'react-router-dom';
 import { toRelativeUrl } from '@okta/okta-auth-js';
 import OktaError from './OktaError';
 
+const useMatch = ReactRouterDom['useMatch' in ReactRouterDom ? 'useMatch' : 'useRouteMatch'];
+
 const SecureRoute: React.FC<{
   onAuthRequired?: OnAuthRequiredFunction;
   errorComponent?: React.ComponentType<{ error: Error }>;
@@ -25,7 +27,7 @@ const SecureRoute: React.FC<{
   ...routeProps
 }) => { 
   const { oktaAuth, authState, _onAuthRequired } = useOktaAuth();
-  const match = ReactRouterDom.useRouteMatch(routeProps);
+  const match = useMatch(routeProps);
   const pendingLogin = React.useRef(false);
   const [handleLoginError, setHandleLoginError] = React.useState<Error | null>(null);
   const ErrorReporter = errorComponent || OktaError;
