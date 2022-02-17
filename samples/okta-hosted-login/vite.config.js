@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+const path = require('path')
 
 const envModule = require('./env')();
 
@@ -29,6 +30,11 @@ export default defineConfig({
   plugins: [react()],
   define: {
     'process.env': env
+  },
+  resolve: {
+    alias: {
+      '@okta/okta-auth-js': path.resolve(__dirname, 'node_modules/@okta/okta-auth-js/dist/okta-auth-js.umd.js')
+    }
   },
   server: {
     port: 8080
