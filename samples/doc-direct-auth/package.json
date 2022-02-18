@@ -1,7 +1,7 @@
 {
   "name": "@okta/samples.react.doc-direct-auth",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.3.0",
   "scripts": {
     "prestart": "vite build",
     "start": "lite-server", 

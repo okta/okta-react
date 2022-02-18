@@ -14,6 +14,8 @@ module.exports = [
   {
     name: '@okta/samples.react.okta-hosted-login',
     useSiw: false,
+    useSemanticUi: true,
+    usePolyfill: true,
     specs: [
       'okta-hosted-login'
     ]
@@ -21,6 +23,8 @@ module.exports = [
   {
     name: '@okta/samples.react.custom-login',
     useSiw: true,
+    useSemanticUi: true,
+    usePolyfill: true,
     specs: [
       'custom-login'
     ]
@@ -28,6 +32,8 @@ module.exports = [
   {
     name: '@okta/samples.react.doc-embedded-widget',
     useSiw: true,
+    useSemanticUi: false,
+    usePolyfill: false,
     specs: [
       'doc-embedded-widget'
     ]
@@ -35,6 +41,8 @@ module.exports = [
   {
     name: '@okta/samples.react.doc-direct-auth',
     useSiw: false,
+    useSemanticUi: false,
+    usePolyfill: false,
     specs: [
       'doc-direct-auth'
     ]

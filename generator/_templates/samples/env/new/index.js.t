@@ -2,8 +2,7 @@
 to: ../samples/<%= dest %>/env/index.js
 force: true
 ---
-/* eslint-disable */
-module.exports = function () {
+export default function () {
   let oktaEnv;
   try {
     oktaEnv = require('@okta/env');

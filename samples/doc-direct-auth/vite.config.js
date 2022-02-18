@@ -1,9 +1,9 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'path';
-import envModule from '@okta/env'
+import envModule from './env'
 
-envModule.setEnvironmentVarsFromTestEnv(); // Set environment variables from "testenv" file
+envModule().setEnvironmentVarsFromTestEnv(); // Set environment variables from "testenv" file
 
 process.env.CLIENT_ID = process.env.SPA_CLIENT_ID || process.env.CLIENT_ID;
 process.env.OKTA_TESTING_DISABLEHTTPSCHECK = process.env.OKTA_TESTING_DISABLEHTTPSCHECK || false;

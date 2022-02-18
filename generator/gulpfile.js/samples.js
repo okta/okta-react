@@ -10,18 +10,14 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-const { series, parallel, watch } = require('gulp');
-const shell = require('shelljs');
+const { series, parallel } = require('gulp');
 const { 
-  clean: cleanTask,
   install: installTask
 } = require('./common');
 const {
   getHygenActions, 
-  getHygenAction,
   buildHygenAction,
   getVersions,
-  install,
 } = require('./util');
 const configs = require('../config');
 
@@ -30,7 +26,7 @@ const samplesConfig = (() => {
   return configs.map(config => {
     const nameParts = config.name.split('.');
     const name = nameParts[nameParts.length - 1];
-    const dest = `samples/${name}`;
+    const dest = `${name}`;
     return { 
       ...config, 
       ...versions, 
@@ -40,29 +36,6 @@ const samplesConfig = (() => {
     };
   });
 })();
-
-const watchTask = () => {
-  const actions = getHygenActions();
-  const watcher = watch(`_templates/**/*`);
-  watcher.on('all', (_, path) => {
-    // handle env changes
-    if (path.startsWith('_templates/env/new')) {
-      samplesConfig.forEach(config => buildEnv(config));
-      return
-    }
-    // get action from change path and execute build action
-    const action = getHygenAction(actions, path);
-    console.info(`\nFile ${path} has been changed, action: ${action}, build start ... \n`);
-    
-    samplesConfig.forEach(config => buildHygenAction(action, config));
-    
-    // check if yarn install is needed
-    if (path.includes('package.json')) {
-      console.info(`\n"package.json" has been changed, re-install packages ... \n`);
-      install();
-    }
-  });
-};
 
 const getCommonBuildTasks = () => {
   const actions = getHygenActions();
@@ -78,7 +51,6 @@ const getCommonBuildTasks = () => {
 };
 
 const generateSamplesTask = series(
-  cleanTask,
   parallel(...getCommonBuildTasks()),
   installTask
 );
