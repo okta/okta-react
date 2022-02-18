@@ -73,7 +73,7 @@ function runWithConfig(sampleConfig) {
     process.on('exit', function() {
       console.log('Process exited with code: ', returnCode);
     });
-  }).catch(e => console.log(e));;
+  });
 }
 
 function taskFn(sampleConfig) {

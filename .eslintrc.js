@@ -5,6 +5,10 @@ const devDependencies = Object.keys(packageJson.devDependencies || {});
 
 module.exports = {
   root: true,
+  parserOptions: {
+    sourceType: 'module',
+    ecmaVersion: 2020
+  },
   extends: [
     'eslint:recommended',
     'plugin:react/recommended',
@@ -32,7 +36,9 @@ module.exports = {
         'protractor.conf.js',
         '.eslintrc.js',
         'babel.config.js',
-        'jest.config.js'
+        'jest.config.js',
+        'vite.config.js',
+        'bs-config.js'
       ],
       plugins: ['node'],
       env: {
@@ -54,6 +60,13 @@ module.exports = {
       },
       env: {
         node: true
+      }
+    },
+    {
+      files: ['samples/**/*'],
+      env: {
+        node: true,
+        browser: true
       }
     }
   ]

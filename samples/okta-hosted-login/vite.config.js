@@ -1,8 +1,7 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-const path = require('path')
-
-const envModule = require('./env')();
+import path from 'path';
+import envModule from '@okta/env'
 
 envModule.setEnvironmentVarsFromTestEnv(); // Set environment variables from "testenv" file
 
