@@ -30,6 +30,11 @@ export default defineConfig({
   define: {
     'process.env': env
   },
+  resolve: {
+    alias: {
+      '@okta/okta-auth-js': path.resolve(__dirname, 'node_modules/@okta/okta-auth-js/dist/okta-auth-js.umd.js')
+    }
+  },
   server: {
     port: 8080
   }
