@@ -23,7 +23,11 @@
   },
   "workspaces": {
     "nohoist": [
-      "**/@okta/okta-auth-js"
+      "**/@okta/okta-auth-js",
+      "**/react",
+      "**/react-dom",
+      "**/react/**",
+      "**/react-dom/**"
     ]
   }
 }

@@ -92,6 +92,7 @@
     "prop-types": "^15.5.10",
     "protractor": "^5.4.2",
     "react": "^16.8.0",
+    "react-dom": "^16.8.0",
     "rimraf": "^2.6.2",
     "rollup": "^2.33.1",
     "rollup-plugin-cleanup": "^3.2.1",
