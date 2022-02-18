@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "scripts": {
     "prestart": "vite build",
-    "start": "http-server -p 8080 ./dist", 
+    "start": "lite-server", 
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview"
@@ -20,7 +20,7 @@
   "devDependencies": {
     "@vitejs/plugin-react": "^1.0.7",
     "vite": "^2.8.0",
-    "http-server": "^14.1.0"
+    "lite-server": "^2.6.1"
   },
   "workspaces": {
     "nohoist": [
