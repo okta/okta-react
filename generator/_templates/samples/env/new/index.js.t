@@ -1,5 +1,5 @@
 ---
-to: ../generated/<%= dest %>/env/index.js
+to: ../samples/<%= dest %>/env/index.js
 force: true
 ---
 /* eslint-disable */
