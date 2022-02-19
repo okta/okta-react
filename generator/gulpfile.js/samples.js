@@ -11,9 +11,6 @@
  */
 
 const { series, parallel } = require('gulp');
-const { 
-  install: installTask
-} = require('./common');
 const {
   getHygenActions, 
   buildHygenAction,
@@ -51,8 +48,7 @@ const getCommonBuildTasks = () => {
 };
 
 const generateSamplesTask = series(
-  parallel(...getCommonBuildTasks()),
-  installTask
+  parallel(...getCommonBuildTasks())
 );
 
 module.exports = {
