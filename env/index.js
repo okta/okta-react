@@ -10,18 +10,11 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-
 const dotenv = require('dotenv');
 const fs = require('fs');
 const path = require('path');
-const ROOT_DIR = path.resolve(__dirname, '..');
 
-// Read environment variables from "testenv". Override environment vars if they are already set.
-const TESTENV = path.resolve(ROOT_DIR, 'testenv');
-
-if (fs.existsSync(TESTENV)) {
-  setEnvironmentVarsFromTestEnv();
-}
+const TESTENV_FILE = 'testenv';
 
 function setEnvironmentVars(envConfig) {
   Object.keys(envConfig).forEach((k) => {
@@ -32,15 +25,26 @@ function setEnvironmentVars(envConfig) {
   });  
 }
 
-function setEnvironmentVarsFromTestEnv() {
-  if (!fs.existsSync(TESTENV)) {
+function getPath(currDir = __dirname) {
+  let res, prevDir;
+  // stop when find testenv file or reach to root dir
+  while (!fs.existsSync(res) && currDir !== prevDir)  {
+    prevDir = currDir;
+    currDir = path.resolve(currDir, '..');
+    res = path.resolve(currDir, TESTENV_FILE);
+  }
+  return fs.existsSync(res) ? res : null;
+}
+
+function setEnvironmentVarsFromTestEnv(currDir) {
+  const testEnvPath = getPath(currDir);
+  if (!testEnvPath) {
     return;
   }
-  const envConfig = dotenv.parse(fs.readFileSync(TESTENV));
+  const envConfig = dotenv.parse(fs.readFileSync(testEnvPath));
   setEnvironmentVars(envConfig);
 }
 
 module.exports = {
-  setEnvironmentVars,
-  setEnvironmentVarsFromTestEnv,
+  setEnvironmentVarsFromTestEnv
 };

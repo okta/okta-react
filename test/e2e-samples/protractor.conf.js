@@ -19,8 +19,6 @@ const sampleConfigs = require('@okta/generator/config');
 const env = require('@okta/env');
 env.setEnvironmentVarsFromTestEnv();
 
-console.log(process.env.USER_NAME);
-
 const TEST_RESULT_FILE_DIR = '../../test-reports/e2e-samples';
 
 function getProtractorConfig() {
