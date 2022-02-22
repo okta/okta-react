@@ -1,0 +1,47 @@
+---
+to: ../samples/<%= dest %>/package.json
+force: true
+---
+{
+  "name": "<%= pkgName %>",
+  "private": true,
+  "version": "0.3.0",
+  "scripts": {
+    "prestart": "vite build",
+    "start": "lite-server", 
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-router-dom": "5.2.0",
+    "@okta/okta-auth-js": "^<%= oktaAuthJsVersion %>",
+<% if (useSiw === 'true') { -%>
+    "@okta/okta-signin-widget": "^<%= siwVersion %>",
+<% } -%>
+<% if (useSemanticUi === 'true') { -%>
+    "semantic-ui-css": "2.4.1",
+    "semantic-ui-react": "2.0.3",
+<% } -%>
+<% if (usePolyfill === 'true') { -%>
+    "text-encoding": "0.7.0",
+<% } -%>
+    "@okta/okta-react": "*"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^1.0.7",
+    "vite": "^2.8.0",
+    "lite-server": "^2.6.1"
+  },
+  "workspaces": {
+    "nohoist": [
+      "**/@okta/okta-auth-js",
+      "**/react",
+      "**/react-dom",
+      "**/react/**",
+      "**/react-dom/**"
+    ]
+  }
+}

@@ -5,7 +5,8 @@ export PATH="${PATH}:$(yarn global bin)"
 
 # Install required node version
 export NVM_DIR="/root/.nvm"
-setup_service node v12.13.0
+NODE_VERSION="${1:-v12.13.0}"
+setup_service node $NODE_VERSION
 
 cd ${OKTA_HOME}/${REPO}
 

@@ -13,36 +13,36 @@
 module.exports = [
   {
     name: '@okta/samples.react.okta-hosted-login',
-    type: 'github-sample',
     useSiw: false,
-    excludeAction: /^doc-/,
+    useSemanticUi: true,
+    usePolyfill: true,
     specs: [
       'okta-hosted-login'
     ]
   },
   {
     name: '@okta/samples.react.custom-login',
-    type: 'github-sample',
     useSiw: true,
-    excludeAction: /^doc-/,
+    useSemanticUi: true,
+    usePolyfill: true,
     specs: [
       'custom-login'
     ]
   },
   {
     name: '@okta/samples.react.doc-embedded-widget',
-    type: 'doc-sample',
     useSiw: true,
-    excludeAction: /^github-/,
+    useSemanticUi: false,
+    usePolyfill: false,
     specs: [
       'doc-embedded-widget'
     ]
   },
   {
     name: '@okta/samples.react.doc-direct-auth',
-    type: 'doc-sample',
     useSiw: false,
-    excludeAction: /^github-/,
+    useSemanticUi: false,
+    usePolyfill: false,
     specs: [
       'doc-direct-auth'
     ]

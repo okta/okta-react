@@ -18,7 +18,8 @@ const testHarnessTasks = require('./test-harness');
 module.exports = {
   default: series(
     samplesTasks['generate:samples'], 
-    testHarnessTasks['generate:test-harness']
+    testHarnessTasks['generate:test-harness'],
+    commonTasks.install
   ),
   ...commonTasks,
   ...samplesTasks,

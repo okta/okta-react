@@ -13,7 +13,7 @@
 const webpack = require('webpack');
 
 // eslint-disable-next-line node/no-unpublished-require
-require('../../../env'); // will load environment vars from testenv file and set on process.env
+require('@okta/env'); // will load environment vars from testenv file and set on process.env
 
 const env = {};
 // List of environment variables made available to the app
