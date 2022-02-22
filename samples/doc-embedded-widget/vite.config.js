@@ -32,7 +32,8 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@okta/okta-auth-js': path.resolve(__dirname, 'node_modules/@okta/okta-auth-js/dist/okta-auth-js.umd.js')
+      '@okta/okta-auth-js': path.resolve(__dirname, 'node_modules/@okta/okta-auth-js/dist/okta-auth-js.umd.js'),
+      'react-router-dom': path.resolve(__dirname, 'node_modules/react-router-dom')
     }
   },
   server: {
@@ -40,9 +41,9 @@ export default defineConfig({
   },
   build: {
     rollupOptions: {
-      // be strict with build warnings
-      onwarn (warning) {
-        console.error(warning);
+      // always throw with build warnings
+      onwarn (warning, warn) {
+        warn('\nBuild warning happened, customize "onwarn" callback in vite.config.js to handle this error.');
         throw new Error(warning);
       }
     }
