@@ -12,7 +12,6 @@
 
 const { series } = require('gulp');
 const shell = require('shelljs');
-const { install: installTask } = require('./common');
 const { getVersions, getHygenCommand } = require('./util');
 
 const versions = getVersions();
@@ -30,5 +29,5 @@ const generateTestHarness = () => {
 };
 
 module.exports = {
-  'generate:test-harness': series(generateTestHarness, installTask)
+  'generate:test-harness': series(generateTestHarness)
 };
