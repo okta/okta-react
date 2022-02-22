@@ -57,8 +57,6 @@ module.exports = [
     useSemanticUi: false,
     usePolyfill: false,
     reactRouterDomVersion: '6.2.1',
-    specs: [
-      'doc-direct-auth'
-    ]
+    specs: []
   }
 ];
