@@ -59,6 +59,7 @@
     "@babel/preset-env": "^7.11.5",
     "@babel/preset-react": "^7.10.4",
     "@babel/register": "^7.12.1",
+    "@okta/okta-auth-js": "^6.1.0",
     "@rollup/plugin-babel": "^5.2.1",
     "@rollup/plugin-replace": "^2.3.4",
     "@types/enzyme": "^3.10.8",

@@ -14,7 +14,6 @@ to: ../test/e2e/harness/package.json
     "@types/react-dom": "^16.9.9",
     "react": "^<%= reactVersion %>",
     "react-dom": "^16.8.0",
-    "react-router": "^5.1.2",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.0"
   },
@@ -49,5 +48,16 @@ to: ../test/e2e/harness/package.json
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "workspaces": {
+    "nohoist": [
+      "**/@okta/okta-auth-js",
+      "**/react",
+      "**/react/**",
+      "**/react-dom",
+      "**/react-dom/**",
+      "**/react-router-dom",
+      "**/react-router-dom/**"
+    ]
+  }
 }

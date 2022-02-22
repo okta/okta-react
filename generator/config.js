@@ -16,6 +16,7 @@ module.exports = [
     useSiw: false,
     useSemanticUi: true,
     usePolyfill: true,
+    reactRouterDomVersion: '5.2.0',
     specs: [
       'okta-hosted-login'
     ]
@@ -25,6 +26,7 @@ module.exports = [
     useSiw: true,
     useSemanticUi: true,
     usePolyfill: true,
+    reactRouterDomVersion: '5.2.0',
     specs: [
       'custom-login'
     ]
@@ -34,6 +36,7 @@ module.exports = [
     useSiw: true,
     useSemanticUi: false,
     usePolyfill: false,
+    reactRouterDomVersion: '5.2.0',
     specs: [
       'doc-embedded-widget'
     ]
@@ -43,6 +46,17 @@ module.exports = [
     useSiw: false,
     useSemanticUi: false,
     usePolyfill: false,
+    reactRouterDomVersion: '5.2.0',
+    specs: [
+      'doc-direct-auth'
+    ]
+  },
+  {
+    name: '@okta/samples.react.react-router-dom-v6',
+    useSiw: false,
+    useSemanticUi: false,
+    usePolyfill: false,
+    reactRouterDomVersion: '6.2.1',
     specs: [
       'doc-direct-auth'
     ]

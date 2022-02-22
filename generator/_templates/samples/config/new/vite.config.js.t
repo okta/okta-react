@@ -41,5 +41,14 @@ export default defineConfig({
   },
   server: {
     port: 8080
+  },
+  build: {
+    rollupOptions: {
+      // be strict with build warnings
+      onwarn (warning, warn) {
+        console.error(warning);
+        throw new Error(warning);
+      }
+    }
   }
 })

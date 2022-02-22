@@ -20,15 +20,18 @@
   "devDependencies": {
     "@vitejs/plugin-react": "^1.0.7",
     "vite": "^2.8.0",
-    "lite-server": "^2.6.1"
+    "lite-server": "^2.6.1",
+    "dotenv": "^16.0.0"
   },
   "workspaces": {
     "nohoist": [
       "**/@okta/okta-auth-js",
       "**/react",
-      "**/react-dom",
       "**/react/**",
-      "**/react-dom/**"
+      "**/react-dom",
+      "**/react-dom/**",
+      "**/react-router-dom",
+      "**/react-router-dom/**"
     ]
   }
 }
