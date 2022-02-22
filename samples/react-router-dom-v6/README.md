@@ -19,10 +19,10 @@ ISSUER=<YOUR ISSUER URL>
 
 ## Start
 ```bash
-$ yarn workspace @okta/test.app.react-router-dom-v6 start
+$ yarn workspace @okta/samples.react.react-router-dom-v6 start
 ```
 OR
 ```bash
-$ cd ./test/apps/react-routing/react-router-dom-v6
+$ cd ./samples/react-router-dom-v6
 $ yarn start
 ```
