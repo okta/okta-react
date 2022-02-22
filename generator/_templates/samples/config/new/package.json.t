@@ -3,6 +3,7 @@ to: ../samples/<%= dest %>/package.json
 force: true
 ---
 {
+  "comment": "IMPORTANT: THIS FILE IS GENERATED, CHANGES SHOULD BE MADE WITHIN '@okta/generator'",
   "name": "<%= pkgName %>",
   "private": true,
   "version": "0.3.0",

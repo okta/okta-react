@@ -2,6 +2,8 @@
 to: ../samples/<%= dest %>/vite.config.js
 force: true
 ---
+// "IMPORTANT: THIS FILE IS GENERATED, CHANGES SHOULD BE MADE WITHIN '@okta/generator'"
+
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'path';
