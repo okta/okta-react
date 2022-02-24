@@ -12,15 +12,17 @@
 
 import * as React from 'react';
 import { mount } from 'enzyme';
-import { act } from 'react-dom/test-utils';
+import { render, screen } from '@testing-library/react';
 import LoginCallback from '../../src/LoginCallback';
 import Security from '../../src/Security';
 
+import '@testing-library/jest-dom';
+
 describe('<LoginCallback />', () => {
-  let oktaAuth;
-  let authState;
-  let mockProps;
-  const restoreOriginalUri = async (_, url) => {
+  let oktaAuth: any;
+  let authState: any;
+  let mockProps: any;
+  const restoreOriginalUri = async (_: any, url: string) => {
     location.href = url;
   };
   beforeEach(() => {
@@ -30,11 +32,13 @@ describe('<LoginCallback />', () => {
       authStateManager: {
         getAuthState: jest.fn().mockImplementation(() => authState),
         subscribe: jest.fn(),
+        unsubscribe: jest.fn(),
         updateAuthState: jest.fn(),
       },
       isLoginRedirect: jest.fn().mockImplementation(() => false),
       handleLoginRedirect: jest.fn().mockImplementation( () => Promise.resolve() ),
       start: jest.fn(),
+      stop: jest.fn(),
       idx: {
         isInteractionRequired: jest.fn().mockImplementation( () => false ),
       }
@@ -98,8 +102,8 @@ describe('<LoginCallback />', () => {
         error: { has: 'errorData' }
       };
 
-      const MyErrorComponent = ({ error }) => { 
-        return (<p>Override: {error.has}</p>);
+      const MyErrorComponent = (props: any) => { 
+        return (<p>Override: {props.error.has}</p>);
       };
 
       const wrapper = mount(
@@ -133,6 +137,7 @@ describe('<LoginCallback />', () => {
       expect(wrapper.text()).toBe(''); // no output since we expect to be redirected
     });
 
+    // eslint-disable-next-line jest/expect-expect
     it('renders errors caught from handleLoginRedirect', async () => {
       const errorMsg = 'error on callback';
       authState = {
@@ -141,19 +146,15 @@ describe('<LoginCallback />', () => {
       oktaAuth.handleLoginRedirect.mockImplementation(() => {
         return Promise.reject(new Error(errorMsg));
       });
-      const wrapper = mount(
+      render(
         <Security {...mockProps}>
           <LoginCallback />
         </Security>
       );
-      return await act(async () => {
-        await wrapper.update(); // set state
-        await wrapper.update();
-        await wrapper.update(); // render error
-        expect(wrapper.text()).toBe('Error: ' + errorMsg);
-      });
+      await screen.findByText('Error: error on callback');
     });
 
+    // eslint-disable-next-line jest/expect-expect
     it('will treat isInteractionRequired like a normal error if not onAuthResume is passed', async () => { 
       oktaAuth.idx.isInteractionRequired = jest.fn().mockImplementation( () => true );
       const errorMsg = 'error on callback';
@@ -163,17 +164,12 @@ describe('<LoginCallback />', () => {
       oktaAuth.handleLoginRedirect.mockImplementation(() => {
         return Promise.reject(new Error(errorMsg));
       });
-      const wrapper = mount(
+      render(
         <Security {...mockProps}>
           <LoginCallback />
         </Security>
       );
-      return await act(async () => {
-        await wrapper.update(); // set state
-        await wrapper.update();
-        await wrapper.update(); // render error
-        expect(wrapper.text()).toBe('Error: ' + errorMsg);
-      });
+      await screen.findByText('Error: error on callback');
     });
   });
 

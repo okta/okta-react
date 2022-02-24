@@ -10,24 +10,22 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-const { series } = require('gulp');
-const shell = require('shelljs');
-const { getVersions, getHygenCommand } = require('./util');
+import React from 'react';
+import { useOktaAuth } from '@okta/okta-react';
+import { toRelativeUrl } from '@okta/okta-auth-js';
+import { Outlet } from 'react-router-dom';
+import Loading from './Loading';
 
-const versions = getVersions();
+export const RequiredAuth: React.FC = () => {
+  const { oktaAuth, authState } = useOktaAuth();
 
-const generateTestHarness = () => {
-  return new Promise((resolve, reject) => {
-    const command = getHygenCommand(`yarn hygen test-harness new`, versions);
-    shell.exec(command, (code, stdout, stderr) => {
-      if (code !== 0) {
-        reject(new Error(stderr));
-      }
-      resolve(stdout);
-    });
-  });
-};
+  if (!authState || !authState?.isAuthenticated) {
+    const originalUri = toRelativeUrl(window.location.href, window.location.origin);
+    oktaAuth.setOriginalUri(originalUri);
+    oktaAuth.signInWithRedirect();
 
-module.exports = {
-  'generate:test-harness': series(generateTestHarness)
-};
+    return (<Loading />);
+  }
+
+  return (<Outlet />);
+}

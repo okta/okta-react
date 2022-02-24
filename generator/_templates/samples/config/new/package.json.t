@@ -3,6 +3,7 @@ to: ../samples/<%= dest %>/package.json
 force: true
 ---
 {
+  "comment": "IMPORTANT: THIS FILE IS GENERATED, CHANGES SHOULD BE MADE WITHIN '@okta/generator'",
   "name": "<%= pkgName %>",
   "private": true,
   "version": "0.3.0",
@@ -16,7 +17,7 @@ force: true
   "dependencies": {
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "react-router-dom": "5.2.0",
+    "react-router-dom": "<%= reactRouterDomVersion %>",
     "@okta/okta-auth-js": "^<%= oktaAuthJsVersion %>",
 <% if (useSiw === 'true') { -%>
     "@okta/okta-signin-widget": "^<%= siwVersion %>",
@@ -33,15 +34,7 @@ force: true
   "devDependencies": {
     "@vitejs/plugin-react": "^1.0.7",
     "vite": "^2.8.0",
-    "lite-server": "^2.6.1"
-  },
-  "workspaces": {
-    "nohoist": [
-      "**/@okta/okta-auth-js",
-      "**/react",
-      "**/react-dom",
-      "**/react/**",
-      "**/react-dom/**"
-    ]
+    "lite-server": "^2.6.1",
+    "dotenv": "^16.0.0"
   }
 }
