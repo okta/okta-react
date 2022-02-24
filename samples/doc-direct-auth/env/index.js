@@ -1,3 +1,5 @@
+// "IMPORTANT: THIS FILE IS GENERATED, CHANGES SHOULD BE MADE WITHIN '@okta/generator'"
+
 export default function () {
   let oktaEnv;
   try {

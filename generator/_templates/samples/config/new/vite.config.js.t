@@ -2,6 +2,8 @@
 to: ../samples/<%= dest %>/vite.config.js
 force: true
 ---
+// "IMPORTANT: THIS FILE IS GENERATED, CHANGES SHOULD BE MADE WITHIN '@okta/generator'"
+
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'path';
@@ -36,10 +38,20 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@okta/okta-auth-js': path.resolve(__dirname, 'node_modules/@okta/okta-auth-js/dist/okta-auth-js.umd.js')
+      '@okta/okta-auth-js': path.resolve(__dirname, 'node_modules/@okta/okta-auth-js/dist/okta-auth-js.umd.js'),
+      'react-router-dom': path.resolve(__dirname, 'node_modules/react-router-dom')
     }
   },
   server: {
     port: 8080
+  },
+  build: {
+    rollupOptions: {
+      // always throw with build warnings
+      onwarn (warning, warn) {
+        warn('\nBuild warning happened, customize "onwarn" callback in vite.config.js to handle this error.');
+        throw new Error(warning);
+      }
+    }
   }
 })

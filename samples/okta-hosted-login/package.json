@@ -1,4 +1,5 @@
 {
+  "comment": "IMPORTANT: THIS FILE IS GENERATED, CHANGES SHOULD BE MADE WITHIN '@okta/generator'",
   "name": "@okta/samples.react.okta-hosted-login",
   "private": true,
   "version": "0.3.0",
@@ -22,15 +23,7 @@
   "devDependencies": {
     "@vitejs/plugin-react": "^1.0.7",
     "vite": "^2.8.0",
-    "lite-server": "^2.6.1"
-  },
-  "workspaces": {
-    "nohoist": [
-      "**/@okta/okta-auth-js",
-      "**/react",
-      "**/react-dom",
-      "**/react/**",
-      "**/react-dom/**"
-    ]
+    "lite-server": "^2.6.1",
+    "dotenv": "^16.0.0"
   }
 }

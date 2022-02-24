@@ -2,6 +2,8 @@
 to: ../samples/<%= dest %>/env/index.js
 force: true
 ---
+// "IMPORTANT: THIS FILE IS GENERATED, CHANGES SHOULD BE MADE WITHIN '@okta/generator'"
+
 export default function () {
   let oktaEnv;
   try {
