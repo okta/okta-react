@@ -13,10 +13,21 @@
 import * as React from 'react';
 import { useOktaAuth, OnAuthRequiredFunction } from './OktaContext';
 import * as ReactRouterDom from 'react-router-dom';
-import { toRelativeUrl } from '@okta/okta-auth-js';
+import { toRelativeUrl, AuthSdkError } from '@okta/okta-auth-js';
 import OktaError from './OktaError';
 
-const useMatch: any = (ReactRouterDom as any)['useMatch' in ReactRouterDom ? 'useMatch' : 'useRouteMatch'];
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let useMatch: any;
+if ('useRouteMatch' in ReactRouterDom) {
+  // trick static analyzer to avoid "'useRouteMatch' is not exported" error
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  useMatch = (ReactRouterDom as any)['useRouteMatch' in ReactRouterDom ? 'useRouteMatch' : ''];
+} else {
+  // throw when useMatch is triggered
+  useMatch = () => { 
+    throw new AuthSdkError('Unsupported: SecureRoute only works with react-router-dom v5 or any router library with compatible APIs. See examples under the "samples" folder for how to implement your own custom SecureRoute Component.');
+  };
+}
 
 const SecureRoute: React.FC<{
   onAuthRequired?: OnAuthRequiredFunction;
