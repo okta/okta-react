@@ -10,6 +10,8 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import * as React from 'react';
 import { act } from 'react-dom/test-utils';
 import { render } from 'react-dom';
