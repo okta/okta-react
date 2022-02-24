@@ -54,7 +54,9 @@
       "**/react-dom",
       "**/react-dom/**",
       "**/react-router-dom",
-      "**/react-router-dom/**"
+      "**/react-router-dom/**",
+      "**/react-scripts",
+      "**/react-scripts/**"
     ]
   }
 }

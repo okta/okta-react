@@ -11,9 +11,9 @@
  */
 
 const webpack = require('webpack');
+const oktaEnv = require('@okta/env');
 
-// eslint-disable-next-line node/no-unpublished-require
-require('@okta/env'); // will load environment vars from testenv file and set on process.env
+oktaEnv.setEnvironmentVarsFromTestEnv(__dirname);
 
 const env = {};
 // List of environment variables made available to the app

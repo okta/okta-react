@@ -57,7 +57,9 @@ to: ../test/e2e/harness/package.json
       "**/react-dom",
       "**/react-dom/**",
       "**/react-router-dom",
-      "**/react-router-dom/**"
+      "**/react-router-dom/**",
+      "**/react-scripts",
+      "**/react-scripts/**"
     ]
   }
 }
