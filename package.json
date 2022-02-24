@@ -111,13 +111,24 @@
     "outputDirectory": "./test-reports/unit/",
     "outputName": "junit-result.xml"
   },
-  "workspaces": [
-    "./",
-    "env",
-    "generator",
-    "samples/**/*",
-    "test/apps/*",
-    "test/e2e/harness",
-    "test/e2e-samples"
-  ]
+  "workspaces": {
+    "packages": [
+      "./",
+      "env",
+      "generator",
+      "samples/**/*",
+      "test/apps/*",
+      "test/e2e/harness",
+      "test/e2e-samples"
+    ],
+    "nohoist": [
+      "**/@okta/okta-auth-js",
+      "**/react",
+      "**/react/**",
+      "**/react-dom",
+      "**/react-dom/**",
+      "**/react-router-dom",
+      "**/react-router-dom/**"
+    ]
+  }
 }
