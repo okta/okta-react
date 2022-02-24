@@ -10,24 +10,4 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-const { series } = require('gulp');
-const shell = require('shelljs');
-const { getVersions, getHygenCommand } = require('./util');
-
-const versions = getVersions();
-
-const generateTestHarness = () => {
-  return new Promise((resolve, reject) => {
-    const command = getHygenCommand(`yarn hygen test-harness new`, versions);
-    shell.exec(command, (code, stdout, stderr) => {
-      if (code !== 0) {
-        reject(new Error(stderr));
-      }
-      resolve(stdout);
-    });
-  });
-};
-
-module.exports = {
-  'generate:test-harness': series(generateTestHarness)
-};
+/// <reference types="vite/client" />

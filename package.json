@@ -10,9 +10,9 @@
     "lint": "eslint .",
     "lint:report": "eslint -f checkstyle -o ./test-reports/lint/eslint-checkstyle-result.xml .",
     "prepare": "yarn build",
-    "start": "yarn workspace @okta/okta-react-test-harness start",
+    "start": "yarn workspace @okta/test.app.test-harness-app start",
     "test": "yarn lint && yarn test:unit && yarn test:e2e",
-    "test:e2e": "yarn workspace @okta/okta-react-test-harness test",
+    "test:e2e": "yarn workspace @okta/test.e2e test",
     "test:e2e:samples": "yarn workspace @okta/test.e2e-samples test",
     "test:unit": "jest",
     "bundle": "rollup -c",
@@ -116,6 +116,7 @@
     "env",
     "generator",
     "samples/**/*",
+    "test/apps/*",
     "test/e2e/harness",
     "test/e2e-samples"
   ]
