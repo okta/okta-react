@@ -21,6 +21,7 @@ const env = {};
 [
   'ISSUER',
   'CLIENT_ID',
+  'SPA_CLIENT_ID',
   'OKTA_TESTING_DISABLEHTTPSCHECK',
   'USE_INTERACTION_CODE',
 ].forEach((key) => {
