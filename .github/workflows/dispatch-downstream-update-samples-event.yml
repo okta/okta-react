@@ -18,7 +18,7 @@ jobs:
       with: 
         github-token: ${{secrets.OKTA_433527}}
         script: |
-          const stdout = exec.exec(`npm info ${module} dist-tags --json`, { silent: true });
+          const stdout = await exec.exec(`npm info ${module} dist-tags --json`, { silent: true });
           const latestPublishedVersion = JSON.parse(stdout).latest;
           console.log(latestPublishedVersion);
           github.rest.repos.createDispatchEvent({
