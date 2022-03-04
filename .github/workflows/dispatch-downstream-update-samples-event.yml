@@ -13,12 +13,18 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
+    - uses: actions/setup-node@v2
+      with:
+        node-version: 14
+    - run: npm install semver shelljs
+
     - name: Dispatch event
       uses: actions/github-script@v6
       with: 
         github-token: ${{secrets.OKTA_433527}}
         script: |
-          const stdout = await exec.exec(`npm info ${module} dist-tags --json`, { silent: true });
+          const shell = require('shelljs');
+          const stdout = shell.exec(`npm info ${module} dist-tags --json`, { silent: true });
           const latestPublishedVersion = JSON.parse(stdout).latest;
           console.log(latestPublishedVersion);
           github.rest.repos.createDispatchEvent({
