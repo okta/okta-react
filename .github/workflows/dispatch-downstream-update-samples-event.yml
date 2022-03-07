@@ -3,7 +3,10 @@ name: Dispatch Downstream Update Samples Event
 on:
   push:
     branches: [ master ]
-    
+  
+  release:
+    types: [ released ]
+
   workflow_dispatch:
 
 jobs:
@@ -34,8 +37,8 @@ jobs:
             event_type: 'update-samples',
             client_payload: { 
               context,
-              // only auto merge downstream PRs if no breaking change from SDK
-              // otherwise wait for release of the new major version
-              merge: semverMajor(pkgJsonVersion) === semverMajor(latestPublishedVersion)
+              // indicates if downstream repo should auto merge the generated samples
+              // merge when 1) in a "released" workflow or 2) non-breaking change
+              merge: context.workflow === 'released' || semverMajor(pkgJsonVersion) === semverMajor(latestPublishedVersion)
             }
           });
