@@ -3,7 +3,10 @@ name: Dispatch Downstream Update Samples Event
 on:
   push:
     branches: [ master ]
-    
+  
+  release:
+    types: [ released ]
+
   workflow_dispatch:
 
 jobs:
@@ -11,14 +14,31 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-node@v2
+      with:
+        node-version: 14
+    - run: npm install semver execa@5.1.1
+
     - name: Dispatch event
       uses: actions/github-script@v6
       with: 
         github-token: ${{secrets.OKTA_433527}}
         script: |
+          const semverMajor = require('semver/functions/major');
+          const execa = require('execa');
+          // get version from package.json
+          const pkgJsonVersion = require('./package.json').version;
+          // get latest version from registry
+          const { stdout: latestPublishedVersion } = await execa('npm', ['view', '@okta/okta-react', 'version']);
           github.rest.repos.createDispatchEvent({
             owner: context.repo.owner,
             repo: 'samples-js-react',
             event_type: 'update-samples',
-            client_payload: { context }
+            client_payload: { 
+              context,
+              // indicates if downstream repo should auto merge the generated samples
+              // merge when 1) in a "released" workflow or 2) non-breaking change
+              merge: context.workflow === 'released' || semverMajor(pkgJsonVersion) === semverMajor(latestPublishedVersion)
+            }
           });
