@@ -97,10 +97,10 @@ const appName = process.env.SAMPLE_APP;
 if (appName) {
   if (!ROUTER_APPS.includes(appName)) {
     console.log(`Error: ${appName} not a valid router app`);
-    return;
   }
-
-  runTests([appName]).catch(console.error);
+  else {
+    runTests([appName]).catch(console.error);
+  }
 }
 else {
   runTests(ROUTER_APPS).catch(console.error);
