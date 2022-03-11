@@ -71,7 +71,6 @@ const runTestsOnApp = (app) => {
       runner.on('exit', function(code) {
         console.log('Test runner exited with code: ' + code);
         returnCode = code;
-        routerApp.stderr.pause();
         routerApp.kill(code);
       });
       runner.on('error', function(err) {
