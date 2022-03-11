@@ -99,9 +99,9 @@ if (appName) {
     console.log(`Error: ${appName} not a valid router app`);
   }
   else {
-    runTests([appName]).catch(console.error);
+    runTests([appName]);
   }
 }
 else {
-  runTests(ROUTER_APPS).catch(console.error);
+  runTests(ROUTER_APPS);
 }
