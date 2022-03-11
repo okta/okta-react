@@ -83,10 +83,13 @@ const runTestsOnApp = (app) => {
 };
 
 const runTests = async (apps) => {
+  let exitCode = 0;
   for (app of apps) {
-    await runTestsOnApp(app);
+    const testRun = await runTestsOnApp(app);
+    exitCode = Math.max(exitCode, testRun);
     console.log(`${app} app test run complete!\n`);
   }
+  process.exit(exitCode);
 };
 
 const appName = process.env.SAMPLE_APP;

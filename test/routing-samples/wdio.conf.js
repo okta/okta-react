@@ -34,7 +34,7 @@ if (process.env.CI || process.env.CHROME_HEADLESS) {
     ]);
 }
 
-const CHROMEDRIVER_VERSION = process.env.CHROMEDRIVER_VERSION || '97.0.4692.36';
+const CHROMEDRIVER_VERSION = process.env.CHROMEDRIVER_VERSION || '89.0.4389.23';
 const drivers = {
     chrome: { version: CHROMEDRIVER_VERSION }
 };
