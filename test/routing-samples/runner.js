@@ -78,10 +78,6 @@ const runTestsOnApp = (app) => {
         routerApp.kill();
         throw err;
       });
-    })
-    .catch(err => {
-      console.error(err.message);
-      routerApp.kill();
     });
   });
 };

@@ -127,6 +127,7 @@
       "test/routing-samples"
     ],
     "nohoist": [
+      "**/@wdio/**",
       "**/@okta/okta-auth-js",
       "**/react",
       "**/react/**",
