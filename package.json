@@ -13,7 +13,7 @@
     "start": "yarn workspace @okta/test.app.test-harness-app start",
     "test": "yarn lint && yarn test:unit && yarn test:e2e",
     "test:e2e": "yarn workspace @okta/test.e2e test",
-    "test:e2e:samples": "yarn workspace @okta/test.e2e-samples test",
+    "test:e2e:samples": "yarn workspace @okta/test.e2e-samples test && yarn workspace @okta/test.e2e.routing-samples test",
     "test:unit": "jest",
     "bundle": "rollup -c",
     "dev": "yarn bundle --watch",

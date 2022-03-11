@@ -1,5 +1,5 @@
 {
-    "name": "@okta/routing-samples.e2e",
+    "name": "@okta/test.e2e.routing-samples",
     "version": "0.1.0",
     "private": true,
     "devDependencies": {
