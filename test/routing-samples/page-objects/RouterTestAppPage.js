@@ -52,7 +52,7 @@ class RouterTestAppPage {
   * @param path path of the sub page (e.g. /path/to/page.html)
   */
   open (path='/') {
-    return browser.url(`http://localhost:4440${path}`);
+    return browser.url(`http://localhost:8080${path}`);
   }
 }
 

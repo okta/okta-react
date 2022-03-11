@@ -29,7 +29,7 @@ const ROUTER_APPS = [
 const runTestsOnApp = (app) => {
   return new Promise((resolve) => {
     // extend `process.env` so variables like PATH are included
-    const env = { ...(process.env), PORT: 4440 };
+    const env = { ...(process.env), PORT: 8080 };
     // start react router app dev server
     const routerApp = spawn('yarn', ['workspace', `@okta/samples.react.${app}`, 'start'], { env });
     console.log(`## ~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~ ##
@@ -58,7 +58,7 @@ const runTestsOnApp = (app) => {
     routerApp.stderr.off('data', stdErrHandler);
     waitOn({
       resources: [
-        'http-get://localhost:4440'
+        'http-get://localhost:8080'
       ],
       delay: 100,
       timeout: 10000
