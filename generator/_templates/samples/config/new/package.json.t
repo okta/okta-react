@@ -9,7 +9,7 @@ force: true
   "version": "0.3.0",
   "scripts": {
     "prestart": "vite build",
-    "start": "lite-server", 
+    "start": "vite preview --port 8080", 
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview"
@@ -34,7 +34,6 @@ force: true
   "devDependencies": {
     "@vitejs/plugin-react": "^1.0.7",
     "vite": "^2.8.0",
-    "lite-server": "^2.6.1",
     "dotenv": "^16.0.0"
   }
 }
