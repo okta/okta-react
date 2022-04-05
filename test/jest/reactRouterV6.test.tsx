@@ -54,6 +54,7 @@ describe('react-router-dom v6', () => {
 
   beforeEach(() => {
     // prevents logging error to console
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     console.error = (()=>{});   // noop
 
     authState = null;
