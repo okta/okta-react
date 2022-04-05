@@ -53,6 +53,9 @@ describe('react-router-dom v6', () => {
   let authState: any;
 
   beforeEach(() => {
+    // prevents logging error to console
+    console.error = (()=>{});   // noop
+
     authState = null;
     oktaAuth = {
       options: {},
