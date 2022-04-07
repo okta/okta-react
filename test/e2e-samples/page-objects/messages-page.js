@@ -12,21 +12,19 @@
 
 'use strict';
 
-const util = require('./shared/util');
+
 
 class MessagesPage {
 
-  constructor() {
-    this.$message1 = $('#message-1');
-  }
+  get message1 () { return $('#message-1'); }
 
   waitForPageLoad() {
-    return util.wait(this.$message1);
+    return this.message1.waitForDisplayed();
   }
 
   getMessage() {
-    return this.$message1.getText();
+    return this.message1.getText();
   }
 }
 
-module.exports = MessagesPage;
+export default new MessagesPage();

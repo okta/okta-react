@@ -12,29 +12,23 @@
 
 'use strict';
 
-const util = require('./shared/util');
 
 class DirectAuthLoginInPage {
 
-  constructor() {
-    this.usernameInput = $('#username');
-    this.passwordInput = $('#password');
-    this.submitButton = $('button[type=submit]');
-  }
+  get usernameInput () { return $('#username'); }
+  get passwordInput () { return $('#password'); }
+  get submitButton () { return $('button[type=submit]'); }
 
   waitForPageLoad() {
-    return util.wait(this.usernameInput);
+    return this.usernameInput.waitForDisplayed();
   }
 
-  login(username, password) {
-    this.usernameInput.sendKeys(username);
-    this.passwordInput.sendKeys(password);
-    return this.submitButton.click();
+  async login(username, password) {
+    await this.usernameInput.setValue(username);
+    await this.passwordInput.setValue(password);
+    await this.submitButton.click();
   }
 
-  urlContains(str) {
-    return util.urlContains(str);
-  }
 }
 
-module.exports = DirectAuthLoginInPage;
+export default new DirectAuthLoginInPage();

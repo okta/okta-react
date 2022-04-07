@@ -12,31 +12,26 @@
 
 'use strict';
 
-const util = require('./shared/util');
-
 class AuthenticatorsPage {
-
-  constructor() {
-    this.authenticatorLabelSelector = $$('.authenticator-label');
-    this.selectAuthenticatorButton = $$('[class="authenticator-button"] [data-se="button"]');
-  }
+  
+  get authenticatorLabelSelector () { return $$('.authenticator-label'); }
+  get selectAuthenticatorButton () { return $('[class="authenticator-button"] [data-se="button"]'); }
 
   waitForPageLoad() {
-    return util.wait(this.selectAuthenticatorButton);
+    return this.selectAuthenticatorButton.waitForDisplayed();
   }
 
-  clickAuthenticatorByLabel(label) {
-    util.wait(this.authenticatorLabelSelector);
+  async clickAuthenticatorByLabel(label) {
+    await this.authenticatorLabelSelector.waitForDisplayed();
 
-    this.authenticatorLabelSelector.each((element, index) => {
-      element.getText().then((text) => {
-        if (text.includes(label) > 0) {
-          this.selectAuthenticatorButton.get(index).click();
-        }
-      });
-
+    // TODO: verify this
+    this.authenticatorLabelSelector.each(async (element, index) => {
+      const text = await element.getText();
+      if (text.includes(label) > 0) {
+        this.selectAuthenticatorButton[index].click();
+      }
     });
   }
 }
 
-module.exports = AuthenticatorsPage;
+export default new AuthenticatorsPage();

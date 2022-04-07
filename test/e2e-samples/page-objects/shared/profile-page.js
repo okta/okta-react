@@ -12,25 +12,22 @@
 
 'use strict';
 
-const util = require('./util');
 
 class ProfilePage {
 
-  constructor() {
-    this.$emailClaim = $('#claim-email');
-  }
+  get emailClaim () { return  $('#claim-email'); }
 
   waitForPageLoad() {
-    return util.wait(this.$emailClaim);
+    return this.emailClaim.waitForDisplayed();
   }
 
   logout() {
-    return this.$logoutLink.click();
+    return this.logoutLink.click();
   }
 
   getEmailClaim() {
-    return this.$emailClaim.getText();
+    return this.emailClaim.getText();
   }
 }
 
-module.exports = ProfilePage;
+export default new ProfilePage();

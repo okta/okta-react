@@ -11,13 +11,12 @@
  */
 
 /* eslint-disable */
-import { waitForLoad } from '../utils/waitForLoad';
 
 /**
 * main page object containing all methods, selectors and functionality
 * that is shared across all page objects
 */
-class RouterTestAppPage {
+class RouterSampleAppPage {
 
   // Router App selectors
   get header () { return $('main h1.page-header'); }
@@ -25,21 +24,6 @@ class RouterTestAppPage {
   get protectedNavLink () { return $('#protected-nav-link'); }
   get loadingIcon () { return $('#loading-icon'); }
   get footerBtn () { return $('footer > button[type="button"]'); }
-
-  // Widget selectors
-  get widget () { return $('#okta-sign-in'); }
-  get usernameInput () { return $('#okta-sign-in form input[type="text"][name="identifier"]'); }
-  get nextBtn () { return $('#okta-sign-in form input[type="submit"][value="Next"]'); }
-  get passwordInput () { return $('#okta-sign-in form input[type="password"][name="credentials.passcode"]'); }
-  get verifyBtn () { return $('#okta-sign-in form input[type="submit"][value="Verify"]'); }
-
-  async login (username, password) {
-    await this.usernameInput.setValue(username);
-    await this.nextBtn.click();
-    await waitForLoad(this.passwordInput);
-    await this.passwordInput.setValue(password);
-    await this.verifyBtn.click();
-  }
 
   async logout () {
     await expect(this.footerBtn).toHaveText('Logout');
@@ -56,4 +40,4 @@ class RouterTestAppPage {
   }
 }
 
-export default new RouterTestAppPage();
+export default new RouterSampleAppPage();

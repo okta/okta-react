@@ -12,6 +12,7 @@
 
 const spawn = require('cross-spawn-with-kill');
 const waitOn = require('wait-on');
+const path = require('path');
 const samplesConfig = require('@okta/generator/config');
 
 require('@okta/env').setEnvironmentVarsFromTestEnv();
@@ -47,13 +48,12 @@ function runWithConfig(sampleConfig) {
   }).then(() => {
     // 2. run webdriver based on if sauce is needed or not
     // TODO: support saucelab and cucumber
-    const protractorConfig = 'protractor.conf.js';
-
-    let opts = process.argv.slice(2); // pass extra arguments through
-    const runner = spawn('yarn', [
-      'protractor',
-      protractorConfig
-    ].concat(opts), { stdio: 'inherit' });
+    const wdioConfig = path.resolve(__dirname, 'wdio.conf.js');
+    const specs = sampleConfig.specs.reduce(
+      (acc, spec) => [...acc, '--spec', path.join(__dirname, 'specs', spec)]
+    , []);
+    const args = ['wdio', 'run', wdioConfig, ...specs];
+    const runner = spawn('yarn', args, { stdio: 'inherit' });
 
     let returnCode = 1;
     runner.on('exit', function (code) {

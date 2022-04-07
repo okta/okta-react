@@ -12,34 +12,23 @@
 
 'use strict';
 
-const util = require('./shared/util');
-
-function input(field) {
-  const inputWrap = `o-form-input-${field}`;
-  return $(`${util.se(inputWrap)} input`);
-}
 
 class OktaSignInPage {
 
-  constructor() {
-    this.usernameInput = input('username');
-    this.passwordInput = input('password');
-    this.submitButton = $('[data-type="save"]');
-  }
+  get usernameInput () { return $(`[data-se="o-form-input-username"] input`); }
+  get passwordInput () { return $(`[data-se="o-form-input-password"] input`); }
+  get submitButton () { return $('[data-type="save"]'); }
 
   waitForPageLoad() {
-    return util.wait(this.usernameInput);
+    return this.usernameInput.waitForDisplayed();
   }
 
-  login(username, password) {
-    this.usernameInput.sendKeys(username);
-    this.passwordInput.sendKeys(password);
-    return this.submitButton.click();
+  async login(username, password) {
+    await this.usernameInput.setValue(username);
+    await this.passwordInput.setValue(password);
+    await this.submitButton.click();
   }
-
-  urlContains(str) {
-    return util.urlContains(str);
-  }
+  
 }
 
-module.exports = OktaSignInPage;
+export default new OktaSignInPage();

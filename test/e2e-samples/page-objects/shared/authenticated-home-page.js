@@ -12,50 +12,49 @@
 
 'use strict';
 
-const util = require('./util');
-
 class AuthenticatedHomePage {
 
-  constructor() {
-    this.$profileButton = $('#profile-button');
-    this.$protectedButton = $('a[href="/protected"]');
-    this.$logoutButton = $('#logout-button');
-    this.$textContainer = $('.text.container');
-    this.$messagesLink = element(by.partialLinkText('Messages'));
-  }
+  get profileButton () { return  $('#profile-button'); }
+  get protectedButton () { return  $('a[href="/protected"]'); }
+  get logoutButton () { return  $('#logout-button'); }
+  get textContainer () { return  $('.text.container'); }
+  get messagesLink () { return  $('a:contains(\'Messages\')'); }
 
   waitForPageLoad() {
-    return util.wait(this.$logoutButton);
+    return this.logoutButton.waitForDisplayed();
   }
 
   waitForProtectedButton() {
-    return util.wait(this.$protectedButton);
+    return this.protectedButton.waitForDisplayed();
   }
 
   logout() {
-    return this.$logoutButton.click();
+    return this.logoutButton.click();
   }
 
   viewProfile() {
-    return this.$profileButton.click();
+    return this.profileButton.click();
   }
 
   viewProtectedPage() {
-    return this.$protectedButton.click();
+    return this.protectedButton.click();
   }
 
   viewMessages() {
-    return this.$messagesLink.click();
+    return this.messagesLink.click();
   }
 
-  waitForWelcomeTextToLoad() {
-    return util.waitTillElementContainsText(this.$textContainer, 'Welcome');
+  async waitForWelcomeTextToLoad() {
+    await this.textContainer.waitForDisplayed();
+    await browser.waitUntil(async () => {
+      const text = await this.textContainer.getText();
+      return text.includes('Welcome');
+    }, 5000, 'wait for element to load with text');
   }
 
   getUIText() {
-    browser.wait(this.$textContainer.getText());
-    return this.$textContainer.getText();
+    return this.textContainer.getText();
   }
 }
 
-module.exports = AuthenticatedHomePage;
+export default new AuthenticatedHomePage();

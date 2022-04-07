@@ -12,21 +12,17 @@
 
 'use strict';
 
-const util = require('./util');
-
 class LoginHomePage {
 
-  constructor() {
-    this.$loginButton = $('#login-button');
-  }
+  get loginButton () { return  $('#login-button'); }
 
   waitForPageLoad() {
-    return util.wait(this.$loginButton);
+    return this.loginButton.waitForDisplayed();
   }
 
   clickLoginButton() {
-    return this.$loginButton.click();
+    return this.loginButton.click();
   }
 }
 
-module.exports = LoginHomePage;
+export default new LoginHomePage();

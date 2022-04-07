@@ -12,52 +12,47 @@
 
 'use strict';
 
-const util = require('./shared/util'); 
 
 class OktaSignInPage {
 
-  constructor() {
-    this.identifierInput = $('[name="identifier"]');
-    this.passcodeInput = $('[name="credentials.passcode"]');
-    this.nextButton = $('[data-type="save"]');
-    this.facebookLoginButton = $('[data-se="social-auth-facebook-button"]');
-    this.facebookEmail = $('#email');
-    this.facebookPassword = $('#pass');
-    this.facebookSubmitBtn = $('#loginbutton');
-  }
+  get identifierInput () { return $('[name="identifier"]'); }
+  get passcodeInput () { return $('[name="credentials.passcode"]'); }
+  get nextButton () { return $('[data-type="save"]'); }
+  get facebookLoginButton () { return $('[data-se="social-auth-facebook-button"]'); }
+  get facebookEmail () { return $('#email'); }
+  get facebookPassword () { return $('#pass'); }
+  get facebookSubmitBtn () { return $('#loginbutton'); }
 
   waitForPageLoad() {
-    return util.wait(this.identifierInput);
+    return this.identifierInput.waitForDisplayed();
   }
 
-  login(username, password) {
-    this.identifierInput.sendKeys(username);
-    this.passcodeInput.isPresent().then((present) => {
-      // Idenfitier first flow if passcode input is not present on widget
-      if (!present) {
-        this.nextButton.click();
-        util.wait(this.passcodeInput);
-        this.passcodeInput.sendKeys(password);
-        return this.nextButton.click();
-      } else { // Identifier and passcode on same screen
-        this.passcodeInput.sendKeys(password);
-        return this.nextButton.click();  
-      }
-    });
+  async login(username, password) {
+    await this.identifierInput.setValue(username);
+    const present = await this.passcodeInput.isDisplayed();
+
+    // Idenfitier first flow if passcode input is not present on widget
+    if (!present) {
+      await this.nextButton.click();
+      await this.passcodeInput.waitForDisplayed();
+      await this.passcodeInput.setValue(password);
+      await this.nextButton.click();
+    } 
+    else { // Identifier and passcode on same screen
+      await this.passcodeInput.setValue(password);
+      await this.nextButton.click();  
+    }
   }
 
-  loginFacebook(username, password) {
-    this.facebookLoginButton.click();
-    util.wait(this.facebookEmail);
+  async loginFacebook(username, password) {
+    await this.facebookLoginButton.click();
+    await this.facebookEmail.waitForDisplayed();
 
-    this.facebookEmail.sendKeys(username);
-    this.facebookPassword.sendKeys(password);
-    this.facebookSubmitBtn.click();
+    await this.facebookEmail.setValue(username);
+    await this.facebookPassword.setValue(password);
+    await this.facebookSubmitBtn.click();
   }
 
-  urlContains(str) {
-    return util.urlContains(str);
-  }
 }
 
-module.exports = OktaSignInPage;
+export default new OktaSignInPage();

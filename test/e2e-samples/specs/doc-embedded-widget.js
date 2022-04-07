@@ -12,65 +12,67 @@
 
 'use strict';
 
-const LoginHomePage = require('../page-objects/shared/login-home-page');
-let OktaSignInPage = require('../page-objects/okta-signin-page');
-if (process.env.ORG_OIE_ENABLED) {
-  OktaSignInPage = require('../page-objects/okta-oie-signin-page');
+import LoginHomePage from '../page-objects/shared/login-home-page';
+import OktaSignInPageV1 from '../page-objects/okta-signin-page';
+import OktaSignInPageOIE from '../page-objects/okta-oie-signin-page';
+import AuthenticatedHomePage from '../page-objects/shared/authenticated-home-page';
+import ProtectedPage from '../page-objects/shared/protected-page';
+import url from 'url';
+
+let OktaSignInPage = OktaSignInPageV1;
+if (Boolean(process.env.ORG_OIE_ENABLED)) {
+  OktaSignInPage = OktaSignInPageOIE;
 }
-const AuthenticatedHomePage = require('../page-objects/shared/authenticated-home-page');
-const ProtectedPage = require('../page-objects/shared/protected-page');
-const url = require('url');
+
+// TODO: currently test only works with v1 widget page object
+
+const params = {
+  login: {
+    // In windows, USERNAME is a built-in env var, which we don't want to change
+    username: process.env.USER_NAME || process.env.USERNAME,
+    password: process.env.PASSWORD,
+    email: process.env.USER_NAME || process.env.USERNAME,
+    email_mfa_username: process.env.EMAIL_MFA_USERNAME, // User with email auth MFA
+  },
+  // App servers start on port 8080 but configurable using env var
+  appPort: process.env.PORT || 8080,
+  appTimeOut: process.env.TIMEOUT || 1000
+};
 
 describe('Doc Embedded Widget Flow', () => {
-  const loginHomePage = new LoginHomePage();
-  const customSignInPage = new OktaSignInPage();
-  const authenticatedHomePage = new AuthenticatedHomePage();
-  const protectedPage = new ProtectedPage();
-  const appRoot = `http://localhost:${browser.params.appPort}`;
+  const appRoot = `http://localhost:${params.appPort}`;
 
-  beforeEach(() => {
-    browser.ignoreSynchronization = true;
-    if (process.env.DEFAULT_TIMEOUT_INTERVAL) {
-      console.log(`Setting default timeout interval to ${process.env.DEFAULT_TIMEOUT_INTERVAL}`)
-      jasmine.DEFAULT_TIMEOUT_INTERVAL = process.env.DEFAULT_TIMEOUT_INTERVAL;
-    }
-
+  beforeEach(async () => {
     if (!process.env.CODE_WAIT_TIME) {
       console.log('Setting default wait time for code to 5 seconds')
       process.env.CODE_WAIT_TIME = 5000;
     }
 
-    browser.get(appRoot);
+    await browser.url(appRoot);
   });
 
-  afterAll(() => {
-    return browser.driver.close().then(() => {
-      browser.driver.quit();
-    });
-  });
+  it('can login with user credentials', async () => {
+    await LoginHomePage.waitForPageLoad();
 
-  it('can login with user credentials', () => {
-    loginHomePage.waitForPageLoad();
-
-    loginHomePage.clickLoginButton();
-    customSignInPage.waitForPageLoad();
+    await LoginHomePage.clickLoginButton();
+    await OktaSignInPageV1.waitForPageLoad();
 
     // Verify that current domain hasn't changed to okta-hosted login, rather a local custom login page
     const urlProperties = url.parse(process.env.ISSUER);
-    expect(browser.getCurrentUrl()).not.toContain(urlProperties.host);
-    expect(browser.getCurrentUrl()).toContain(appRoot);
+    expect(browser).not.toHaveUrlContaining(urlProperties.host);
+    expect(browser).toHaveUrlContaining(appRoot);
 
-    customSignInPage.login(browser.params.login.username, browser.params.login.password);
-    authenticatedHomePage.waitForPageLoad();
+    await OktaSignInPageV1.login(params.login.username, params.login.password);
+    await AuthenticatedHomePage.waitForPageLoad();
 
     // can access protected page
-    authenticatedHomePage.viewProtectedPage();
-    protectedPage.waitForPageLoad();
+    await AuthenticatedHomePage.viewProtectedPage();
+    await ProtectedPage.waitForPageLoad();
   });
 
-  it('can log the user out', () => {
-    authenticatedHomePage.waitForPageLoad();
-    authenticatedHomePage.logout();
-    loginHomePage.waitForPageLoad();
+  it('can log the user out', async () => {
+    await AuthenticatedHomePage.waitForPageLoad();
+    await AuthenticatedHomePage.logout();
+    await LoginHomePage.waitForPageLoad();
   });
 });

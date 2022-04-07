@@ -12,17 +12,14 @@
 
 'use strict';
 
-const util = require('./util');
 
 class ProtectedPage {
 
-  constructor() {
-    this.$protected = $('#protected');
-  }
+  get protected () { return $('#protected'); }
 
   waitForPageLoad() {
-    return util.wait(this.$protected);
+    return this.protected.waitForDisplayed();
   }
 }
 
-module.exports = ProtectedPage;
+export default new ProtectedPage();

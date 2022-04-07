@@ -63,7 +63,9 @@ module.exports = [
     usePolyfill: false,
     reactRouterDomVersion: '6.2.1',
     reachRouterVersion: false,
-    specs: []
+    specs: [
+      'router-sample'
+    ]
   },
   {
     name: '@okta/samples.react.react-router-dom-v6-hash',
@@ -73,7 +75,9 @@ module.exports = [
     usePolyfill: false,
     reactRouterDomVersion: '6.2.1',
     reachRouterVersion: false,
-    specs: []
+    specs: [
+      'router-sample'
+    ]
   },
   {
     name: '@okta/samples.react.react-router-dom-v5',
@@ -83,7 +87,9 @@ module.exports = [
     usePolyfill: false,
     reactRouterDomVersion: '5.3.0',
     reachRouterVersion: false,
-    specs: []
+    specs: [
+      'router-sample'
+    ]
   },
   {
     name: '@okta/samples.react.react-router-dom-v5-hash',
@@ -93,7 +99,9 @@ module.exports = [
     usePolyfill: false,
     reactRouterDomVersion: '5.3.0',
     reachRouterVersion: false,
-    specs: []
+    specs: [
+      'router-sample'
+    ]
   },
   {
     name: '@okta/samples.react.reach-router',
@@ -103,6 +111,8 @@ module.exports = [
     usePolyfill: false,
     reactRouterDomVersion: '5.3.0',
     reachRouterVersion: "^1.3.4",
-    specs: []
+    specs: [
+      'router-sample'
+    ]
   }
 ];

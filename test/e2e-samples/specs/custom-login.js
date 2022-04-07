@@ -12,155 +12,172 @@
 
 'use strict';
 
-const LoginHomePage = require('../page-objects/shared/login-home-page');
-let OktaSignInPage = require('../page-objects/okta-signin-page');
-if (process.env.ORG_OIE_ENABLED) {
-  OktaSignInPage = require('../page-objects/okta-oie-signin-page');
+import LoginHomePage from '../page-objects/shared/login-home-page';
+import OktaSignInPageV1 from '../page-objects/okta-signin-page';
+import OktaSignInPageOIE from '../page-objects/okta-oie-signin-page';
+import AuthenticatedHomePage from '../page-objects/shared/authenticated-home-page';
+import ProfilePage from '../page-objects/shared/profile-page';
+import MessagesPage from '../page-objects/messages-page';
+import AuthenticatorsPage from '../page-objects/authenticators-page';
+import MFAChallengePage from '../page-objects/mfa-challenge-page';
+import url from 'url';
+import axios from 'axios';
+
+let OktaSignInPage = OktaSignInPageV1;
+if (Boolean(process.env.ORG_OIE_ENABLED)) {
+  OktaSignInPage = OktaSignInPageOIE;
 }
-const AuthenticatedHomePage = require('../page-objects/shared/authenticated-home-page');
-const ProfilePage = require('../page-objects/shared/profile-page');
-const MessagesPage = require('../page-objects/messages-page');
-const AuthenticatorsPage = require('../page-objects/authenticators-page');
-const MFAChallengePage = require('../page-objects/mfa-challenge-page');
-const url = require('url');
-const axios = require('axios');
+
+// TODO: first few tests only works with v1 widget page object
+
+const params = {
+  login: {
+    // In windows, USERNAME is a built-in env var, which we don't want to change
+    username: process.env.USER_NAME || process.env.USERNAME,
+    password: process.env.PASSWORD,
+    email: process.env.USER_NAME || process.env.USERNAME,
+    email_mfa_username: process.env.EMAIL_MFA_USERNAME, // User with email auth MFA
+  },
+  // App servers start on port 8080 but configurable using env var
+  appPort: process.env.PORT || 8080,
+  appTimeOut: process.env.TIMEOUT || 1000
+};
+
+const exists = list => list.every(a => a !== undefined);
 
 describe('Custom Login Flow', () => {
-  const loginHomePage = new LoginHomePage();
-  const customSignInPage = new OktaSignInPage();
-  const authenticatedHomePage = new AuthenticatedHomePage();
-  const profile = new ProfilePage();
-  const messagesPage = new MessagesPage();
-  const authenticatorsPage = new AuthenticatorsPage();
-  const mfaChallengePage = new MFAChallengePage();
-  const appRoot = `http://localhost:${browser.params.appPort}`;
+  const appRoot = `http://localhost:${params.appPort}`;
 
   beforeEach(() => {
-    browser.ignoreSynchronization = true;
-    if (process.env.DEFAULT_TIMEOUT_INTERVAL) {
-      console.log(`Setting default timeout interval to ${process.env.DEFAULT_TIMEOUT_INTERVAL}`)
-      jasmine.DEFAULT_TIMEOUT_INTERVAL = process.env.DEFAULT_TIMEOUT_INTERVAL;
-    }
-
     if (!process.env.CODE_WAIT_TIME) {
       console.log('Setting default wait time for code to 5 seconds')
       process.env.CODE_WAIT_TIME = 5000;
     }
   });
 
-  afterAll(() => {
-    return browser.driver.close().then(() => {
-      browser.driver.quit();
-    });
-  });
+  it('can login with Okta as the IDP using custom signin page', async () => {
+    await browser.url(appRoot);
+    await LoginHomePage.waitForPageLoad();
 
-  it('can login with Okta as the IDP using custom signin page', () => {
-    browser.get(appRoot);
-    loginHomePage.waitForPageLoad();
-
-    loginHomePage.clickLoginButton();
-    customSignInPage.waitForPageLoad();
+    await LoginHomePage.clickLoginButton();
+    await OktaSignInPageV1.waitForPageLoad();
 
     // Verify that current domain hasn't changed to okta-hosted login, rather a local custom login page
     const urlProperties = url.parse(process.env.ISSUER);
-    expect(browser.getCurrentUrl()).not.toContain(urlProperties.host);
-    expect(browser.getCurrentUrl()).toContain(appRoot);
+    expect(browser).not.toHaveUrlContaining(urlProperties.host);
+    expect(browser).toHaveUrlContaining(appRoot);
 
-    customSignInPage.login(browser.params.login.username, browser.params.login.password);
-    authenticatedHomePage.waitForPageLoad();
-    authenticatedHomePage.waitForWelcomeTextToLoad();
-    expect(authenticatedHomePage.getUIText()).toContain('Welcome');
+    await OktaSignInPageV1.login(params.login.username, params.login.password);
+    await AuthenticatedHomePage.waitForPageLoad();
+    await AuthenticatedHomePage.waitForWelcomeTextToLoad();
+    expect(await AuthenticatedHomePage.getUIText()).toContain('Welcome');
   });
 
-  it('can access user profile', () => {
-    authenticatedHomePage.viewProfile();
-    profile.waitForPageLoad();
-    expect(profile.getEmailClaim()).toBe(browser.params.login.email);
+  it('can access user ProfilePage', async () => {
+    await AuthenticatedHomePage.viewProfile();
+    await ProfilePage.waitForPageLoad();
+    expect(await ProfilePage.getEmailClaim()).toBe(params.login.email);
   });
 
-  it('can access resource server messages after login', () => {
+  it('can access resource server messages after login',  async () => {
     // If it's not implicit flow, don't test messages resource server
     if (process.env.TEST_TYPE !== 'implicit') {
       return;
     }
-    authenticatedHomePage.viewMessages();
-    messagesPage.waitForPageLoad();
-    expect(messagesPage.getMessage()).toBeTruthy();
+    await AuthenticatedHomePage.viewMessages();
+    await MessagesPage.waitForPageLoad();
+    expect(await MessagesPage.getMessage()).toBeTruthy();
   });
 
-  it('can log the user out', () => {
-    browser.get(appRoot);
-    authenticatedHomePage.waitForPageLoad();
-    authenticatedHomePage.logout();
-    loginHomePage.waitForPageLoad();
+  it('can log the user out', async () => {
+    await browser.url(appRoot);
+    await AuthenticatedHomePage.waitForPageLoad();
+    await AuthenticatedHomePage.logout();
+    await LoginHomePage.waitForPageLoad();
   });
 
   it('can login with email authenticator', async () => {
     // This test runs only on OIE enabled orgs
-    if (!process.env.ORG_OIE_ENABLED) {
+    if (!exists([
+      process.env.ORG_OIE_ENABLED,
+      process.env.EMAIL_MFA_USERNAME,
+      process.env.PASSWORD,
+      process.env.EMAIL_MFA_USERNAME,
+    ])) {
+      console.warn('Skipping test due to missing env vars');
       return;
     }
 
-    await browser.get(appRoot);
-    await loginHomePage.waitForPageLoad();
+    await browser.url(appRoot);
+    await LoginHomePage.waitForPageLoad();
 
-    await loginHomePage.clickLoginButton();
-    await customSignInPage.waitForPageLoad();
+    await LoginHomePage.clickLoginButton();
+    await OktaSignInPage.waitForPageLoad();
 
-    await customSignInPage.login(process.env.EMAIL_MFA_USERNAME, process.env.PASSWORD);
+    await OktaSignInPage.login(process.env.EMAIL_MFA_USERNAME, process.env.PASSWORD);
 
-    await authenticatorsPage.waitForPageLoad();
-    authenticatorsPage.clickAuthenticatorByLabel('Email');
-    await mfaChallengePage.waitForPageLoad();
+    await AuthenticatorsPage.waitForPageLoad();
+    await AuthenticatorsPage.clickAuthenticatorByLabel('Email');
+    await MFAChallengePage.waitForPageLoad();
 
     // Wait for 5 seconds (default) for email to be received
-    await browser.sleep(process.env.CODE_WAIT_TIME);
+    await browser.pause(process.env.CODE_WAIT_TIME);
 
     // Get the email passcode using ghostinspector email API endpoint
-    await axios.get(`https://email.ghostinspector.com/${process.env.EMAIL_MFA_USERNAME}/latest`).then((response) => {
+    try {
+      const response = await axios.get(`https://email.ghostinspector.com/${process.env.EMAIL_MFA_USERNAME}/latest`);
       const emailCode = response.data.match(/Enter a code instead: <b>(\d+)/i)[1];
-      mfaChallengePage.enterPasscode(emailCode);
-      mfaChallengePage.clickSubmitButton();
-    }).catch((err) => {
+      await MFAChallengePage.enterPasscode(emailCode);
+      await MFAChallengePage.clickSubmitButton();
+    }
+    catch (err) {
       console.log(err);
-    });
+    }
 
-    authenticatedHomePage.waitForPageLoad();
-    authenticatedHomePage.logout();
-    loginHomePage.waitForPageLoad();
+    await AuthenticatedHomePage.waitForPageLoad();
+    await AuthenticatedHomePage.logout();
+    await LoginHomePage.waitForPageLoad();
   });
 
   it('can login with SMS authenticator', async () => {
     // This test runs only on OIE enabled orgs
-    if (!process.env.ORG_OIE_ENABLED) {
+    if (!exists([
+      process.env.ORG_OIE_ENABLED,
+      process.env.SMS_MFA_USERNAME,
+      process.env.PASSWORD,
+      process.env.TWILIO_ACCOUNT,
+      process.env.TWILIO_API_TOKEN
+    ])) {
+      console.warn('Skipping test due to missing env vars');
       return;
     }
 
     await browser.get(appRoot);
-    await loginHomePage.waitForPageLoad();
+    await LoginHomePage.waitForPageLoad();
 
-    await loginHomePage.clickLoginButton();
-    await customSignInPage.waitForPageLoad();
+    await LoginHomePage.clickLoginButton();
+    await OktaSignInPage.waitForPageLoad();
 
-    await customSignInPage.login(process.env.SMS_MFA_USERNAME, process.env.PASSWORD);
+    await OktaSignInPage.login(process.env.SMS_MFA_USERNAME, process.env.PASSWORD);
 
-    await authenticatorsPage.waitForPageLoad();
-    authenticatorsPage.clickAuthenticatorByLabel('Phone');
-    mfaChallengePage.clickSubmitButton();
+    await AuthenticatorsPage.waitForPageLoad();
+    await AuthenticatorsPage.clickAuthenticatorByLabel('Phone');
+    await MFAChallengePage.clickSubmitButton();
 
     // Wait for 5 seconds (default) for SMS to be received
-    await browser.sleep(process.env.CODE_WAIT_TIME);
+    await browser.pause(process.env.CODE_WAIT_TIME);
 
     const TWILIO_ACCOUNT = process.env.TWILIO_ACCOUNT;
     const TWILIO_API_TOKEN = process.env.TWILIO_API_TOKEN;
 
-    // This endpoint returns all the SMSes sent to the twilio test number (shared between multiple orgs)
-    await axios.get(`https://api.twilio.com/2010-04-01/Accounts/${TWILIO_ACCOUNT}/Messages.json`, {
-      auth: {
-        username: `${TWILIO_ACCOUNT}`,
-        password: `${TWILIO_API_TOKEN}`
-      }
-    }).then((response) => {
+    try {
+      // This endpoint returns all the SMSes sent to the twilio test number (shared between multiple orgs)
+      const response = await axios.get(`https://api.twilio.com/2010-04-01/Accounts/${TWILIO_ACCOUNT}/Messages.json`, {
+        auth: {
+          username: `${TWILIO_ACCOUNT}`,
+          password: `${TWILIO_API_TOKEN}`
+        }
+      });
       const data = response.data;
       const size = data.end;
       
@@ -180,34 +197,36 @@ describe('Custom Login Flow', () => {
       
       const smsCode = messageBody.match(new RegExp(regex))[1];
 
-      mfaChallengePage.waitForPageLoad();
-      mfaChallengePage.enterPasscode(smsCode);
-      mfaChallengePage.clickSubmitButton();
-    }).catch((err) => {
+      await MFAChallengePage.waitForPageLoad();
+      await MFAChallengePage.enterPasscode(smsCode);
+      await MFAChallengePage.clickSubmitButton();
+    }
+    catch (err) {
       console.log(err);
-    });
+    }
 
-    authenticatedHomePage.waitForPageLoad();
-    authenticatedHomePage.logout();
-    loginHomePage.waitForPageLoad();
+    await AuthenticatedHomePage.waitForPageLoad();
+    await AuthenticatedHomePage.logout();
+    await LoginHomePage.waitForPageLoad();
   });
 
-  it('can login with facebook as IdP', () => {
+  it('can login with facebook as IdP', async () => {
     // This test runs only on OIE enabled orgs
-    if (!process.env.ORG_OIE_ENABLED) {
+    if (!exists([process.env.ORG_OIE_ENABLED, process.env.FB_USERNAME, process.env.FB_PASSWORD])) {
+      console.warn('Skipping test due to missing env vars');
       return;
     }
 
-    browser.get(appRoot);
-    loginHomePage.waitForPageLoad();
+    await browser.url(appRoot);
+    await LoginHomePage.waitForPageLoad();
 
-    loginHomePage.clickLoginButton();
-    customSignInPage.waitForPageLoad();
+    await LoginHomePage.clickLoginButton();
+    await OktaSignInPage.waitForPageLoad();
 
-    customSignInPage.loginFacebook(process.env.FB_USERNAME, process.env.FB_PASSWORD);
-    authenticatedHomePage.waitForPageLoad();
-    authenticatedHomePage.waitForWelcomeTextToLoad();
-    expect(authenticatedHomePage.getUIText()).toContain('Welcome');
+    await OktaSignInPage.loginFacebook(process.env.FB_USERNAME, process.env.FB_PASSWORD);
+    await AuthenticatedHomePage.waitForPageLoad();
+    await AuthenticatedHomePage.waitForWelcomeTextToLoad();
+    expect(await AuthenticatedHomePage.getUIText()).toContain('Welcome');
   });
   
 });

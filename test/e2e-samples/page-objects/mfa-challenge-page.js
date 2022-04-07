@@ -12,31 +12,29 @@
 
 'use strict';
 
-const util = require('./shared/util');
 
 class MFAChallengePage {
 
-  constructor() {
-    this.passcodeSelector = $('[name="credentials.passcode"]');
-    this.submitButton = $('input[data-type="save"]');
-  }
+  get passcodeSelector () { return $('[name="credentials.passcode"]'); }
+  get submitButton () { return $('input[data-type="save"]'); }
 
   waitForPageLoad() {
-    return util.wait(this.passcodeSelector);
+    return this.passcodeSelector.waitForDisplayed();
   }
 
-  clickSubmitButton() {
-    util.wait(this.submitButton);
-    this.submitButton.click();
+  async clickSubmitButton() {
+    await this.submitButton.waitForDisplayed();
+    await this.submitButton.click();
   }
 
-  enterPasscode(passcode) {
-    this.passcodeSelector.sendKeys(passcode);
+  async enterPasscode(passcode) {
+    await this.passcodeSelector.setValue(passcode);
   }
 
-  getEmailPasscode() {
-    util.wait(this.passcodeSelector);
-  }
+  // TODO: is this used?
+  // getEmailPasscode() {
+  //   util.wait(this.passcodeSelector);
+  // }
 }
 
-module.exports = MFAChallengePage;
+export default new MFAChallengePage();
