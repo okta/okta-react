@@ -24,7 +24,7 @@ if (Boolean(process.env.ORG_OIE_ENABLED)) {
   OktaSignInPage = OktaSignInPageOIE;
 }
 
-// TODO: currently test only works with v1 widget page object
+// NOTE: this test requires `USE_INTERACTION_CODE` to be set to `true` in testenv
 
 const params = {
   login: {
@@ -55,14 +55,14 @@ describe('Doc Embedded Widget Flow', () => {
     await LoginHomePage.waitForPageLoad();
 
     await LoginHomePage.clickLoginButton();
-    await OktaSignInPageV1.waitForPageLoad();
+    await OktaSignInPage.waitForPageLoad();
 
     // Verify that current domain hasn't changed to okta-hosted login, rather a local custom login page
     const urlProperties = url.parse(process.env.ISSUER);
     expect(browser).not.toHaveUrlContaining(urlProperties.host);
     expect(browser).toHaveUrlContaining(appRoot);
 
-    await OktaSignInPageV1.login(params.login.username, params.login.password);
+    await OktaSignInPage.login(params.login.username, params.login.password);
     await AuthenticatedHomePage.waitForPageLoad();
 
     // can access protected page
