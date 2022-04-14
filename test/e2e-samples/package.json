@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "test": "node runner.js",
-    "wdio": "wdio run wdio.conf.js"
+    "wdio": "wdio run wdio.conf.js",
+    "test:harness": "SAMPLE_NAME=harness yarn test"
   },
   "devDependencies": {
     "@wdio/cli": "^7.16.14",

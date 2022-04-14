@@ -60,14 +60,14 @@ describe('Custom Login Flow', () => {
     await LoginHomePage.waitForPageLoad();
 
     await LoginHomePage.clickLoginButton();
-    await OktaSignInPageV1.waitForPageLoad();
+    await OktaSignInPage.waitForPageLoad();
 
     // Verify that current domain hasn't changed to okta-hosted login, rather a local custom login page
     const urlProperties = url.parse(process.env.ISSUER);
     expect(browser).not.toHaveUrlContaining(urlProperties.host);
     expect(browser).toHaveUrlContaining(appRoot);
 
-    await OktaSignInPageV1.login(params.login.username, params.login.password);
+    await OktaSignInPage.login(params.login.username, params.login.password);
     await AuthenticatedHomePage.waitForPageLoad();
     await AuthenticatedHomePage.waitForWelcomeTextToLoad();
     expect(await AuthenticatedHomePage.getUIText()).toContain('Welcome');

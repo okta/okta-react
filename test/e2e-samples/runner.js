@@ -31,86 +31,73 @@ function runNextTask(tasks) {
 }
 
 function runWithConfig(sampleConfig) {
-  const { name } = sampleConfig;
-  const port = sampleConfig.port || 8080;
+  return new Promise((resolve) => {
+    const { name } = sampleConfig;
+    const port = sampleConfig.port || 8080;
 
-  // 1. start the sample's web server
-  const server = spawn('yarn', [
-    'workspace',
-    name,
-    'start'
-  ], { stdio: 'inherit' });
+    // 1. start the sample's web server
+    const server = spawn('yarn', [
+      'workspace',
+      name,
+      'start'
+    ], { stdio: 'inherit' });
 
-  waitOn({
-    resources: [
-      `http-get://localhost:${port}`
-    ]
-  }).then(() => {
-    // 2. run webdriver based on if sauce is needed or not
-    // TODO: support saucelab and cucumber
-    const wdioConfig = path.resolve(__dirname, 'wdio.conf.js');
-    const specs = sampleConfig.specs.reduce(
-      (acc, spec) => [...acc, '--spec', path.join(__dirname, 'specs', spec)]
-    , []);
-    const args = ['wdio', 'run', wdioConfig, ...specs];
-    const runner = spawn('yarn', args, { stdio: 'inherit' });
+    waitOn({
+      resources: [
+        `http-get://localhost:${port}`
+      ]
+    }).then(() => {
+      // 2. run webdriver based on if sauce is needed or not
+      // TODO: support saucelab and cucumber
+      const wdioConfig = path.resolve(__dirname, 'wdio.conf.js');
+      const specs = sampleConfig.specs.reduce(
+        (acc, spec) => [...acc, '--spec', path.join(__dirname, 'specs', spec)]
+      , []);
+      const args = ['wdio', 'run', wdioConfig, ...specs];
+      const runner = spawn('yarn', args, { stdio: 'inherit' });
 
-    let returnCode = 1;
-    runner.on('exit', function (code) {
-      console.log('Test runner exited with code: ', code);
-      returnCode = code;
-      server.kill();
+      let returnCode = 1;
+      runner.on('exit', function (code) {
+        console.log('Test runner exited with code: ', code);
+        returnCode = code;
+        server.kill();
+      });
+      runner.on('error', function (err) {
+        server.kill();
+        throw err;
+      });
+      server.on('exit', function(code) {
+        console.log('Server exited with code: ', code);
+        resolve(returnCode);
+      });
     });
-    runner.on('error', function (err) {
-      server.kill();
-      throw err;
-    });
-    server.on('exit', function(code) {
-      console.log('Server exited with code: ', code);
-      // eslint-disable-next-line no-process-exit
-      process.exit(returnCode);
-    });
-    process.on('exit', function() {
-      console.log('Process exited with code: ', returnCode);
-    });
-  });
+  })
 }
 
-function taskFn(sampleConfig) {
-  return new Promise((resolve) => {
-    console.log(`Spawning runner for "${sampleConfig.name}"`);
-    let opts = process.argv.slice(2); // pass extra arguments through
-    console.log(opts);
-    const runner = spawn('node', [
-      './runner.js'
-    ].concat(opts), { 
-      stdio: 'inherit',
-      env: Object.assign({}, process.env, {
-        'SAMPLE_NAME': sampleConfig.name
-      })
-    });
-    runner.on('error', function (err) {
-      throw err;
-    });
-    runner.on('exit', function(code) {
-      if (code !== 0) {
-        console.log('Runner exited with code: ' + code);
-        // eslint-disable-next-line no-process-exit
-        process.exit(code);
-      }
-      resolve();
-    });
-  });
+function runHarnessTests () {
+  const config = {
+    name: '@okta/test.app.test-harness-app',
+    specs: ['test-harness-app'],
+    port: 8080
+  }
+
+  return runWithConfig(config);
 }
 
 if (testName) {
   console.log(`Running starting for test "${testName}"`);
-  const sampleConfig = samplesConfig.find(config => config.name === testName);
-  if (!samplesConfig) {
-    throw new Error(`Failed to find sample config with ${testName} `);
+
+  if (testName === 'harness') {
+    runHarnessTests();
   }
-  console.log('Starting test with config: ', sampleConfig);
-  runWithConfig(sampleConfig);
+  else {
+    const sampleConfig = samplesConfig.find(config => config.name === testName);
+    if (!samplesConfig) {
+      throw new Error(`Failed to find sample config with ${testName} `);
+    }
+    console.log('Starting test with config: ', sampleConfig);
+    runWithConfig(sampleConfig);
+  }
 } else {
   // Run all tests
   const tasks = samplesConfig.map((sampleConfig) => {
@@ -118,9 +105,10 @@ if (testName) {
     if (!specs.length) {
       return;
     }
-    return taskFn.bind(null, sampleConfig);
+    // return taskFn.bind(null, sampleConfig);
+    return runWithConfig.bind(null, sampleConfig);
   })
   .filter((task) => typeof task === 'function');
 
-  runNextTask(tasks);
+  runNextTask([runHarnessTests, ...tasks]);
 }

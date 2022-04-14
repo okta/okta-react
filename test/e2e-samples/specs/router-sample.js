@@ -12,7 +12,13 @@
 
 /* eslint-disable */
 import RouterSampleApp from  '../page-objects/router-sample-page';
-import OktaSignInPage from '../page-objects/okta-oie-signin-page';
+import OktaSignInPageV1 from '../page-objects/okta-signin-page';
+import OktaSignInPageOIE from '../page-objects/okta-oie-signin-page';
+
+let OktaSignInPage = OktaSignInPageV1;
+if (Boolean(process.env.ORG_OIE_ENABLED)) {
+  OktaSignInPage = OktaSignInPageOIE;
+}
 
 const { ISSUER, USERNAME, PASSWORD } = process.env;
 
