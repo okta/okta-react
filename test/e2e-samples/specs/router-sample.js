@@ -22,6 +22,8 @@ if (Boolean(process.env.ORG_OIE_ENABLED)) {
 
 const { ISSUER, USERNAME, PASSWORD } = process.env;
 
+const widgetUri = ISSUER.split('/oauth')[0];
+
 describe('React router test app', () => {
   let isAuthenticated = false;
 
@@ -29,7 +31,7 @@ describe('React router test app', () => {
     await elemToClick.click();
   
     await OktaSignInPage.waitForPageLoad();
-    await expect(browser).toHaveUrlContaining(ISSUER);
+    await expect(browser).toHaveUrlContaining(widgetUri);
   
     await OktaSignInPage.login(USERNAME, PASSWORD);
     isAuthenticated = true;
@@ -59,7 +61,7 @@ describe('React router test app', () => {
     await expect(RouterSampleApp.loadingIcon).toHaveTextContaining('Loading...');
 
     await OktaSignInPage.waitForPageLoad();
-    await expect(browser).toHaveUrlContaining(`${ISSUER}/v1/authorize`);
+    await expect(browser).toHaveUrlContaining(widgetUri);
   });
 
   it('should login user after redirect from <SecureRoute>', async () => {
