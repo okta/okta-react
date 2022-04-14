@@ -29,7 +29,7 @@ describe('React router test app', () => {
     await elemToClick.click();
   
     await OktaSignInPage.waitForPageLoad();
-    await expect(browser).toHaveUrlContaining(`${ISSUER}/v1/authorize`);
+    await expect(browser).toHaveUrlContaining(ISSUER);
   
     await OktaSignInPage.login(USERNAME, PASSWORD);
     isAuthenticated = true;
