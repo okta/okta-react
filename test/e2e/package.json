@@ -15,6 +15,7 @@
     "@wdio/selenium-standalone-service": "^7.16.14",
     "@wdio/spec-reporter": "^7.16.14",
     "cross-spawn-with-kill": "^1.0.0",
+    "eslint-plugin-jasmine": "^4.1.1",
     "wait-on": "^6.0.1",
     "url": "^0.11.0"
   }
