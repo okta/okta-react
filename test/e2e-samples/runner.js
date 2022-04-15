@@ -35,6 +35,11 @@ function runWithConfig(sampleConfig) {
     const { name } = sampleConfig;
     const port = sampleConfig.port || 8080;
 
+    if (process.env.CI && name.endsWith('-hash')) {
+      console.log('Skipping hash router, org not configured');
+      return resolve(1);
+    }
+
     // 1. start the sample's web server
     const server = spawn('yarn', [
       'workspace',
