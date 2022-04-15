@@ -24,7 +24,7 @@ import url from 'url';
 import axios from 'axios';
 
 let OktaSignInPage = OktaSignInPageV1;
-if (Boolean(process.env.ORG_OIE_ENABLED)) {
+if (process.env.ORG_OIE_ENABLED) {
   OktaSignInPage = OktaSignInPageOIE;
 }
 

@@ -20,7 +20,7 @@ import OktaSignInPageV1 from '../page-objects/okta-signin-page';
 import OktaSignInPageOIE from '../page-objects/okta-oie-signin-page';
 
 let OktaSignInPage = OktaSignInPageV1;
-if (Boolean(process.env.ORG_OIE_ENABLED)) {
+if (process.env.ORG_OIE_ENABLED) {
   OktaSignInPage = OktaSignInPageOIE;
 }
 

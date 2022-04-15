@@ -4,12 +4,10 @@ module.exports = {
     sourceType: 'module'
   },
   extends: [
-    'plugin:protractor/recommended',
     'plugin:jasmine/recommended'
   ],
   plugins: [
     'jasmine',
-    'protractor'
   ],
   env: {
     jasmine: true,
@@ -18,11 +16,9 @@ module.exports = {
   },
   rules: {
     'jasmine/new-line-before-expect': 0,
-    'protractor/missing-wait-message': 0,
-    'protractor/no-browser-sleep': 0,
-    'protractor/no-get-in-it': 0
   },
   globals: {
-    '$': true
+    '$': true,
+    'browser': true,
   }
 };

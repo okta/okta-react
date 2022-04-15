@@ -20,7 +20,7 @@ import ProtectedPage from '../page-objects/shared/protected-page';
 import url from 'url';
 
 let OktaSignInPage = OktaSignInPageV1;
-if (Boolean(process.env.ORG_OIE_ENABLED)) {
+if (process.env.ORG_OIE_ENABLED) {
   OktaSignInPage = OktaSignInPageOIE;
 }
 

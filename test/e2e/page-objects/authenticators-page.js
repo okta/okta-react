@@ -14,7 +14,7 @@
 
 class AuthenticatorsPage {
   
-  get authenticatorLabelSelector () { return $$('.authenticator-label'); }
+  get authenticatorLabelSelector () { return $('.authenticator-label'); }
   get selectAuthenticatorButton () { return $('[class="authenticator-button"] [data-se="button"]'); }
 
   waitForPageLoad() {

@@ -25,7 +25,7 @@ import axios from 'axios';
 
 // TODO: address this when test org is swapped to OIE
 let OktaSignInPage = OktaSignInPageV1;
-if (Boolean(process.env.ORG_OIE_ENABLED)) {
+if (process.env.ORG_OIE_ENABLED) {
   OktaSignInPage = OktaSignInPageOIE;
 }
 
