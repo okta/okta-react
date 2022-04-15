@@ -59,7 +59,8 @@ function runWithConfig(sampleConfig) {
         (acc, spec) => [...acc, '--spec', path.join(__dirname, 'specs', spec)]
       , []);
       const args = ['wdio', 'run', wdioConfig, ...specs];
-      const runner = spawn('yarn', args, { stdio: 'inherit' });
+      const env = Object.assign({}, process.env, {APP_NAME: name});
+      const runner = spawn('yarn', args, { stdio: 'inherit', env });
 
       let returnCode = 1;
       runner.on('exit', function (code) {

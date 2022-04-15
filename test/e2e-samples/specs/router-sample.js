@@ -24,6 +24,10 @@ const { ISSUER, USERNAME, PASSWORD } = process.env;
 
 const widgetUri = ISSUER.split('/oauth')[0];
 
+if (process.env.APP_NAME) {
+  console.log(`Running router tests on ${process.env.APP_NAME}`);
+}
+
 describe('React router test app', () => {
   let isAuthenticated = false;
 
