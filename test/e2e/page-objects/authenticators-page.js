@@ -24,11 +24,13 @@ class AuthenticatorsPage {
   async clickAuthenticatorByLabel(label) {
     await this.authenticatorLabel.waitForDisplayed();
 
-    for await (element of this.authenticatorLabel) {
+    let index = 0;
+    for await (let element of this.authenticatorLabel) {
       const text = await element.getText();
       if (text.includes(label) > 0) {
         this.selectAuthenticatorButton[index].click();
       }
+      index++;
     }
   }
 }
