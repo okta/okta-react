@@ -28,7 +28,7 @@ class RouterSampleAppPage {
   async logout () {
     await expect(this.footerBtn).toHaveText('Logout');
     await this.footerBtn.click();
-    await browser.waitUntil(async () => await this.footerBtn.getText() === 'Login');
+    await browser.waitUntil(async () => await this.footerBtn.getText() === 'Login', {timeoutMsg: 'Could not find logout button'});
   }
 
   /**

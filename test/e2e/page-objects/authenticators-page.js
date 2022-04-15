@@ -14,7 +14,7 @@
 
 class AuthenticatorsPage {
   
-  get authenticatorLabelSelector () { return $('.authenticator-label'); }
+  get authenticatorLabel () { return $('.authenticator-label'); }
   get selectAuthenticatorButton () { return $('[class="authenticator-button"] [data-se="button"]'); }
 
   waitForPageLoad() {
@@ -22,15 +22,14 @@ class AuthenticatorsPage {
   }
 
   async clickAuthenticatorByLabel(label) {
-    await this.authenticatorLabelSelector.waitForDisplayed();
+    await this.authenticatorLabel.waitForDisplayed();
 
-    // TODO: verify this
-    this.authenticatorLabelSelector.each(async (element, index) => {
+    for await (element of this.authenticatorLabel) {
       const text = await element.getText();
       if (text.includes(label) > 0) {
         this.selectAuthenticatorButton[index].click();
       }
-    });
+    }
   }
 }
 
