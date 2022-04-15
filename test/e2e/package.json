@@ -1,5 +1,5 @@
 {
-  "name": "@okta/test.e2e-samples",
+  "name": "@okta/test.e2e",
   "version": "1.0.0",
   "private": true,
   "scripts": {
