@@ -1,1 +1,7 @@
 generated/**/* linguist-generated=true
+samples/**/bs-config.js linguist-generated=true
+samples/**/vite.config.js linguist-generated=true
+samples/**/package.json linguist-generated=true
+samples/routing/**/bs-config.js linguist-generated=true
+samples/routing/**/vite.config.js linguist-generated=true
+samples/routing/**/package.json linguist-generated=true
