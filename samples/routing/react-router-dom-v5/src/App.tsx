@@ -20,13 +20,14 @@ import Footer from './components/Footer';
 import Nav from './components/Nav';
 import Routes from './components/Routes';
 
-function App() {
-  const oktaAuth = new OktaAuth({
-    issuer: process.env.ISSUER,
-    clientId: process.env.SPA_CLIENT_ID,
-    redirectUri: window.location.origin + '/login/callback'
-  });
 
+const oktaAuth = new OktaAuth({
+  issuer: process.env.ISSUER,
+  clientId: process.env.SPA_CLIENT_ID,
+  redirectUri: window.location.origin + '/login/callback'
+});
+
+function App() {
   const history = useHistory();
   const restoreOriginalUri = (_oktaAuth: any,  originalUri: string) => {
     history.replace(toRelativeUrl(originalUri || '/', window.location.origin));
