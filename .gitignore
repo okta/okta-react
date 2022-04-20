@@ -8,3 +8,4 @@ testenv
 yalc.lock
 .yarnrc
 .yarn
+.env

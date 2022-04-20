@@ -17,6 +17,7 @@ module.exports = [
     useSemanticUi: true,
     usePolyfill: true,
     reactRouterDomVersion: '5.2.0',
+    reachRouterVersion: false,
     specs: [
       'okta-hosted-login'
     ]
@@ -27,6 +28,7 @@ module.exports = [
     useSemanticUi: true,
     usePolyfill: true,
     reactRouterDomVersion: '5.2.0',
+    reachRouterVersion: false,
     specs: [
       'custom-login'
     ]
@@ -37,6 +39,7 @@ module.exports = [
     useSemanticUi: false,
     usePolyfill: false,
     reactRouterDomVersion: '5.2.0',
+    reachRouterVersion: false,
     specs: [
       'doc-embedded-widget'
     ]
@@ -47,16 +50,69 @@ module.exports = [
     useSemanticUi: false,
     usePolyfill: false,
     reactRouterDomVersion: '5.2.0',
+    reachRouterVersion: false,
     specs: [
       'doc-direct-auth'
     ]
   },
   {
     name: '@okta/samples.react.react-router-dom-v6',
+    nested: 'routing/',
     useSiw: false,
     useSemanticUi: false,
     usePolyfill: false,
     reactRouterDomVersion: '6.2.1',
-    specs: []
+    reachRouterVersion: false,
+    specs: [
+      'router-sample'
+    ]
+  },
+  {
+    name: '@okta/samples.react.react-router-dom-v6-hash',
+    nested: 'routing/',
+    useSiw: false,
+    useSemanticUi: false,
+    usePolyfill: false,
+    reactRouterDomVersion: '6.2.1',
+    reachRouterVersion: false,
+    specs: [
+      'router-sample'
+    ]
+  },
+  {
+    name: '@okta/samples.react.react-router-dom-v5',
+    nested: 'routing/',
+    useSiw: false,
+    useSemanticUi: false,
+    usePolyfill: false,
+    reactRouterDomVersion: '5.3.0',
+    reachRouterVersion: false,
+    specs: [
+      'router-sample'
+    ]
+  },
+  {
+    name: '@okta/samples.react.react-router-dom-v5-hash',
+    nested: 'routing/',
+    useSiw: false,
+    useSemanticUi: false,
+    usePolyfill: false,
+    reactRouterDomVersion: '5.3.0',
+    reachRouterVersion: false,
+    specs: [
+      'router-sample'
+    ]
+  },
+  {
+    name: '@okta/samples.react.reach-router',
+    nested: 'routing/',
+    useSiw: false,
+    useSemanticUi: false,
+    usePolyfill: false,
+    reactRouterDomVersion: '5.3.0',
+    reachRouterVersion: "^1.3.4",
+    specs: [
+      'router-sample'
+    ]
   }
 ];

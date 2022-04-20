@@ -13,7 +13,6 @@
     "start": "yarn workspace @okta/test.app.test-harness-app start",
     "test": "yarn lint && yarn test:unit && yarn test:e2e",
     "test:e2e": "yarn workspace @okta/test.e2e test",
-    "test:e2e:samples": "yarn workspace @okta/test.e2e-samples test",
     "test:unit": "jest",
     "bundle": "rollup -c",
     "dev": "yarn bundle --watch",
@@ -97,7 +96,6 @@
     "jest-junit": "^13.0.0",
     "polished": "^1.7.0",
     "prop-types": "^15.5.10",
-    "protractor": "^7.0.0",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "react-router-dom": "5.2.0",
@@ -120,11 +118,12 @@
       "env",
       "generator",
       "samples/**/*",
+      "samples/routing/**/*",
       "test/apps/*",
-      "test/e2e/harness",
-      "test/e2e-samples"
+      "test/e2e"
     ],
     "nohoist": [
+      "**/@wdio/**",
       "**/@okta/okta-auth-js",
       "**/react",
       "**/react/**",

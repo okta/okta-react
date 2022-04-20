@@ -20,13 +20,6 @@ test_suites:
       script_name: e2e
       criteria: MERGE
       queue_name: small
-    - name: e2e-samples
-      script_path: /root/okta/okta-react/scripts
-      sort_order: '4'
-      timeout: '15'
-      script_name: e2e-samples
-      criteria: MERGE
-      queue_name: small
     - name: publish
       script_path: /root/okta/okta-react/scripts
       sort_order: '5'
