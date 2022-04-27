@@ -9,7 +9,7 @@ force: true
   "version": "0.3.0",
   "scripts": {
     "prestart": "vite build",
-    "start": "vite preview --port 8080", 
+    "start": "vite preview", 
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview"

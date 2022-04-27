@@ -46,6 +46,9 @@ export default defineConfig({
   server: {
     port: process.env.PORT || 8080
   },
+  preview: {
+    port: process.env.PORT || 8080
+  },
   build: {
     rollupOptions: {
       // always throw with build warnings
