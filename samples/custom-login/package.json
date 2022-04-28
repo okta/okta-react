@@ -11,11 +11,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
     "react-router-dom": "5.2.0",
-    "@okta/okta-auth-js": "^6.2.0",
-    "@okta/okta-signin-widget": "^6.1.2",
+    "@okta/okta-auth-js": "^6.4.3",
+    "@okta/okta-signin-widget": "^6.2.1",
     "semantic-ui-css": "2.4.1",
     "semantic-ui-react": "2.0.3",
     "text-encoding": "0.7.0",

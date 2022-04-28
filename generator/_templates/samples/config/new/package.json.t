@@ -15,8 +15,8 @@ force: true
     "preview": "vite preview"
   },
   "dependencies": {
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
 <% if (reactRouterDomVersion !== 'false') { -%>
     "react-router-dom": "<%= reactRouterDomVersion %>",
 <% } -%>
