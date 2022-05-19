@@ -389,11 +389,13 @@ export default MessageList = () => {
 
 #### restoreOriginalUri
 
-*(required)* Callback function. Called to restore original URI during [oktaAuth.handleLoginRedirect()](https://github.com/okta/okta-auth-js#handleloginredirecttokens) is called. Will override [restoreOriginalUri option of oktaAuth](https://github.com/okta/okta-auth-js#restoreoriginaluri). Recommended to memoize callback with `useCallback` hook.
+*(required)* Callback function. Called to restore original URI during [oktaAuth.handleLoginRedirect()](https://github.com/okta/okta-auth-js#handleloginredirecttokens) is called. Will override [restoreOriginalUri option of oktaAuth](https://github.com/okta/okta-auth-js#restoreoriginaluri). 
+**Note** Recommended to memoize callback with `useCallback` hook. For `react-router v6` please don't set result of `useNavigate` hook as dependency for memoizing `restoreOriginalUri` callback.
 
 #### onAuthRequired
 
-*(optional)* Callback function. Called when authentication is required. If this is not supplied, `okta-react` redirects to Okta. This callback will receive [oktaAuth][Okta Auth SDK] instance as the first function parameter. This is triggered when a [SecureRoute](#secureroute) is accessed without authentication. A common use case for this callback is to redirect users to a custom login route when authentication is required for a [SecureRoute](#secureroute). Recommended to memoize callback with `useCallback` hook.
+*(optional)* Callback function. Called when authentication is required. If this is not supplied, `okta-react` redirects to Okta. This callback will receive [oktaAuth][Okta Auth SDK] instance as the first function parameter. This is triggered when a [SecureRoute](#secureroute) is accessed without authentication. A common use case for this callback is to redirect users to a custom login route when authentication is required for a [SecureRoute](#secureroute). 
+**Note** Recommended to memoize callback with `useCallback` hook. For `react-router v6` please don't set result of `useNavigate` hook as dependency for memoizing `onAuthRequired` callback.
 
 #### Example
 
