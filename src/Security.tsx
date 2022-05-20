@@ -75,14 +75,10 @@ const Security: React.FC<{
     };
     oktaAuth.authStateManager.subscribe(handler);
 
-    // Trigger an initial change event to make sure authState is latest
-    oktaAuth.start();
-
     return () => {
       oktaAuth.authStateManager.unsubscribe(handler);
-      oktaAuth.stop();
     };
-  }, [oktaAuth, restoreOriginalUri]);
+  }, [oktaAuth]);
 
   if (!oktaAuth) {
     const err = new AuthSdkError('No oktaAuth instance passed to Security Component.');
@@ -93,6 +89,10 @@ const Security: React.FC<{
     const err = new AuthSdkError('No restoreOriginalUri callback passed to Security Component.');
     return <OktaError error={err} />;
   }
+  
+  // if (!oktaAuth.isStarted()) {
+  //   console.warn('OktaAuth service should be started.');
+  // }
 
   if (!oktaAuth._oktaUserAgent) {
     console.warn('_oktaUserAgent is not available on auth SDK instance. Please use okta-auth-js@^5.3.1 .');
