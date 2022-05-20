@@ -68,8 +68,18 @@ const Security: React.FC<{
     } else {
       console.warn('_oktaUserAgent is not available on auth SDK instance. Please use okta-auth-js@^5.3.1 .');
     }
-
+    
     // Update Security provider with latest authState
+    const currentAuthState = oktaAuth.authStateManager.getAuthState();
+    if (currentAuthState) {
+      // Service has been started and updated authState
+      setAuthState(currentAuthState);
+    } else if (!oktaAuth.authStateManager?._pending?.updateAuthStatePromise) {
+      // Service has NOT been started
+      // Need to trigger initial change event and notify user about `oktaAuth.start()`
+      oktaAuth.authStateManager.updateAuthState();
+      console.warn('OktaAuth service should be started outside of Security component.');
+    }
     const handler = (authState: AuthState) => {
       setAuthState(authState);
     };
@@ -89,10 +99,6 @@ const Security: React.FC<{
     const err = new AuthSdkError('No restoreOriginalUri callback passed to Security Component.');
     return <OktaError error={err} />;
   }
-  
-  // if (!oktaAuth.isStarted()) {
-  //   console.warn('OktaAuth service should be started.');
-  // }
 
   if (!oktaAuth._oktaUserAgent) {
     console.warn('_oktaUserAgent is not available on auth SDK instance. Please use okta-auth-js@^5.3.1 .');
