@@ -34,6 +34,7 @@ const oktaAuth = new OktaAuth({
   redirectUri,
   pkce
 });
+oktaAuth.start();
 
 ReactDOM.render(
   <Router>

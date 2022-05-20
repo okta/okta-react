@@ -22,6 +22,7 @@ import Nav from './components/Nav';
 import Routes from './components/Routes';
 
 const oktaAuth = new OktaAuth(config.oidc);
+oktaAuth.start();
 
 function App() {
   const navigate = useNavigate();

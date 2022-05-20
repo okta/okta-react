@@ -161,6 +161,7 @@ class App extends Component {
       clientId: '{clientId}',
       redirectUri: window.location.origin + '/login/callback'
     });
+    this.oktaAuth.start();
     this.restoreOriginalUri = async (_oktaAuth, originalUri) => {
       props.history.replace(toRelativeUrl(originalUri || '/', window.location.origin));
     };
@@ -200,6 +201,7 @@ const oktaAuth = new OktaAuth({
   clientId: '{clientId}',
   redirectUri: window.location.origin + '/login/callback'
 });
+oktaAuth.start();
 
 const App = () => {
   const history = useHistory();
@@ -406,6 +408,7 @@ const oktaAuth = new OktaAuth({
   clientId: '{clientId}',
   redirectUri: window.location.origin + '/login/callback'
 });
+oktaAuth.start();
 
 export default App = () => {
   const history = useHistory();
@@ -448,6 +451,7 @@ const oktaAuth = new OktaAuth({
   clientId: '{clientId}',
   redirectUri: window.location.origin + '/login/callback',
 });
+oktaAuth.start();
 
 class App extends Component {
   render() {
@@ -577,6 +581,7 @@ const oktaAuth = new OktaAuth({
   clientId: '{clientId}',
   redirectUri: window.location.origin + '/login/callback'
 });
+oktaAuth.start();
 
 export default App = () => {
   const history = useHistory();
@@ -621,6 +626,7 @@ import { OktaAuth } from '@okta/okta-auth-js';
 import { Security } from '@okta/okta-react';
 
 const oktaAuth = new OktaAuth(oidcConfig);
+oktaAuth.start();
 export default () => (
   <Security oktaAuth={oktaAuth} onAuthRequired={customAuthHandler}>
     // children component
