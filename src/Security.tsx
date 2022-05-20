@@ -55,6 +55,13 @@ const Security: React.FC<{
       restoreOriginalUri(oktaAuth as OktaAuth, originalUri);
     }) as ((oktaAuth: OktaAuth, originalUri?: string) => Promise<void>);
 
+  }, [oktaAuth, restoreOriginalUri]);
+
+  React.useEffect(() => {
+    if (!oktaAuth) {
+      return;
+    }
+
     // Add okta-react userAgent
     if (oktaAuth._oktaUserAgent) {
       oktaAuth._oktaUserAgent.addEnvironment(`${PACKAGE_NAME}/${PACKAGE_VERSION}`);
