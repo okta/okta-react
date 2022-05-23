@@ -70,6 +70,7 @@ describe('<LoginCallback />', () => {
       </Security>
     );
     expect(oktaAuth.handleLoginRedirect).toHaveBeenCalledTimes(1);
+    expect(oktaAuth.start).toHaveBeenCalledTimes(0);
   });
 
   describe('shows errors', () => {
