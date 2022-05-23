@@ -68,8 +68,14 @@ const Security: React.FC<{
     } else {
       console.warn('_oktaUserAgent is not available on auth SDK instance. Please use okta-auth-js@^5.3.1 .');
     }
-    
+
     // Update Security provider with latest authState
+    const handler = (authState: AuthState) => {
+      setAuthState(authState);
+    };
+    oktaAuth.authStateManager.subscribe(handler);
+
+    // Check service started
     const currentAuthState = oktaAuth.authStateManager.getAuthState();
     if (currentAuthState) {
       // Service has been started and updated authState
@@ -77,14 +83,10 @@ const Security: React.FC<{
     } else if (!oktaAuth.isLoginRedirect() && !oktaAuth.authStateManager?._pending?.updateAuthStatePromise) {
       // Service has NOT been started
       // Need to trigger initial change event and notify user about `oktaAuth.start()`
-      // Signing out with `clearPendingRemoveTokens` and background services will not work
+      // Signing out with `clearTokensBeforeRedirect` and background services will not work
       oktaAuth.authStateManager.updateAuthState();
       console.warn('OktaAuth service should be started outside of Security component.');
     }
-    const handler = (authState: AuthState) => {
-      setAuthState(authState);
-    };
-    oktaAuth.authStateManager.subscribe(handler);
 
     return () => {
       oktaAuth.authStateManager.unsubscribe(handler);
