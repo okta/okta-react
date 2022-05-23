@@ -16,13 +16,18 @@ import { act } from 'react-dom/test-utils';
 import { MemoryRouter } from 'react-router-dom';
 import Security from '../../src/Security';
 import { useOktaAuth } from '../../src/OktaContext';
+import { AuthState, OktaAuth } from '@okta/okta-auth-js';
+
+declare global {
+  let SKIP_VERSION_CHECK: any;
+}
 
 console.warn = jest.fn();
 
 describe('<Security />', () => {
-  let oktaAuth;
-  let initialAuthState;
-  const restoreOriginalUri = async (_, url) => {
+  let oktaAuth: OktaAuth;
+  let initialAuthState: AuthState | null;
+  const restoreOriginalUri = async (_: OktaAuth, url: string) => {
     location.href = url;
   };
   beforeEach(() => {
@@ -36,16 +41,18 @@ describe('<Security />', () => {
         addEnvironment: jest.fn(),
         getHttpHeader: jest.fn(),
         getVersion: jest.fn()
-      },
+      } as any,
       options: {},
       authStateManager: {
         getAuthState: jest.fn().mockImplementation(() => initialAuthState),
+        updateAuthState: jest.fn(),
         subscribe: jest.fn(),
         unsubscribe: jest.fn(),
-      },
+      } as any,
       start: jest.fn(),
       stop: jest.fn(),
-    };
+      isLoginRedirect: jest.fn().mockImplementation(() => false),
+    } as any;
   });
 
   it('adds an environmemnt to oktaAuth\'s _oktaUserAgent', () => {
@@ -61,7 +68,7 @@ describe('<Security />', () => {
   });
 
   it('logs a warning in case _oktaUserAgent is not available on auth SDK instance', () => {
-    const oktaAuthWithoutUserAgent = {
+    const oktaAuthWithoutUserAgent: any = {
       ...oktaAuth
     };
     delete oktaAuthWithoutUserAgent['_oktaUserAgent'];
@@ -74,7 +81,7 @@ describe('<Security />', () => {
   });
 
   describe('throws version not match error', () => {
-    let originalConsole;
+    let originalConsole: any;
 
     // turn off SKIP_VERSION_CHECK to test the functionality
     beforeEach(() => {
@@ -98,8 +105,8 @@ describe('<Security />', () => {
         _oktaUserAgent: {
           addEnvironment: jest.fn(),
           getVersion: jest.fn().mockReturnValue('1.0.0') // intentional large mock version
-        }
-      };
+        } as any
+      } as OktaAuth;
 
       const mockProps = {
         oktaAuth: oktaAuthWithMismatchingSDKVersion,
@@ -120,7 +127,7 @@ describe('<Security />', () => {
       };
 
       const mockProps = {
-        oktaAuth: oktaAuthWithMismatchingSDKVersion,
+        oktaAuth: oktaAuthWithMismatchingSDKVersion as any,
         restoreOriginalUri
       };
 
@@ -158,39 +165,28 @@ describe('<Security />', () => {
     );
     expect(oktaAuth.authStateManager.getAuthState).toHaveBeenCalled();
     expect(MyComponent).toHaveBeenCalled();
+    expect(console.warn).not.toBeCalled();
   });
 
-  it('calls start and updates the context', () => {
-    const newAuthState = {
-      fromUpdateAuthState: true
+  it('service should be started outside of the <Security />', () => {
+    initialAuthState = null;
+    // Simulate oktaAuth.start() - it should call oktaAuth.updateAuthState() and save ongoing promise
+    oktaAuth.authStateManager._pending = {
+      updateAuthStatePromise: jest.fn(),
+      canceledTimes: 0
     };
-    let callback;
-    oktaAuth.authStateManager.subscribe.mockImplementation(fn => {
-      callback = fn;
-    });
-    oktaAuth.start.mockImplementation(() => {
-      callback(newAuthState);
-    });
     const mockProps = {
       oktaAuth,
       restoreOriginalUri
     };
 
-    const MyComponent = jest.fn()
-      // first call
-      .mockImplementationOnce(() => {
-        const oktaProps = useOktaAuth();
-        expect(oktaProps.authState).toBe(initialAuthState);
-        return null;
-      })
-      // second call
-      .mockImplementationOnce(() => {
-        const oktaProps = useOktaAuth();
-        expect(oktaProps.authState).toBe(newAuthState);
-        return null;
-      });
+    const MyComponent = jest.fn().mockImplementationOnce(() => {
+      const oktaProps = useOktaAuth();
+      expect(oktaProps.authState).toBe(initialAuthState);
+      return null;
+    });
 
-    mount(
+    const component = mount(
       <MemoryRouter>
         <Security {...mockProps}>
           <MyComponent />
@@ -199,12 +195,46 @@ describe('<Security />', () => {
     );
 
     expect(oktaAuth.authStateManager.subscribe).toHaveBeenCalledTimes(1);
-    expect(oktaAuth.start).toHaveBeenCalledTimes(1);
-    expect(MyComponent).toHaveBeenCalledTimes(2);
+    expect(oktaAuth.start).toHaveBeenCalledTimes(0);
+    expect(oktaAuth.authStateManager.updateAuthState).toHaveBeenCalledTimes(0);
+    expect(console.warn).not.toBeCalled();
+    expect(MyComponent).toHaveBeenCalledTimes(1);
+    component.unmount();
+    expect(oktaAuth.stop).toHaveBeenCalledTimes(0);
+  });
+
+  it('if service has not been started outside of the <Security />, calls updateAuthState and produces a warning', () => {
+    initialAuthState = null;
+    const mockProps = {
+      oktaAuth,
+      restoreOriginalUri
+    };
+
+    const MyComponent = jest.fn().mockImplementationOnce(() => {
+      const oktaProps = useOktaAuth();
+      expect(oktaProps.authState).toBe(initialAuthState);
+      return null;
+    });
+
+    const component = mount(
+      <MemoryRouter>
+        <Security {...mockProps}>
+          <MyComponent />
+        </Security>
+      </MemoryRouter>
+    );
+
+    expect(oktaAuth.authStateManager.subscribe).toHaveBeenCalledTimes(1);
+    expect(oktaAuth.start).toHaveBeenCalledTimes(0);
+    expect(oktaAuth.authStateManager.updateAuthState).toHaveBeenCalledTimes(1);
+    expect(console.warn).toBeCalled();
+    expect(MyComponent).toHaveBeenCalledTimes(1);
+    component.unmount();
+    expect(oktaAuth.stop).toHaveBeenCalledTimes(0);
   });
 
   it('subscribes to "authStateChange" and updates the context', () => {
-    const mockAuthStates = [
+    const mockAuthStates: Array<AuthState | null> = [
       initialAuthState,
       {
         fromUpdateAuthState: true
@@ -213,26 +243,29 @@ describe('<Security />', () => {
         fromEventDispatch: true
       }
     ];
-    const callbacks = [];
+    const callbacks: Array<(state: AuthState | null) => void> = [];
     let stateCount = 0;
     callbacks.push(() => {
       // dummy subscriber that should be preserved after `<Security />` unmount
     });
-    oktaAuth.authStateManager.getAuthState.mockImplementation( () => { 
+    oktaAuth.authStateManager.getAuthState = jest.fn().mockImplementation( () => { 
       return mockAuthStates[stateCount];
     });
-    oktaAuth.authStateManager.subscribe.mockImplementation(fn => {
+    oktaAuth.authStateManager.subscribe = jest.fn().mockImplementation(fn => {
       callbacks.push(fn);
     });
-    oktaAuth.authStateManager.unsubscribe.mockImplementation(fn => {
+    oktaAuth.authStateManager.unsubscribe = jest.fn().mockImplementation(fn => {
       const index = callbacks.indexOf(fn);
       if (index !== -1) {
         callbacks.splice(index, 1);
       }
     });
-    oktaAuth.start.mockImplementation(() => {
+    oktaAuth.authStateManager.updateAuthState = jest.fn().mockImplementation(() => {
       stateCount++;
       callbacks.map(fn => fn(mockAuthStates[stateCount]));
+    });
+    oktaAuth.start = jest.fn().mockImplementation(() => {
+      oktaAuth.authStateManager.updateAuthState();
     });
     const mockProps = {
       oktaAuth,
@@ -265,6 +298,11 @@ describe('<Security />', () => {
         </Security>
       </MemoryRouter>
     );
+
+    act(() => {
+      oktaAuth.start();
+    });
+
     expect(callbacks.length).toEqual(2);
     expect(oktaAuth.authStateManager.subscribe).toHaveBeenCalledTimes(1);
     expect(oktaAuth.start).toHaveBeenCalledTimes(1);
@@ -277,7 +315,7 @@ describe('<Security />', () => {
     expect(MyComponent).toHaveBeenCalledTimes(1);
 
     component.unmount();
-    expect(oktaAuth.stop).toHaveBeenCalledTimes(1);
+    expect(oktaAuth.stop).toHaveBeenCalledTimes(0);
     expect(callbacks.length).toEqual(1);
   });
 
@@ -357,7 +395,7 @@ describe('<Security />', () => {
 
     it('should render error if oktaAuth props is not provided', () => {
       const mockProps = {
-        oktaAuth: null,
+        oktaAuth: null as any,
         restoreOriginalUri
       };
       const wrapper = mount(
@@ -371,7 +409,7 @@ describe('<Security />', () => {
     it('should render error if restoreOriginalUri prop is not provided', () => {
       const mockProps = {
         oktaAuth,
-        restoreOriginalUri: null
+        restoreOriginalUri: null as any
       };
       const wrapper = mount(
         <Security {...mockProps}>
