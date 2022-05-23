@@ -1421,10 +1421,33 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@okta/okta-auth-js@^6.1.0", "@okta/okta-auth-js@^6.2.0":
+"@okta/okta-auth-js@^6.2.0":
   version "6.2.0"
   resolved "https://registry.yarnpkg.com/@okta/okta-auth-js/-/okta-auth-js-6.2.0.tgz#821b5f4c9657a76799eab807c3cebf672e931345"
   integrity sha512-XnETKd1Evl7SEKl1VfDhxh1yPUbKmE3rgh2S2vup6KqlkLV2YqjE6VGkpT2uwGCujGO95jmtJG0PLyXxguTWbQ==
+  dependencies:
+    "@babel/runtime" "^7.12.5"
+    "@babel/runtime-corejs3" "^7.17.0"
+    "@peculiar/webcrypto" "1.1.6"
+    Base64 "1.1.0"
+    atob "^2.1.2"
+    broadcast-channel "^4.10.0"
+    btoa "^1.2.1"
+    core-js "^3.6.5"
+    cross-fetch "^3.1.5"
+    js-cookie "^3.0.1"
+    jsonpath-plus "^6.0.1"
+    node-cache "^5.1.2"
+    p-cancelable "^2.0.0"
+    text-encoding "^0.7.0"
+    tiny-emitter "1.1.0"
+    webcrypto-shim "^0.1.5"
+    xhr2 "0.1.3"
+
+"@okta/okta-auth-js@^6.5.1":
+  version "6.5.1"
+  resolved "https://registry.yarnpkg.com/@okta/okta-auth-js/-/okta-auth-js-6.5.1.tgz#aa1b3815152e729c6a69137a19c7fd502d2e4e5d"
+  integrity sha512-mBzg+EH1Ey7skxHiimSN/ZYraB3l8ZXZlBi8RXNmRLwPMbFlZkQoKrrQu357S5YSEckF59Lqbb/r9Y3cXBNQBQ==
   dependencies:
     "@babel/runtime" "^7.12.5"
     "@babel/runtime-corejs3" "^7.17.0"
