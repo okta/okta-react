@@ -222,7 +222,7 @@ const AppWithRouterAccess = () => (
   </Router>
 );
 
-export default AppWithRouterAccesss;
+export default AppWithRouterAccess;
 ```
 
 #### Show Login and Logout Buttons (class-based)
