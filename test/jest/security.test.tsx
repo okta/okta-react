@@ -165,26 +165,38 @@ describe('<Security />', () => {
     );
     expect(oktaAuth.authStateManager.getAuthState).toHaveBeenCalled();
     expect(MyComponent).toHaveBeenCalled();
-    expect(console.warn).not.toBeCalled();
   });
 
-  it('service should be started outside of the <Security />', () => {
+  it('calls start and updates the context, does NOT call stop', () => {
     initialAuthState = null;
-    // Simulate oktaAuth.start() - it should call oktaAuth.updateAuthState() and save ongoing promise
-    oktaAuth.authStateManager._pending = {
-      updateAuthStatePromise: jest.fn(),
-      canceledTimes: 0
+    const newAuthState = {
+      fromUpdateAuthState: true
     };
+    let callback: (state: AuthState | null) => void;
+    oktaAuth.authStateManager.subscribe = jest.fn().mockImplementation(fn => {
+      callback = fn;
+    });
+    oktaAuth.start = jest.fn().mockImplementation(() => {
+      callback(newAuthState);
+    });
     const mockProps = {
       oktaAuth,
       restoreOriginalUri
     };
 
-    const MyComponent = jest.fn().mockImplementationOnce(() => {
-      const oktaProps = useOktaAuth();
-      expect(oktaProps.authState).toBe(initialAuthState);
-      return null;
-    });
+    const MyComponent = jest.fn()
+      // first call
+      .mockImplementationOnce(() => {
+        const oktaProps = useOktaAuth();
+        expect(oktaProps.authState).toBe(initialAuthState);
+        return null;
+      })
+      // second call
+      .mockImplementationOnce(() => {
+        const oktaProps = useOktaAuth();
+        expect(oktaProps.authState).toBe(newAuthState);
+        return null;
+      });
 
     const component = mount(
       <MemoryRouter>
@@ -195,41 +207,10 @@ describe('<Security />', () => {
     );
 
     expect(oktaAuth.authStateManager.subscribe).toHaveBeenCalledTimes(1);
-    expect(oktaAuth.start).toHaveBeenCalledTimes(0);
-    expect(oktaAuth.authStateManager.updateAuthState).toHaveBeenCalledTimes(0);
-    expect(console.warn).not.toBeCalled();
-    expect(MyComponent).toHaveBeenCalledTimes(1);
+    expect(oktaAuth.start).toHaveBeenCalledTimes(1);
+    expect(MyComponent).toHaveBeenCalledTimes(2);
     component.unmount();
-    expect(oktaAuth.stop).toHaveBeenCalledTimes(0);
-  });
-
-  it('if service has not been started outside of the <Security />, calls updateAuthState and produces a warning', () => {
-    initialAuthState = null;
-    const mockProps = {
-      oktaAuth,
-      restoreOriginalUri
-    };
-
-    const MyComponent = jest.fn().mockImplementationOnce(() => {
-      const oktaProps = useOktaAuth();
-      expect(oktaProps.authState).toBe(initialAuthState);
-      return null;
-    });
-
-    const component = mount(
-      <MemoryRouter>
-        <Security {...mockProps}>
-          <MyComponent />
-        </Security>
-      </MemoryRouter>
-    );
-
-    expect(oktaAuth.authStateManager.subscribe).toHaveBeenCalledTimes(1);
-    expect(oktaAuth.start).toHaveBeenCalledTimes(0);
-    expect(oktaAuth.authStateManager.updateAuthState).toHaveBeenCalledTimes(1);
-    expect(console.warn).toBeCalled();
-    expect(MyComponent).toHaveBeenCalledTimes(1);
-    component.unmount();
+    expect(oktaAuth.authStateManager.unsubscribe).toHaveBeenCalledTimes(1);
     expect(oktaAuth.stop).toHaveBeenCalledTimes(0);
   });
 
@@ -260,12 +241,9 @@ describe('<Security />', () => {
         callbacks.splice(index, 1);
       }
     });
-    oktaAuth.authStateManager.updateAuthState = jest.fn().mockImplementation(() => {
+    oktaAuth.start = jest.fn().mockImplementation(() => {
       stateCount++;
       callbacks.map(fn => fn(mockAuthStates[stateCount]));
-    });
-    oktaAuth.start = jest.fn().mockImplementation(() => {
-      oktaAuth.authStateManager.updateAuthState();
     });
     const mockProps = {
       oktaAuth,
@@ -299,10 +277,6 @@ describe('<Security />', () => {
       </MemoryRouter>
     );
 
-    act(() => {
-      oktaAuth.start();
-    });
-
     expect(callbacks.length).toEqual(2);
     expect(oktaAuth.authStateManager.subscribe).toHaveBeenCalledTimes(1);
     expect(oktaAuth.start).toHaveBeenCalledTimes(1);
@@ -316,6 +290,7 @@ describe('<Security />', () => {
 
     component.unmount();
     expect(oktaAuth.stop).toHaveBeenCalledTimes(0);
+    expect(oktaAuth.authStateManager.unsubscribe).toHaveBeenCalledTimes(1);
     expect(callbacks.length).toEqual(1);
   });
 

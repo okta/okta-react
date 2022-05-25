@@ -75,18 +75,8 @@ const Security: React.FC<{
     };
     oktaAuth.authStateManager.subscribe(handler);
 
-    // Check service started
-    const currentAuthState = oktaAuth.authStateManager.getAuthState();
-    if (currentAuthState) {
-      // Service has been started and updated authState
-      setAuthState(currentAuthState);
-    } else if (!oktaAuth.isLoginRedirect() && !oktaAuth.authStateManager?._pending?.updateAuthStatePromise) {
-      // Service has NOT been started
-      // Need to trigger initial change event and notify user about `oktaAuth.start()`
-      // Signing out with `clearTokensBeforeRedirect` and background services will not work
-      oktaAuth.authStateManager.updateAuthState();
-      console.warn('OktaAuth service should be started outside of Security component.');
-    }
+    // Trigger an initial change event to make sure authState is latest
+    oktaAuth.start();
 
     return () => {
       oktaAuth.authStateManager.unsubscribe(handler);

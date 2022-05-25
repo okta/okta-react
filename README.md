@@ -114,7 +114,7 @@ npm install --save @okta/okta-auth-js   # requires at least version 5.3.1
 
 `okta-react` provides the necessary tools to build an integration with most common React-based SPA routers.
 
-- [Security](#security) - Accepts [oktaAuth][Okta Auth SDK] instance (**required**, should be started) and additional [configuration](#configuration-options) as props. This component acts as a [React Context Provider][] that maintains the latest [authState][AuthState] and [oktaAuth][Okta Auth SDK] instance for the downstream consumers. This context can be accessed via the [useOktaAuth](#useoktaauth) React Hook, or the [withOktaAuth](#useoktaauth) Higher Order Component wrapper from it's descendant component.
+- [Security](#security) - Accepts [oktaAuth][Okta Auth SDK] instance (**required**) and additional [configuration](#configuration-options) as props. This component acts as a [React Context Provider][] that maintains the latest [authState][AuthState] and [oktaAuth][Okta Auth SDK] instance for the downstream consumers. This context can be accessed via the [useOktaAuth](#useoktaauth) React Hook, or the [withOktaAuth](#useoktaauth) Higher Order Component wrapper from it's descendant component.
 - [LoginCallback](#logincallback) - A simple component which handles the login callback when the user is redirected back to the application from the Okta login site.  `<LoginCallback>` accepts an optional prop `errorComponent` that will be used to format the output for any error in handling the callback.  This component will be passed an `error` prop that is an error describing the problem.  (see the `<OktaError>` component for the default rendering)
 
 Users of routers other than `react-router` can use [useOktaAuth](#useoktaauth) to see if `authState` is not null and `authState.isAuthenticated` is true.  If it is false, you can send them to login via [oktaAuth.signInWithRedirect()](https://github.com/okta/okta-auth-js#signinwithredirectoptions).  See the implementation of `<LoginCallback>` as an example.
@@ -161,7 +161,6 @@ class App extends Component {
       clientId: '{clientId}',
       redirectUri: window.location.origin + '/login/callback'
     });
-    this.oktaAuth.start();
     this.restoreOriginalUri = async (_oktaAuth, originalUri) => {
       props.history.replace(toRelativeUrl(originalUri || '/', window.location.origin));
     };
@@ -201,7 +200,6 @@ const oktaAuth = new OktaAuth({
   clientId: '{clientId}',
   redirectUri: window.location.origin + '/login/callback'
 });
-oktaAuth.start();
 
 const App = () => {
   const history = useHistory();
@@ -387,7 +385,7 @@ export default MessageList = () => {
 
 #### oktaAuth
 
-*(required)* The pre-initialized and pre-started [oktaAuth][Okta Auth SDK] instance. See [Configuration Reference](https://github.com/okta/okta-auth-js#configuration-reference) for details of how to initialize the instance.
+*(required)* The pre-initialized [oktaAuth][Okta Auth SDK] instance. See [Configuration Reference](https://github.com/okta/okta-auth-js#configuration-reference) for details of how to initialize the instance.
 
 #### restoreOriginalUri
 
@@ -408,7 +406,6 @@ const oktaAuth = new OktaAuth({
   clientId: '{clientId}',
   redirectUri: window.location.origin + '/login/callback'
 });
-oktaAuth.start();
 
 export default App = () => {
   const history = useHistory();
@@ -440,7 +437,7 @@ export default App = () => {
 
 Assuming you have configured your application to allow the `Authorization code` grant type, you can implement the [PKCE flow](https://github.com/okta/okta-auth-js#pkce) with the following steps:
 
-- Initialize [oktaAuth][Okta Auth SDK] instance (with default PKCE configuration as `true`), start and pass it to the `Security` component.
+- Initialize [oktaAuth][Okta Auth SDK] instance (with default PKCE configuration as `true`) and pass it to the `Security` component.
 - add `/login/callback` route with [LoginCallback](#logincallback) component to handle login redirect from OKTA.
 
 ```jsx
@@ -451,7 +448,6 @@ const oktaAuth = new OktaAuth({
   clientId: '{clientId}',
   redirectUri: window.location.origin + '/login/callback',
 });
-oktaAuth.start();
 
 class App extends Component {
   render() {
@@ -581,7 +577,6 @@ const oktaAuth = new OktaAuth({
   clientId: '{clientId}',
   redirectUri: window.location.origin + '/login/callback'
 });
-oktaAuth.start();
 
 export default App = () => {
   const history = useHistory();
@@ -626,7 +621,6 @@ import { OktaAuth } from '@okta/okta-auth-js';
 import { Security } from '@okta/okta-react';
 
 const oktaAuth = new OktaAuth(oidcConfig);
-oktaAuth.start();
 export default () => (
   <Security oktaAuth={oktaAuth} onAuthRequired={customAuthHandler}>
     // children component

@@ -20,7 +20,6 @@ import Protected from './Protected';
 import config from './config';
 
 const oktaAuth = new OktaAuth(config.oidc);
-oktaAuth.start();
 
 const App = () => {
   const history = useHistory();

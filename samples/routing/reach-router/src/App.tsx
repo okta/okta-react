@@ -25,7 +25,6 @@ const oktaAuth = new OktaAuth({
   clientId: process.env.SPA_CLIENT_ID,
   redirectUri: window.location.origin + '/login/callback'
 });
-oktaAuth.start();
 
 function App() {
   const restoreOriginalUri = (_oktaAuth: any,  originalUri: string) => {
