@@ -70,6 +70,7 @@ const Security: React.FC<{
     }
 
     // Update Security provider with latest authState
+    //setAuthState(oktaAuth.authStateManager.getAuthState());
     const handler = (authState: AuthState) => {
       setAuthState(authState);
     };
