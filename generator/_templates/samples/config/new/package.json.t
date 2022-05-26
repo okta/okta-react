@@ -38,7 +38,7 @@ force: true
     "@okta/okta-react": "*"
   },
   "devDependencies": {
-    "@vitejs/plugin-react": "^1.0.7",
+    "@vitejs/plugin-react": "^1.3.2",
     "vite": "^2.8.0",
     "dotenv": "^16.0.0"
   }
