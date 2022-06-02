@@ -437,7 +437,7 @@ export default App = () => {
 
 Assuming you have configured your application to allow the `Authorization code` grant type, you can implement the [PKCE flow](https://github.com/okta/okta-auth-js#pkce) with the following steps:
 
-- Initialize [oktaAuth](Okta Auth SDK) instance (with default PKCE configuration as `true`) and pass it to the `Security` component.
+- Initialize [oktaAuth][Okta Auth SDK] instance (with default PKCE configuration as `true`) and pass it to the `Security` component.
 - add `/login/callback` route with [LoginCallback](#logincallback) component to handle login redirect from OKTA.
 
 ```jsx

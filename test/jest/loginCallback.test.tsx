@@ -59,7 +59,7 @@ describe('<LoginCallback />', () => {
     expect(wrapper.text()).toBe('');
   });
 
-  it('calls handleLoginRedirect when authState is resolved', () => {
+  it('calls handleLoginRedirect when authState is resolved', async () => {
     authState = {
       isAuthorized: true
     }
@@ -70,6 +70,8 @@ describe('<LoginCallback />', () => {
       </Security>
     );
     expect(oktaAuth.handleLoginRedirect).toHaveBeenCalledTimes(1);
+    await Promise.resolve();
+    expect(oktaAuth.start).toHaveBeenCalledTimes(1);
   });
 
   describe('shows errors', () => {

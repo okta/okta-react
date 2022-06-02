@@ -1,3 +1,13 @@
+# 6.5.0
+
+### Others
+
+- [#233](https://github.com/okta/okta-react/pull/233) 
+  - Removes `oktaAuth.stop()` from `<Security>`
+  - Removes `oktaAuth.start()` from `<LoginCallback>` after `handleLoginRedirect()`
+  - Fixes `useEffect` hook in `<Security>` - don't watch for `restoreOriginalUri` prop to perform side effects (start, subscribe, unsubscribe) on `oktaAuth`
+  - Upgrades internal dependencies
+
 # 6.4.3
 
 ### Bug Fixes

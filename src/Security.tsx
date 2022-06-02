@@ -55,6 +55,13 @@ const Security: React.FC<{
       restoreOriginalUri(oktaAuth as OktaAuth, originalUri);
     }) as ((oktaAuth: OktaAuth, originalUri?: string) => Promise<void>);
 
+  }, [oktaAuth, restoreOriginalUri]);
+
+  React.useEffect(() => {
+    if (!oktaAuth) {
+      return;
+    }
+
     // Add okta-react userAgent
     if (oktaAuth._oktaUserAgent) {
       oktaAuth._oktaUserAgent.addEnvironment(`${PACKAGE_NAME}/${PACKAGE_VERSION}`);
@@ -63,6 +70,10 @@ const Security: React.FC<{
     }
 
     // Update Security provider with latest authState
+    const currentAuthState = oktaAuth.authStateManager.getAuthState();
+    if (currentAuthState !== authState) {
+      setAuthState(currentAuthState);
+    }
     const handler = (authState: AuthState) => {
       setAuthState(authState);
     };
@@ -73,9 +84,8 @@ const Security: React.FC<{
 
     return () => {
       oktaAuth.authStateManager.unsubscribe(handler);
-      oktaAuth.stop();
     };
-  }, [oktaAuth, restoreOriginalUri]);
+  }, [oktaAuth]);
 
   if (!oktaAuth) {
     const err = new AuthSdkError('No oktaAuth instance passed to Security Component.');
