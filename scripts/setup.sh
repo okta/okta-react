@@ -15,18 +15,6 @@ setup_service node $NODE_VERSION
 
 cd ${OKTA_HOME}/${REPO}
 
-if [ ! -z "$AUTHJS_VERSION" ]; then
-  echo "Installing AUTHJS_VERSION: ${AUTHJS_VERSION}"
-  npm config set strict-ssl false
-
-  if ! yarn add -DW --no-lockfile https://artifacts.aue1d.saasure.com/artifactory/npm-topic/@okta/okta-auth-js/-/@okta/okta-auth-js-${AUTHJS_VERSION}.tgz ; then
-    echo "AUTHJS_VERSION could not be installed: ${AUTHJS_VERSION}"
-    exit ${FAILED_SETUP}
-  fi
-
-  echo "AUTHJS_VERSION installed: ${AUTHJS_VERSION}"
-fi
-
 # undo permissions change on scripts/publish.sh
 git checkout -- scripts
 
@@ -53,6 +41,19 @@ OKTA_REGISTRY=${ARTIFACTORY_URL}/api/npm/npm-okta-master
 # Replace yarn registry with Okta's
 echo "Replacing $YARN_REGISTRY with $OKTA_REGISTRY within yarn.lock files..."
 sed -i "s#${YARN_REGISTRY}#${OKTA_REGISTRY}#" yarn.lock
+
+# Install a specific version of auth-js, used by downstream artifact builds
+if [ ! -z "$AUTHJS_VERSION" ]; then
+  echo "Installing AUTHJS_VERSION: ${AUTHJS_VERSION}"
+  npm config set strict-ssl false
+
+  if ! yarn add -DW --no-lockfile https://artifacts.aue1d.saasure.com/artifactory/npm-topic/@okta/okta-auth-js/-/@okta/okta-auth-js-${AUTHJS_VERSION}.tgz ; then
+    echo "AUTHJS_VERSION could not be installed: ${AUTHJS_VERSION}"
+    exit ${FAILED_SETUP}
+  fi
+
+  echo "AUTHJS_VERSION installed: ${AUTHJS_VERSION}"
+fi
 
 # Install dependencies but do not build
 if ! yarn install --frozen-lockfile; then
