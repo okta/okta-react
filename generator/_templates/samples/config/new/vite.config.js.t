@@ -39,7 +39,6 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@okta/okta-auth-js': path.resolve(__dirname, 'node_modules/@okta/okta-auth-js/dist/okta-auth-js.umd.js'),
       'react-router-dom': path.resolve(__dirname, 'node_modules/react-router-dom')
     }
   },
