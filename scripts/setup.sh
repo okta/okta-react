@@ -59,13 +59,21 @@ if [ ! -z "$AUTHJS_VERSION" ]; then
   echo "Installing AUTHJS_VERSION: ${AUTHJS_VERSION}"
   npm config set strict-ssl false
 
-  if ! yarn add -DW --no-lockfile --ignore-scripts https://artifacts.aue1d.saasure.com/artifactory/npm-topic/@okta/okta-auth-js/-/@okta/okta-auth-js-${AUTHJS_VERSION}.tgz ; then
+  if ! yarn add -DW --no-lockfile https://artifacts.aue1d.saasure.com/artifactory/npm-topic/@okta/okta-auth-js/-/@okta/okta-auth-js-${AUTHJS_VERSION}.tgz ; then
     echo "AUTHJS_VERSION could not be installed: ${AUTHJS_VERSION}"
     exit ${FAILED_SETUP}
   fi
 
   npm config set strict-ssl true
   echo "AUTHJS_VERSION installed: ${AUTHJS_VERSION}"
-fi
 
-yarn why @okta/okta-auth-js
+  # verify single version of auth-js is installed
+  # NOTE: okta-signin-widget will install it's own version of auth-js, filtered out
+  AUTHJS_INSTALLS=$(find . -type d -path "*/node_modules/@okta/okta-auth-js" -not -path "*/okta-signin-widget/*" | wc -l)
+  if [ $AUTHJS_INSTALLS -gt 1 ]
+  then
+    echo "ADDITIONAL AUTH JS INSTALL DETECTED"
+    yarn why @okta/okta-auth-js
+    exit ${FAILED_SETUP}
+  fi
+fi
