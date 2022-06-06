@@ -45,7 +45,7 @@ echo "Replacing $YARN_REGISTRY with $OKTA_REGISTRY within yarn.lock files..."
 sed -i "s#${YARN_REGISTRY}#${OKTA_REGISTRY}#" yarn.lock
 
 # Install dependencies but do not build
-if ! yarn install --frozen-lockfile; then
+if ! yarn install --frozen-lockfile --ignore-scripts; then
   echo "yarn install failed! Exiting..."
   exit ${FAILED_SETUP}
 fi
@@ -59,7 +59,8 @@ if [ ! -z "$AUTHJS_VERSION" ]; then
   echo "Installing AUTHJS_VERSION: ${AUTHJS_VERSION}"
   npm config set strict-ssl false
 
-  if ! yarn add -DW --no-lockfile https://artifacts.aue1d.saasure.com/artifactory/npm-topic/@okta/okta-auth-js/-/@okta/okta-auth-js-${AUTHJS_VERSION}.tgz ; then
+  AUTHJS_URI=https://artifacts.aue1d.saasure.com/artifactory/npm-topic/@okta/okta-auth-js/-/@okta/okta-auth-js-${AUTHJS_VERSION}.tgz
+  if ! yarn add -DW --no-lockfile --ignore-scripts ${AUTHJS_URI}; then
     echo "AUTHJS_VERSION could not be installed: ${AUTHJS_VERSION}"
     exit ${FAILED_SETUP}
   fi
@@ -76,4 +77,10 @@ if [ ! -z "$AUTHJS_VERSION" ]; then
     yarn why @okta/okta-auth-js
     exit ${FAILED_SETUP}
   fi
+fi
+
+# build auth-js
+if ! yarn build; then
+  echo "yarn build failed! Exiting..."
+  exit ${FAILED_SETUP}
 fi
