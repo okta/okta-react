@@ -1438,10 +1438,33 @@
     webcrypto-shim "^0.1.5"
     xhr2 "0.1.3"
 
-"@okta/okta-signin-widget@^6.4.0":
-  version "6.4.0"
-  resolved "https://registry.yarnpkg.com/@okta/okta-signin-widget/-/okta-signin-widget-6.4.0.tgz#29b86e7bf53c1535622289d43ca4bfe538c66b97"
-  integrity sha512-FculFki2NHNtd6mAFGTYGI2DE8gZbxIlfXJycEOnAsyZx1QjGGDH/trvfFjR6HVeQQ0kWwvbvSTg5QpCGELENA==
+"@okta/okta-auth-js@^6.6.2":
+  version "6.6.2"
+  resolved "https://registry.yarnpkg.com/@okta/okta-auth-js/-/okta-auth-js-6.6.2.tgz#de8a40c82a15f62d1f1bd1a55995152eb5fa6cbe"
+  integrity sha512-lvI8iltaHVvdXDJDA2y/bEyQ0vVTGOVr+va/nqOGEqyx1y7Bn4vURe9j90BobjkLU/XVGdEWW9YWRr+ucl1qSA==
+  dependencies:
+    "@babel/runtime" "^7.12.5"
+    "@babel/runtime-corejs3" "^7.17.0"
+    "@peculiar/webcrypto" "1.1.6"
+    Base64 "1.1.0"
+    atob "^2.1.2"
+    broadcast-channel "^4.13.0"
+    btoa "^1.2.1"
+    core-js "^3.6.5"
+    cross-fetch "^3.1.5"
+    js-cookie "^3.0.1"
+    jsonpath-plus "^6.0.1"
+    node-cache "^5.1.2"
+    p-cancelable "^2.0.0"
+    text-encoding "^0.7.0"
+    tiny-emitter "1.1.0"
+    webcrypto-shim "^0.1.5"
+    xhr2 "0.1.3"
+
+"@okta/okta-signin-widget@^6.4.1":
+  version "6.4.1"
+  resolved "https://registry.yarnpkg.com/@okta/okta-signin-widget/-/okta-signin-widget-6.4.1.tgz#662047dc2d429cabef470182403f037575e87a18"
+  integrity sha512-yNJeANAdkdKfSEtrDEgYHvjEDcZ2QCcFFjdE0Rw8tCxfjQim/8k/yfMsFYFmD0ROvV+ut8JuZvyegvWiCyF28Q==
   dependencies:
     "@okta/okta-auth-js" "6.5.1"
     "@sindresorhus/to-milliseconds" "^1.0.0"
