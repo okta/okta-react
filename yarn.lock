@@ -1392,6 +1392,29 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
+"@okta/okta-auth-js@*", "@okta/okta-auth-js@^6.6.2":
+  version "6.6.2"
+  resolved "https://registry.yarnpkg.com/@okta/okta-auth-js/-/okta-auth-js-6.6.2.tgz#de8a40c82a15f62d1f1bd1a55995152eb5fa6cbe"
+  integrity sha512-lvI8iltaHVvdXDJDA2y/bEyQ0vVTGOVr+va/nqOGEqyx1y7Bn4vURe9j90BobjkLU/XVGdEWW9YWRr+ucl1qSA==
+  dependencies:
+    "@babel/runtime" "^7.12.5"
+    "@babel/runtime-corejs3" "^7.17.0"
+    "@peculiar/webcrypto" "1.1.6"
+    Base64 "1.1.0"
+    atob "^2.1.2"
+    broadcast-channel "^4.13.0"
+    btoa "^1.2.1"
+    core-js "^3.6.5"
+    cross-fetch "^3.1.5"
+    js-cookie "^3.0.1"
+    jsonpath-plus "^6.0.1"
+    node-cache "^5.1.2"
+    p-cancelable "^2.0.0"
+    text-encoding "^0.7.0"
+    tiny-emitter "1.1.0"
+    webcrypto-shim "^0.1.5"
+    xhr2 "0.1.3"
+
 "@okta/okta-auth-js@6.5.1":
   version "6.5.1"
   resolved "https://registry.yarnpkg.com/@okta/okta-auth-js/-/okta-auth-js-6.5.1.tgz#aa1b3815152e729c6a69137a19c7fd502d2e4e5d"
@@ -1403,52 +1426,6 @@
     Base64 "1.1.0"
     atob "^2.1.2"
     broadcast-channel "^4.10.0"
-    btoa "^1.2.1"
-    core-js "^3.6.5"
-    cross-fetch "^3.1.5"
-    js-cookie "^3.0.1"
-    jsonpath-plus "^6.0.1"
-    node-cache "^5.1.2"
-    p-cancelable "^2.0.0"
-    text-encoding "^0.7.0"
-    tiny-emitter "1.1.0"
-    webcrypto-shim "^0.1.5"
-    xhr2 "0.1.3"
-
-"@okta/okta-auth-js@^6.6.1":
-  version "6.6.1"
-  resolved "https://registry.yarnpkg.com/@okta/okta-auth-js/-/okta-auth-js-6.6.1.tgz#e786e0e2ed7a74beead309483e2e38c51aa00338"
-  integrity sha512-M35cNWijqEganIzoBTzZwckuOctN2IRK8Ykh1A0buS4diNu1zz1zO7u0uCSX+ho/UI/QICBwPQcjgRq2ygVzsA==
-  dependencies:
-    "@babel/runtime" "^7.12.5"
-    "@babel/runtime-corejs3" "^7.17.0"
-    "@peculiar/webcrypto" "1.1.6"
-    Base64 "1.1.0"
-    atob "^2.1.2"
-    broadcast-channel "^4.13.0"
-    btoa "^1.2.1"
-    core-js "^3.6.5"
-    cross-fetch "^3.1.5"
-    js-cookie "^3.0.1"
-    jsonpath-plus "^6.0.1"
-    node-cache "^5.1.2"
-    p-cancelable "^2.0.0"
-    text-encoding "^0.7.0"
-    tiny-emitter "1.1.0"
-    webcrypto-shim "^0.1.5"
-    xhr2 "0.1.3"
-
-"@okta/okta-auth-js@^6.6.2":
-  version "6.6.2"
-  resolved "https://registry.yarnpkg.com/@okta/okta-auth-js/-/okta-auth-js-6.6.2.tgz#de8a40c82a15f62d1f1bd1a55995152eb5fa6cbe"
-  integrity sha512-lvI8iltaHVvdXDJDA2y/bEyQ0vVTGOVr+va/nqOGEqyx1y7Bn4vURe9j90BobjkLU/XVGdEWW9YWRr+ucl1qSA==
-  dependencies:
-    "@babel/runtime" "^7.12.5"
-    "@babel/runtime-corejs3" "^7.17.0"
-    "@peculiar/webcrypto" "1.1.6"
-    Base64 "1.1.0"
-    atob "^2.1.2"
-    broadcast-channel "^4.13.0"
     btoa "^1.2.1"
     core-js "^3.6.5"
     cross-fetch "^3.1.5"
