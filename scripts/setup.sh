@@ -60,7 +60,7 @@ if [ ! -z "$AUTHJS_VERSION" ]; then
   npm config set strict-ssl false
 
   AUTHJS_URI=https://artifacts.aue1d.saasure.com/artifactory/npm-topic/@okta/okta-auth-js/-/@okta/okta-auth-js-${AUTHJS_VERSION}.tgz
-  if ! yarn add -DW --no-lockfile --ignore-scripts ${AUTHJS_URI}; then
+  if ! yarn add -DW --ignore-scripts ${AUTHJS_URI}; then
     echo "AUTHJS_VERSION could not be installed: ${AUTHJS_VERSION}"
     exit ${FAILED_SETUP}
   fi
