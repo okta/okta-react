@@ -9,7 +9,7 @@ force: true
   "version": "0.3.0",
   "scripts": {
     "prestart": "vite build",
-    "start": "vite preview", 
+    "start": "vite preview",
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview"
@@ -20,7 +20,7 @@ force: true
 <% if (reactRouterDomVersion !== 'false') { -%>
     "react-router-dom": "<%= reactRouterDomVersion %>",
 <% } -%>
-    "@okta/okta-auth-js": "^<%= oktaAuthJsVersion %>",
+    "@okta/okta-auth-js": "<%= oktaAuthJsVersion %>",
 <% if (useSiw === 'true') { -%>
     "@okta/okta-signin-widget": "^<%= siwVersion %>",
 <% } -%>

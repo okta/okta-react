@@ -65,7 +65,13 @@ const getPublishedModuleVersion = (module, cb) => {
 const getVersions = () => {
   return {
     siwVersion: getPublishedModuleVersion('@okta/okta-signin-widget'),
-    oktaAuthJsVersion: getPublishedModuleVersion(`@okta/okta-auth-js`),
+
+    // only a single version of auth-js should exist in this repo (including all workspaces) to
+    // guarantee all testing is done against a single version, especially during upstream artifact verification
+    // the specific version of auth-js can be locked down when this sample is published to an independent samples repo
+    // oktaAuthJsVersion: getPublishedModuleVersion(`@okta/okta-auth-js`),
+    oktaAuthJsVersion: '*',
+
     // keep only one react version in this monorepo to get rid of multiple react versions issue
     // keep version under 17 to run unit tests
     reactVersion: '16.8.0' 
