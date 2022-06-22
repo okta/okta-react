@@ -394,4 +394,22 @@ describe('<Security />', () => {
       expect(wrapper.find(Security).html()).toBe('<p>AuthSdkError: No restoreOriginalUri callback passed to Security Component.</p>');
     });
   });
+
+  it('should only log warning of restoreOriginalUri option once', () => {
+    oktaAuth.options = {
+      restoreOriginalUri
+    };
+    const mockProps = {
+      oktaAuth,
+      restoreOriginalUri
+    };
+    const warning = 'Two custom restoreOriginalUri callbacks are detected. The one from the OktaAuth configuration will be overridden by the provided restoreOriginalUri prop from the Security component.';
+    const spy = jest.spyOn(console, 'warn');
+    const wrapper = mount(<Security {...mockProps} />);
+    expect(spy).toBeCalledTimes(1);
+    expect(spy).toBeCalledWith(warning);
+    spy.mockClear();
+    wrapper.setProps({restoreOriginalUri: 'foo'});    // forces rerender
+    expect(spy).toBeCalledTimes(0);
+  });
 });

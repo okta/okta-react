@@ -55,7 +55,7 @@ const Security: React.FC<{
       restoreOriginalUri(oktaAuth as OktaAuth, originalUri);
     }) as ((oktaAuth: OktaAuth, originalUri?: string) => Promise<void>);
 
-  }, [oktaAuth, restoreOriginalUri]);
+  }, []); // empty array, only check on component mount
 
   React.useEffect(() => {
     if (!oktaAuth) {

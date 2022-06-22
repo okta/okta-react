@@ -20,15 +20,17 @@ import Loading from './Loading';
 export const RequiredAuth: React.FC = () => {
   const { oktaAuth, authState } = useOktaAuth();
 
-  if (oktaAuth.token.isLoginRedirect()) {
-    return (<Loading />);
-  }
+  const isAuthenticated = !authState || !authState?.isAuthenticated;
 
-  if (!authState || !authState?.isAuthenticated) {
-    const originalUri = toRelativeUrl(window.location.href, window.location.origin);
-    oktaAuth.setOriginalUri(originalUri);
-    oktaAuth.signInWithRedirect();
+  React.useEffect(() => {
+    if (!isAuthenticated) {
+      const originalUri = toRelativeUrl(window.location.href, window.location.origin);
+      oktaAuth.setOriginalUri(originalUri);
+      oktaAuth.signInWithRedirect();
+    }
+  }, [isAuthenticated, oktaAuth]);
 
+  if (oktaAuth.token.isLoginRedirect() || !isAuthenticated) {
     return (<Loading />);
   }
 
