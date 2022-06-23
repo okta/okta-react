@@ -14,10 +14,9 @@ import React, { useEffect } from 'react';
 import { useOktaAuth } from '@okta/okta-react';
 import { toRelativeUrl } from '@okta/okta-auth-js';
 import { Outlet } from 'react-router-dom';
-import Loading from './Loading';
 
 
-export const RequiredAuth: React.FC = () => {
+export const SecureRoute: React.FC = () => {
   const { oktaAuth, authState } = useOktaAuth();
 
   useEffect(() => {
@@ -33,7 +32,7 @@ export const RequiredAuth: React.FC = () => {
   }, [oktaAuth, !!authState, authState?.isAuthenticated]);
 
   if (!authState || !authState?.isAuthenticated) {
-    return (<Loading />);
+    return (<h1>Loading...</h1>);
   }
 
   return (<Outlet />);
