@@ -24,7 +24,7 @@ import Routes from './components/Routes';
 const oktaAuth = new OktaAuth({
   issuer: process.env.ISSUER,
   clientId: process.env.SPA_CLIENT_ID,
-  redirectUri: window.location.origin + '/login/callback'
+  redirectUri: window.location.origin + '/'
 });
 
 function App() {

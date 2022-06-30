@@ -1,3 +1,9 @@
+# 6.6.0
+
+- [#239](https://github.com/okta/okta-react/pull/239)
+  - Fixes `Two custom restoreOriginalUri callbacks are detected` warning, will only fire once on `<Security>` didMount
+  - Fixes react-router v6 routing samples, no longer calls `/authorize` on page load with valid, active session
+
 # 6.5.0
 
 ### Others
