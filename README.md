@@ -157,7 +157,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.oktaAuth = new OktaAuth({
-      issuer: 'https://{yourOktaDomain}.com/oauth2/default',
+      issuer: 'https://{yourOktaDomain}/oauth2/default',
       clientId: '{clientId}',
       redirectUri: window.location.origin + '/login/callback'
     });
@@ -195,13 +195,13 @@ import { BrowserRouter as Router, Route, useHistory } from 'react-router-dom';
 import Home from './Home';
 import Protected from './Protected';
 
-const oktaAuth = new OktaAuth({
-  issuer: 'https://{yourOktaDomain}.com/oauth2/default',
-  clientId: '{clientId}',
-  redirectUri: window.location.origin + '/login/callback'
-});
-
 const App = () => {
+  const oktaAuth = new OktaAuth({
+    issuer: 'https://{yourOktaDomain}.com/oauth2/default',
+    clientId: '{clientId}',
+    redirectUri: window.location.origin + '/login/callback'
+  });
+
   const history = useHistory();
   const restoreOriginalUri = async (_oktaAuth, originalUri) => {
     history.replace(toRelativeUrl(originalUri || '/', window.location.origin));
