@@ -157,7 +157,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.oktaAuth = new OktaAuth({
-      issuer: 'https://{yourOktaDomain}.com/oauth2/default',
+      issuer: 'https://{yourOktaDomain}/oauth2/default',
       clientId: '{clientId}',
       redirectUri: window.location.origin + '/login/callback'
     });
@@ -196,7 +196,7 @@ import Home from './Home';
 import Protected from './Protected';
 
 const oktaAuth = new OktaAuth({
-  issuer: 'https://{yourOktaDomain}.com/oauth2/default',
+  issuer: 'https://{yourOktaDomain}/oauth2/default',
   clientId: '{clientId}',
   redirectUri: window.location.origin + '/login/callback'
 });
@@ -402,7 +402,7 @@ import { useHistory } from 'react-router-dom';
 import { OktaAuth, toRelativeUrl } from '@okta/okta-auth-js';
 
 const oktaAuth = new OktaAuth({
-  issuer: 'https://{yourOktaDomain}.com/oauth2/default',
+  issuer: 'https://{yourOktaDomain}/oauth2/default',
   clientId: '{clientId}',
   redirectUri: window.location.origin + '/login/callback'
 });
@@ -444,7 +444,7 @@ Assuming you have configured your application to allow the `Authorization code` 
 import { OktaAuth } from '@okta/okta-auth-js';
 
 const oktaAuth = new OktaAuth({
-  issuer: 'https://{yourOktaDomain}.com/oauth2/default',
+  issuer: 'https://{yourOktaDomain}/oauth2/default',
   clientId: '{clientId}',
   redirectUri: window.location.origin + '/login/callback',
 });
@@ -573,7 +573,7 @@ import { useHistory } from 'react-router-dom';
 import { OktaAuth, toRelativeUrl } from '@okta/okta-auth-js';
 
 const oktaAuth = new OktaAuth({
-  issuer: 'https://{yourOktaDomain}.com/oauth2/default',
+  issuer: 'https://{yourOktaDomain}/oauth2/default',
   clientId: '{clientId}',
   redirectUri: window.location.origin + '/login/callback'
 });
