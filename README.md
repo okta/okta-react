@@ -58,8 +58,8 @@ This library currently supports:
 | -------   | -------------------------------- |
 | `6.x`     | :heavy_check_mark: Stable        |
 | `5.x`     | :heavy_check_mark: Stable        |
-| `4.x`     | :warning: Retiring on 2021-12-09 |
-| `3.x`     | :warning: Retiring on 2021-08-20 |
+| `4.x`     | :x: Retired                      |
+| `3.x`     | :x: Retired                      |
 | `2.x`     | :x: Retired                      |
 | `1.x`     | :x: Retired                      |
 
