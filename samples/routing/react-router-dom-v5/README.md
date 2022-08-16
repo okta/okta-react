@@ -11,7 +11,7 @@ $ yarn
 ## Configure
 Add an `testenv` file with the following fields
 ```
-SPA_CLIENT_ID=<YOUR CLIENT ID>
+CLIENT_ID=<YOUR CLIENT ID>
 ISSUER=<YOUR ISSUER URL>
 ```
 
