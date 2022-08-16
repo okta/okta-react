@@ -28,7 +28,16 @@ const LoginCallback: React.FC<{
     };
   
     if (oktaAuth.token.isLoginRedirect()) {
+      // store redirectUri, it's cleared after `handleLoginRedirect` call
+      const redirectUri = oktaAuth.getOriginalUri();
       handleLoginRedirect()
+      .then(() => {
+        if (!redirectUri) {
+          // manual redirect when redirectUri is not set
+          // otherwise allow default behavior
+          navigate(homePath, { replace: true });
+        }
+      })
       .catch(e => {
         // TODO: handle error state(s)
         console.error(e);

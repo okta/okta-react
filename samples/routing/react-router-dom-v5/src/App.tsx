@@ -15,17 +15,14 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Security } from '@okta/okta-react';
 import { OktaAuth, toRelativeUrl } from '@okta/okta-auth-js';
+import config from './config';
 
 import Footer from './components/Footer';
 import Nav from './components/Nav';
 import Routes from './components/Routes';
 
 
-const oktaAuth = new OktaAuth({
-  issuer: process.env.ISSUER,
-  clientId: process.env.SPA_CLIENT_ID,
-  redirectUri: window.location.origin + '/login/callback'
-});
+const oktaAuth = new OktaAuth(config.oidc);
 
 function App() {
   const history = useHistory();

@@ -8,7 +8,7 @@ force: true
   "private": true,
   "version": "0.3.0",
   "scripts": {
-    "prestart": "export STANDALONE_SAMPLE_BUILD=1 && vite build",
+    "prestart": "STANDALONE_SAMPLE_BUILD=1 vite build",
     "start": "vite preview",
     "dev": "vite",
     "build": "vite build",
