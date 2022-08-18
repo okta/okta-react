@@ -44,9 +44,7 @@
     "**/set-value": "^4.1.0",
     "ejs": "^3.1.7",
     "axios": "^0.27.2",
-    "broadcast-channel": "4.13.0",
-    "@types/react": "17.x.x",
-    "@types/react-dom": "17.x.x"
+    "broadcast-channel": "4.13.0"
   },
   "dependencies": {
     "@babel/runtime": "^7.11.2",
@@ -67,7 +65,7 @@
     "@babel/preset-env": "^7.11.5",
     "@babel/preset-react": "^7.10.4",
     "@babel/register": "^7.12.1",
-    "@okta/okta-auth-js": "https://artifacts.aue1d.saasure.com/artifactory/npm-topic/@okta/okta-auth-js/-/@okta/okta-auth-js-6.7.5-g2c66e80.tgz",
+    "@okta/okta-auth-js": "~6.7.5",
     "@rollup/plugin-babel": "^5.2.1",
     "@rollup/plugin-replace": "^2.3.4",
     "@testing-library/jest-dom": "^5.16.2",
@@ -75,8 +73,8 @@
     "@types/enzyme": "^3.10.8",
     "@types/enzyme-adapter-react-16": "^1.0.6",
     "@types/jest": "^27.4.1",
-    "@types/react": "^17.0.2",
-    "@types/react-dom": "^17.0.2",
+    "@types/react": "^16.9.0",
+    "@types/react-dom": "^16.9.0",
     "@types/react-router-dom": "^5.1.6",
     "@typescript-eslint/eslint-plugin": "^4.8.1",
     "@typescript-eslint/parser": "^4.8.1",
@@ -101,8 +99,8 @@
     "jest-junit": "^13.0.0",
     "polished": "^1.7.0",
     "prop-types": "^15.5.10",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0",
     "react-router-dom": "5.2.0",
     "rimraf": "^2.6.2",
     "rollup": "^2.33.1",
@@ -134,7 +132,11 @@
       "**/react-dom",
       "**/react-dom/**",
       "**/react-router-dom",
-      "**/react-router-dom/**"
+      "**/react-router-dom/**",
+      "**/@types/react/**",
+      "**/@types/react-dom",
+      "**/@types/react-dom/**",
+      "**/@types/react-router-dom"
     ]
   }
 }
