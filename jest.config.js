@@ -15,7 +15,8 @@ module.exports = {
     'ts-jest': {
       diagnostics: {
         warnOnly: true
-      }
+      },
+      // tsconfig: '<rootDir>/test/jest/tsconfig.json'
     }
   },
   reporters: [

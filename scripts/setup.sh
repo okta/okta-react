@@ -65,6 +65,10 @@ if [ ! -z "$AUTHJS_VERSION" ]; then
     exit ${FAILED_SETUP}
   fi
 
+  # modifies the package.json of all workspaces depending on @okta/okta-auth-js to point to the upstream version
+  ./scripts/utils/sync-ws-auth-js.sh ${AUTHJS_URI}
+  yarn --ignore-scripts
+
   npm config set strict-ssl true
   echo "AUTHJS_VERSION installed: ${AUTHJS_VERSION}"
 

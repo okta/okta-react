@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
     "skipLibCheck": true,
-    "jsx": "react",
+    "jsx": "react"
   }
 }
