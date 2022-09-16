@@ -1460,7 +1460,7 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@okta/okta-auth-js@*", "@okta/okta-auth-js@~6.7.5":
+"@okta/okta-auth-js@*":
   version "6.7.5"
   resolved "https://registry.yarnpkg.com/@okta/okta-auth-js/-/okta-auth-js-6.7.5.tgz#b2eeaf5daa12f94aa6cfa6271e53e4cd6d3e2aee"
   integrity sha512-zeN+5uA+PsBUIIqKD9K4Nz2jBGlKbMWURtkXEJmC2o8marcFKTMuPtkroIUV41gLT+B4H4ocCzMp/b1AOxgZWw==
@@ -1494,6 +1494,27 @@
     Base64 "1.1.0"
     atob "^2.1.2"
     broadcast-channel "^4.10.0"
+    btoa "^1.2.1"
+    core-js "^3.6.5"
+    cross-fetch "^3.1.5"
+    js-cookie "^3.0.1"
+    jsonpath-plus "^6.0.1"
+    node-cache "^5.1.2"
+    p-cancelable "^2.0.0"
+    text-encoding "^0.7.0"
+    tiny-emitter "1.1.0"
+    webcrypto-shim "^0.1.5"
+    xhr2 "0.1.3"
+
+"@okta/okta-auth-js@https://artifacts.aue1d.saasure.com/artifactory/npm-topic/@okta/okta-auth-js/-/@okta/okta-auth-js-7.0.0-g3df843b.tgz":
+  version "7.0.0-g3df843b"
+  resolved "https://artifacts.aue1d.saasure.com/artifactory/npm-topic/@okta/okta-auth-js/-/@okta/okta-auth-js-7.0.0-g3df843b.tgz#7e001d6eddc98492a05df81d14680e31ec86f776"
+  dependencies:
+    "@babel/runtime" "^7.12.5"
+    "@peculiar/webcrypto" "^1.4.0"
+    Base64 "1.1.0"
+    atob "^2.1.2"
+    broadcast-channel "~4.17.0"
     btoa "^1.2.1"
     core-js "^3.6.5"
     cross-fetch "^3.1.5"
@@ -3150,6 +3171,17 @@ broadcast-channel@4.13.0, broadcast-channel@^4.10.0:
     "@babel/runtime" "^7.16.0"
     detect-node "^2.1.0"
     microtime "3.0.0"
+    oblivious-set "1.1.1"
+    p-queue "6.6.2"
+    rimraf "3.0.2"
+    unload "2.3.1"
+
+broadcast-channel@~4.17.0:
+  version "4.17.0"
+  resolved "https://registry.yarnpkg.com/broadcast-channel/-/broadcast-channel-4.17.0.tgz#599d44674b09a4e2e07af6da5d03b45ca8bffd11"
+  integrity sha512-r2GSQMNgZv7eAsbdsu9xofSjc3J2diCQTPkSuyVhLBfx8fylLCVhi5KheuhuAQBJNd4pxqUyz9U6rvdnt7GZng==
+  dependencies:
+    "@babel/runtime" "^7.16.0"
     oblivious-set "1.1.1"
     p-queue "6.6.2"
     rimraf "3.0.2"
