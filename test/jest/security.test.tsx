@@ -136,7 +136,7 @@ describe('<Security />', () => {
     });
   });
 
-  xit('should set default restoreOriginalUri callback in oktaAuth.options', () => {
+  it('should set default restoreOriginalUri callback in oktaAuth.options', () => {
     oktaAuth.options = {};
     const mockProps = {
       oktaAuth,
@@ -395,7 +395,7 @@ describe('<Security />', () => {
     });
   });
 
-  xit('should only log warning of restoreOriginalUri option once', () => {
+  it('should only log warning of restoreOriginalUri option once', () => {
     oktaAuth.options = {
       restoreOriginalUri
     };

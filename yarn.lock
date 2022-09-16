@@ -1483,17 +1483,17 @@
     webcrypto-shim "^0.1.5"
     xhr2 "0.1.3"
 
-"@okta/okta-auth-js@6.5.1":
-  version "6.5.1"
-  resolved "https://registry.yarnpkg.com/@okta/okta-auth-js/-/okta-auth-js-6.5.1.tgz#aa1b3815152e729c6a69137a19c7fd502d2e4e5d"
-  integrity sha512-mBzg+EH1Ey7skxHiimSN/ZYraB3l8ZXZlBi8RXNmRLwPMbFlZkQoKrrQu357S5YSEckF59Lqbb/r9Y3cXBNQBQ==
+"@okta/okta-auth-js@6.5.4":
+  version "6.5.4"
+  resolved "https://registry.yarnpkg.com/@okta/okta-auth-js/-/okta-auth-js-6.5.4.tgz#a61877162113e6e0cfe7e05ecaf55840aa287669"
+  integrity sha512-a96D1QUBlE464Xm0GBSIWTcRYyGgsDf/TchGJeDbUvEa2rcFJcxG1x+7gRUzMW+WiX1DN7N0v8Dd+j6Fgou+ow==
   dependencies:
     "@babel/runtime" "^7.12.5"
     "@babel/runtime-corejs3" "^7.17.0"
     "@peculiar/webcrypto" "1.1.6"
     Base64 "1.1.0"
     atob "^2.1.2"
-    broadcast-channel "^4.10.0"
+    broadcast-channel "4.13.0"
     btoa "^1.2.1"
     core-js "^3.6.5"
     cross-fetch "^3.1.5"
@@ -1527,12 +1527,12 @@
     webcrypto-shim "^0.1.5"
     xhr2 "0.1.3"
 
-"@okta/okta-signin-widget@^6.6.1":
-  version "6.6.1"
-  resolved "https://registry.yarnpkg.com/@okta/okta-signin-widget/-/okta-signin-widget-6.6.1.tgz#8a1158e6e57b0e168726ded7375424ac9fb2dc80"
-  integrity sha512-H0OnQzQQOTGKpFK0imT+aatS0Qrg7m0uuW9GHbHeFTU4Usq0tsD2TsswHEDhJx+YOJr/6TbX2zTfnPLBskgXYQ==
+"@okta/okta-signin-widget@^6.7.0":
+  version "6.7.0"
+  resolved "https://registry.yarnpkg.com/@okta/okta-signin-widget/-/okta-signin-widget-6.7.0.tgz#95f9a1576f36fed2c88315d3d726c575d28d291b"
+  integrity sha512-hqQLr7sStcmnKJ+WFqgfgFpWOxFynIK48PrOxub+PCBHmjWL20KXCvnetT4zaParSpwP0nLOhgfZLemBPCnsvw==
   dependencies:
-    "@okta/okta-auth-js" "6.5.1"
+    "@okta/okta-auth-js" "6.5.4"
     "@sindresorhus/to-milliseconds" "^1.0.0"
     "@types/backbone" "^1.4.15"
     "@types/jquery" "^3.5.14"
@@ -3163,7 +3163,7 @@ braces@^3.0.2, braces@~3.0.2:
   dependencies:
     fill-range "^7.0.1"
 
-broadcast-channel@4.13.0, broadcast-channel@^4.10.0:
+broadcast-channel@4.13.0:
   version "4.13.0"
   resolved "https://registry.yarnpkg.com/broadcast-channel/-/broadcast-channel-4.13.0.tgz#21387b2602b9e9ec3b97b03bd8a8d2c198352ff6"
   integrity sha512-fcDr8QNJ4SOb6jyjUNZatVNmcHtSWfW4PFcs4xIEFZAtorKCIFoEYtjIjaQ4c0jrbr/Bl8NIwOWiLSyspoAnEQ==

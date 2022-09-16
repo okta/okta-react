@@ -24,8 +24,13 @@ declare const PACKAGE_NAME: string;
 declare const PACKAGE_VERSION: string;
 declare const SKIP_VERSION_CHECK: string;
 
+// options is no longer exported in auth-js v7.x
+declare type OktaAuthWithOptions = {
+  options: any;
+} & OktaAuth;
+
 const Security: React.FC<{
-  oktaAuth: OktaAuth,
+  oktaAuth: OktaAuthWithOptions,
   restoreOriginalUri: RestoreOriginalUriFunction, 
   onAuthRequired?: OnAuthRequiredFunction,
   children?: React.ReactNode
@@ -42,21 +47,21 @@ const Security: React.FC<{
     return oktaAuth.authStateManager.getAuthState();
   });
 
-  // React.useEffect(() => {
-  //   if (!oktaAuth || !restoreOriginalUri) {
-  //     return;
-  //   }
+  React.useEffect(() => {
+    if (!oktaAuth || !restoreOriginalUri) {
+      return;
+    }
 
-  //   // Add default restoreOriginalUri callback
-  //   // props.restoreOriginalUri is required, therefore if options.restoreOriginalUri exists, there are 2 callbacks
-  //   if (oktaAuth.options.restoreOriginalUri) {
-  //     console.warn('Two custom restoreOriginalUri callbacks are detected. The one from the OktaAuth configuration will be overridden by the provided restoreOriginalUri prop from the Security component.');
-  //   }
-  //   oktaAuth.options.restoreOriginalUri = (async (oktaAuth: unknown, originalUri: string) => {
-  //     restoreOriginalUri(oktaAuth as OktaAuth, originalUri);
-  //   }) as ((oktaAuth: OktaAuth, originalUri?: string) => Promise<void>);
+    // Add default restoreOriginalUri callback
+    // props.restoreOriginalUri is required, therefore if options.restoreOriginalUri exists, there are 2 callbacks
+    if (oktaAuth.options.restoreOriginalUri) {
+      console.warn('Two custom restoreOriginalUri callbacks are detected. The one from the OktaAuth configuration will be overridden by the provided restoreOriginalUri prop from the Security component.');
+    }
+    oktaAuth.options.restoreOriginalUri = (async (oktaAuth: unknown, originalUri: string) => {
+      restoreOriginalUri(oktaAuth as OktaAuth, originalUri);
+    }) as ((oktaAuth: OktaAuth, originalUri?: string) => Promise<void>);
 
-  // }, []); // empty array, only check on component mount
+  }, []); // empty array, only check on component mount
 
   React.useEffect(() => {
     if (!oktaAuth) {
