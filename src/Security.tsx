@@ -24,13 +24,8 @@ declare const PACKAGE_NAME: string;
 declare const PACKAGE_VERSION: string;
 declare const SKIP_VERSION_CHECK: string;
 
-// options is no longer exported in auth-js v7.x
-declare type OktaAuthWithOptions = {
-  options: any;
-} & OktaAuth;
-
 const Security: React.FC<{
-  oktaAuth: OktaAuthWithOptions,
+  oktaAuth: OktaAuth,
   restoreOriginalUri: RestoreOriginalUriFunction, 
   onAuthRequired?: OnAuthRequiredFunction,
   children?: React.ReactNode
@@ -54,9 +49,11 @@ const Security: React.FC<{
 
     // Add default restoreOriginalUri callback
     // props.restoreOriginalUri is required, therefore if options.restoreOriginalUri exists, there are 2 callbacks
+    // @ts-ignore
     if (oktaAuth.options.restoreOriginalUri) {
       console.warn('Two custom restoreOriginalUri callbacks are detected. The one from the OktaAuth configuration will be overridden by the provided restoreOriginalUri prop from the Security component.');
     }
+    // @ts-ignore
     oktaAuth.options.restoreOriginalUri = (async (oktaAuth: unknown, originalUri: string) => {
       restoreOriginalUri(oktaAuth as OktaAuth, originalUri);
     }) as ((oktaAuth: OktaAuth, originalUri?: string) => Promise<void>);
