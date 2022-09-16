@@ -7,7 +7,7 @@ source ${OKTA_HOME}/${REPO}/scripts/setup.sh
 export TEST_SUITE_TYPE="junit"
 export TEST_RESULT_FILE_DIR="${REPO}/test-reports/unit"
 
-if ! yarn add -DW --ignore-scripts @okta/okta-auth-js@^6 then
+if ! yarn add -DW --ignore-scripts @okta/okta-auth-js@^6; then
   echo "auth-js v6.x could not be installed"
   exit ${FAILED_SETUP}
 fi
