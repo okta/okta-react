@@ -25,7 +25,7 @@ module.exports = {
   ],
   restoreMocks: true,
   moduleNameMapper: {
-    '^@okta/okta-auth-js$': '<rootDir>/node_modules/@okta/okta-auth-js/dist/okta-auth-js.umd.js',
+    // '^@okta/okta-auth-js$': '<rootDir>/node_modules/@okta/okta-auth-js/dist/okta-auth-js.umd.js',
     // avoid react conflict in yarn workspace
     '^react$': '<rootDir>/node_modules/react',
     '^react-dom$': '<rootDir>/node_modules/react-dom',
