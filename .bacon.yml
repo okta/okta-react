@@ -27,9 +27,16 @@ test_suites:
       script_name: unit-v6
       criteria: MERGE
       queue_name: small
-    - name: publish
+    - name: e2e-v6
       script_path: /root/okta/okta-react/scripts
       sort_order: '5'
+      timeout: '10'
+      script_name: e2e-v6
+      criteria: MERGE
+      queue_name: small
+    - name: publish
+      script_path: /root/okta/okta-react/scripts
+      sort_order: '6'
       timeout: '60'
       script_name: publish
       criteria: MERGE
