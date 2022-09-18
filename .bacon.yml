@@ -6,7 +6,7 @@ test_suites:
       script_name: lint
       criteria: MERGE
       queue_name: small
-    - name: unit-v7
+    - name: unit
       script_path: /root/okta/okta-react/scripts
       sort_order: '2'
       timeout: '10'
