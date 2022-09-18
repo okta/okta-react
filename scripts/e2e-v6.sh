@@ -15,13 +15,10 @@ export SPA_CLIENT_ID=0oapmwm72082GXal14x6
 export USERNAME=george@acme.com
 get_secret prod/okta-sdk-vars/password PASSWORD
 
-if ! yarn workspace @okta/test.app.test-harness-app add @okta/okta-auth-js@^6; then
-  echo "auth-js v6.x could not be installed"
-  exit ${FAILED_SETUP}
-fi
+# modifies the package.json of all workspaces to the latest 6.x version
+./scripts/utils/sync-ws-auth-js.sh $(yarn info @okta/okta-auth-js@^6 --json | jq '.data.versions | last' | tr -d \")
+yarn --ignore-scripts
 
-# only run the harness sample app tests
-export SAMPLE_NAME=harness
 if ! yarn test:e2e; then
   echo "e2e tests failed! Exiting..."
   exit ${TEST_FAILURE}
