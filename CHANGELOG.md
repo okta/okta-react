@@ -1,3 +1,8 @@
+# 6.7.0
+
+-[#248](https://github.com/okta/okta-react/pull/248) Adds support for `@okta/okta-auth-js` `7.x`
+  - Bumps minimum node version to `14`
+
 # 6.6.0
 
 - [#239](https://github.com/okta/okta-react/pull/239)
