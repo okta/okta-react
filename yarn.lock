@@ -1460,14 +1460,36 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@okta/okta-auth-js@*", "@okta/okta-auth-js@~6.7.5":
-  version "6.7.5"
-  resolved "https://registry.yarnpkg.com/@okta/okta-auth-js/-/okta-auth-js-6.7.5.tgz#b2eeaf5daa12f94aa6cfa6271e53e4cd6d3e2aee"
-  integrity sha512-zeN+5uA+PsBUIIqKD9K4Nz2jBGlKbMWURtkXEJmC2o8marcFKTMuPtkroIUV41gLT+B4H4ocCzMp/b1AOxgZWw==
+"@okta/okta-auth-js@*", "@okta/okta-auth-js@^7.0.0":
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/@okta/okta-auth-js/-/okta-auth-js-7.0.0.tgz#d83acb76394ebc7d019d922f0e319fe6655c41ac"
+  integrity sha512-tF+OiaAHNHc5ACKUR5lynX7LQyw9+pqKj8hzSY+E6OCKucYudjMg87AdCdyBxpFgxrirRlAFYv08sM1wwn0Eeg==
+  dependencies:
+    "@babel/runtime" "^7.12.5"
+    "@peculiar/webcrypto" "^1.4.0"
+    Base64 "1.1.0"
+    atob "^2.1.2"
+    broadcast-channel "~4.17.0"
+    btoa "^1.2.1"
+    core-js "^3.6.5"
+    cross-fetch "^3.1.5"
+    js-cookie "^3.0.1"
+    jsonpath-plus "^6.0.1"
+    node-cache "^5.1.2"
+    p-cancelable "^2.0.0"
+    text-encoding "^0.7.0"
+    tiny-emitter "1.1.0"
+    webcrypto-shim "^0.1.5"
+    xhr2 "0.1.3"
+
+"@okta/okta-auth-js@6.5.4":
+  version "6.5.4"
+  resolved "https://registry.yarnpkg.com/@okta/okta-auth-js/-/okta-auth-js-6.5.4.tgz#a61877162113e6e0cfe7e05ecaf55840aa287669"
+  integrity sha512-a96D1QUBlE464Xm0GBSIWTcRYyGgsDf/TchGJeDbUvEa2rcFJcxG1x+7gRUzMW+WiX1DN7N0v8Dd+j6Fgou+ow==
   dependencies:
     "@babel/runtime" "^7.12.5"
     "@babel/runtime-corejs3" "^7.17.0"
-    "@peculiar/webcrypto" "^1.4.0"
+    "@peculiar/webcrypto" "1.1.6"
     Base64 "1.1.0"
     atob "^2.1.2"
     broadcast-channel "4.13.0"
@@ -1483,35 +1505,12 @@
     webcrypto-shim "^0.1.5"
     xhr2 "0.1.3"
 
-"@okta/okta-auth-js@6.5.1":
-  version "6.5.1"
-  resolved "https://registry.yarnpkg.com/@okta/okta-auth-js/-/okta-auth-js-6.5.1.tgz#aa1b3815152e729c6a69137a19c7fd502d2e4e5d"
-  integrity sha512-mBzg+EH1Ey7skxHiimSN/ZYraB3l8ZXZlBi8RXNmRLwPMbFlZkQoKrrQu357S5YSEckF59Lqbb/r9Y3cXBNQBQ==
+"@okta/okta-signin-widget@^6.7.1":
+  version "6.7.1"
+  resolved "https://registry.yarnpkg.com/@okta/okta-signin-widget/-/okta-signin-widget-6.7.1.tgz#d9bf00ca4498cb60041dcc725d618e6f50cf36fc"
+  integrity sha512-81OManicMpSqXJ0L4fLuniZx8G10Fmo6xDEKeKVeO7QM3GyFfyFTJtxcd6rn0P6OCnAUZ5yfVnI5xceO4YfWTA==
   dependencies:
-    "@babel/runtime" "^7.12.5"
-    "@babel/runtime-corejs3" "^7.17.0"
-    "@peculiar/webcrypto" "1.1.6"
-    Base64 "1.1.0"
-    atob "^2.1.2"
-    broadcast-channel "^4.10.0"
-    btoa "^1.2.1"
-    core-js "^3.6.5"
-    cross-fetch "^3.1.5"
-    js-cookie "^3.0.1"
-    jsonpath-plus "^6.0.1"
-    node-cache "^5.1.2"
-    p-cancelable "^2.0.0"
-    text-encoding "^0.7.0"
-    tiny-emitter "1.1.0"
-    webcrypto-shim "^0.1.5"
-    xhr2 "0.1.3"
-
-"@okta/okta-signin-widget@^6.6.1":
-  version "6.6.1"
-  resolved "https://registry.yarnpkg.com/@okta/okta-signin-widget/-/okta-signin-widget-6.6.1.tgz#8a1158e6e57b0e168726ded7375424ac9fb2dc80"
-  integrity sha512-H0OnQzQQOTGKpFK0imT+aatS0Qrg7m0uuW9GHbHeFTU4Usq0tsD2TsswHEDhJx+YOJr/6TbX2zTfnPLBskgXYQ==
-  dependencies:
-    "@okta/okta-auth-js" "6.5.1"
+    "@okta/okta-auth-js" "6.5.4"
     "@sindresorhus/to-milliseconds" "^1.0.0"
     "@types/backbone" "^1.4.15"
     "@types/jquery" "^3.5.14"
@@ -3142,7 +3141,7 @@ braces@^3.0.2, braces@~3.0.2:
   dependencies:
     fill-range "^7.0.1"
 
-broadcast-channel@4.13.0, broadcast-channel@^4.10.0:
+broadcast-channel@4.13.0:
   version "4.13.0"
   resolved "https://registry.yarnpkg.com/broadcast-channel/-/broadcast-channel-4.13.0.tgz#21387b2602b9e9ec3b97b03bd8a8d2c198352ff6"
   integrity sha512-fcDr8QNJ4SOb6jyjUNZatVNmcHtSWfW4PFcs4xIEFZAtorKCIFoEYtjIjaQ4c0jrbr/Bl8NIwOWiLSyspoAnEQ==
@@ -3150,6 +3149,17 @@ broadcast-channel@4.13.0, broadcast-channel@^4.10.0:
     "@babel/runtime" "^7.16.0"
     detect-node "^2.1.0"
     microtime "3.0.0"
+    oblivious-set "1.1.1"
+    p-queue "6.6.2"
+    rimraf "3.0.2"
+    unload "2.3.1"
+
+broadcast-channel@~4.17.0:
+  version "4.17.0"
+  resolved "https://registry.yarnpkg.com/broadcast-channel/-/broadcast-channel-4.17.0.tgz#599d44674b09a4e2e07af6da5d03b45ca8bffd11"
+  integrity sha512-r2GSQMNgZv7eAsbdsu9xofSjc3J2diCQTPkSuyVhLBfx8fylLCVhi5KheuhuAQBJNd4pxqUyz9U6rvdnt7GZng==
+  dependencies:
+    "@babel/runtime" "^7.16.0"
     oblivious-set "1.1.1"
     p-queue "6.6.2"
     rimraf "3.0.2"
