@@ -5,7 +5,6 @@ import { terser } from 'rollup-plugin-terser';
 import typescript from 'rollup-plugin-typescript2';
 import pkg from "./package.json";
 
-require('./env'); // set variables in process.env
 
 const makeExternalPredicate = () => {
   const externalArr = [
