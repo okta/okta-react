@@ -1,6 +1,9 @@
 {
   "compilerOptions": {
     "skipLibCheck": true,
-    "jsx": "react"
+    "jsx": "react",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "strict": true
   }
 }
