@@ -1,5 +1,3 @@
-require('./env'); // set variables in process.env
-
 module.exports = {
   coverageDirectory: '<rootDir>/test-reports/coverage',
   collectCoverage: true,
@@ -16,7 +14,7 @@ module.exports = {
       diagnostics: {
         warnOnly: true
       },
-      // tsconfig: '<rootDir>/test/jest/tsconfig.json'
+      tsconfig: '<rootDir>/test/jest/tsconfig.json'
     }
   },
   reporters: [
