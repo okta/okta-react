@@ -16,7 +16,7 @@
     "test:unit": "jest",
     "bundle": "rollup -c",
     "dev": "yarn bundle --watch",
-    "generate": "yarn workspace @okta/generator generate"
+    "generate": "yarn --cwd generator install && yarn --cwd generator generate"
   },
   "repository": {
     "type": "git",
@@ -75,7 +75,7 @@
     "@typescript-eslint/eslint-plugin": "^4.8.1",
     "@typescript-eslint/parser": "^4.8.1",
     "axios": "^0.27.2",
-    "babel-jest": "^26.6.3",
+    "babel-jest": "^27.5.1",
     "chalk": "^4.1.0",
     "dotenv": "^8.2.0",
     "enzyme": "^3.5.1",
@@ -115,7 +115,6 @@
     "packages": [
       "./",
       "env",
-      "generator",
       "samples/**/*",
       "samples/routing/**/*",
       "test/apps/*",
