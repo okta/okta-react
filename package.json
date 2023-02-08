@@ -16,7 +16,7 @@
     "test:unit": "jest",
     "bundle": "rollup -c",
     "dev": "yarn bundle --watch",
-    "generate": "yarn workspace @okta/generator generate"
+    "generate": "yarn --cwd generator install && yarn --cwd generator generate"
   },
   "repository": {
     "type": "git",
@@ -115,7 +115,6 @@
     "packages": [
       "./",
       "env",
-      "generator",
       "samples/**/*",
       "samples/routing/**/*",
       "test/apps/*",

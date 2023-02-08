@@ -65,8 +65,3 @@ yarn generate
 yarn gulp {taskName}
 ```
 
-### Run commands from the root level of the repo
-
-```bash
-yarn workspace @okta/generator {script}
-```
