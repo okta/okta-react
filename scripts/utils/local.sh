@@ -25,11 +25,7 @@ if [ -z "${TEST_SUITE_ID}" ]; then
   }
 
   get_secret () {
-    # ensures the env var is set
-    if [ -z "$(echo "$3")" ]; then
-      echo "$3 is not defined. Exiting..."
-      exit 1
-    fi
+    echo 'noop'
   }
 
   set -x  # when running locally, might as well see all the commands being ran
