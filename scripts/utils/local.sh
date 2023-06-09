@@ -24,7 +24,7 @@ if [ -z "${TEST_SUITE_ID}" ]; then
     echo 'noop'
   }
 
-  get_vault_secret_key () {
+  get_secret () {
     # ensures the env var is set
     if [ -z "$(echo "$3")" ]; then
       echo "$3 is not defined. Exiting..."
