@@ -9,15 +9,15 @@ source $DIR/utils/siw-platform-scripts.sh
 # DO NOT MERGE ANY CHANGES TO THIS LINE!!
 export AUTHJS_VERSION=""
 
-# Add yarn to the $PATH so npm cli commands do not fail
-export PATH="${PATH}:$(yarn global bin)"
-
 # Install required node version
 export NVM_DIR="/root/.nvm"
 NODE_VERSION="${1:-v14.18.3}"
 setup_service node $NODE_VERSION
 # Use the cacert bundled with centos as okta root CA is self-signed and cause issues downloading from yarn
 setup_service yarn 1.21.1 /etc/pki/tls/certs/ca-bundle.crt
+
+# Add yarn to the $PATH so npm cli commands do not fail
+export PATH="${PATH}:$(yarn global bin)"
 
 cd ${OKTA_HOME}/${REPO}
 
@@ -53,7 +53,7 @@ if [ ! -z "$AUTHJS_VERSION" ]; then
 
   # verify single version of auth-js is installed
   # NOTE: okta-signin-widget will install it's own version of auth-js, filtered out
-  AUTHJS_INSTALLS=$(find ${OKTA_HOME}/${REPO} -type d -path "*/node_modules/@okta/okta-auth-js" -not -path "*/okta-signin-widget/*" | wc -l)
+  AUTHJS_INSTALLS=$(find . -type d -path "*/node_modules/@okta/okta-auth-js" -not -path "*/okta-signin-widget/*" | wc -l)
   if [ $AUTHJS_INSTALLS -gt 1 ]
   then
     echo "ADDITIONAL AUTH JS INSTALL DETECTED"

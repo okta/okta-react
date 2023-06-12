@@ -25,7 +25,21 @@ if [ -z "${TEST_SUITE_ID}" ]; then
   }
 
   get_secret () {
-    echo 'noop'
+    # ensures the env var is set
+    key="$2"
+    if [ -z "${!key}" ]; then
+      echo "$key is not defined. Exiting..."
+      exit 1
+    fi
+  }
+
+  get_vault_secret_key () {
+    # ensures the env var is set
+    key="$3"
+    if [ -z "${!key}" ]; then
+      echo "$key is not defined. Exiting..."
+      exit 1
+    fi
   }
 
   set -x  # when running locally, might as well see all the commands being ran
