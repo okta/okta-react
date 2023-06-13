@@ -16,8 +16,8 @@ export CLIENT_ID=0oapmwm72082GXal14x6
 export SPA_CLIENT_ID=0oapmwm72082GXal14x6
 export USERNAME=george@acme.com
 get_vault_secret_key devex/samples-javascript password PASSWORD
-export ORG_OIE_ENABLED=true
-export USE_INTERACTION_CODE=true
+export ORG_OIE_ENABLED=
+export USE_INTERACTION_CODE=
 
 if ! yarn test:e2e; then
   echo "e2e tests failed! Exiting..."
