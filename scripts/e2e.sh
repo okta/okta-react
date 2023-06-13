@@ -11,13 +11,13 @@ export CI=true
 export TEST_SUITE_TYPE="junit"
 export TEST_RESULT_FILE_DIR="${REPO}/test-reports/e2e"
 
-export ISSUER=https://samples-javascript.okta.com/oauth2/default
-export CLIENT_ID=0oapmwm72082GXal14x6
-export SPA_CLIENT_ID=0oapmwm72082GXal14x6
-export USERNAME=george@acme.com
-get_vault_secret_key devex/samples-javascript password PASSWORD
-export ORG_OIE_ENABLED=
-export USE_INTERACTION_CODE=
+export ISSUER=https://javascript-idx-sdk.okta.com
+export CLIENT_ID=0oav2oxnlYjULp0Cy5d6
+export SPA_CLIENT_ID=0oa17suj5x9khaVH75d7
+export USERNAME=mary@acme.com
+get_vault_secret_key repo_gh-okta-okta-auth-js/default password PASSWORD
+export ORG_OIE_ENABLED=true
+export USE_INTERACTION_CODE=true
 
 if ! yarn test:e2e; then
   echo "e2e tests failed! Exiting..."
