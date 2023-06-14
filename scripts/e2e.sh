@@ -1,5 +1,7 @@
 #!/bin/bash -x
 
+DIR=$(cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd)
+source $DIR/utils/local.sh
 source ${OKTA_HOME}/${REPO}/scripts/setup.sh
 
 setup_service java 1.8.222
@@ -13,7 +15,9 @@ export ISSUER=https://samples-javascript.okta.com/oauth2/default
 export CLIENT_ID=0oapmwm72082GXal14x6
 export SPA_CLIENT_ID=0oapmwm72082GXal14x6
 export USERNAME=george@acme.com
-get_secret prod/okta-sdk-vars/password PASSWORD
+get_vault_secret_key devex/samples-javascript password PASSWORD
+export ORG_OIE_ENABLED=
+export USE_INTERACTION_CODE=
 
 if ! yarn test:e2e; then
   echo "e2e tests failed! Exiting..."
