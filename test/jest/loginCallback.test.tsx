@@ -16,11 +16,6 @@ import LoginCallback, * as LoginCallbackModule from '../../src/LoginCallback';
 import Security from '../../src/Security';
 import '@testing-library/jest-dom';
 
-// Resets handledRedirect top-level flag to false for testing purposes
-Object.defineProperty(LoginCallbackModule, 'handledRedirect', {
-  value: false
-});
-
 describe('<LoginCallback />', () => {
   let oktaAuth: any;
   let authState: any;
@@ -50,6 +45,10 @@ describe('<LoginCallback />', () => {
       oktaAuth, 
       restoreOriginalUri
     };
+    // Resets handledRedirect top-level flag to false for testing purposes
+    Object.defineProperty(LoginCallbackModule, 'handledRedirect', {
+      value: false
+    });
   });
 
   it('renders the component', async () => {
