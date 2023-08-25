@@ -12,11 +12,14 @@
 
 import React from 'react';
 import { mount } from 'enzyme';
-import { render, screen } from '@testing-library/react';
-import LoginCallback from '../../src/LoginCallback';
+import LoginCallback, * as LoginCallbackModule from '../../src/LoginCallback';
 import Security from '../../src/Security';
-
 import '@testing-library/jest-dom';
+
+// Resets handledRedirect top-level flag to false for testing purposes
+Object.defineProperty(LoginCallbackModule, 'handledRedirect', {
+  value: false
+});
 
 describe('<LoginCallback />', () => {
   let oktaAuth: any;
@@ -49,7 +52,7 @@ describe('<LoginCallback />', () => {
     };
   });
 
-  it('renders the component', () => {
+  it('renders the component', async () => {
     const wrapper = mount(
       <Security {...mockProps}>
         <LoginCallback />
@@ -60,10 +63,6 @@ describe('<LoginCallback />', () => {
   });
 
   it('calls handleLoginRedirect when authState is resolved', async () => {
-    authState = {
-      isAuthorized: true
-    }
-
     mount(
       <Security {...mockProps}>
         <LoginCallback />
@@ -141,37 +140,31 @@ describe('<LoginCallback />', () => {
 
     // eslint-disable-next-line jest/expect-expect
     it('renders errors caught from handleLoginRedirect', async () => {
-      const errorMsg = 'error on callback';
       authState = {
-        isAuthenticated: false
+        isAuthenticated: false,
+        error: new Error('error on callback')
       };
-      oktaAuth.handleLoginRedirect.mockImplementation(() => {
-        return Promise.reject(new Error(errorMsg));
-      });
-      render(
+      const wrapper = mount(
         <Security {...mockProps}>
           <LoginCallback />
         </Security>
       );
-      await screen.findByText('Error: error on callback');
+      expect(wrapper.text()).toBe('Error: error on callback');
     });
 
     // eslint-disable-next-line jest/expect-expect
     it('will treat isInteractionRequired like a normal error if not onAuthResume is passed', async () => { 
       oktaAuth.idx.isInteractionRequired = jest.fn().mockImplementation( () => true );
-      const errorMsg = 'error on callback';
       authState = {
-        isAuthenticated: false
+        isAuthenticated: false,
+        error: new Error('error on callback')
       };
-      oktaAuth.handleLoginRedirect.mockImplementation(() => {
-        return Promise.reject(new Error(errorMsg));
-      });
-      render(
+      const wrapper = mount(
         <Security {...mockProps}>
           <LoginCallback />
         </Security>
       );
-      await screen.findByText('Error: error on callback');
+      expect(wrapper.text()).toBe('Error: error on callback');
     });
   });
 
@@ -226,5 +219,4 @@ describe('<LoginCallback />', () => {
       expect(wrapper.text()).toBe('loading...');
     });
   });
-
 });
