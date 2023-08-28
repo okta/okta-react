@@ -9,13 +9,7 @@ module.exports = {
     AUTH_JS: { minSupportedVersion: '5.3.1' },
     PACKAGE_NAME: 'okta-react-test',
     PACKAGE_VERSION: '3.14.15',
-    SKIP_VERSION_CHECK: '1',
-    'ts-jest': {
-      diagnostics: {
-        warnOnly: true
-      },
-      tsconfig: '<rootDir>/test/jest/tsconfig.json'
-    }
+    SKIP_VERSION_CHECK: '1'
   },
   reporters: [
     'default',
@@ -35,5 +29,13 @@ module.exports = {
     './test/jest/setup.ts'
   ],
   testEnvironment: 'jsdom',
-  transform: { '^.+\\.tsx?$': 'ts-jest' },
+  transform: { 
+    '^.+\\.tsx?$': ['ts-jest', {
+      diagnostics: {
+        warnOnly: true
+      },
+      tsconfig: '<rootDir>/test/jest/tsconfig.json',
+      isolatedModules: true
+    }] 
+  },
 };
