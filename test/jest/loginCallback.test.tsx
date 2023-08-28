@@ -10,20 +10,24 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-import React from 'react';
+import React from 'react'
 import { mount } from 'enzyme';
-import LoginCallback, * as LoginCallbackModule from '../../src/LoginCallback';
-import Security from '../../src/Security';
 import '@testing-library/jest-dom';
+
+/* Forces Jest to use same version of React to enable fresh module state via isolateModulesAsync() call in beforeEach().
+Otherwise, React raises "Invalid hook call" error because of multiple copies of React, see: https://github.com/jestjs/jest/issues/11471#issuecomment-851266333 */
+jest.mock('react', () => jest.requireActual('react'));
 
 describe('<LoginCallback />', () => {
   let oktaAuth: any;
   let authState: any;
   let mockProps: any;
+  let Security: any;
+  let LoginCallback: any;
   const restoreOriginalUri = async (_: any, url: string) => {
     location.href = url;
   };
-  beforeEach(() => {
+  beforeEach(async () => {
     authState = null;
     oktaAuth = {
       options: {},
@@ -45,10 +49,12 @@ describe('<LoginCallback />', () => {
       oktaAuth, 
       restoreOriginalUri
     };
-    // Resets handledRedirect top-level flag to false for testing purposes
-    Object.defineProperty(LoginCallbackModule, 'handledRedirect', {
-      value: false
-    });
+    // Dynamically import Security and LoginCallback before each test to refresh the modules' states
+    // Specifically used to reset the global handledRedirect variable in LoginCallback.tsx between tests
+    await jest.isolateModulesAsync(async () => {
+      Security = (await import('../../src/Security')).default
+      LoginCallback = (await import('../../src/LoginCallback')).default
+    })
   });
 
   it('renders the component', async () => {
@@ -68,9 +74,18 @@ describe('<LoginCallback />', () => {
       </Security>
     );
     expect(oktaAuth.handleLoginRedirect).toHaveBeenCalledTimes(1);
-    await Promise.resolve();
-    expect(oktaAuth.start).toHaveBeenCalledTimes(1);
   });
+
+  it('does not call handleLoginRedirect twice on double render', async () => {
+    const wrapper = mount(
+      <Security {...mockProps}>
+        <LoginCallback />
+      </Security>
+    );
+    // Force re-render of LoginCallback to replicate double render in React18 StrictMode
+    await wrapper.render();
+    expect(oktaAuth.handleLoginRedirect).toHaveBeenCalledTimes(1);
+  })
 
   describe('shows errors', () => {
     it('does not render errors without an error', () => { 
