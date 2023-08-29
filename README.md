@@ -101,7 +101,7 @@ npm install --save @okta/okta-auth-js   # requires at least version 5.3.1
 ```
 
 > ⚠️ NOTE ⚠️<br> The [SecureRoute](#secureroute) component packaged in this SDK only works with `react-router-dom` `5.x`.
-If you're using `react-router-dom` `6.x`, you'll have to write your own `SecureRoute` component. <br><br>See these [samples](https://github.com/okta/okta-react/tree/master/samples/routing) to get started
+If you're using `react-router-dom` `6.x`, you'll have to write your own `SecureRoute` component.<br><br>See these [samples](https://github.com/okta/okta-react/tree/master/samples/routing) to get started
 
 ## Usage
 
@@ -114,7 +114,7 @@ If you're using `react-router-dom` `6.x`, you'll have to write your own `SecureR
 - [SecureRoute](#secureroute) - A normal `Route` except authentication is needed to render the component.
 
 > ⚠️ NOTE ⚠️<br> The [SecureRoute](#secureroute) component packaged in this SDK only works with `react-router-dom` `5.x`.
-If you're using `react-router-dom` `6.x`, you'll have to write your own `SecureRoute` component. <br><br>See these [samples](https://github.com/okta/okta-react/tree/master/samples/routing) to get started
+If you're using `react-router-dom` `6.x`, you'll have to write your own `SecureRoute` component.<br><br>See these [samples](https://github.com/okta/okta-react/tree/master/samples/routing) to get started
 
 ### General components
 
@@ -321,7 +321,7 @@ export default withOktaAuth(class MessageList extends Component {
     try {
       const response = await fetch('http://localhost:{serverPort}/api/messages', {
         headers: {
-          Authorization: 'Bearer ' + this.props.authState.accessToken
+          Authorization: 'Bearer ' + this.props.authState.accessToken.accessToken
         }
       });
       const data = await response.json();
