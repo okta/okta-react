@@ -96,9 +96,12 @@ Install peer dependencies
 ```bash
 npm install --save react
 npm install --save react-dom
-npm install --save react-router-dom
+npm install --save react-router-dom     # see note below
 npm install --save @okta/okta-auth-js   # requires at least version 5.3.1
 ```
+
+> ⚠️ NOTE ⚠️<br> The [SecureRoute](#secureroute) component packaged in this SDK only works with `react-router-dom` `5.x`.
+If you're using `react-router-dom` `6.x`, you'll have to write your own `SecureRoute` component. <br><br>See these [samples](https://github.com/okta/okta-react/tree/master/samples/routing) to get started
 
 ## Usage
 
@@ -108,7 +111,10 @@ npm install --save @okta/okta-auth-js   # requires at least version 5.3.1
 
 `okta-react` provides a number of pre-built components to connect a `react-router`-based SPA to Okta OIDC information.  You can use these components directly, or use them as a basis for building your own components.
 
-- [SecureRoute](#secureroute) - A normal `Route` except authentication is needed to render the component.  
+- [SecureRoute](#secureroute) - A normal `Route` except authentication is needed to render the component.
+
+> ⚠️ NOTE ⚠️<br> The [SecureRoute](#secureroute) component packaged in this SDK only works with `react-router-dom` `5.x`.
+If you're using `react-router-dom` `6.x`, you'll have to write your own `SecureRoute` component. <br><br>See these [samples](https://github.com/okta/okta-react/tree/master/samples/routing) to get started
 
 ### General components
 
