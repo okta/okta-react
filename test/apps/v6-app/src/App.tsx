@@ -55,10 +55,23 @@ const App: React.FC<{
             <Route path='' element={<Protected />} />
           </Route>
           <Route path='/implicit/callback' element={<LoginCallback />} />
-          <Route path='/pkce/callback' element={<LoginCallback 
-              onAuthResume={ onAuthResume } 
-              loadingElement={ <p id='login-callback-loading'>Loading...</p> }
-            />}/>
+          <Route 
+            path='/pkce/callback' 
+            element={
+              <LoginCallback 
+                  onAuthResume={ onAuthResume } 
+                  loadingElement={ <p id='login-callback-loading'>Loading...</p> }
+                  errorComponent={(props: any) => {
+                    const { error } = props;
+                    return (
+                      <p id='login-callback-error'>
+                        {error?.name}:{error?.message}
+                      </p>
+                    );
+                  }}
+                />
+              }
+          />
           <Route path='/' element={<Home />} />
         </Routes>
       </Security>

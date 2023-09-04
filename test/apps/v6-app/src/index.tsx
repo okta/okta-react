@@ -11,7 +11,7 @@
  */
 
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { OktaAuth } from '@okta/okta-auth-js';
 import './index.css';
 import App from './App';
@@ -35,9 +35,10 @@ const oktaAuth = new OktaAuth({
   pkce
 });
 
-ReactDOM.render(
+const container = document.getElementById('root')
+
+createRoot(container!).render(
   <Router>
     <App oktaAuth={oktaAuth} customLogin={customLogin} baseUrl={baseUrl} />
   </Router>
-  , document.getElementById('root')
 );

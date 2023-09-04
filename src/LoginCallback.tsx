@@ -20,7 +20,7 @@ interface LoginCallbackProps {
   loadingElement?: React.ReactElement;
 }
 
-export let handledRedirect = false;
+let handledRedirect = false;
 
 const LoginCallback: React.FC<LoginCallbackProps> = ({ errorComponent, loadingElement = null, onAuthResume }) => { 
   const { oktaAuth, authState } = useOktaAuth();
@@ -35,7 +35,8 @@ const LoginCallback: React.FC<LoginCallbackProps> = ({ errorComponent, loadingEl
       onAuthResume();
       return;
     }
-    // OKTA-635977: Login Callback double render in StrictMode. Solution follows: https://react.dev/learn/you-might-not-need-an-effect#initializing-the-application
+    // OKTA-635977: Prevents multiple calls of handleLoginRedirect() in React18 StrictMode
+    // Top-level variable solution follows: https://react.dev/learn/you-might-not-need-an-effect#initializing-the-application
     if (!handledRedirect) {
       oktaAuth.handleLoginRedirect().catch(e => {
         setCallbackError(e);

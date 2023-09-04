@@ -16,6 +16,7 @@
 class LoginCallbackPage {
 
   get loadingElement () { return $('#login-callback-loading'); }
+  get errorElement () { return $('#login-callback-error'); }
 
   waitForPageLoad() {
     return this.loadingElement.waitForDisplayed();

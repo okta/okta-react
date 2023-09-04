@@ -59,6 +59,14 @@ const App: React.FC<{
               {...props} 
               onAuthResume={ onAuthResume } 
               loadingElement={ <p id='login-callback-loading'>Loading...</p> }
+              errorComponent={(props: any) => {
+                const { error } = props;
+                return (
+                  <p id='login-callback-error'>
+                    {error?.name}:{error?.message}
+                  </p>
+                );
+              }}
             />
           } />
           <Route path='/' component={Home} />

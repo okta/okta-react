@@ -12,7 +12,6 @@
 
 import React from 'react'
 import { mount } from 'enzyme';
-import '@testing-library/jest-dom';
 
 /* Forces Jest to use same version of React to enable fresh module state via isolateModulesAsync() call in beforeEach().
 Otherwise, React raises "Invalid hook call" error because of multiple copies of React, see: https://github.com/jestjs/jest/issues/11471#issuecomment-851266333 */
