@@ -73,6 +73,8 @@ describe('<LoginCallback />', () => {
       </Security>
     );
     expect(oktaAuth.handleLoginRedirect).toHaveBeenCalledTimes(1);
+    await Promise.resolve();
+    expect(oktaAuth.start).toHaveBeenCalledTimes(1);
   });
 
   it('does not call handleLoginRedirect twice on double render', async () => {
@@ -84,6 +86,8 @@ describe('<LoginCallback />', () => {
     // Force re-render of LoginCallback to replicate double render in React18 StrictMode
     await wrapper.render();
     expect(oktaAuth.handleLoginRedirect).toHaveBeenCalledTimes(1);
+    await Promise.resolve();
+    expect(oktaAuth.start).toHaveBeenCalledTimes(1);
   })
 
   describe('shows errors', () => {
