@@ -32,14 +32,17 @@ function runNextTask(tasks) {
 
 function runWithConfig(sampleConfig) {
   return new Promise((resolve) => {
-    const { name } = sampleConfig;
+    const { name, mode } = sampleConfig;
     const port = sampleConfig.port || 8080;
+    // OKTA-635977: Adds a mode flag to configs to determine whether to build in prod or dev, can be extended from a ternary
+    // if testing against other build modes becomes necessary. Defaults to building in prod via 'yarn start'
+    const command = mode ? `start:${mode}` : 'start'
 
     // 1. start the sample's web server
     const server = spawn('yarn', [
       'workspace',
       name,
-      'start'
+      command
     ], { stdio: 'inherit' });
 
     waitOn({
@@ -79,7 +82,7 @@ function runHarnessTests () {
   const config = {
     name: '@okta/test.app.test-harness-app',
     specs: ['test-harness-app'],
-    port: 8080
+    mode: 'dev'
   }
 
   return runWithConfig(config);

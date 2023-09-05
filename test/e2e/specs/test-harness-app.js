@@ -108,6 +108,29 @@ describe('React + Okta App', () => {
     });
   });
 
+  describe('React18 StrictMode double render', () => {
+    it('should only call handleLoginRedirect() once on render', async () => {
+      await AppPage.open('/?pkce=1');
+  
+      await AppPage.waitForPageLoad();
+      expect(await AppPage.loginFlow.getText()).toBe('PKCE');
+      await AppPage.loginButton.click();
+  
+      await OktaSignInPage.waitForPageLoad();
+      await OktaSignInPage.login(USERNAME, PASSWORD);
+      
+      // OKTA-635977: Expect that the loading element in LoginCallback gets rendered to the page instead of the ErrorComponent
+      await LoginCallbackPage.waitForPageLoad();
+      expect (await LoginCallbackPage.errorElement.waitForExist({ reverse: true })).toBeTruthy();
+
+      await AppPage.waitForPageLoad();
+      expect(await AppPage.logoutButton.isExisting()).toBeTruthy();
+
+      await AppPage.logoutButton.click();
+      await AppPage.waitForLogout();
+    })
+  })
+
   describe('Okta session token flow', () => {
 
     it('should allow passing sessionToken to skip Okta login', async () => {

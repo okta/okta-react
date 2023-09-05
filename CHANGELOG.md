@@ -1,3 +1,9 @@
+# 6.8.0
+
+### Bug Fixes
+
+-[#266](https://github.com/okta/okta-react/pull/266) Fixes useEffect double render in React18 StrictMode
+
 # 6.7.0
 
 -[#248](https://github.com/okta/okta-react/pull/248) Adds support for `@okta/okta-auth-js` `7.x`
