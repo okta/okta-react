@@ -11,22 +11,31 @@
  */
 
 import * as React from 'react';
-import { useOktaAuth, OnAuthResumeFunction } from './OktaContext';
+import { useOktaAuth, OnAuthResumeFunction, SecurityComponents } from './OktaContext';
 import OktaError from './OktaError';
 
-interface LoginCallbackProps {
-  errorComponent?: React.ComponentType<{ error: Error }>;
+interface LoginCallbackProps extends SecurityComponents {
   onAuthResume?: OnAuthResumeFunction;
-  loadingElement?: React.ReactElement;
 }
 
 let handledRedirect = false;
 
-const LoginCallback: React.FC<LoginCallbackProps> = ({ errorComponent, loadingElement = null, onAuthResume }) => { 
-  const { oktaAuth, authState } = useOktaAuth();
+const LoginCallback: React.FC<LoginCallbackProps> = ({
+  errorComponent,
+  loadingElement = null,
+  onAuthResume
+}) => {
+  const {
+    oktaAuth,
+    authState,
+    errorComponent: defaultErrorComponent,
+    loadingElement: defaultLoadingElement,
+  } = useOktaAuth();
   const [callbackError, setCallbackError] = React.useState(null);
 
-  const ErrorReporter = errorComponent || OktaError;
+  const ErrorReporter = errorComponent || defaultErrorComponent || OktaError;
+  const Loading = loadingElement || defaultLoadingElement || null;
+
   React.useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore OKTA-464505: backward compatibility support for auth-js@5
@@ -51,7 +60,7 @@ const LoginCallback: React.FC<LoginCallbackProps> = ({ errorComponent, loadingEl
     return <ErrorReporter error={displayError}/>;
   }
 
-  return loadingElement;
+  return Loading;
 };
 
 export default LoginCallback;

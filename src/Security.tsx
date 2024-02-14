@@ -12,7 +12,11 @@
 
 import * as React from 'react';
 import { AuthSdkError, AuthState, OktaAuth } from '@okta/okta-auth-js';
-import OktaContext, { OnAuthRequiredFunction, RestoreOriginalUriFunction } from './OktaContext';
+import OktaContext, {
+  OnAuthRequiredFunction,
+  RestoreOriginalUriFunction,
+  SecurityComponents
+} from './OktaContext';
 import OktaError from './OktaError';
 import { compare as compareVersions } from 'compare-versions';
 
@@ -24,15 +28,21 @@ declare const PACKAGE_NAME: string;
 declare const PACKAGE_VERSION: string;
 declare const SKIP_VERSION_CHECK: string;
 
-const Security: React.FC<{
-  oktaAuth: OktaAuth,
-  restoreOriginalUri: RestoreOriginalUriFunction, 
-  onAuthRequired?: OnAuthRequiredFunction,
-  children?: React.ReactNode
-} & React.HTMLAttributes<HTMLDivElement>> = ({ 
+export interface SecurityProps extends SecurityComponents {
+  oktaAuth: OktaAuth;
+  restoreOriginalUri: RestoreOriginalUriFunction;
+  onAuthRequired?: OnAuthRequiredFunction;
+}
+
+const Security: React.FC<
+  React.PropsWithChildren<SecurityProps>
+  & React.HTMLAttributes<HTMLDivElement>
+> = ({
   oktaAuth,
-  restoreOriginalUri, 
-  onAuthRequired, 
+  restoreOriginalUri,
+  onAuthRequired,
+  errorComponent,
+  loadingElement,
   children
 }) => { 
   const [authState, setAuthState] = React.useState(() => {
@@ -51,15 +61,12 @@ const Security: React.FC<{
     // props.restoreOriginalUri is required, therefore if options.restoreOriginalUri exists, there are 2 callbacks
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    if (oktaAuth.options.restoreOriginalUri) {
+    if (oktaAuth.options.restoreOriginalUri && oktaAuth.options.restoreOriginalUri !== restoreOriginalUri) {
       console.warn('Two custom restoreOriginalUri callbacks are detected. The one from the OktaAuth configuration will be overridden by the provided restoreOriginalUri prop from the Security component.');
     }
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    oktaAuth.options.restoreOriginalUri = (async (oktaAuth: unknown, originalUri: string) => {
-      restoreOriginalUri(oktaAuth as OktaAuth, originalUri);
-    }) as ((oktaAuth: OktaAuth, originalUri?: string) => Promise<void>);
-
+    oktaAuth.options.restoreOriginalUri = restoreOriginalUri;
   }, []); // empty array, only check on component mount
 
   React.useEffect(() => {
@@ -123,7 +130,9 @@ const Security: React.FC<{
     <OktaContext.Provider value={{ 
       oktaAuth, 
       authState, 
-      _onAuthRequired: onAuthRequired
+      _onAuthRequired: onAuthRequired,
+      errorComponent,
+      loadingElement,
     }}>
       {children}
     </OktaContext.Provider>

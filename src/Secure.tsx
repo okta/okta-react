@@ -10,23 +10,23 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-import Security from './Security';
-import withOktaAuth from './withOktaAuth';
-import OktaContext, { useOktaAuth } from './OktaContext';
-import LoginCallback from './LoginCallback';
-import SecureRoute from './SecureRoute';
-import Secure from './Secure';
-import withAuthRequired from './withAuthRequired';
-import useAuthRequired from './useAuthRequired';
+import * as React from 'react';
+import useAuthRequired, { AuthRequiredOptions } from './useAuthRequired';
 
-export {
-  Security,
-  withOktaAuth,
-  useOktaAuth,
-  OktaContext,
-  LoginCallback,
-  SecureRoute,
-  Secure,
-  withAuthRequired,
-  useAuthRequired,
+export type SecureComponentProps = React.PropsWithChildren<AuthRequiredOptions>;
+
+const Secure: React.FC<SecureComponentProps> = ({
+  children,
+  ...options
+}) => {
+  const { isAuthenticated, loginError, Error, Loading } = useAuthRequired(options);
+  if (loginError) {
+    return <Error error={loginError} />;
+  } else if (!isAuthenticated) {
+    return Loading;
+  } else {
+    return <>{children}</>;
+  }
 };
+
+export default Secure;

@@ -132,7 +132,9 @@
       "**/@types/react/**",
       "**/@types/react-dom",
       "**/@types/react-dom/**",
-      "**/@types/react-router-dom"
+      "**/@types/react-router-dom",
+      "**/@reach/router/",
+      "**/@reach/router/**"
     ]
   }
 }

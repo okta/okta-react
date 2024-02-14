@@ -29,7 +29,7 @@ const customLogin = !!url.searchParams.get('customLogin');
 const baseUrl =  ISSUER?.split('/oauth2')[0] || 'ISSUER-NOT-SUPPLIED';
 
 const oktaAuth = new OktaAuth({
-  issuer: ISSUER,
+  issuer: ISSUER as string,
   clientId: CLIENT_ID,
   redirectUri,
   pkce

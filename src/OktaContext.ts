@@ -17,10 +17,18 @@ export type OnAuthResumeFunction = () => void;
 
 export type RestoreOriginalUriFunction = (oktaAuth: OktaAuth, originalUri: string) => Promise<void> | void;
 
-export interface IOktaContext {
-    oktaAuth: OktaAuth;
-    authState: AuthState | null;
-    _onAuthRequired?: OnAuthRequiredFunction;
+export type ErrorComponent = React.FC<{ error: Error }>;
+export type LoadingElement = React.ReactElement;
+
+export interface SecurityComponents {
+  errorComponent?: ErrorComponent;
+  loadingElement?: LoadingElement;
+}
+
+export interface IOktaContext extends SecurityComponents {
+  oktaAuth: OktaAuth;
+  authState: AuthState | null;
+  _onAuthRequired?: OnAuthRequiredFunction;
 }
 
 const OktaContext = React.createContext<IOktaContext | null>(null);
