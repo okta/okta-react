@@ -12,8 +12,7 @@
 
 import React from 'react';
 import { Router, RouteComponentProps } from '@reach/router';
-import { LoginCallback } from '@okta/okta-react';
-import { SecureRoutes } from './SecureRoutes';
+import { LoginCallback, Secure } from '@okta/okta-react';
 
 import Home from '../pages/Home';
 import Protected from '../pages/Protected';
@@ -26,9 +25,9 @@ const AppRoutes = () => {
     <Router>
       <Home path='/' />
       <OktaLoginCallback path='login/callback' />
-      <SecureRoutes path='protected'>
+      <Secure path='protected' loadingElement={<Loading />}>
         <Protected path='/' />
-      </SecureRoutes>
+      </Secure>
     </Router>
   );
 };

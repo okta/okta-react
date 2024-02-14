@@ -20,6 +20,7 @@ import config from './config';
 import Footer from './components/Footer';
 import Nav from './components/Nav';
 import Routes from './components/Routes';
+import Loading from './components/Loading';
 
 const oktaAuth = new OktaAuth(config.oidc);
 
@@ -29,7 +30,7 @@ function App() {
   };
 
   return (
-    <Security oktaAuth={oktaAuth} restoreOriginalUri={restoreOriginalUri}>
+    <Security oktaAuth={oktaAuth} restoreOriginalUri={restoreOriginalUri} loadingElement={<Loading />}>
       <div className="App">
         <header className="App-header">
           <Nav />
