@@ -13,12 +13,13 @@
 import Security from './context/Security';
 import withOktaAuth from './hocs/withOktaAuth';
 import OktaContext, { useOktaAuth } from './context/OktaContext';
-import LoginCallback, { loginCallbackHashRoutePath } from './containers/LoginCallback';
+import LoginCallback from './containers/LoginCallback';
 import SecureRoute from './containers/SecureRoute';
 import Secure from './containers/Secure';
 import withAuthRequired from './hocs/withAuthRequired';
 import useAuthRequired from './hooks/useAuthRequired';
 import useLoginCallback from './hooks/useLoginCallback';
+import { loginCallbackHashRoutePath, restoreOriginalUriWithHash } from './utils';
 
 export {
   Security,
@@ -32,4 +33,5 @@ export {
   useAuthRequired,
   useLoginCallback,
   loginCallbackHashRoutePath,
+  restoreOriginalUriWithHash,
 };

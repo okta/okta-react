@@ -18,10 +18,8 @@ module.exports = {
     'import/no-extraneous-dependencies': ['error', {
       'devDependencies': false
     }],
-    'react-hooks/exhaustive-deps': ['error', {
-      'additionalHooks': '(useLoginCallback|useAuthRequired)'
-    }],
-    "react-hooks/rules-of-hooks": 'error',
+    'react-hooks/exhaustive-deps': 'error',
+    'react-hooks/rules-of-hooks': 'error',
   },
   settings: {
     // https://github.com/import-js/eslint-plugin-import#typescript

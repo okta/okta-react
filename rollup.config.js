@@ -72,7 +72,8 @@ export default [
       globals: {
         'react': 'React',
         'react-router-dom': 'ReactRouterDOM',
-        '@okta/okta-auth-js': 'OktaAuth'
+        '@okta/okta-auth-js': 'OktaAuth',
+        'compare-versions': 'compareVersions',
       }
     }
   },

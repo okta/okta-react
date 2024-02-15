@@ -13,33 +13,27 @@
 import React from 'react';
 
 import { useHistory } from 'react-router-dom';
-import { Security } from '@okta/okta-react';
-import { OktaAuth, toRelativeUrl } from '@okta/okta-auth-js';
+import { Security, restoreOriginalUriWithHash } from '@okta/okta-react';
+import { OktaAuth, OktaAuthOptions } from '@okta/okta-auth-js';
 import config from './config';
 
 import Footer from './components/Footer';
 import Nav from './components/Nav';
 import Routes from './components/Routes';
+import Loading from './components/Loading';
 
 
 const oktaAuth = new OktaAuth({
-  ...config.oidc,
+  ...(config.oidc as OktaAuthOptions),
   redirectUri: window.location.origin + '/'
 });
 
 function App() {
   const history = useHistory();
-  const restoreOriginalUri = (_oktaAuth: any,  originalUri: string) => {
-    let uri = '/';
-    if (originalUri) {
-      // strip the lead '/#' from the uri
-      uri = originalUri.startsWith('/#') ? originalUri.slice(2) : originalUri;
-    }
-    history.replace(toRelativeUrl(uri, window.location.origin));
-  };
+  const restoreOriginalUri = restoreOriginalUriWithHash(history.replace);
 
   return (
-    <Security oktaAuth={oktaAuth} restoreOriginalUri={restoreOriginalUri}>
+    <Security oktaAuth={oktaAuth} restoreOriginalUri={restoreOriginalUri} loadingElement={<Loading />}>
       <div className="App">
         <header className="App-header">
           <Nav />

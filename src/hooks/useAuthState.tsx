@@ -13,7 +13,7 @@
 import * as React from 'react';
 import { AuthState, OktaAuth } from '@okta/okta-auth-js';
 
-const useAuthState = (oktaAuth: OktaAuth) => {
+const useAuthState = (oktaAuth: OktaAuth): AuthState | null => {
   const [authState, setAuthState] = React.useState(() => {
     if (!oktaAuth) {
       return null;

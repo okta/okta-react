@@ -34,7 +34,7 @@ const addUserAgent = (oktaAuth: OktaAuth) => {
 };
 
 const checkAuthJsVersion = (oktaAuth: OktaAuth) => {
-  let error: Error | undefined;
+  let error: AuthSdkError | undefined;
   if (oktaAuth) {
     if (!oktaAuth._oktaUserAgent) {
       console.warn('_oktaUserAgent is not available on auth SDK instance. Please use okta-auth-js@^5.3.1 .');
@@ -55,7 +55,9 @@ const checkAuthJsVersion = (oktaAuth: OktaAuth) => {
 };
 
 // Add okta-react userAgent
-const useUserAgent = (oktaAuth: OktaAuth) => {
+const useUserAgent = (oktaAuth: OktaAuth): {
+  versionError?: AuthSdkError 
+} => {
   React.useEffect(() => {
     addUserAgent(oktaAuth);
   }, [oktaAuth]);

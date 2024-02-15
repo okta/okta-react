@@ -10,7 +10,6 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-import * as React from 'react';
 import {
   SecurityComponents,
   ErrorComponent,
@@ -19,7 +18,7 @@ import {
 } from '../context/OktaContext';
 import OktaError from '../components/OktaError';
 
-export interface ComponentsOptions extends SecurityComponents {}
+export type ComponentsOptions = SecurityComponents;
 
 export interface ComponentsHook {
   Error: ErrorComponent;

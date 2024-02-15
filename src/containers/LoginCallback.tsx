@@ -15,8 +15,6 @@ import useLoginCallback, { LoginCallbackOptions } from '../hooks/useLoginCallbac
 import useComponents, { ComponentsOptions } from '../hooks/useComponents';
 import { useOktaAuth } from '../context/OktaContext';
 
-export const loginCallbackHashRoutePath = '/(code|interaction_code|id_token|access_token|error)=*';
-
 const LoginCallback: React.FC<React.PropsWithChildren<LoginCallbackOptions & ComponentsOptions>> = ({
   children,
   ...options

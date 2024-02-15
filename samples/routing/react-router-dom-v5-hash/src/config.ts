@@ -24,5 +24,6 @@ export default {
     scopes: ['openid', 'profile', 'email'],
     pkce: true,
     disableHttpsCheck: OKTA_TESTING_DISABLEHTTPSCHECK,
+    responseMode: 'fragment',
   }
 };

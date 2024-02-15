@@ -12,21 +12,43 @@
 
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
-import { SecureRoute } from './SecureRoute';
+import { SecureRoute, LoginCallback, loginCallbackHashRoutePath } from '@okta/okta-react';
 
+import config from '../config';
 import Home from '../pages/Home';
 import Protected from '../pages/Protected';
-import LoginCallback from './LoginCallback';
-import Loading from './Loading';
 
+const useHashPathForLoginCalback = config.oidc.responseMode === 'fragment';
+const HomeWithLoginCallback = () => {
+  return (
+    <LoginCallback strict>
+      <Home />
+    </LoginCallback>
+  );
+};
 
-// NOTE: `loginCallback` *must* be mounted on '/', as it matches the signIn redirect url
+// NOTE:
+//  * If using 'fragment' response mode (recommended for HashRouter), please use 
+//    `loginCallbackHashRoutePath` to mount `LoginCallback` correctly
+//    to paths like `/#/code=...&state=...`.
+//  * If using 'query' response mode (recommended for HashRouter), `LoginCallback` 
+//    *must* be mounted on '/', as it matches the signIn redirect url.
+//    Wrap `Home` with `LoginCallback` to render home page after login callback completed.
+//  * Or as universal solution you can wrap `Home` component with `LoginCallback`
+//    and then use `path='/'` without `exact`:
+//    `<Route path='/' component={HomeWithLoginCallback} />`
+//    It can handle login callback and then render child `Home` component.
 const AppRoutes = () => {
   return (
     <Switch>
-      <Route path='/' exact render={() => (<LoginCallback homePath='/home' loadingElement={<Loading />} />)} />
       <Route path='/home' component={Home} />
       <SecureRoute path='/protected' component={Protected} />
+      {useHashPathForLoginCalback ? [
+        <Route key='home' path='/' exact component={Home} />,
+        <Route key='callback' path={loginCallbackHashRoutePath} component={LoginCallback} />
+      ] : [
+        <Route key='home' path='/' exact component={HomeWithLoginCallback} />
+      ]}
     </Switch>
   );
 };

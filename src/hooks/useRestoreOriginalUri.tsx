@@ -17,7 +17,7 @@ import { RestoreOriginalUriFunction } from '../context/OktaContext';
 const useRestoreOriginalUri = (
   oktaAuth: OktaAuth,
   restoreOriginalUri: RestoreOriginalUriFunction,
-) => {
+): null => {
   // We don't want any side effects (excess render, effect run) on `restoreOriginalUri` change,
   //  so keep and use the latest value from the ref
   const restoreOriginalUriRef = React.useRef(restoreOriginalUri);

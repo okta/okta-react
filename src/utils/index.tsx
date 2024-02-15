@@ -10,18 +10,22 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-import React from 'react';
-import { createRoot } from 'react-dom/client';
-import './index.css';
-import App from './App';
-import { HashRouter } from "react-router-dom";
+import * as React from 'react';
+import { toRelativeUrl } from '@okta/okta-auth-js';
 
-const container = document.getElementById('root')
+export const loginCallbackHashRoutePath = '/(code|interaction_code|id_token|access_token|error)=*';
 
-createRoot(container!).render(
-  <HashRouter>
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
-  </HashRouter>,
+export const restoreOriginalUriWithHash = (
+  navigate: (to: string) => void
+) => React.useCallback(
+  (_oktaAuth: any, originalUri: string) => {
+    let uri = '/';
+    if (originalUri) {
+      // strip the lead '/#' from the uri
+      uri = originalUri.startsWith('/#') ? originalUri.slice(2) : originalUri;
+    }
+    navigate(toRelativeUrl(uri, window.location.origin));
+  }, [
+    navigate
+  ]
 );
