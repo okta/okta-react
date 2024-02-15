@@ -11,7 +11,7 @@
  */
 
 import * as React from 'react';
-import { useOktaAuth, IOktaContext } from './OktaContext';
+import { useOktaAuth, IOktaContext } from '../context/OktaContext';
 
 const withOktaAuth = <P extends IOktaContext>(
   ComponentToWrap: React.ComponentType<P>

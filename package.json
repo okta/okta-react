@@ -87,7 +87,7 @@
     "eslint-plugin-jsx-a11y": "^6.0.2",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-react": "^7.3.0",
-    "eslint-plugin-react-hooks": "^2.5.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
     "globby": "^11.0.1",
     "jasmine-core": "~2.6.2",
     "jasmine-spec-reporter": "~4.1.0",

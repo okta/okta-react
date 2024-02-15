@@ -13,7 +13,9 @@
 import * as React from 'react';
 import * as ReactRouterDom from 'react-router-dom';
 import { AuthSdkError } from '@okta/okta-auth-js';
-import useAuthRequired, { AuthRequiredOptions } from './useAuthRequired';
+import useAuthRequired, { AuthRequiredOptions } from '../hooks/useAuthRequired';
+import useComponents, { ComponentsOptions } from '../hooks/useComponents';
+import { useOktaAuth } from '../context/OktaContext';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 let useMatch: (props: ReactRouterDom.RouteProps) => boolean;
@@ -30,6 +32,7 @@ if ('useRouteMatch' in ReactRouterDom) {
 
 const SecureRoute: React.FC<
   AuthRequiredOptions
+  & ComponentsOptions
   & ReactRouterDom.RouteProps
   & React.HTMLAttributes<HTMLDivElement>
 > = ({
@@ -39,19 +42,16 @@ const SecureRoute: React.FC<
   ...routeProps
 }) => {
   const match = useMatch(routeProps);
-  const {
-    loginError,
-    isAuthenticated,
-    Error,
-    Loading,
-  } = useAuthRequired({
+  const context = useOktaAuth();
+  const { loginError, isAuthenticated } = useAuthRequired(context, {
     onAuthRequired,
-    errorComponent,
-    loadingElement,
     // Only process logic if the route matches.
     // Note that it's only needed if `<Switch>` is not used as parent for routes,
     //  otherwise it would not render unmatched routes.
     requiresAuth: !!match,
+  });
+  const { Error, Loading } = useComponents(context, {
+    errorComponent, loadingElement,
   });
 
   if (!match) {

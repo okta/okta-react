@@ -11,17 +11,10 @@
  */
 
 import * as React from 'react';
-import {
-  useOktaAuth,
-  OnAuthRequiredFunction,
-  SecurityComponents,
-  ErrorComponent,
-  LoadingElement,
-} from './OktaContext';
-import OktaError from './OktaError';
+import { OnAuthRequiredFunction, IOktaContext } from '../context/OktaContext';
 import { toRelativeUrl } from '@okta/okta-auth-js';
 
-export interface AuthRequiredOptions extends SecurityComponents {
+export interface AuthRequiredOptions {
   onAuthRequired?: OnAuthRequiredFunction;
   requiresAuth?: boolean; // default: true
 }
@@ -29,18 +22,15 @@ export interface AuthRequiredOptions extends SecurityComponents {
 export interface AuthRequiredHook {
   isAuthenticated: boolean;
   loginError: Error | null;
-  Error: ErrorComponent;
-  Loading: LoadingElement | null;
 }
 
 const useAuthRequired = (
+  context: IOktaContext,
   options: AuthRequiredOptions = {}
 ): AuthRequiredHook => {
   const {
     onAuthRequired,
     requiresAuth,
-    errorComponent,
-    loadingElement,
   } = options;
   const pendingLogin = React.useRef(false);
   const [ loginError, setLoginError ] = React.useState<Error | null>(null);
@@ -48,32 +38,31 @@ const useAuthRequired = (
     oktaAuth,
     authState,
     _onAuthRequired,
-    errorComponent: defaultErrorComponent,
-    loadingElement: defaultLoadingElement,
-  } = useOktaAuth();
-
+  } = context;
   const isAuthenticated = !!authState?.isAuthenticated;
-  const Error = errorComponent ?? defaultErrorComponent ?? OktaError;
-  const Loading = loadingElement ?? defaultLoadingElement ?? null;
+
+  const handleLogin = React.useCallback(async () => {
+    // Prevents multiple calls of handleLogin() in React18 StrictMode
+    if (pendingLogin.current) {
+      return;
+    }
+    pendingLogin.current = true;
+
+    const originalUri = toRelativeUrl(window.location.href, window.location.origin);
+    oktaAuth.setOriginalUri(originalUri);
+    const onAuthRequiredFn = onAuthRequired || _onAuthRequired;
+    if (onAuthRequiredFn) {
+      await onAuthRequiredFn(oktaAuth);
+    } else {
+      await oktaAuth.signInWithRedirect();
+    }
+  }, [
+    oktaAuth,
+    _onAuthRequired,
+    onAuthRequired,
+  ]);
 
   React.useEffect(() => {
-    const handleLogin = async () => {
-      if (pendingLogin.current) {
-        return;
-      }
-
-      pendingLogin.current = true;
-
-      const originalUri = toRelativeUrl(window.location.href, window.location.origin);
-      oktaAuth.setOriginalUri(originalUri);
-      const onAuthRequiredFn = onAuthRequired || _onAuthRequired;
-      if (onAuthRequiredFn) {
-        await onAuthRequiredFn(oktaAuth);
-      } else {
-        await oktaAuth.signInWithRedirect();
-      }
-    };
-
     if (requiresAuth === false) {
       // In `SecureRoute` (for react-router 5) we pass `requiresAuth: false`
       //  if route doesn't match current path
@@ -97,18 +86,14 @@ const useAuthRequired = (
       });
     }
   }, [
-    authState,
-    oktaAuth,
-    _onAuthRequired,
-    onAuthRequired,
     requiresAuth,
+    authState,
+    handleLogin,
   ]);
 
   return {
     isAuthenticated,
     loginError,
-    Error,
-    Loading,
   };
 };
 
