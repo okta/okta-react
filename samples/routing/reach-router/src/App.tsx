@@ -13,8 +13,8 @@
 import React from 'react';
 
 import { navigate } from '@reach/router';
-import { Security } from '@okta/okta-react';
-import { OktaAuth, toRelativeUrl } from '@okta/okta-auth-js';
+import { Security, getRelativeOriginalUri } from '@okta/okta-react';
+import { OktaAuth } from '@okta/okta-auth-js';
 import config from './config';
 
 import Footer from './components/Footer';
@@ -25,9 +25,9 @@ import Loading from './components/Loading';
 const oktaAuth = new OktaAuth(config.oidc);
 
 function App() {
-  const restoreOriginalUri = (_oktaAuth: any,  originalUri: string) => {
-    navigate(toRelativeUrl(originalUri || '/', window.location.origin), { replace: true });
-  };
+  const restoreOriginalUri = React.useCallback((_oktaAuth: any,  originalUri: string) => {
+    navigate(getRelativeOriginalUri(originalUri), { replace: true });
+  }, []);
 
   return (
     <Security oktaAuth={oktaAuth} restoreOriginalUri={restoreOriginalUri} loadingElement={<Loading />}>

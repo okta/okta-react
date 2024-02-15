@@ -13,7 +13,7 @@
 import React from 'react';
 
 import { useHistory } from 'react-router-dom';
-import { Security, restoreOriginalUriWithHash } from '@okta/okta-react';
+import { Security, getRelativeOriginalUri } from '@okta/okta-react';
 import { OktaAuth, OktaAuthOptions } from '@okta/okta-auth-js';
 import config from './config';
 
@@ -30,7 +30,9 @@ const oktaAuth = new OktaAuth({
 
 function App() {
   const history = useHistory();
-  const restoreOriginalUri = restoreOriginalUriWithHash(history.replace);
+  const restoreOriginalUri = React.useCallback((_oktaAuth: any,  originalUri: string) => {
+    history.replace(getRelativeOriginalUri(originalUri));
+  }, []);
 
   return (
     <Security oktaAuth={oktaAuth} restoreOriginalUri={restoreOriginalUri} loadingElement={<Loading />}>

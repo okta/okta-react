@@ -31,7 +31,7 @@ const HomeWithLoginCallback = () => {
 //  * If using 'fragment' response mode (recommended for HashRouter), please use 
 //    `loginCallbackHashRoutePath` to mount `LoginCallback` correctly
 //    to paths like `/#/code=...&state=...`.
-//  * If using 'query' response mode (recommended for HashRouter), `LoginCallback` 
+//  * If using 'query' response mode (NOT recommended for HashRouter), `LoginCallback` 
 //    *must* be mounted on '/', as it matches the signIn redirect url.
 //    Wrap `Home` with `LoginCallback` to render home page after login callback completed.
 //  * Or as universal solution you can wrap `Home` component with `LoginCallback`

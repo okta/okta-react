@@ -19,7 +19,10 @@ import Secure from './containers/Secure';
 import withAuthRequired from './hocs/withAuthRequired';
 import useAuthRequired from './hooks/useAuthRequired';
 import useLoginCallback from './hooks/useLoginCallback';
-import { loginCallbackHashRoutePath, restoreOriginalUriWithHash } from './utils';
+import {
+  loginCallbackHashRoutePath,
+  getRelativeOriginalUri,
+} from './utils';
 
 export {
   Security,
@@ -33,5 +36,5 @@ export {
   useAuthRequired,
   useLoginCallback,
   loginCallbackHashRoutePath,
-  restoreOriginalUriWithHash,
+  getRelativeOriginalUri,
 };

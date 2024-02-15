@@ -11,21 +11,18 @@
  */
 
 import React from 'react';
-import { Router, RouteComponentProps } from '@reach/router';
+import { Router } from '@reach/router';
 import { LoginCallback, Secure } from '@okta/okta-react';
 
 import Home from '../pages/Home';
 import Protected from '../pages/Protected';
-import Loading from './Loading';
-
-const OktaLoginCallback: React.FC<RouteComponentProps> = () => (<LoginCallback loadingElement={<Loading />} />);
 
 const AppRoutes = () => {
   return (
     <Router>
       <Home path='/' />
-      <OktaLoginCallback path='login/callback' />
-      <Secure path='protected' loadingElement={<Loading />}>
+      <LoginCallback path='login/callback' />
+      <Secure path='protected'>
         <Protected path='/' />
       </Secure>
     </Router>
