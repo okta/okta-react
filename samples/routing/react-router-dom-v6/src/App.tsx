@@ -13,24 +13,25 @@
 import React from 'react';
 
 import { useNavigate } from 'react-router-dom';
-import { Security } from '@okta/okta-react';
-import { OktaAuth, toRelativeUrl } from '@okta/okta-auth-js';
+import { Security, getRelativeOriginalUri } from '@okta/okta-react';
+import { OktaAuth } from '@okta/okta-auth-js';
 import config from './config';
 
 import Footer from './components/Footer';
 import Nav from './components/Nav';
 import Routes from './components/Routes';
+import Loading from './components/Loading';
 
 const oktaAuth = new OktaAuth(config.oidc);
 
 function App() {
   const navigate = useNavigate();
-  const restoreOriginalUri = (_oktaAuth: any,  originalUri: string) => {
-    navigate(toRelativeUrl(originalUri || '/', window.location.origin));
-  };
+  const restoreOriginalUri = React.useCallback((_oktaAuth: any,  originalUri: string) => {
+    navigate(getRelativeOriginalUri(originalUri));
+  }, [navigate]);
 
   return (
-    <Security oktaAuth={oktaAuth} restoreOriginalUri={restoreOriginalUri}>
+    <Security oktaAuth={oktaAuth} restoreOriginalUri={restoreOriginalUri} loadingElement={<Loading />}>
       <div className="App">
         <header className="App-header">
           <Nav />
