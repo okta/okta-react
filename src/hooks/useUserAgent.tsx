@@ -23,12 +23,16 @@ declare const PACKAGE_VERSION: string;
 declare const SKIP_VERSION_CHECK: string;
 
 const addUserAgent = (oktaAuth: OktaAuth) => {
-  if (oktaAuth?._oktaUserAgent) {
-    const env = `${PACKAGE_NAME}/${PACKAGE_VERSION}`;
-    if (oktaAuth._oktaUserAgent.environments?.indexOf?.(env) > -1) {
-      // Already added
+  if (oktaAuth) {
+    if (oktaAuth._oktaUserAgent) {
+      const env = `${PACKAGE_NAME}/${PACKAGE_VERSION}`;
+      if (oktaAuth._oktaUserAgent.environments?.indexOf?.(env) > -1) {
+        // Already added
+      } else {
+        oktaAuth._oktaUserAgent.addEnvironment(env);
+      }
     } else {
-      oktaAuth._oktaUserAgent.addEnvironment(env);
+      console.warn('_oktaUserAgent is not available on auth SDK instance. Please use okta-auth-js@^5.3.1 .');
     }
   }
 };
@@ -36,9 +40,7 @@ const addUserAgent = (oktaAuth: OktaAuth) => {
 const checkAuthJsVersion = (oktaAuth: OktaAuth) => {
   let error: AuthSdkError | undefined;
   if (oktaAuth) {
-    if (!oktaAuth._oktaUserAgent) {
-      console.warn('_oktaUserAgent is not available on auth SDK instance. Please use okta-auth-js@^5.3.1 .');
-    } else {
+    if (oktaAuth._oktaUserAgent) {
       // use SKIP_VERSION_CHECK flag to control version check in tests
       // OKTA-465157: remove SKIP_VERSION_CHECK
       const isAuthJsSupported = SKIP_VERSION_CHECK === '1' ||
