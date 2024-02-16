@@ -11,17 +11,18 @@
  */
 
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import './index.css';
 import App from './App';
 import { BrowserRouter } from "react-router-dom";
 
+const container = document.getElementById('root');
 
-ReactDOM.render(
-  <React.StrictMode>
-    <BrowserRouter>
+// NOTE: <BrowserRouter> doesn't work inside <StrictMode> with React 18
+createRoot(container!).render(
+  <BrowserRouter>
+    <React.StrictMode>
       <App />
-    </BrowserRouter>
-  </React.StrictMode>,
-  document.getElementById('root')
+    </React.StrictMode>
+  </BrowserRouter>
 );

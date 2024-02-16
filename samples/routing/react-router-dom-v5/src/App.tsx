@@ -13,8 +13,8 @@
 import React from 'react';
 
 import { useHistory } from 'react-router-dom';
-import { Security } from '@okta/okta-react';
-import { OktaAuth, toRelativeUrl } from '@okta/okta-auth-js';
+import { Security, getRelativeOriginalUri } from '@okta/okta-react';
+import { OktaAuth } from '@okta/okta-auth-js';
 import config from './config';
 
 import Footer from './components/Footer';
@@ -27,9 +27,9 @@ const oktaAuth = new OktaAuth(config.oidc);
 
 function App() {
   const history = useHistory();
-  const restoreOriginalUri = (_oktaAuth: any,  originalUri: string) => {
-    history.replace(toRelativeUrl(originalUri || '/', window.location.origin));
-  };
+  const restoreOriginalUri = React.useCallback((_oktaAuth: any,  originalUri: string) => {
+    history.replace(getRelativeOriginalUri(originalUri));
+  }, [history]);
 
   return (
     <Security oktaAuth={oktaAuth} restoreOriginalUri={restoreOriginalUri} loadingElement={<Loading />}>

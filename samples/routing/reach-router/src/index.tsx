@@ -15,10 +15,10 @@ import { createRoot } from 'react-dom/client';
 import './index.css';
 import App from './App';
 
-const container = document.getElementById('root')
+const container = document.getElementById('root');
 
+// NOTE: @reach/router doesn't work with React 18 StrictMode
+// https://github.com/reach/router/issues/504
 createRoot(container!).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+  <App />
 );

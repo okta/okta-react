@@ -18,6 +18,7 @@ import { HashRouter } from "react-router-dom";
 
 const container = document.getElementById('root')
 
+// NOTE: <HashRouter> doesn't work inside <StrictMode> with React 18
 createRoot(container!).render(
   <HashRouter>
     <React.StrictMode>
