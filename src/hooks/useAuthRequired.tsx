@@ -11,7 +11,7 @@
  */
 
 import * as React from 'react';
-import { OnAuthRequiredFunction, IOktaContext } from '../context/OktaContext';
+import { OnAuthRequiredFunction, IOktaContext } from '../types';
 import { toRelativeUrl } from '@okta/okta-auth-js';
 
 export interface AuthRequiredOptions {
@@ -25,7 +25,7 @@ export interface AuthRequiredHook {
 }
 
 const useAuthRequired = (
-  context: IOktaContext,
+  oktaContext: IOktaContext,
   options: AuthRequiredOptions = {}
 ): AuthRequiredHook => {
   const {
@@ -38,7 +38,7 @@ const useAuthRequired = (
     oktaAuth,
     authState,
     _onAuthRequired,
-  } = context;
+  } = oktaContext ?? {};
   const isAuthenticated = !!authState?.isAuthenticated;
 
   const handleLogin = React.useCallback(async () => {
@@ -90,6 +90,10 @@ const useAuthRequired = (
     authState,
     handleLogin,
   ]);
+
+  if (!oktaContext) {
+    console.error('oktaContext is not provided to useAuthRequired');
+  }
 
   return {
     isAuthenticated,

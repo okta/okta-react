@@ -11,7 +11,7 @@
  */
 
 import * as React from 'react';
-import { useOktaAuth } from '../context/OktaContext';
+import useOktaAuth from '../context/useOktaAuth';
 import useAuthRequired, { AuthRequiredOptions } from '../hooks/useAuthRequired';
 import useComponents, { ComponentsOptions } from '../hooks/useComponents';
 
@@ -20,11 +20,11 @@ const withAuthRequired = <P extends Record<string, unknown>>(
   options: AuthRequiredOptions & ComponentsOptions = {}
 ): React.FC<P> => {
   const WrappedComponent = (props: P) => {
-    const context = useOktaAuth();
-    const { isAuthenticated, loginError } = useAuthRequired(context, options);
-    const { Loading, Error } = useComponents(context, options);
+    const oktaContext = useOktaAuth();
+    const { isAuthenticated, loginError } = useAuthRequired(oktaContext, options);
+    const { Loading, ErrorReporter } = useComponents(oktaContext, options);
     if (loginError) {
-      return <Error error={loginError} />;
+      return <ErrorReporter error={loginError} />;
     } else if (!isAuthenticated) {
       return Loading;
     } else {

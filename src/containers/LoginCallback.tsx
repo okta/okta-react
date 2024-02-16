@@ -13,21 +13,23 @@
 import * as React from 'react';
 import useLoginCallback, { LoginCallbackOptions } from '../hooks/useLoginCallback';
 import useComponents, { ComponentsOptions } from '../hooks/useComponents';
-import { useOktaAuth } from '../context/OktaContext';
+import useOktaAuth from '../context/useOktaAuth';
 
-const LoginCallback: React.FC<React.PropsWithChildren<LoginCallbackOptions & ComponentsOptions>> = ({
+export type LoginCallbackProps = React.PropsWithChildren<LoginCallbackOptions & ComponentsOptions>;
+
+const LoginCallback: React.FC<LoginCallbackProps> = ({
   children,
   ...options
 }) => {
-  const context = useOktaAuth();
-  const { canHandleRedirect, callbackError } = useLoginCallback(context, options);
-  const { Error, Loading } = useComponents(context, options);
+  const oktaContext = useOktaAuth();
+  const { canHandleRedirect, callbackError } = useLoginCallback(oktaContext, options);
+  const { ErrorReporter, Loading } = useComponents(oktaContext, options);
 
   if (!canHandleRedirect) {
     // `strict` prop is passed AND the current page is not detected as a login redirect page
     return (<>{children}</>);
   } else if (callbackError) {
-    return <Error error={callbackError} />;
+    return <ErrorReporter error={callbackError} />;
   } else {
     return Loading;
   }

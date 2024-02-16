@@ -11,7 +11,7 @@
  */
 
 import * as React from 'react';
-import { OnAuthResumeFunction, IOktaContext } from '../context/OktaContext';
+import { OnAuthResumeFunction, IOktaContext } from '../types';
 
 export interface LoginCallbackOptions {
   onAuthResume?: OnAuthResumeFunction;
@@ -26,11 +26,11 @@ export interface LoginCallbackHook {
 }
 
 const useLoginCallback = (
-  context: IOktaContext,
+  oktaContext: IOktaContext,
   options: LoginCallbackOptions = {}
 ): LoginCallbackHook => {
   const { onAuthResume, strict } = options;
-  const { oktaAuth, authState } = context;
+  const { oktaAuth, authState } = oktaContext ?? {};
 
   const [callbackError, setCallbackError] = React.useState<Error | null>(null);
   const handledRedirectRef = React.useRef(false);
@@ -64,6 +64,10 @@ const useLoginCallback = (
       })
     }
   }, [oktaAuth, canHandleRedirect]);
+
+  if (!oktaContext) {
+    console.error('oktaContext is not provided to useLoginCallback');
+  }
 
   return {
     canHandleRedirect,

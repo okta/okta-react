@@ -18,6 +18,20 @@
     "dev": "yarn bundle --watch",
     "generate": "yarn --cwd generator install && yarn --cwd generator generate"
   },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/bundles/types/index.d.ts",
+      "import": "./dist/bundles/okta-react.esm.js",
+      "require": "./dist/bundles/okta-react.cjs.js",
+      "default": "./dist/bundles/okta-react.umd.js"
+    },
+    "./react-router-5": {
+      "types": "./dist/bundles/types/react-router-5.d.ts",
+      "import": "./dist/bundles/okta-react-router-5.esm.js",
+      "require": "./dist/bundles/okta-react-router-5.cjs.js"
+    }
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/okta/okta-react.git"
@@ -52,7 +66,9 @@
   "peerDependencies": {
     "@okta/okta-auth-js": "^5.3.1 || ^6.0.0 || ^7.0.0",
     "react": ">=16.8.0",
-    "react-dom": ">=16.8.0",
+    "react-dom": ">=16.8.0"
+  },
+  "optionalDependencies": {
     "react-router-dom": ">=5.1.0"
   },
   "devDependencies": {

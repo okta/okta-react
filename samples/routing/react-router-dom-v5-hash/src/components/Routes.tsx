@@ -12,7 +12,8 @@
 
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
-import { SecureRoute, LoginCallback, loginCallbackHashRoutePath } from '@okta/okta-react';
+import { LoginCallback, loginCallbackHashRoutePath, OktaContext } from '@okta/okta-react';
+import { SecureRoute } from '@okta/okta-react/react-router-5';
 
 import config from '../config';
 import Home from '../pages/Home';

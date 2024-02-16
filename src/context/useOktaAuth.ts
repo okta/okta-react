@@ -11,18 +11,18 @@
  */
 
 import * as React from 'react';
+import OktaContext from '.';
 import { IOktaContext } from '../types';
-import useOktaAuth from '../context/useOktaAuth';
 
-const withOktaAuth = <P extends IOktaContext>(
-  ComponentToWrap: React.ComponentType<P>
-): React.FC<Omit<P, keyof IOktaContext>> => { 
-  const WrappedComponent = (props: Omit<P, keyof IOktaContext>) => { 
-    const oktaAuthProps = useOktaAuth();
-    return <ComponentToWrap {...oktaAuthProps as IOktaContext } {...props as P} />;
-  };
-  WrappedComponent.displayName = 'withOktaAuth_' + (ComponentToWrap.displayName || ComponentToWrap.name);
-  return WrappedComponent;
-};
+const useOktaAuth = (context?: typeof OktaContext): IOktaContext => {
+  const currentContext = React.useContext(context ?? OktaContext);
+  if (!currentContext) {
+    throw new Error(`
+      Okta context is not provided!
+      Please wrap your components with <Security> which acts as the context provider.
+    `);
+  }
+  return currentContext;
+}
 
-export default withOktaAuth;
+export default useOktaAuth;

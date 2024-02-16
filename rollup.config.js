@@ -10,6 +10,9 @@ const makeExternalPredicate = () => {
   const externalArr = [
     ...Object.keys(pkg.peerDependencies || {}),
     ...Object.keys(pkg.dependencies || {}),
+    // for SecureRoute:
+    ...Object.keys(pkg.optionalDependencies || {}),
+    '@okta/okta-react',
   ];
 
   if (externalArr.length === 0) {
@@ -104,6 +107,38 @@ export default [
       {
         format: 'esm',
         file: 'dist/bundles/okta-react.esm.js',
+        exports: 'named',
+        sourcemap: true
+      }
+    ]
+  },
+  {
+    input: 'src/react-router-5.ts',
+    external,
+    plugins: [
+      ...commonPlugins,
+      babel({
+        babelHelpers: 'runtime',
+        presets: [
+          '@babel/preset-env',
+          '@babel/preset-react'
+        ],
+        plugins: [
+          '@babel/plugin-transform-runtime'
+        ],
+        extensions
+      }),
+    ],
+    output: [
+      {
+        format: 'cjs',
+        file: 'dist/bundles/okta-react-router-5.cjs.js',
+        exports: 'named',
+        sourcemap: true
+      },
+      {
+        format: 'esm',
+        file: 'dist/bundles/okta-react-router-5.esm.js',
         exports: 'named',
         sourcemap: true
       }

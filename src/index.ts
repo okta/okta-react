@@ -10,11 +10,11 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
+import OktaContext from './context';
 import Security from './context/Security';
+import useOktaAuth from './context/useOktaAuth';
 import withOktaAuth from './hocs/withOktaAuth';
-import OktaContext, { useOktaAuth } from './context/OktaContext';
 import LoginCallback from './containers/LoginCallback';
-import SecureRoute from './containers/SecureRoute';
 import Secure from './containers/Secure';
 import withAuthRequired from './hocs/withAuthRequired';
 import useAuthRequired from './hooks/useAuthRequired';
@@ -30,7 +30,6 @@ export {
   useOktaAuth,
   OktaContext,
   LoginCallback,
-  SecureRoute,
   Secure,
   withAuthRequired,
   useAuthRequired,

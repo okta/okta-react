@@ -1,4 +1,4 @@
-/*!
+/*
  * Copyright (c) 2017-Present, Okta, Inc. and/or its affiliates. All rights reserved.
  * The Okta software accompanied by this notice is provided pursuant to the Apache License, Version 2.0 (the "License.")
  *
@@ -10,15 +10,8 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-import React from 'react';
-import { createRoot } from 'react-dom/client';
-import './index.css';
-import App from './App';
+import SecureRoute from './containers/SecureRoute';
 
-const container = document.getElementById('root')
-
-createRoot(container!).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+export {
+  SecureRoute,
+};

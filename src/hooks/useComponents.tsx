@@ -15,18 +15,18 @@ import {
   ErrorComponent,
   LoadingElement,
   IOktaContext,
-} from '../context/OktaContext';
+} from '../types';
 import OktaError from '../components/OktaError';
 
 export type ComponentsOptions = SecurityComponents;
 
 export interface ComponentsHook {
-  Error: ErrorComponent;
+  ErrorReporter: ErrorComponent;
   Loading: LoadingElement | null;
 }
 
 const useComponents = (
-  context: IOktaContext,
+  oktaContext: IOktaContext,
   options: SecurityComponents = {}
 ): ComponentsHook => {
   const {
@@ -36,13 +36,17 @@ const useComponents = (
   const {
     errorComponent: defaultErrorComponent,
     loadingElement: defaultLoadingElement,
-  } = context;
+  } = oktaContext ?? {};
 
-  const Error = errorComponent ?? defaultErrorComponent ?? OktaError;
+  if (!oktaContext) {
+    console.error('oktaContext is not provided to useComponents');
+  }
+
+  const ErrorReporter = errorComponent ?? defaultErrorComponent ?? OktaError;
   const Loading = loadingElement ?? defaultLoadingElement ?? null;
 
   return {
-    Error,
+    ErrorReporter,
     Loading,
   };
 };

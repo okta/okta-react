@@ -12,11 +12,8 @@
 
 import * as React from 'react';
 import { AuthSdkError, OktaAuth } from '@okta/okta-auth-js';
-import OktaContext, {
-  OnAuthRequiredFunction,
-  RestoreOriginalUriFunction,
-  SecurityComponents
-} from './OktaContext';
+import OktaContext from '.';
+import { OnAuthRequiredFunction, RestoreOriginalUriFunction, SecurityComponents } from '../types';
 import OktaError from '../components/OktaError';
 import useAuthState from '../hooks/useAuthState';
 import useUserAgent from '../hooks/useUserAgent';

@@ -27,7 +27,7 @@ const oktaAuth = new OktaAuth(config.oidc);
 function App() {
   const restoreOriginalUri = React.useCallback((_oktaAuth: any,  originalUri: string) => {
     navigate(getRelativeOriginalUri(originalUri), { replace: true });
-  }, []);
+  }, [navigate]);
 
   return (
     <Security oktaAuth={oktaAuth} restoreOriginalUri={restoreOriginalUri} loadingElement={<Loading />}>

@@ -32,7 +32,7 @@ function App() {
   const history = useHistory();
   const restoreOriginalUri = React.useCallback((_oktaAuth: any,  originalUri: string) => {
     history.replace(getRelativeOriginalUri(originalUri));
-  }, []);
+  }, [history]);
 
   return (
     <Security oktaAuth={oktaAuth} restoreOriginalUri={restoreOriginalUri} loadingElement={<Loading />}>

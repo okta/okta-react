@@ -35,12 +35,20 @@ delete packageJSON.scripts; // remove all scripts
 delete packageJSON.jest; // remove jest section
 delete packageJSON['jest-junit']; // remove jest-junit section
 delete packageJSON.workspaces; // remove yarn workspace section
+delete packageJSON.devDependencies;
 
 // Remove "build/" from the entrypoint paths.
 ['main', 'module', 'types'].forEach(function(key) {
   if (packageJSON[key]) { 
     packageJSON[key] = packageJSON[key].replace(`${NPM_DIR}/`, '');
   }
+});
+['.', './react-router-5'].forEach(function(name) {
+  ['types', 'import', 'require', 'default'].forEach(function(key) {
+    if (packageJSON['exports'][name][key]) {
+      packageJSON['exports'][name][key] = packageJSON['exports'][name][key].replace(`${NPM_DIR}/`, '');
+    }
+  });
 });
 
 fs.writeFileSync(`./${NPM_DIR}/package.json`, JSON.stringify(packageJSON, null, 4));

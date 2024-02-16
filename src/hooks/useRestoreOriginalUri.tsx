@@ -12,7 +12,7 @@
 
 import * as React from 'react';
 import { OktaAuth } from '@okta/okta-auth-js';
-import { RestoreOriginalUriFunction } from '../context/OktaContext';
+import { RestoreOriginalUriFunction } from '../types';
 
 const useRestoreOriginalUri = (
   oktaAuth: OktaAuth,

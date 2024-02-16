@@ -13,9 +13,11 @@
 import * as React from 'react';
 import * as ReactRouterDom from 'react-router-dom';
 import { AuthSdkError } from '@okta/okta-auth-js';
+// Important! Don't import OktaContext from '../context'
+import { OktaContext } from '@okta/okta-react';
 import useAuthRequired, { AuthRequiredOptions } from '../hooks/useAuthRequired';
 import useComponents, { ComponentsOptions } from '../hooks/useComponents';
-import { useOktaAuth } from '../context/OktaContext';
+import useOktaAuth from '../context/useOktaAuth';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 let useMatch: (props: ReactRouterDom.RouteProps) => boolean;
@@ -30,34 +32,35 @@ if ('useRouteMatch' in ReactRouterDom) {
   };
 }
 
-const SecureRoute: React.FC<
-  AuthRequiredOptions
+export type SecureRouteProps = AuthRequiredOptions
   & ComponentsOptions
   & ReactRouterDom.RouteProps
-  & React.HTMLAttributes<HTMLDivElement>
-> = ({
+  & React.HTMLAttributes<HTMLDivElement>;
+
+const SecureRoute: React.FC<SecureRouteProps> = ({
   onAuthRequired,
   errorComponent,
   loadingElement,
   ...routeProps
 }) => {
   const match = useMatch(routeProps);
-  const context = useOktaAuth();
-  const { loginError, isAuthenticated } = useAuthRequired(context, {
+  // Need to use imported OktaContext
+  const oktaContext = useOktaAuth(OktaContext);
+  const { loginError, isAuthenticated } = useAuthRequired(oktaContext, {
     onAuthRequired,
     // Only process logic if the route matches.
     // Note that it's only needed if `<Switch>` is not used as parent for routes,
     //  otherwise it would not render unmatched routes.
     requiresAuth: !!match,
   });
-  const { Error, Loading } = useComponents(context, {
+  const { ErrorReporter, Loading } = useComponents(oktaContext, {
     errorComponent, loadingElement,
   });
 
   if (!match) {
     return null;
   } else if (loginError) {
-    return <Error error={loginError} />
+    return <ErrorReporter error={loginError} />
   } else if (!isAuthenticated) {
     return Loading;
   } else {
