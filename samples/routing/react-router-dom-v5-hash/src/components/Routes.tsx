@@ -12,14 +12,22 @@
 
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
-import { LoginCallback, loginCallbackHashRoutePath } from '@okta/okta-react';
+import { LoginCallback } from '@okta/okta-react';
 import { SecureRoute } from '@okta/okta-react/react-router-5';
 
 import config from '../config';
+import NotFound from '../pages/NotFound';
 import Home from '../pages/Home';
 import Protected from '../pages/Protected';
 
 const useHashPathForLoginCalback = config.oidc.responseMode === 'fragment';
+
+const NotFoundWithLoginCallback = () => (
+  <LoginCallback>
+    <NotFound />
+  </LoginCallback>
+);
+
 const HomeWithLoginCallback = () => {
   return (
     <LoginCallback>
@@ -28,28 +36,18 @@ const HomeWithLoginCallback = () => {
   );
 };
 
-// NOTE:
-//  * If using 'fragment' response mode (recommended for HashRouter), please use 
-//    `loginCallbackHashRoutePath` to mount `LoginCallback` correctly
-//    to paths like `/#/code=...&state=...`.
-//  * If using 'query' response mode (NOT recommended for HashRouter), `LoginCallback` 
-//    *must* be mounted on '/', as it matches the signIn redirect url.
-//    Wrap `Home` with `LoginCallback` to render home page after login callback completed.
-//  * Or as universal solution you can wrap `Home` component with `LoginCallback`
-//    and then use `path='/'` without `exact`:
-//    `<Route path='/' component={HomeWithLoginCallback} />`
-//    It can handle login callback and then render child `Home` component.
+// NOTE: 
+// * If using `responseMode: 'fragment'` in OktaAuth config (recommended for HashRouter), 
+//    <LoginCallback> *must* be mounted on '*' with a fallback to 404 component
+// * If using 'query' response mode (NOT recommended for HashRouter),
+//    <LoginCallback> *must* be mounted on '/' with a fallback to home component
 const AppRoutes = () => {
   return (
     <Switch>
-    {useHashPathForLoginCalback ? [
-      <Route key='home' path='/' exact component={Home} />,
-      <Route key='callback' path={loginCallbackHashRoutePath} component={LoginCallback} />
-    ] : [
-      <Route key='home' path='/' exact component={HomeWithLoginCallback} />
-    ]}
+      <Route path='/' exact component={useHashPathForLoginCalback ? Home : HomeWithLoginCallback} />
       <Route path='/home' component={Home} />
       <SecureRoute path='/protected' component={Protected} />
+      <Route path='*' component={useHashPathForLoginCalback ? NotFoundWithLoginCallback : NotFound} />
     </Switch>
   );
 };

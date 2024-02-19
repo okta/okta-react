@@ -12,8 +12,6 @@
 
 import { toRelativeUrl } from '@okta/okta-auth-js';
 
-export const loginCallbackHashRoutePath = '/(code|interaction_code|id_token|access_token|error)=:unused';
-
 export const getRelativeOriginalUri = (originalUri: string): string => {
   let uri = '/';
   if (originalUri) {

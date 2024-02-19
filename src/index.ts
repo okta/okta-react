@@ -20,7 +20,6 @@ import withAuthRequired from './hocs/withAuthRequired';
 import useAuthRequired from './hooks/useAuthRequired';
 import useLoginCallback from './hooks/useLoginCallback';
 import {
-  loginCallbackHashRoutePath,
   getRelativeOriginalUri,
 } from './utils';
 
@@ -34,6 +33,5 @@ export {
   withAuthRequired,
   useAuthRequired,
   useLoginCallback,
-  loginCallbackHashRoutePath,
   getRelativeOriginalUri,
 };

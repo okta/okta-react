@@ -21,28 +21,29 @@ import NotFound from '../pages/NotFound';
 
 const useHashPathForLoginCalback = config.oidc.responseMode === 'fragment';
 
-const Fallback = () => (
+const NotFoundWithLoginCallback = () => (
   <LoginCallback>
     <NotFound />
   </LoginCallback>
 );
 
-const HomeWithLoginCallback = () => (
-  <LoginCallback>
-    <Home />
-  </LoginCallback>
-);
+const HomeWithLoginCallback = () => {
+  return (
+    <LoginCallback>
+      <Home />
+    </LoginCallback>
+  );
+};
 
-
-// NOTE: If using 'fragment' response mode (recommended for HashRouter), 
-//  <LoginCallback> *must* be mounted on '*'
-// Because signin redirect URL is 'https://<your host>/#code=...&state=...'
-//  and HashRouter in react-router 6 is unable to find any route matching such location
-//  except for root splat route (<Route path="*">)
-//
-// If using 'query' response mode (NOT recommended for HashRouter),
-//  <LoginCallback> *must* be mounted on '/'
-// Signin redirect URL in this case is 'https://<your host>/?code=...&state=...'
+// NOTE: 
+// * If using `responseMode: 'fragment'` in OktaAuth config (recommended for HashRouter), 
+//    <LoginCallback> *must* be mounted on '*' with a fallback to 404 component
+//   Because signin redirect URL is 'https://<your-host>/#code=...&state=...'
+//    and HashRouter in react-router 6 is unable to find any route matching such location
+//    except for root splat route (<Route path="*">)
+// * If using 'query' response mode (NOT recommended for HashRouter),
+//    <LoginCallback> *must* be mounted on '/' with a fallback to home component
+//   Signin redirect URL in this case is 'https://<your-host>/?code=...&state=...'
 const AppRoutes = () => {
   return (
     <Routes>
@@ -51,7 +52,7 @@ const AppRoutes = () => {
       <Route path='/protected' element={<Secure><Outlet /></Secure>}>
         <Route path='' element={<Protected />} />
       </Route>
-      <Route path='*' element={useHashPathForLoginCalback ? <Fallback /> : <NotFound />} />
+      <Route path='*' element={useHashPathForLoginCalback ? <NotFoundWithLoginCallback /> : <NotFound />} />
     </Routes>
   );
 };

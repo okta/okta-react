@@ -11,22 +11,11 @@
  */
 
 import React from 'react';
-import { Routes, Route, Outlet } from 'react-router-dom';
-import { LoginCallback, Secure } from '@okta/okta-react';
 
-import Home from '../pages/Home';
-import Protected from '../pages/Protected';
-
-const AppRoutes = () => {
+const NotFound: React.FC = () => {
   return (
-    <Routes>
-      <Route path='/' element={<Home />} />
-      <Route path='/login/callback' element={<LoginCallback />} />
-      <Route path='/protected' element={<Secure><Outlet /></Secure>}>
-        <Route path='' element={<Protected />} />
-      </Route>
-    </Routes>
+    <h3>Not Found</h3>
   );
 };
 
-export default AppRoutes;
+export default NotFound;
