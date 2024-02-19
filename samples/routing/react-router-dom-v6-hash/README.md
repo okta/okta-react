@@ -2,7 +2,6 @@
 
 Sample app to demonstrate how to use `react-router-dom` v6 with `@okta/okta-react`.
 
-**NOTE:** This sample is not runnable before fixing issue [#187](https://github.com/okta/okta-react/issues/187). See [this comment](https://github.com/okta/okta-react/issues/187#issuecomment-1043059092) for potential workaround.
 
 ## Install
 ```bash
