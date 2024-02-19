@@ -12,7 +12,7 @@
 
 import * as React from 'react';
 import { mount } from 'enzyme';
-import OktaError from '../../src/OktaError';
+import OktaError from '../../src/components/OktaError';
 import { AuthSdkError, AuthApiError, OAuthError } from '@okta/okta-auth-js';
 
 describe('<OktaError />', () => {

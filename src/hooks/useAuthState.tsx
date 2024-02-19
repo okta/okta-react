@@ -28,7 +28,9 @@ const useAuthState = (oktaAuth: OktaAuth): AuthState | null => {
 
     // Update Security provider with latest authState
     const currentAuthState = oktaAuth.authStateManager.getAuthState();
-    setAuthState(currentAuthState);
+    if (currentAuthState !== authState) {
+      setAuthState(currentAuthState);
+    }
     const handler = (authState: AuthState) => {
       setAuthState(authState);
     };
@@ -40,7 +42,11 @@ const useAuthState = (oktaAuth: OktaAuth): AuthState | null => {
     return () => {
       oktaAuth.authStateManager.unsubscribe(handler);
     };
-  }, [oktaAuth]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    // authState is intentionally removed from dependency array
+    oktaAuth
+  ]);
 
   return authState;
 };

@@ -15,8 +15,8 @@
 import * as React from 'react';
 import { act } from 'react-dom/test-utils';
 import { render } from 'react-dom';
-import SecureRoute from '../../src/SecureRoute';
-import OktaContext from '../../src/OktaContext';
+import SecureRoute from '../../src/containers/SecureRoute';
+import OktaContext from '../../src/context';
 import { AuthSdkError } from '@okta/okta-auth-js';
 
 jest.mock('react-router-dom', () => ({
@@ -89,6 +89,6 @@ describe('react-router-dom v6', () => {
         container
       );
     });
-    expect(container.innerHTML).toBe('<p>AuthSdkError: Unsupported: SecureRoute only works with react-router-dom v5 or any router library with compatible APIs. See examples under the "samples" folder for how to implement your own custom SecureRoute Component.</p>');
+    expect(container.innerHTML).toBe('<p>AuthSdkError: Unsupported: SecureRoute only works with react-router-dom v5 or any router library with compatible APIs. Please use Route instead and wrap your component with Secure.</p>');
   })
 });

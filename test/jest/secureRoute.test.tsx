@@ -15,9 +15,11 @@ import { mount } from 'enzyme';
 import { act } from 'react-dom/test-utils';
 import { render, unmountComponentAtNode } from 'react-dom';
 import { MemoryRouter, Route, RouteProps } from 'react-router-dom';
-import SecureRoute from '../../src/SecureRoute';
-import Security from '../../src/Security';
-import OktaContext from '../../src/OktaContext';
+import SecureRoute from '../../src/containers/SecureRoute';
+import Security from '../../src/context/Security';
+import OktaContext from '../../src/context';
+
+jest.mock('@okta/okta-react', () => jest.requireActual('../../src'));
 
 describe('<SecureRoute />', () => {
   let oktaAuth;

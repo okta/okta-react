@@ -14,8 +14,8 @@ import * as React from 'react';
 import { mount } from 'enzyme';
 import { act } from 'react-dom/test-utils';
 import { MemoryRouter } from 'react-router-dom';
-import Security from '../../src/Security';
-import { useOktaAuth } from '../../src/OktaContext';
+import Security from '../../src/context/Security';
+import useOktaAuth from '../../src/context/useOktaAuth';
 import { AuthState, OktaAuth } from '@okta/okta-auth-js';
 
 declare global {
@@ -115,8 +115,8 @@ describe('<Security />', () => {
 
       const wrapper = mount(<Security {...mockProps} />);
       expect(wrapper.find(Security).text().trim()).toBe(`AuthSdkError: 
-        Passed in oktaAuth is not compatible with the SDK,
-        minimum supported okta-auth-js version is 5.3.1.`
+          Passed in oktaAuth is not compatible with the SDK,
+          minimum supported okta-auth-js version is 5.3.1.`
       );
     });
 

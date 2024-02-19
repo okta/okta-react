@@ -14,6 +14,8 @@ import * as React from 'react';
 import * as ReactRouterDom from 'react-router-dom';
 import { AuthSdkError } from '@okta/okta-auth-js';
 // Important! Don't import OktaContext from '../context'
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { OktaContext } from '@okta/okta-react';
 import useAuthRequired, { AuthRequiredOptions } from '../hooks/useAuthRequired';
@@ -29,7 +31,7 @@ if ('useRouteMatch' in ReactRouterDom) {
 } else {
   // throw when useMatch is triggered
   useMatch = () => { 
-    throw new AuthSdkError('Unsupported: <SecureRoute> only works with react-router-dom v5 or any router library with compatible APIs. Please use <Route> instead and wrap your component with <Secure>.');
+    throw new AuthSdkError('Unsupported: SecureRoute only works with react-router-dom v5 or any router library with compatible APIs. Please use Route instead and wrap your component with Secure.');
   };
 }
 
@@ -58,9 +60,7 @@ const SecureRoute: React.FC<SecureRouteProps> = ({
     errorComponent, loadingElement,
   });
 
-  if (!match) {
-    return null;
-  } else if (loginError) {
+  if (loginError) {
     return <ErrorReporter error={loginError} />
   } else if (!isAuthenticated) {
     return Loading;

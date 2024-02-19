@@ -36,7 +36,7 @@ describe('<LoginCallback />', () => {
         unsubscribe: jest.fn(),
         updateAuthState: jest.fn(),
       },
-      isLoginRedirect: jest.fn().mockImplementation(() => false),
+      isLoginRedirect: jest.fn().mockImplementation(() => true),
       handleLoginRedirect: jest.fn().mockImplementation( () => Promise.resolve() ),
       start: jest.fn(),
       stop: jest.fn(),
@@ -51,8 +51,8 @@ describe('<LoginCallback />', () => {
     // Dynamically import Security and LoginCallback before each test to refresh the modules' states
     // Specifically used to reset the global handledRedirect variable in LoginCallback.tsx between tests
     await jest.isolateModulesAsync(async () => {
-      Security = (await import('../../src/Security')).default
-      LoginCallback = (await import('../../src/LoginCallback')).default
+      Security = (await import('../../src/context/Security')).default
+      LoginCallback = (await import('../../src/containers/LoginCallback')).default
     })
   });
 
