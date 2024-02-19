@@ -61,7 +61,7 @@ module.exports = [
     useSiw: false,
     useSemanticUi: false,
     usePolyfill: false,
-    reactRouterDomVersion: '6.2.1',
+    reactRouterDomVersion: '6.22.0',
     reachRouterVersion: false,
     specs: [
       'router-sample'
@@ -73,7 +73,19 @@ module.exports = [
     useSiw: false,
     useSemanticUi: false,
     usePolyfill: false,
-    reactRouterDomVersion: '6.2.1',
+    reactRouterDomVersion: '6.22.0',
+    reachRouterVersion: false,
+    specs: [
+      'router-sample'
+    ]
+  },
+  {
+    name: '@okta/samples.react.react-router-dom-v6-data',
+    nested: 'routing/',
+    useSiw: false,
+    useSemanticUi: false,
+    usePolyfill: false,
+    reactRouterDomVersion: '6.22.0',
     reachRouterVersion: false,
     specs: [
       'router-sample'
@@ -109,7 +121,7 @@ module.exports = [
     useSiw: false,
     useSemanticUi: false,
     usePolyfill: false,
-    reactRouterDomVersion: '5.3.0',
+    reactRouterDomVersion: false,
     reachRouterVersion: "^1.3.4",
     specs: [
       'router-sample'
