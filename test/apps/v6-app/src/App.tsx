@@ -11,10 +11,9 @@
  */
 
 import * as React from 'react';
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Route, Routes, useNavigate, Outlet } from 'react-router-dom';
 import { OktaAuth, toRelativeUrl } from '@okta/okta-auth-js';
-import { Security, LoginCallback } from '@okta/okta-react';
-import { SecureRoute } from './SecureRoute';
+import { Security, LoginCallback, Secure } from '@okta/okta-react';
 import Home from './Home';
 import Protected from './Protected';
 import CustomLogin from './CustomLogin';
@@ -51,7 +50,7 @@ const App: React.FC<{
           <Route path='/login' element={<CustomLogin />} />
           <Route path='/widget-login'  element={<WidgetLogin baseUrl={baseUrl} />} />
           <Route path='/sessionToken-login' element={<SessionTokenLogin />} />
-          <Route path='/protected' element={<SecureRoute />}>
+          <Route path='/protected' element={<Secure><Outlet /></Secure>}>
             <Route path='' element={<Protected />} />
           </Route>
           <Route path='/implicit/callback' element={<LoginCallback />} />

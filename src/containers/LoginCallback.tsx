@@ -30,7 +30,9 @@ const LoginCallback: React.FC<LoginCallbackProps> = ({
     if (children) {
       return (<>{children}</>);
     } else {
-      const error = new AuthSdkError('Current route is not the login redirect');
+      // This can happen if <LoginCallback> is mounted to a wrong route
+      //  or there are no requried query/hash parameters in the URL
+      const error = new AuthSdkError('Can\'t handle login redirect');
       return <ErrorReporter error={error} />;
     }
   } else if (callbackError) {
