@@ -15,13 +15,10 @@ import { OnAuthResumeFunction, IOktaContext } from '../types';
 
 export interface LoginCallbackOptions {
   onAuthResume?: OnAuthResumeFunction;
-  // true to check `canHandleRedirect()` before logic
-  // false (default) to assume that current page is a login callback page
-  strict?: boolean;
 }
 
 export interface LoginCallbackHook {
-  canHandleRedirect: boolean;
+  isLoginRedirect: boolean;
   callbackError: Error | null;
 }
 
@@ -29,23 +26,21 @@ const useLoginCallback = (
   oktaContext: IOktaContext,
   options: LoginCallbackOptions = {}
 ): LoginCallbackHook => {
-  const { onAuthResume, strict } = options;
+  const { onAuthResume } = options;
   const { oktaAuth, authState } = oktaContext ?? {};
 
   const [callbackError, setCallbackError] = React.useState<Error | null>(null);
-  const handledRedirectRef = React.useRef(false);
+  const handlingRedirectRef = React.useRef(false);
+  // We don't want any side effects on `onAuthResume` change,
+  //  so keep and use the latest value from the ref
   const onAuthResumeRef = React.useRef(onAuthResume);
   onAuthResumeRef.current = onAuthResume;
-  const canHandleRedirect = React.useMemo(() =>
-    strict ? oktaAuth.token.isLoginRedirect() : true,
-    [ strict, oktaAuth ]
-  );
 
   const authError = authState?.error;
   const displayError = callbackError || authError || null;
 
   React.useEffect(() => {
-    if (!canHandleRedirect) {
+    if (!oktaAuth.isLoginRedirect()) {
       return;
     }
 
@@ -57,20 +52,27 @@ const useLoginCallback = (
       return;
     }
     // OKTA-635977: Prevents multiple calls of handleLoginRedirect() in React18 StrictMode
-    if (!handledRedirectRef.current) {
-      handledRedirectRef.current = true;
+    if (!handlingRedirectRef.current) {
+      handlingRedirectRef.current = true;
       oktaAuth.handleLoginRedirect().catch(e => {
         setCallbackError(e);
-      })
+      }).finally(() => {
+        handlingRedirectRef.current = false;
+      });
     }
-  }, [oktaAuth, canHandleRedirect]);
+  }, [oktaAuth]);
 
   if (!oktaContext) {
     console.error('oktaContext is not provided to useLoginCallback');
   }
 
+  // During `handleLoginRedirect()` auth-js will clear location hash/search
+  //  so `isLoginRedirect()` will return false in that moment.
+  // Need to return `isLoginRedirect: true` until callback is completed.
+  const isLoginRedirect = oktaAuth.isLoginRedirect() || handlingRedirectRef.current;
+
   return {
-    canHandleRedirect,
+    isLoginRedirect,
     callbackError: displayError,
   };
 };

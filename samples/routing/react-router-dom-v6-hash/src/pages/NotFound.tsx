@@ -10,15 +10,12 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-import { toRelativeUrl } from '@okta/okta-auth-js';
+import React from 'react';
 
-export const loginCallbackHashRoutePath = '/(code|interaction_code|id_token|access_token|error)=:unused';
-
-export const getRelativeOriginalUri = (originalUri: string): string => {
-  let uri = '/';
-  if (originalUri) {
-    // strip the lead '/#' from the uri
-    uri = originalUri.startsWith('/#') ? originalUri.slice(2) : originalUri;
-  }
-  return toRelativeUrl(uri, window.location.origin);
+const NotFound: React.FC = () => {
+  return (
+    <h3>Not Found</h3>
+  );
 };
+
+export default NotFound;

@@ -14,7 +14,7 @@ import React from 'react';
 
 import { useHistory } from 'react-router-dom';
 import { Security, getRelativeOriginalUri } from '@okta/okta-react';
-import { OktaAuth, OktaAuthOptions } from '@okta/okta-auth-js';
+import { OktaAuth } from '@okta/okta-auth-js';
 import config from './config';
 
 import Footer from './components/Footer';
@@ -24,7 +24,7 @@ import Loading from './components/Loading';
 
 
 const oktaAuth = new OktaAuth({
-  ...(config.oidc as OktaAuthOptions),
+  ...config.oidc,
   redirectUri: window.location.origin + '/'
 });
 

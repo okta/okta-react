@@ -14,6 +14,7 @@ import * as React from 'react';
 import * as ReactRouterDom from 'react-router-dom';
 import { AuthSdkError } from '@okta/okta-auth-js';
 // Important! Don't import OktaContext from '../context'
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { OktaContext } from '@okta/okta-react';
 import useAuthRequired, { AuthRequiredOptions } from '../hooks/useAuthRequired';
 import useComponents, { ComponentsOptions } from '../hooks/useComponents';

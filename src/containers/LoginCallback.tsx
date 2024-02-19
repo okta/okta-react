@@ -11,6 +11,7 @@
  */
 
 import * as React from 'react';
+import { AuthSdkError } from '@okta/okta-auth-js';
 import useLoginCallback, { LoginCallbackOptions } from '../hooks/useLoginCallback';
 import useComponents, { ComponentsOptions } from '../hooks/useComponents';
 import useOktaAuth from '../context/useOktaAuth';
@@ -22,12 +23,16 @@ const LoginCallback: React.FC<LoginCallbackProps> = ({
   ...options
 }) => {
   const oktaContext = useOktaAuth();
-  const { canHandleRedirect, callbackError } = useLoginCallback(oktaContext, options);
+  const { isLoginRedirect, callbackError } = useLoginCallback(oktaContext, options);
   const { ErrorReporter, Loading } = useComponents(oktaContext, options);
 
-  if (!canHandleRedirect) {
-    // `strict` prop is passed AND the current page is not detected as a login redirect page
-    return (<>{children}</>);
+  if (!isLoginRedirect) {
+    if (children) {
+      return (<>{children}</>);
+    } else {
+      const error = new AuthSdkError('Current route is not the login redirect');
+      return <ErrorReporter error={error} />;
+    }
   } else if (callbackError) {
     return <ErrorReporter error={callbackError} />;
   } else {

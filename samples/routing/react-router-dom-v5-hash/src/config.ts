@@ -10,6 +10,8 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
+import { OktaAuthOptions } from '@okta/okta-auth-js';
+
 const CLIENT_ID = process.env.CLIENT_ID || '{clientId}';
 const ISSUER = process.env.ISSUER || 'https://{yourOktaDomain}.com/oauth2/default';
 const OKTA_TESTING_DISABLEHTTPSCHECK = process.env.OKTA_TESTING_DISABLEHTTPSCHECK || false;
@@ -25,5 +27,5 @@ export default {
     pkce: true,
     disableHttpsCheck: OKTA_TESTING_DISABLEHTTPSCHECK,
     responseMode: 'fragment',
-  }
+  } as OktaAuthOptions
 };

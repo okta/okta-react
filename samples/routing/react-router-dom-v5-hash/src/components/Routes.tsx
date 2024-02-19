@@ -22,7 +22,7 @@ import Protected from '../pages/Protected';
 const useHashPathForLoginCalback = config.oidc.responseMode === 'fragment';
 const HomeWithLoginCallback = () => {
   return (
-    <LoginCallback strict>
+    <LoginCallback>
       <Home />
     </LoginCallback>
   );
@@ -42,14 +42,14 @@ const HomeWithLoginCallback = () => {
 const AppRoutes = () => {
   return (
     <Switch>
+    {useHashPathForLoginCalback ? [
+      <Route key='home' path='/' exact component={Home} />,
+      <Route key='callback' path={loginCallbackHashRoutePath} component={LoginCallback} />
+    ] : [
+      <Route key='home' path='/' exact component={HomeWithLoginCallback} />
+    ]}
       <Route path='/home' component={Home} />
       <SecureRoute path='/protected' component={Protected} />
-      {useHashPathForLoginCalback ? [
-        <Route key='home' path='/' exact component={Home} />,
-        <Route key='callback' path={loginCallbackHashRoutePath} component={LoginCallback} />
-      ] : [
-        <Route key='home' path='/' exact component={HomeWithLoginCallback} />
-      ]}
     </Switch>
   );
 };

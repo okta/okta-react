@@ -18,6 +18,7 @@ import OktaError from '../components/OktaError';
 import useAuthState from '../hooks/useAuthState';
 import useUserAgent from '../hooks/useUserAgent';
 import useRestoreOriginalUri from '../hooks/useRestoreOriginalUri';
+import useLoginCallbackCheck from '../hooks/useLoginCallbackCheck';
 
 export interface SecurityProps extends SecurityComponents {
   oktaAuth: OktaAuth;
@@ -39,19 +40,19 @@ const Security: React.FC<
   const { versionError } = useUserAgent(oktaAuth);
   const authState = useAuthState(oktaAuth);
   useRestoreOriginalUri(oktaAuth, restoreOriginalUri);
+  const { loginCallbackError } = useLoginCallbackCheck(oktaAuth);
 
+  let error: Error | undefined;
   if (!oktaAuth) {
-    const err = new AuthSdkError('No oktaAuth instance passed to Security Component.');
-    return <OktaError error={err} />;
+    error = new AuthSdkError('No oktaAuth instance passed to Security Component.');
+  } else if (!restoreOriginalUri) {
+    error = new AuthSdkError('No restoreOriginalUri callback passed to Security Component.');
+  } else {
+    error = versionError || loginCallbackError;
   }
 
-  if (!restoreOriginalUri) {
-    const err = new AuthSdkError('No restoreOriginalUri callback passed to Security Component.');
-    return <OktaError error={err} />;
-  }
-
-  if (versionError) {
-    return <OktaError error={versionError} />;
+  if (error) {
+    return <OktaError error={error} />;
   }
 
   return (

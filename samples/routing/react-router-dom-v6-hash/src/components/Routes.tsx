@@ -11,24 +11,47 @@
  */
 
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
-import { RequiredAuth } from './SecureRoute';
+import { Routes, Route, Outlet } from 'react-router-dom';
+import { Secure, LoginCallback } from '@okta/okta-react';
 
+import config from '../config';
 import Home from '../pages/Home';
 import Protected from '../pages/Protected';
-import LoginCallback from './LoginCallback';
-import Loading from './Loading';
+import NotFound from '../pages/NotFound';
+
+const useHashPathForLoginCalback = config.oidc.responseMode === 'fragment';
+
+const Fallback = () => (
+  <LoginCallback>
+    <NotFound />
+  </LoginCallback>
+);
+
+const HomeWithLoginCallback = () => (
+  <LoginCallback>
+    <Home />
+  </LoginCallback>
+);
 
 
-// NOTE: `loginCallback` *must* be mounted on '/', as it matches the signIn redirect url
+// NOTE: If using 'fragment' response mode (recommended for HashRouter), 
+//  <LoginCallback> *must* be mounted on '*'
+// Because signin redirect URL is 'https://<your host>/#code=...&state=...'
+//  and HashRouter in react-router 6 is unable to find any route matching such location
+//  except for root splat route (<Route path="*">)
+//
+// If using 'query' response mode (NOT recommended for HashRouter),
+//  <LoginCallback> *must* be mounted on '/'
+// Signin redirect URL in this case is 'https://<your host>/?code=...&state=...'
 const AppRoutes = () => {
   return (
     <Routes>
-      <Route path='/' element={<LoginCallback homePath='/home' loadingElement={<Loading />} />} />
+      <Route path='/' element={useHashPathForLoginCalback ? <Home /> : <HomeWithLoginCallback />} />
       <Route path='/home' element={<Home />} />
-      <Route path='/protected' element={<RequiredAuth />}>
+      <Route path='/protected' element={<Secure><Outlet /></Secure>}>
         <Route path='' element={<Protected />} />
       </Route>
+      <Route path='*' element={useHashPathForLoginCalback ? <Fallback /> : <NotFound />} />
     </Routes>
   );
 };
