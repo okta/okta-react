@@ -611,7 +611,7 @@ export default MessageList = () => {
 `<Security>` is the top-most component of okta-react. It accepts [oktaAuth][] instance and addtional configuration options as props.  
 
 > **Note:** for [react-router][] the `<Security>` should not be a parent for a router.<br>
-`<Security>` should wrap the [`<Routes>`][Routes6] component or the root element for the top-most route if you use new data router like [createBrowserRouter][].
+`<Security>` should wrap the [`<Routes>`][Routes6] component -or- the root element for the top-most route if you use new data router like [createBrowserRouter][].
 
 #### oktaAuth
 
