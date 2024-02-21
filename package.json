@@ -13,7 +13,7 @@
     "start": "yarn workspace @okta/test.app.test-harness-app start",
     "test": "yarn lint && yarn test:unit && yarn test:e2e",
     "test:e2e": "yarn workspace @okta/test.e2e test",
-    "test:unit": "jest",
+    "test:unit": "yarn workspace @okta/test.unit test",
     "bundle": "rollup -c",
     "dev": "yarn bundle --watch",
     "generate": "yarn --cwd generator install && yarn --cwd generator generate"
@@ -66,7 +66,9 @@
   "peerDependencies": {
     "@okta/okta-auth-js": "^5.3.1 || ^6.0.0 || ^7.0.0",
     "react": ">=16.8.0",
-    "react-dom": ">=16.8.0",
+    "react-dom": ">=16.8.0"
+  },
+  "optionalDependencies": {
     "react-router-dom": ">=5.1.0"
   },
   "devDependencies": {
@@ -85,7 +87,6 @@
     "@types/jest": "^29.5.4",
     "@types/react": "^16.9.0",
     "@types/react-dom": "^16.9.0",
-    "@types/react-router-dom": "^5.1.6",
     "@typescript-eslint/eslint-plugin": "^4.8.1",
     "@typescript-eslint/parser": "^4.8.1",
     "axios": "^0.27.2",
@@ -112,7 +113,6 @@
     "prop-types": "^15.5.10",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
-    "react-router-dom": "5.2.0",
     "rimraf": "^2.6.2",
     "rollup": "^2.33.1",
     "rollup-plugin-cleanup": "^3.2.1",
@@ -133,7 +133,8 @@
       "samples/**/*",
       "samples/routing/**/*",
       "test/apps/*",
-      "test/e2e"
+      "test/e2e",
+      "test/jest"
     ],
     "nohoist": [
       "**/@wdio/**",
