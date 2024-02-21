@@ -619,7 +619,9 @@ export default MessageList = () => {
 
 #### restoreOriginalUri
 
-*(required)* Callback function. Called to restore original URI during [oktaAuth.handleLoginRedirect()][] is called. Will override [restoreOriginalUri option of oktaAuth][oktaAuth.restoreOriginalUri]. Please use the appropriate navigate functions for your router: [useNavigate][] for react-router 6, [useHistory][] for reat-router 5. You can use [getRelativeUri][] util as follows:
+*(required)* Callback function. Called to restore original URI during [oktaAuth.handleLoginRedirect()][] is called.  
+Will override [restoreOriginalUri option of oktaAuth][oktaAuth.restoreOriginalUri].  
+Please use the appropriate navigate functions for your router: [useNavigate][] for react-router 6, [useHistory][] for reat-router 5. You can use [getRelativeUri][] util as follows:
 
 ```jsx
 import { useNavigate } from 'react-router-dom';
@@ -632,7 +634,11 @@ const restoreOriginalUri = React.useCallback((_oktaAuth: any,  originalUri: stri
 
 #### onAuthRequired
 
-*(optional)* Callback function. Called when authentication is required. If this is not supplied, `okta-react` redirects to Okta. This callback will receive [oktaAuth][] instance as the first function parameter. This is triggered when a [Secure][] (or a [SecureRoute][] for react-router 5) is accessed without authentication, also can be called in a [useAuthRequired][] hook. A common use case for this callback is to redirect users to a custom login route.
+*(optional)* Callback function. Called when authentication is required.  
+If this is not supplied, `okta-react` redirects to Okta.  
+This callback will receive [oktaAuth][] instance as the first function parameter.  
+This is triggered when a [Secure][] (or a [SecureRoute][] for react-router 5) is accessed without authentication, also can be called in a [useAuthRequired][] hook.  
+A common use case for this callback is to redirect users to a custom login route.
 
 #### errorComponent
 
