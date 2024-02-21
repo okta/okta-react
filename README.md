@@ -872,10 +872,11 @@ export default MyComponent = () => {
 
 > This hook is used under the hood in a [Secure][] container. Use this hook if you need the authentication check logic, but can't use `Secure`.  
 
-`useAuthRequired(context, { onAuthRequired? })` is a React Hook that performs a user authentication check. If the user is not authenticated, it performs a redirect to a login page or calls [onAuthRequired][] callback. 
+`useAuthRequired(context, { onAuthRequired? })` is a React Hook that performs a user authentication check. If the user is not authenticated, it performs a redirect to a login page or calls [onAuthRequired][] callback.  
 Returns an object with two properties:
   - `isAuthenticated` - `true` is a green light to render your component and process logic that requires an authenticated user, `false` means the hook is performing an authentication.
   - `loginError` - an exception caught from [onAuthRequired][] callback.
+
 Accepts two arguments: required [context][] (returned from [useOktaAuth][]) and optional options object with property [onAuthRequired][] that will override `onAuthRequired` callback passed to `Security`. 
 Components calling this hook need to be a child or descendant of a `<Security>` component to have the necessary context. 
 Class-based components will want to use the [withAuthRequired][] HOC instead. 
@@ -900,24 +901,25 @@ export default MySecureComponent = () => {
 
 ### `withAuthRequired`
 
-`withAuthRequired(Component, { onAuthRequired? })` is a [higher-order component][] which performs a user authentication check like a [useAuthRequired][] hook. Injects following props into the wrapped component - `isAuthenticated` and `loginError`.
+`withAuthRequired(Component, { onAuthRequired? })` is a [higher-order component][] which performs a user authentication check like a [useAuthRequired][] hook. Injects following props into the wrapped component - `isAuthenticated` and `loginError`.  
 Components wrapped in `withAuthRequired()` need to be a child or descendant of a `<Security>` component to have the necessary context.
 
 ### `useLoginCallback`
 
 > This hook is used under the hood in a [LoginCallback][] component.  Use this hook if you need the login callback handling logic, but can't use `LoginCallback`. 
 
-`useLoginCallback(context, { onAuthResume? })` is a React Hook that can handle the callback after the redirect from the Okta-hosted login page. 
+`useLoginCallback(context, { onAuthResume? })` is a React Hook that can handle the callback after the redirect from the Okta-hosted login page.  
 Returns an object with two properties:
   - `isLoginRedirect` - `false` is a green light to render your component, `true` means the hook is performing a login callback logic.
   - `callbackError` - an exception caught from [oktaAuth.handleLoginRedirect()][] or `authState.error`
-Accepts two arguments: required [context][] (returned from [useOktaAuth][]) and optional options object with property [onAuthResume][]. 
-Components calling this hook need to be a child or descendant of a `<Security>` component to have the necessary context. 
+
+Accepts two arguments: required [context][] (returned from [useOktaAuth][]) and optional options object with property [onAuthResume][].  
+Components calling this hook need to be a child or descendant of a `<Security>` component to have the necessary context.  
 Class-based components will want to use the [withLoginCallback][] HOC instead. 
 
 ### `withLoginCallback`
 
-`withLoginCallback(Component, { onAuthResume? })` is a [higher-order component][] which can handle the login redirect callback like a [useLoginCallback][] hook. Injects following props into the wrapped component - `isLoginRedirect` and `callbackError`.
+`withLoginCallback(Component, { onAuthResume? })` is a [higher-order component][] which can handle the login redirect callback like a [useLoginCallback][] hook. Injects following props into the wrapped component - `isLoginRedirect` and `callbackError`.  
 Components wrapped in `withLoginCallback()` need to be a child or descendant of a `<Security>` component to have the necessary context.
 
 ### `getRelativeUri`
