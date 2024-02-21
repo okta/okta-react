@@ -11,33 +11,46 @@
  */
 
 import React from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, RouteObject } from 'react-router-dom';
 import { LoginCallback, Secure } from '@okta/okta-react';
 
-import Root from './pages/Root';
+import Security from './auth/Security';
+import Layout from './pages/Layout';
 import Home from './pages/Home';
 import Protected from './pages/Protected';
+import Profile, { profileLoader } from './pages/Profile';
 
-const routes = [
+const routes: RouteObject[] = [
   {
     path: '/',
-    element: <Root />,
+    id: 'layout',
+    element: <Security><Layout /></Security>,
     children: [
       {
         path: '',
+        id: 'home',
         element: <Home />,
       },
       {
         path: 'login/callback',
+        id: 'login-callback',
         element: <LoginCallback />,
       },
       {
         path: 'protected',
+        id: 'protected-area',
         element: <Secure><Outlet /></Secure>,
         children: [
           {
             path: '',
+            id: 'protected',
             element: <Protected />,
+          },
+          {
+            path: 'profile',
+            id: 'profile',
+            element: <Profile />,
+            loader: profileLoader,
           }
         ],
       },

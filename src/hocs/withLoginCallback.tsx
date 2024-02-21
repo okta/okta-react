@@ -12,25 +12,25 @@
 
 import * as React from 'react';
 import useOktaAuth from '../context/useOktaAuth';
-import useAuthRequired, { AuthRequiredOptions, AuthRequiredHook } from '../hooks/useAuthRequired';
+import useLoginCallback, { LoginCallbackOptions, LoginCallbackHook } from '../hooks/useLoginCallback';
 
-const withAuthRequired = <P extends AuthRequiredHook>(
+const withLoginCalback = <P extends LoginCallbackHook>(
   ComponentToWrap: React.ComponentType<P>,
-  options: AuthRequiredOptions = {}
-): React.FC<Omit<P, keyof AuthRequiredHook>> => {
-  const WrappedComponent = (props: Omit<P, keyof AuthRequiredHook>) => {
+  options: LoginCallbackOptions = {}
+): React.FC<Omit<P, keyof LoginCallbackHook>> => {
+  const WrappedComponent = (props: Omit<P, keyof LoginCallbackHook>) => {
     const oktaContext = useOktaAuth();
-    const authRequiredProps = useAuthRequired(oktaContext, options);
+    const loginCallbackProps = useLoginCallback(oktaContext, options);
     return (<ComponentToWrap
-      {...authRequiredProps}
+      {...loginCallbackProps}
       {...props as P}
     />);
   };
 
   const originalComponentName = ComponentToWrap.displayName || ComponentToWrap.name;
-  const newComponentName = `withAuthRequired_${originalComponentName}`;
+  const newComponentName = `withLoginCalback_${originalComponentName}`;
   WrappedComponent.displayName = newComponentName;
   return WrappedComponent;
 };
 
-export default withAuthRequired;
+export default withLoginCalback;

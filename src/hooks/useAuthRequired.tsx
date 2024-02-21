@@ -12,7 +12,7 @@
 
 import * as React from 'react';
 import { OnAuthRequiredFunction, IOktaContext } from '../types';
-import { toRelativeUrl } from '@okta/okta-auth-js';
+import { getRelativeUri } from '../utils';
 
 export interface AuthRequiredOptions {
   onAuthRequired?: OnAuthRequiredFunction;
@@ -48,7 +48,7 @@ const useAuthRequired = (
     }
     pendingLogin.current = true;
 
-    const originalUri = toRelativeUrl(window.location.href, window.location.origin);
+    const originalUri = getRelativeUri(window.location.href);
     oktaAuth.setOriginalUri(originalUri);
     const onAuthRequiredFn = onAuthRequired || _onAuthRequired;
     if (onAuthRequiredFn) {

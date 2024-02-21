@@ -22,30 +22,29 @@ import Protected from '../pages/Protected';
 
 const useHashPathForLoginCalback = config.oidc.responseMode === 'fragment';
 
-const NotFoundWithLoginCallback = () => (
+const NotFoundWithLoginCallback = (props: any) => (
   <LoginCallback>
-    <NotFound />
+    <NotFound {...props} />
   </LoginCallback>
 );
 
-const HomeWithLoginCallback = () => {
+const HomeWithLoginCallback = (props: any) => {
   return (
     <LoginCallback>
-      <Home />
+      <Home {...props} />
     </LoginCallback>
   );
 };
 
 // NOTE: 
-// * If using `responseMode: 'fragment'` in OktaAuth config (recommended for HashRouter), 
+// * If using `responseMode: 'fragment'` in OktaAuth config, 
 //    <LoginCallback> *must* be mounted on '*' with a fallback to 404 component
-// * If using 'query' response mode (NOT recommended for HashRouter),
+// * If using 'query' response mode,
 //    <LoginCallback> *must* be mounted on '/' with a fallback to home component
 const AppRoutes = () => {
   return (
     <Switch>
       <Route path='/' exact component={useHashPathForLoginCalback ? Home : HomeWithLoginCallback} />
-      <Route path='/home' component={Home} />
       <SecureRoute path='/protected' component={Protected} />
       <Route path='*' component={useHashPathForLoginCalback ? NotFoundWithLoginCallback : NotFound} />
     </Switch>

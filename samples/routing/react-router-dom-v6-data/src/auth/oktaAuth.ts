@@ -10,16 +10,9 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-import React from 'react';
-import { Link } from 'react-router-dom';
+import { OktaAuth } from '@okta/okta-auth-js';
+import config from './config';
 
-const Nav = () => {
-  return (
-    <nav>
-      <Link id='home-nav-link' to='/'>Home</Link>
-      <Link id='protected-nav-link' to='/protected'>Protected</Link>
-    </nav>
-  );
-};
+const oktaAuth = new OktaAuth(config.oidc);
 
-export default Nav;
+export default oktaAuth;

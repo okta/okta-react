@@ -12,36 +12,23 @@
 
 import React from 'react';
 
-import { useNavigate, Outlet } from 'react-router-dom';
-import { Security, getRelativeOriginalUri } from '@okta/okta-react';
-import { OktaAuth } from '@okta/okta-auth-js';
-import config from '../config';
+import { useNavigate } from 'react-router-dom';
+import { Security, getRelativeUri } from '@okta/okta-react';
 
-import Footer from '../components/Footer';
-import Nav from '../components/Nav';
+import oktaAuth from './oktaAuth';
 import Loading from '../components/Loading';
 
-const oktaAuth = new OktaAuth(config.oidc);
-
-function Root() {
+const App: React.FC<React.PropsWithChildren<Record<string, unknown>>> = ({ children }) => {
   const navigate = useNavigate();
   const restoreOriginalUri = React.useCallback((_oktaAuth: any,  originalUri: string) => {
-    navigate(getRelativeOriginalUri(originalUri));
+    navigate(getRelativeUri(originalUri), { replace: true });
   }, [navigate]);
 
   return (
     <Security oktaAuth={oktaAuth} restoreOriginalUri={restoreOriginalUri} loadingElement={<Loading />}>
-      <div className="App">
-        <header className="App-header">
-          <Nav />
-        </header>
-        <main>
-          <Outlet />
-        </main>
-        <Footer />
-      </div>
+      {children}
     </Security>
   );
 }
 
-export default Root;
+export default App;

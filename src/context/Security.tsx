@@ -51,8 +51,9 @@ const Security: React.FC<
     error = versionError || loginCallbackError;
   }
 
+  const ErrorReporter = errorComponent ?? OktaError;
   if (error) {
-    return <OktaError error={error} />;
+    return <ErrorReporter error={error} />;
   }
 
   return (

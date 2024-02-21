@@ -11,15 +11,23 @@
  */
 
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 
-const Nav = () => {
+import Footer from '../components/Footer';
+import Nav from '../components/Nav';
+
+function Layout() {
   return (
-    <nav>
-      <Link id='home-nav-link' to='/'>Home</Link>
-      <Link id='protected-nav-link' to='/protected'>Protected</Link>
-    </nav>
+    <div className="App">
+      <header className="App-header">
+        <Nav />
+      </header>
+      <main>
+        <Outlet />
+      </main>
+      <Footer />
+    </div>
   );
-};
+}
 
-export default Nav;
+export default Layout;

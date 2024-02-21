@@ -10,13 +10,33 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-import { toRelativeUrl } from '@okta/okta-auth-js';
+import { toRelativeUrl, OktaAuth, AuthState } from '@okta/okta-auth-js';
 
-export const getRelativeOriginalUri = (originalUri: string): string => {
-  let uri = '/';
-  if (originalUri) {
-    // strip the lead '/#' from the uri
-    uri = originalUri.startsWith('/#') ? originalUri.slice(2) : originalUri;
+export const getRelativeUri = (originalUri: string): string => {
+  if (!originalUri) {
+    return '/';
   }
-  return toRelativeUrl(uri, window.location.origin);
+  let uri = toRelativeUrl(originalUri, window.location.origin);
+  if (uri.startsWith('/#')) {
+    // strip the lead '/#' from the uri
+    uri = uri.slice(2);
+  }
+  return uri;
+};
+
+export const waitForAuthenticated = (
+  oktaAuth: OktaAuth
+): Promise<boolean> => {
+  return new Promise((resolve) => {
+    const handleAuthStateChange = (authState: AuthState | null) => {
+      if (authState?.isAuthenticated) {
+        oktaAuth.authStateManager.unsubscribe(handleAuthStateChange);
+        resolve(true);
+      }
+    };
+
+    const authState = oktaAuth.authStateManager.getAuthState();
+    oktaAuth.authStateManager.subscribe(handleAuthStateChange);
+    handleAuthStateChange(authState);
+  });
 };

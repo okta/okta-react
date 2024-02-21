@@ -12,8 +12,8 @@
 
 import * as React from 'react';
 import { Route, Routes, useNavigate, Outlet } from 'react-router-dom';
-import { OktaAuth, toRelativeUrl } from '@okta/okta-auth-js';
-import { Security, LoginCallback, Secure } from '@okta/okta-react';
+import { OktaAuth } from '@okta/okta-auth-js';
+import { Security, LoginCallback, Secure, getRelativeUri } from '@okta/okta-react';
 import Home from './Home';
 import Protected from './Protected';
 import CustomLogin from './CustomLogin';
@@ -36,7 +36,7 @@ const App: React.FC<{
   };
 
   const restoreOriginalUri = async (_oktaAuth: OktaAuth, originalUri: string) => {
-    navigate(toRelativeUrl(originalUri || '/', window.location.origin));
+    navigate(getRelativeUri(originalUri), { replace: true });
   };
 
   return (

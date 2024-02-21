@@ -12,12 +12,20 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useOktaAuth } from '@okta/okta-react';
 
 const Nav = () => {
+  const { authState } = useOktaAuth();
+  const isAuthenticated = authState?.isAuthenticated;
   return (
     <nav>
       <Link id='home-nav-link' to='/'>Home</Link>
       <Link id='protected-nav-link' to='/protected'>Protected</Link>
+      {isAuthenticated &&
+        <>
+          <Link id='protected-nav-link' to='/protected/profile'>Profile</Link>
+        </>
+      }
     </nav>
   );
 };

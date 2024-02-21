@@ -13,7 +13,7 @@
 import React from 'react';
 
 import { navigate } from '@reach/router';
-import { Security, getRelativeOriginalUri } from '@okta/okta-react';
+import { Security, getRelativeUri } from '@okta/okta-react';
 import { OktaAuth } from '@okta/okta-auth-js';
 import config from './config';
 
@@ -26,7 +26,7 @@ const oktaAuth = new OktaAuth(config.oidc);
 
 function App() {
   const restoreOriginalUri = React.useCallback((_oktaAuth: any,  originalUri: string) => {
-    navigate(getRelativeOriginalUri(originalUri), { replace: true });
+    navigate(getRelativeUri(originalUri), { replace: true });
   }, [navigate]);
 
   return (

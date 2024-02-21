@@ -19,8 +19,10 @@ import Secure from './containers/Secure';
 import withAuthRequired from './hocs/withAuthRequired';
 import useAuthRequired from './hooks/useAuthRequired';
 import useLoginCallback from './hooks/useLoginCallback';
+import withLoginCalback from './hocs/withLoginCallback';
 import {
-  getRelativeOriginalUri,
+  getRelativeUri,
+  waitForAuthenticated,
 } from './utils';
 
 export {
@@ -30,8 +32,10 @@ export {
   OktaContext,
   LoginCallback,
   Secure,
-  withAuthRequired,
   useAuthRequired,
+  withAuthRequired,
   useLoginCallback,
-  getRelativeOriginalUri,
+  withLoginCalback,
+  getRelativeUri,
+  waitForAuthenticated,
 };

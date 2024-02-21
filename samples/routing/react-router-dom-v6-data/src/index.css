@@ -52,3 +52,12 @@ code {
 form label {
   margin: 0 5px;
 }
+
+.OktaUserClaims-table, .OktaUserClaims-table th, .OktaUserClaims-table td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+.OktaUserClaims-table th, .OktaUserClaims-table td {
+  padding: 4px;
+}
