@@ -1,7 +1,7 @@
 # Okta React Router DOM v6 createBrowserRouter Sample App
 
 Sample app to demonstrate how to use `react-router-dom` `v6.4+` with `@okta/okta-react`.  
-Uses `createBrowserRouter` that [supports new data APIs](https://reactrouter.com/en/main/routers/picking-a-router#using-v64-data-apis). 
+Uses `createBrowserRouter` that [supports new data APIs](https://reactrouter.com/en/main/routers/picking-a-router#using-v64-data-apis).  
 Demonstrated usage of [loader](https://reactrouter.com/en/main/route/loader) and [Await](https://reactrouter.com/en/main/components/await) with `@okta/okta-react`. 
 
 

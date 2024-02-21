@@ -165,7 +165,7 @@ See these [samples][Routing Samples] to get started
 - [Secure][] - A container that renders its children only if the user has been authenticated. Otherwise performs a redirect to a login page or calls [onAuthRequired][] that can be passed in props to `Secure` or outer `Security`.
 
 
-Users of routers other than `react-router` can use [useOktaAuth][] to see if `authState` is not null and `authState.isAuthenticated` is true.  If it is false, you can send them to login via [oktaAuth.signInWithRedirect()][]. Or use [useAuthRequired][] and [useLoginCallback][] hooks. See the hooks [implementation][src/hooks] as an example.
+Users of routers other than `react-router` can use [useOktaAuth][] to see if `authState` is not null and `authState.isAuthenticated` is true.  If it is false, you can send them to login via [oktaAuth.signInWithRedirect()][]. Also consider using [useAuthRequired][] and [useLoginCallback][] hooks. See the hooks [implementation][src/hooks] as an example.
 
 ### React-Router components (optional)
 
@@ -186,7 +186,7 @@ or use [Outlet][]:
   <Route path='profile' element={<Profile />} />
 </Route>
 ```
-<br><br>
+
 See these [samples][Routing Samples] to get started
 
 
@@ -203,9 +203,9 @@ These hooks can be used in a component that is a descendant of a [`Security`][Se
 - [useOktaAuth][] - gives a [context][] provided by [Security][].
 Class-based components can gain access to the same information via the [withOktaAuth][] Higher Order Component, which provides `oktaAuth` and `authState` as props to the wrapped component.
 
-- [useAuthRequired][] - (*advanced*) can be used to build your own component with an authentication requirement if you don't want to use a [Secure][] container. If the user is not authenticated, it performs a redirect to a login page or calls [onAuthRequired][] callback. Returns an object with property `isAuthenticated` - if it's `true` you can render your component and process logic that requires an authenticated user.
+- [useAuthRequired][] - (*advanced*) can be used in your own component with an authentication requirement if you don't want to use the [Secure][] container. If the user is not authenticated, it performs a redirect to a login page or calls [onAuthRequired][] callback. Returns an object with property `isAuthenticated` - if it's `true` you can render your component and process logic that requires an authenticated user.
 
-- [useLoginCallback][] - (*advanced*) can be used to include optional login callback logic to your component if you don't want to use a [LoginCallback][] container. E.g. if a login redirect URL is resolved to a root (`/`) route or a 404 (`*`) route, you can use this hook in your corresponding components (like `Home`, `NotFound` etc.). Returns an object with property `isLoginRedirect` - if it's `false` you can render your component.
+- [useLoginCallback][] - (*advanced*) can be used to include optional login callback logic to your component if you don't want to use the [LoginCallback][] container. E.g. if a login redirect URL is resolved to a root (`/`) route or a 404 (`*`) route, you can use this hook in your corresponding components (like `Home`, `NotFound` etc.). Returns an object with property `isLoginRedirect` - if it's `false` you can render your component.
 
 
 ### Minimal Example in React Router
@@ -296,7 +296,11 @@ const App = () => {
   }, [navigate]);
 
   return (
-    <Security oktaAuth={oktaAuth} restoreOriginalUri={restoreOriginalUri} loadingElement={<Loading />}>
+    <Security
+      oktaAuth={oktaAuth}
+      restoreOriginalUri={restoreOriginalUri}
+      loadingElement={<Loading />}
+    >
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/protected' element={<Secure><Outlet /></Secure>}>
@@ -349,7 +353,11 @@ const App = () => {
   }, [navigate]);
 
   return (
-    <Security oktaAuth={oktaAuth} restoreOriginalUri={restoreOriginalUri} loadingElement={<Loading />}>
+    <Security
+      oktaAuth={oktaAuth}
+      restoreOriginalUri={restoreOriginalUri}
+      loadingElement={<Loading />}
+    >
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/protected' element={<Secure><Protected /></Secure>} />
@@ -398,7 +406,11 @@ const Layout = () => {
   }, [navigate]);
 
   return (
-    <Security oktaAuth={oktaAuth} restoreOriginalUri={restoreOriginalUri} loadingElement={<Loading />}>
+    <Security
+      oktaAuth={oktaAuth}
+      restoreOriginalUri={restoreOriginalUri}
+      loadingElement={<Loading />}
+    >
       <Outlet />
     </Security>
   );
@@ -597,7 +609,9 @@ export default MessageList = () => {
 ### `Security`
 
 `<Security>` is the top-most component of okta-react. It accepts [oktaAuth][] instance and addtional configuration options as props.  
-**Note:** for [react-router][] the `<Security>` should not be a parent for a router. `<Security>` should wrap the [`<Routes>`][Routes6] component or the root element for the top-most route if you use new data router like [createBrowserRouter][].
+
+> **Note:** for [react-router][] the `<Security>` should not be a parent for a router.<br>
+`<Security>` should wrap the [`<Routes>`][Routes6] component or the root element for the top-most route if you use new data router like [createBrowserRouter][].
 
 #### oktaAuth
 
@@ -772,7 +786,10 @@ As with `Route` from `react-router-dom`, `<SecureRoute>` can take one of:
 
 ### `LoginCallback`
 
-`LoginCallback` handles the callback after the redirect to and back from the Okta-hosted login page. By default, it parses the tokens from the uri, stores them, then redirects to `/`. If a [SecureRoute][], [Secure][] or [useAuthRequired][] caused the redirect, then the callback redirects to the secured route. For more advanced cases, this component can be copied to your own source tree and modified as needed.
+`LoginCallback` handles the callback after the redirect to and back from the Okta-hosted login page.  
+By default, it parses the tokens from the uri, stores them, then redirects to `/`.  
+If a [Secure][], [SecureRoute][] or [useAuthRequired][] caused the redirect, then the callback redirects to the secured route.  
+For more advanced cases, this component can be copied to your own source tree and modified as needed, also consider using [useLoginCallback][].
 
 #### errorComponent
 
@@ -853,7 +870,7 @@ export default MyComponent = () => {
 
 ### `useAuthRequired`
 
-(*advanced*) This hook is used under the hood in a [Secure][] container. Use this hook if you need the authentication check logic, but can't use `Secure`.  
+> This hook is used under the hood in a [Secure][] container. Use this hook if you need the authentication check logic, but can't use `Secure`.  
 
 `useAuthRequired(context, { onAuthRequired? })` is a React Hook that performs a user authentication check. If the user is not authenticated, it performs a redirect to a login page or calls [onAuthRequired][] callback. 
 Returns an object with two properties:
@@ -886,10 +903,9 @@ export default MySecureComponent = () => {
 `withAuthRequired(Component, { onAuthRequired? })` is a [higher-order component][] which performs a user authentication check like a [useAuthRequired][] hook. Injects following props into the wrapped component - `isAuthenticated` and `loginError`.
 Components wrapped in `withAuthRequired()` need to be a child or descendant of a `<Security>` component to have the necessary context.
 
-
 ### `useLoginCallback`
 
-(*advanced*) This hook is used under the hood in a [LoginCallback][] component.  Use this hook if you need the login callback handling logic, but can't use `LoginCallback`. 
+> This hook is used under the hood in a [LoginCallback][] component.  Use this hook if you need the login callback handling logic, but can't use `LoginCallback`. 
 
 `useLoginCallback(context, { onAuthResume? })` is a React Hook that can handle the callback after the redirect from the Okta-hosted login page. 
 Returns an object with two properties:
