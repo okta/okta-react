@@ -1,3 +1,21 @@
+# 7.0.0
+
+### Breaking Changes
+
+- [#274](https://github.com/okta/okta-react/pull/274) `SecureRoute` should be imported from `@okta/okta-react/react-router-5`
+
+### Features
+
+- [#274](https://github.com/okta/okta-react/pull/274) Adds new API for integration with `react-router 6.x`
+  - Adds new `<Secure>` container
+  - `<LoginCallback>` acts like a container, can render children on a page that is not a login callback
+  - Adds new hooks: `useAuthRequired`, `useLoginCallback`
+  - Adds new HOCs: `withAuthRequired`, `withLoginCallback`
+  - Adds new utils: `getRelativeUri`, `waitForAuthenticated`
+  - `<Security>` accepts props `errorComponent` and `loadingElement`
+  - `<Security>` checks the login callback to be called on the login redirect page
+  - Updated routing samples. Adds new sample `react-router-dom-v6-data` for new routers with Data APIs
+
 # 6.8.0
 
 ### Bug Fixes

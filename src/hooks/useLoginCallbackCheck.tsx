@@ -33,7 +33,7 @@ const useLoginCallbackCheck = (
         // This can happen if LoginCallback component is attached to incorrect route.
         if (oktaAuth?.isLoginRedirect() && oktaAuth.authStateManager.getAuthState() === null) {
           setLoginCallbackError(new AuthSdkError(
-            'Login callback was not called on the login redirect apge. Please check your routes.'
+            'Login callback was not called on the login redirect page. Please check your routes.'
           ));
           // Force update auth state to prevent app stuck
           oktaAuth.authStateManager.updateAuthState();
