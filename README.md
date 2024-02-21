@@ -844,11 +844,16 @@ Also see [this sample][Sample react-router-6-hash] demontrating usage of a [Logi
 
 ### `withOktaAuth`
 
-`withOktaAuth` is a [higher-order component][] which injects an [oktaAuth][] instance and an [authState][] object as props into the component. Function-based components will want to use the [useOktaAuth][] hook instead.  These props provide a way for components to make decisions based on [authState][] or to call [Okta Auth SDK][] methods, such as `.signInWithRedirect()` or `.signOut()`.  Components wrapped in `withOktaAuth()` need to be a child or descendant of a `<Security>` component to have the necessary context.
+`withOktaAuth` is a [higher-order component][] which injects an [oktaAuth][] instance and an [authState][] object as props into the component.  
+Function-based components will want to use the [useOktaAuth][] hook instead.  
+These props provide a way for components to make decisions based on [authState][] or to call [Okta Auth SDK][] methods, such as `.signInWithRedirect()` or `.signOut()`.  
+Components wrapped in `withOktaAuth()` need to be a child or descendant of a `<Security>` component to have the necessary context.
 
 ### `useOktaAuth`
 
-`useOktaAuth()` is a React Hook that returns an object containing the [authState][] object and the [oktaAuth][] instance.  Class-based components will want to use the [withOktaAuth][] HOC instead. Using this hook will trigger a re-render when the authState object updates. Components calling this hook need to be a child or descendant of a `<Security>` component to have the necessary context.
+`useOktaAuth()` is a React Hook that returns an object containing the [authState][] object and the [oktaAuth][] instance.  Class-based components will want to use the [withOktaAuth][] HOC instead.  
+Using this hook will trigger a re-render when the authState object updates.  
+Components calling this hook need to be a child or descendant of a `<Security>` component to have the necessary context.
 
 #### Using `useOktaAuth`
 
@@ -877,8 +882,8 @@ Returns an object with two properties:
   - `isAuthenticated` - `true` is a green light to render your component and process logic that requires an authenticated user, `false` means the hook is performing an authentication.
   - `loginError` - an exception caught from [onAuthRequired][] callback.
 
-Accepts two arguments: required [context][] (returned from [useOktaAuth][]) and optional options object with property [onAuthRequired][] that will override `onAuthRequired` callback passed to `Security`. 
-Components calling this hook need to be a child or descendant of a `<Security>` component to have the necessary context. 
+Accepts two arguments: required [context][] (returned from [useOktaAuth][]) and optional options object with property [onAuthRequired][] that will override `onAuthRequired` callback passed to `Security`.  
+Components calling this hook need to be a child or descendant of a `<Security>` component to have the necessary context.  
 Class-based components will want to use the [withAuthRequired][] HOC instead. 
 
 #### Using `useAuthRequired`
