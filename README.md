@@ -23,7 +23,7 @@
 [Sample react-router-6-data]: /samples/routing/react-router-dom-v6-data
 [Sample react-router-6-data Profile]: /samples/routing/react-router-dom-v6-data/src/pages/Profile.tsx
 [Data APIs]: https://reactrouter.com/en/main/routers/picking-a-router#data-apis
-[oktaAuth.signInWithRedirect()]: https://github.com/okta/okta-auth-js#signinwithredirectoptions)
+[oktaAuth.signInWithRedirect()]: https://github.com/okta/okta-auth-js#signinwithredirectoptions
 [oktaAuth.handleLoginRedirect()]: https://github.com/okta/okta-auth-js#handleloginredirecttokens-originaluri
 [oktaAuth.getUser()]: https://github.com/okta/okta-auth-js#getuser
 [oktaAuth.restoreOriginalUri]: https://github.com/okta/okta-auth-js#restoreoriginaluri
