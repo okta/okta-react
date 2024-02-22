@@ -25,6 +25,8 @@ import {
   waitForAuthenticated,
 } from './utils';
 
+export * from './types';
+
 export {
   Security,
   withOktaAuth,

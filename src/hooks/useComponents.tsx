@@ -36,11 +36,7 @@ const useComponents = (
   const {
     errorComponent: defaultErrorComponent,
     loadingElement: defaultLoadingElement,
-  } = oktaContext ?? {};
-
-  if (!oktaContext) {
-    console.error('oktaContext is not provided to useComponents');
-  }
+  } = oktaContext;
 
   const ErrorReporter = errorComponent ?? defaultErrorComponent ?? OktaError;
   const Loading = loadingElement ?? defaultLoadingElement ?? null;

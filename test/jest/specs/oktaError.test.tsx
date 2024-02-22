@@ -12,7 +12,7 @@
 
 import * as React from 'react';
 import { mount } from 'enzyme';
-import OktaError from '../../src/components/OktaError';
+import OktaError from '../../../src/components/OktaError';
 import { AuthSdkError, AuthApiError, OAuthError } from '@okta/okta-auth-js';
 
 describe('<OktaError />', () => {
@@ -37,7 +37,9 @@ describe('<OktaError />', () => {
       const errorCode = '400'; 
       const errorLink = 'http://errorlink.com';
       const errorId = 'fake error id'; 
-      const errorCauses = ['fake error cause'];
+      const errorCauses = [{
+        errorSummary: 'fake error cause'
+      }];
       const error = new AuthApiError({ errorSummary, errorCode, errorLink, errorId, errorCauses });
       const wrapper = mount(
         <OktaError error={error}/>

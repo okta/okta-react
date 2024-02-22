@@ -27,7 +27,7 @@ const useLoginCallback = (
   options: LoginCallbackOptions = {}
 ): LoginCallbackHook => {
   const { onAuthResume } = options;
-  const { oktaAuth, authState } = oktaContext ?? {};
+  const { oktaAuth, authState } = oktaContext;
 
   const [callbackError, setCallbackError] = React.useState<Error | null>(null);
   const handlingRedirectRef = React.useRef(false);
@@ -61,10 +61,6 @@ const useLoginCallback = (
       });
     }
   }, [oktaAuth]);
-
-  if (!oktaContext) {
-    console.error('oktaContext is not provided to useLoginCallback');
-  }
 
   // During `handleLoginRedirect()` auth-js will clear location hash/search
   //  so `isLoginRedirect()` will return false in that moment.

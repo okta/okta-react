@@ -15,48 +15,20 @@
 import * as React from 'react';
 import { act } from 'react-dom/test-utils';
 import { render } from 'react-dom';
-import SecureRoute from '../../src/containers/SecureRoute';
-import OktaContext from '../../src/context';
-import { AuthSdkError } from '@okta/okta-auth-js';
+import { OktaContext } from '@okta/okta-react';
+import { SecureRoute } from '@okta/okta-react/react-router-5';
+import ErrorBoundary from '../support/ErrorBoundary';
 
 jest.mock('react-router-dom', () => ({
   __esModule: true,
   useMatch: jest.fn()
 }));
 
-class ErrorBoundary extends React.Component {
-  constructor(props: any) {
-    super(props);
-    this.state = { 
-      error: null
-    } as {
-      error: AuthSdkError | null
-    };
-  }
-
-  componentDidCatch(error: AuthSdkError) {
-    this.setState({ error: error });
-  }
-
-  render() {
-    if (this.state.error) {
-      // You can render any custom fallback UI
-      return <p>{ this.state.error.toString() }</p>;
-    }
-
-    return this.props.children; 
-  }
-}
-
 describe('react-router-dom v6', () => {
   let oktaAuth: any;
   let authState: any;
 
   beforeEach(() => {
-    // prevents logging error to console
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    console.error = (()=>{});   // noop
-
     authState = null;
     oktaAuth = {
       options: {},
@@ -73,22 +45,34 @@ describe('react-router-dom v6', () => {
       start: jest.fn(),
     };
   });
-  
-  it('throws unsupported error', async () => {
-    const container = document.createElement('div');
-    await act(async () => {
-      render(
-        <OktaContext.Provider value={{
-          oktaAuth: oktaAuth,
-          authState
-        }}>
-          <ErrorBoundary>
-            <SecureRoute path="/" />
-          </ErrorBoundary>
-        </OktaContext.Provider>,
-        container
-      );
+
+  describe('<SecureRoute />', () => {
+    let originalConsole: any;
+    beforeEach(() => {
+      // prevents logging error to console
+      originalConsole = { ...global.console };
+      global.console.error = jest.fn();
     });
-    expect(container.innerHTML).toBe('<p>AuthSdkError: Unsupported: SecureRoute only works with react-router-dom v5 or any router library with compatible APIs. Please use Route instead and wrap your component with Secure.</p>');
-  })
+    afterEach(() => {
+      global.console.error = originalConsole.error;
+    });
+
+    it('throws unsupported error', async () => {
+      const container = document.createElement('div');
+      await act(async () => {
+        render(
+          <OktaContext.Provider value={{
+            oktaAuth: oktaAuth,
+            authState
+          }}>
+            <ErrorBoundary>
+              <SecureRoute path="/" />
+            </ErrorBoundary>
+          </OktaContext.Provider>,
+          container
+        );
+      });
+      expect(container.innerHTML).toBe('<p>AuthSdkError: Unsupported: SecureRoute only works with react-router-dom v5 or any router library with compatible APIs. Please use Route instead and wrap your component with Secure.</p>');
+    });
+  });
 });

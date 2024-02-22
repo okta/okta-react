@@ -2,7 +2,9 @@
 
 ### Breaking Changes
 
-- [#274](https://github.com/okta/okta-react/pull/274) `SecureRoute` should be imported from `@okta/okta-react/react-router-5`
+- [#274](https://github.com/okta/okta-react/pull/274)
+  - `SecureRoute` should be imported from `@okta/okta-react/react-router-5`
+  - `react-router-dom` is optional dependency
 
 ### Features
 

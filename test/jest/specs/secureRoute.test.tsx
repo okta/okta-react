@@ -15,17 +15,19 @@ import { mount } from 'enzyme';
 import { act } from 'react-dom/test-utils';
 import { render, unmountComponentAtNode } from 'react-dom';
 import { MemoryRouter, Route, RouteProps } from 'react-router-dom';
-import SecureRoute from '../../src/containers/SecureRoute';
-import Security from '../../src/context/Security';
-import OktaContext from '../../src/context';
+import { OktaAuth, AuthState } from '@okta/okta-auth-js';
+import { OktaContext, Security } from '@okta/okta-react';
+import { SecureRoute } from '@okta/okta-react/react-router-5';
+import { SecurityProps } from '../../../src/context/Security';
+import { ErrorComponent } from '../../../src/types';
 
-jest.mock('@okta/okta-react', () => jest.requireActual('../../src'));
+jest.mock('@okta/okta-react', () => jest.requireActual('../../../src'));
 
 describe('<SecureRoute />', () => {
-  let oktaAuth;
-  let authState;
-  let mockProps;
-  const restoreOriginalUri = async (_, url) => {
+  let oktaAuth: OktaAuth;
+  let authState: AuthState | null;
+  let mockProps: SecurityProps;
+  const restoreOriginalUri = async (_: OktaAuth, url: string) => {
     location.href = url;
   };
 
@@ -44,7 +46,7 @@ describe('<SecureRoute />', () => {
       signInWithRedirect: jest.fn(),
       setOriginalUri: jest.fn(),
       start: jest.fn(),
-    };
+    } as any as OktaAuth;
     mockProps = {
       oktaAuth, 
       restoreOriginalUri
@@ -52,17 +54,17 @@ describe('<SecureRoute />', () => {
   });
 
   describe('With changing authState', () => {
-    let emitAuthState;
+    let emitAuthState: () => void | undefined;
 
     beforeEach(() => {
       oktaAuth.authStateManager.subscribe = (cb) => {
         emitAuthState = () => {
-          act(cb.bind(null, authState));
+          act(cb.bind(null, authState as AuthState));
         };
       };
     });
 
-    function updateAuthState(newProps = {}) {
+    function updateAuthState(newProps: Record<string, unknown> | null) {
       authState = Object.assign({}, authState || {}, newProps);
       emitAuthState();
     }
@@ -80,7 +82,7 @@ describe('<SecureRoute />', () => {
         </MemoryRouter>
       );
       expect(oktaAuth.signInWithRedirect).toHaveBeenCalledTimes(1);
-      oktaAuth.signInWithRedirect.mockClear();
+      (oktaAuth.signInWithRedirect as jest.Mock).mockClear();
 
       updateAuthState(null);
       expect(oktaAuth.signInWithRedirect).not.toHaveBeenCalled();
@@ -264,7 +266,6 @@ describe('<SecureRoute />', () => {
     });
 
     describe('authState is null', () => {
-
       beforeEach(() => {
         authState = null;
       });
@@ -360,8 +361,10 @@ describe('<SecureRoute />', () => {
     });
 
     it('should pass react-router props to an component', () => {
-      authState.isAuthenticated = true;
-      const MyComponent = function(props) { return <div>{ props.history ? 'has history' : 'lacks history'}</div>; };
+      (authState as AuthState).isAuthenticated = true;
+      const MyComponent = function(props: Record<string, unknown>) {
+        return <div>{ props.history ? 'has history' : 'lacks history'}</div>;
+      };
       const wrapper = mount(
         <MemoryRouter>
           <Security {...mockProps}>
@@ -376,8 +379,10 @@ describe('<SecureRoute />', () => {
     });
 
     it('should pass react-router props to a render call', () => {
-      authState.isAuthenticated = true;
-      const MyComponent = function(props) { return <div>{ props.history ? 'has history' : 'lacks history'}</div>; };
+      (authState as AuthState).isAuthenticated = true;
+      const MyComponent = function(props: Record<string, unknown>) {
+        return <div>{ props.history ? 'has history' : 'lacks history'}</div>;
+      };
       const wrapper = mount(
         <MemoryRouter>
           <Security {...mockProps}>
@@ -392,8 +397,10 @@ describe('<SecureRoute />', () => {
     });
 
     it('should pass props using the "render" prop', () => {
-      authState.isAuthenticated = true;
-      const MyComponent = function(props) { return <div>{ props.someProp ? 'has someProp' : 'lacks someProp'}</div>; };
+      (authState as AuthState).isAuthenticated = true;
+      const MyComponent = function(props: Record<string, unknown>) {
+        return <div>{ props.someProp ? 'has someProp' : 'lacks someProp'}</div>;
+      };
       const wrapper = mount(
         <MemoryRouter>
           <Security {...mockProps}>
@@ -410,7 +417,7 @@ describe('<SecureRoute />', () => {
   });
 
   describe('Error handling', () => {
-    let container = null;
+    let container: HTMLElement | null = null;
     beforeEach(() => {
       // setup a DOM element as a render target
       container = document.createElement('div');
@@ -427,8 +434,8 @@ describe('<SecureRoute />', () => {
 
     afterEach(() => {
       // cleanup on exiting
-      unmountComponentAtNode(container);
-      container.remove();
+      unmountComponentAtNode(container as Element);
+      container?.remove();
       container = null;
     });
 
@@ -446,11 +453,11 @@ describe('<SecureRoute />', () => {
           container
         );
       });
-      expect(container.innerHTML).toBe('<p>Error: DOMException: Failed to read the \'sessionStorage\' property from \'Window\': Access is denied for this document.</p>');
+      expect(container?.innerHTML).toBe('<p>Error: DOMException: Failed to read the \'sessionStorage\' property from \'Window\': Access is denied for this document.</p>');
     });
 
     it('shows error with provided custom error component', async () => {
-      const CustomErrorComponent = ({ error }) => {
+      const CustomErrorComponent: ErrorComponent = ({ error }) => {
         return <div>Custom Error: {error.message}</div>;
       };
       await act(async () => {
@@ -466,7 +473,7 @@ describe('<SecureRoute />', () => {
           container
         );
       });
-      expect(container.innerHTML).toBe('<div>Custom Error: DOMException: Failed to read the \'sessionStorage\' property from \'Window\': Access is denied for this document.</div>');
+      expect(container?.innerHTML).toBe('<div>Custom Error: DOMException: Failed to read the \'sessionStorage\' property from \'Window\': Access is denied for this document.</div>');
     });
   });
 });

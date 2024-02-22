@@ -38,7 +38,7 @@ const useAuthRequired = (
     oktaAuth,
     authState,
     _onAuthRequired,
-  } = oktaContext ?? {};
+  } = oktaContext;
   const isAuthenticated = !!authState?.isAuthenticated;
 
   const handleLogin = React.useCallback(async () => {
@@ -90,10 +90,6 @@ const useAuthRequired = (
     authState,
     handleLogin,
   ]);
-
-  if (!oktaContext) {
-    console.error('oktaContext is not provided to useAuthRequired');
-  }
 
   return {
     isAuthenticated,

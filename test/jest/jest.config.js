@@ -15,7 +15,7 @@ module.exports = {
   collectCoverage: true,
   collectCoverageFrom: [
     'src/**',
-    '!src/.eslintrc.*'
+    '!src/.eslintrc.*',
   ],
   globals: {
     AUTH_JS: { minSupportedVersion: '5.3.1' },
@@ -32,6 +32,8 @@ module.exports = {
   ],
   restoreMocks: true,
   moduleNameMapper: {
+    '^@okta/okta-react$': '<rootDir>/src',
+    '^@okta/okta-react/react-router-5$': '<rootDir>/src/react-router-5.ts',
     // avoid react conflict in yarn workspace
     '^react$': '<rootDir>/node_modules/react',
     '^react-dom$': '<rootDir>/node_modules/react-dom',
@@ -39,13 +41,13 @@ module.exports = {
   },
   rootDir: '../..',
   testMatch: [
-    '**/test/jest/*.test.*',
+    '**/test/jest/specs/*.test.*',
   ],
   modulePathIgnorePatterns: [
     '<rootDir>/dist/'
   ],
   setupFiles: [
-    '<rootDir>/test/jest/setup.ts'
+    '<rootDir>/test/jest/support/setup.ts'
   ],
   testEnvironment: 'jsdom',
   transform: { 

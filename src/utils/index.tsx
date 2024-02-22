@@ -16,7 +16,10 @@ export const getRelativeUri = (originalUri: string): string => {
   if (!originalUri) {
     return '/';
   }
-  let uri = toRelativeUrl(originalUri, window.location.origin);
+  let uri = originalUri;
+  if (uri.startsWith(window.location.origin)) {
+    uri = toRelativeUrl(uri, window.location.origin);
+  }
   if (uri.startsWith('/#')) {
     // strip the lead '/#' from the uri
     uri = uri.slice(2);
