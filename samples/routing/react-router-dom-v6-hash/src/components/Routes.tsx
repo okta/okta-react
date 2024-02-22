@@ -19,7 +19,7 @@ import Home from '../pages/Home';
 import Protected from '../pages/Protected';
 import NotFound from '../pages/NotFound';
 
-const useHashPathForLoginCalback = config.oidc.responseMode === 'fragment';
+const useHashPathForLoginCalback = config.oidc.responseMode === 'fragment' || !config.oidc.pkce;
 
 const NotFoundWithLoginCallback = () => (
   <LoginCallback>
@@ -36,12 +36,12 @@ const HomeWithLoginCallback = () => {
 };
 
 // NOTE: 
-// * If using `responseMode: 'fragment'` in OktaAuth config, 
+// * If using `responseMode: 'fragment'` (or `pkce: false`) in OktaAuth config, 
 //    <LoginCallback> *must* be mounted on '*' with a fallback to 404 component
-//   Because signin redirect URL is like 
+//   Because in this case a signin redirect URL is like 
 //    'https://<your-host>/#id_token=...&access_token=...&token_type=Bearer&expires_in=3600&scope=...&state=...'
 //    and HashRouter in react-router 6 is unable to find any route matching such location
-//    except for root splat route (<Route path="*">)
+//    except for "catch-all" route (<Route path="*">)
 // * If using 'query' response mode,
 //    <LoginCallback> *must* be mounted on '/' with a fallback to home component
 //   Signin redirect URL in this case is 'https://<your-host>/?code=...&state=...'

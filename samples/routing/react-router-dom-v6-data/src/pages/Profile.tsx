@@ -27,7 +27,7 @@ export const profileLoader: LoaderFunction = () => {
   // Do NOT return `waitForAuthenticated` promise in `loader` function.
   // react-router 6 blocks rendering of all route elements until matching loaders are resolved.
   // This means that <Security> component would not be rendered and OktaAuth would not start.
-  // Without rendering <Security> component `waitForAuthenticated` would NOT be resolved!
+  // Without rendering of <Security> component `waitForAuthenticated` would NOT be resolved!
   return ({
     userClaims: waitForAuthenticated(oktaAuth).then(() => oktaAuth.getUser())
   });

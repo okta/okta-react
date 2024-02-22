@@ -20,7 +20,7 @@ import NotFound from '../pages/NotFound';
 import Home from '../pages/Home';
 import Protected from '../pages/Protected';
 
-const useHashPathForLoginCalback = config.oidc.responseMode === 'fragment';
+const useHashPathForLoginCalback = config.oidc.responseMode === 'fragment' || !config.oidc.pkce;
 
 const NotFoundWithLoginCallback = (props: any) => (
   <LoginCallback>
@@ -37,7 +37,7 @@ const HomeWithLoginCallback = (props: any) => {
 };
 
 // NOTE: 
-// * If using `responseMode: 'fragment'` in OktaAuth config, 
+// * If using `responseMode: 'fragment'` (or `pkce: false`) in OktaAuth config, 
 //    <LoginCallback> *must* be mounted on '*' with a fallback to 404 component
 // * If using 'query' response mode,
 //    <LoginCallback> *must* be mounted on '/' with a fallback to home component
