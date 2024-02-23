@@ -19,7 +19,7 @@ import { AuthSdkError } from '@okta/okta-auth-js';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { OktaContext } from '@okta/okta-react';
 import useAuthRequired, { AuthRequiredOptions } from '../hooks/useAuthRequired';
-import pickComponents, { ComponentsOptions } from '../utils/pickComponents';
+import getComponents, { ComponentsOptions } from '../utils/getComponents';
 import useOktaAuth from '../context/useOktaAuth';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -56,7 +56,7 @@ const SecureRoute: React.FC<SecureRouteProps> = ({
     //  otherwise it would not render unmatched routes.
     requiresAuth: !!match,
   });
-  const { ErrorReporter, Loading } = pickComponents(oktaContext, {
+  const { ErrorReporter, Loading } = getComponents(oktaContext, {
     errorComponent, loadingElement,
   });
 
