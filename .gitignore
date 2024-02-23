@@ -9,3 +9,4 @@ yalc.lock
 .yarnrc
 .yarn
 .env
+.next
