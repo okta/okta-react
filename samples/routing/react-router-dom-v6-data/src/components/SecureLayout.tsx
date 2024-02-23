@@ -11,14 +11,15 @@
  */
 
 import React from 'react';
-
-import { useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { Security, getRelativeUri } from '@okta/okta-react';
 
-import oktaAuth from './oktaAuth';
+import oktaAuth from '../oktaAuth';
 import Loading from '../components/Loading';
+import Footer from '../components/Footer';
+import Nav from '../components/Nav';
 
-const App: React.FC<React.PropsWithChildren<Record<string, unknown>>> = ({ children }) => {
+const SecureLayout: React.FC<Record<string, unknown>> = () => {
   const navigate = useNavigate();
   const restoreOriginalUri = React.useCallback((_oktaAuth: any,  originalUri: string) => {
     navigate(getRelativeUri(originalUri), { replace: true });
@@ -26,9 +27,17 @@ const App: React.FC<React.PropsWithChildren<Record<string, unknown>>> = ({ child
 
   return (
     <Security oktaAuth={oktaAuth} restoreOriginalUri={restoreOriginalUri} loadingElement={<Loading />}>
-      {children}
+      <div className="App">
+        <header className="App-header">
+          <Nav />
+        </header>
+        <main>
+          <Outlet />
+        </main>
+        <Footer />
+      </div>
     </Security>
   );
 }
 
-export default App;
+export default SecureLayout;

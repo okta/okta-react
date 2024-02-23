@@ -15,7 +15,7 @@ import { UserClaims } from '@okta/okta-auth-js';
 import { waitForAuthenticated } from '@okta/okta-react';
 import { useLoaderData, Await, LoaderFunction } from 'react-router-dom';
 
-import oktaAuth from '../auth/oktaAuth';
+import oktaAuth from '../oktaAuth';
 import Loading from '../components/Loading';
 
 export interface ProfileLoaderData {

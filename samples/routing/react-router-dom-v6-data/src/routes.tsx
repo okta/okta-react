@@ -14,8 +14,7 @@ import React from 'react';
 import { Outlet, RouteObject } from 'react-router-dom';
 import { LoginCallback, Secure } from '@okta/okta-react';
 
-import Security from './auth/Security';
-import Layout from './pages/Layout';
+import SecureLayout from './components/SecureLayout';
 import Home from './pages/Home';
 import Protected from './pages/Protected';
 import Profile, { profileLoader } from './pages/Profile';
@@ -24,7 +23,7 @@ const routes: RouteObject[] = [
   {
     path: '/',
     id: 'layout',
-    element: <Security><Layout /></Security>,
+    element: <SecureLayout />,
     children: [
       {
         path: '',
