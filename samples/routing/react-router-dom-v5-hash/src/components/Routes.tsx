@@ -20,7 +20,7 @@ import NotFound from '../pages/NotFound';
 import Home from '../pages/Home';
 import Protected from '../pages/Protected';
 
-const useHashPathForLoginCalback = config.oidc.responseMode === 'fragment' || !config.oidc.pkce;
+const usingFragmentForLoginCalback = config.oidc.responseMode === 'fragment' || !config.oidc.pkce;
 
 const NotFoundWithLoginCallback = (props: any) => (
   <LoginCallback>
@@ -44,9 +44,9 @@ const HomeWithLoginCallback = (props: any) => {
 const AppRoutes = () => {
   return (
     <Switch>
-      <Route path='/' exact component={useHashPathForLoginCalback ? Home : HomeWithLoginCallback} />
+      <Route path='/' exact component={usingFragmentForLoginCalback ? Home : HomeWithLoginCallback} />
       <SecureRoute path='/protected' component={Protected} />
-      <Route path='*' component={useHashPathForLoginCalback ? NotFoundWithLoginCallback : NotFound} />
+      <Route path='*' component={usingFragmentForLoginCalback ? NotFoundWithLoginCallback : NotFound} />
     </Switch>
   );
 };
