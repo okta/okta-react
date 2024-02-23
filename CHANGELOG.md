@@ -12,7 +12,7 @@
   - Adds new `<AuthRequired>` container
   - `<LoginCallback>` acts like a container, can render children on a page that is not a login callback
   - Adds new hooks: `useAuthRequired`, `useLoginCallback`
-  - Adds new HOCs: `withAuthRequired`, `withLoginCallback`
+  - Adds new HOC: `withAuthRequired`
   - Adds new utils: `getRelativeUri`, `waitForAuthenticated`
   - `<Security>` accepts props `errorComponent` and `loadingElement`
   - `<Security>` checks the login callback to be called on the login redirect page

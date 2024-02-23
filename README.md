@@ -926,12 +926,7 @@ Returns an object with two properties:
 
 Accepts two arguments: required [context][] (returned from [useOktaAuth][]) and optional options object with property [onAuthResume][].  
 Components calling this hook need to be a child or descendant of a `<Security>` component to have the necessary context.  
-Class-based components will want to use the [withLoginCallback][] HOC instead. 
 
-### `withLoginCallback`
-
-`withLoginCallback(Component, { onAuthResume? })` is a [higher-order component][] which can handle the login redirect callback like a [useLoginCallback][] hook. Injects following props into the wrapped component - `isLoginRedirect` and `callbackError`.  
-Components wrapped in `withLoginCallback()` need to be a child or descendant of a `<Security>` component to have the necessary context.
 
 ### `getRelativeUri`
 
