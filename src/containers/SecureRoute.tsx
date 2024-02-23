@@ -31,7 +31,7 @@ if ('useRouteMatch' in ReactRouterDom) {
 } else {
   // throw when useMatch is triggered
   useMatch = () => { 
-    throw new AuthSdkError('Unsupported: SecureRoute only works with react-router-dom v5 or any router library with compatible APIs. Please use Route instead and wrap your component with Secure.');
+    throw new AuthSdkError('Unsupported: SecureRoute only works with react-router-dom v5 or any router library with compatible APIs. Please use Route instead and wrap your component with AuthRequired.');
   };
 }
 

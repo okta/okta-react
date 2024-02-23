@@ -13,7 +13,7 @@
 import * as React from 'react';
 import { Route, Routes, useNavigate, Outlet } from 'react-router-dom';
 import { OktaAuth } from '@okta/okta-auth-js';
-import { Security, LoginCallback, Secure, getRelativeUri } from '@okta/okta-react';
+import { Security, LoginCallback, AuthRequired, getRelativeUri } from '@okta/okta-react';
 import Home from './Home';
 import Protected from './Protected';
 import CustomLogin from './CustomLogin';
@@ -50,7 +50,7 @@ const App: React.FC<{
           <Route path='/login' element={<CustomLogin />} />
           <Route path='/widget-login'  element={<WidgetLogin baseUrl={baseUrl} />} />
           <Route path='/sessionToken-login' element={<SessionTokenLogin />} />
-          <Route path='/protected' element={<Secure><Outlet /></Secure>}>
+          <Route path='/protected' element={<AuthRequired><Outlet /></AuthRequired>}>
             <Route path='' element={<Protected />} />
           </Route>
           <Route path='/implicit/callback' element={<LoginCallback />} />

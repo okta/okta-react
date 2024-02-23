@@ -9,7 +9,7 @@
 ### Features
 
 - [#274](https://github.com/okta/okta-react/pull/274) Adds new API for integration with `react-router 6.x`
-  - Adds new `<Secure>` container
+  - Adds new `<AuthRequired>` container
   - `<LoginCallback>` acts like a container, can render children on a page that is not a login callback
   - Adds new hooks: `useAuthRequired`, `useLoginCallback`
   - Adds new HOCs: `withAuthRequired`, `withLoginCallback`

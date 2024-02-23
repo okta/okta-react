@@ -12,7 +12,7 @@
 
 import React from 'react';
 import { Router } from '@reach/router';
-import { LoginCallback, Secure } from '@okta/okta-react';
+import { LoginCallback, AuthRequired } from '@okta/okta-react';
 
 import Home from '../pages/Home';
 import Protected from '../pages/Protected';
@@ -22,9 +22,9 @@ const AppRoutes = () => {
     <Router>
       <Home path='/' />
       <LoginCallback path='login/callback' />
-      <Secure path='protected'>
+      <AuthRequired path='protected'>
         <Protected path='/' />
-      </Secure>
+      </AuthRequired>
     </Router>
   );
 };

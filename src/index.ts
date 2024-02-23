@@ -15,7 +15,7 @@ import Security from './context/Security';
 import useOktaAuth from './context/useOktaAuth';
 import withOktaAuth from './hocs/withOktaAuth';
 import LoginCallback from './containers/LoginCallback';
-import Secure from './containers/Secure';
+import AuthRequired from './containers/AuthRequired';
 import withAuthRequired from './hocs/withAuthRequired';
 import useAuthRequired from './hooks/useAuthRequired';
 import useLoginCallback from './hooks/useLoginCallback';
@@ -33,7 +33,7 @@ export {
   useOktaAuth,
   OktaContext,
   LoginCallback,
-  Secure,
+  AuthRequired,
   useAuthRequired,
   withAuthRequired,
   useLoginCallback,

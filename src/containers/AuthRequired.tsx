@@ -15,9 +15,9 @@ import useOktaAuth from '../context/useOktaAuth';
 import useAuthRequired, { AuthRequiredOptions } from '../hooks/useAuthRequired';
 import useComponents, { ComponentsOptions } from '../hooks/useComponents';
 
-export type SecureComponentProps = React.PropsWithChildren<AuthRequiredOptions & ComponentsOptions>;
+export type AuthRequiredProps = React.PropsWithChildren<AuthRequiredOptions & ComponentsOptions>;
 
-const Secure: React.FC<SecureComponentProps> = ({
+const AuthRequired: React.FC<AuthRequiredProps> = ({
   children,
   ...options
 }) => {
@@ -33,4 +33,4 @@ const Secure: React.FC<SecureComponentProps> = ({
   }
 };
 
-export default Secure;
+export default AuthRequired;

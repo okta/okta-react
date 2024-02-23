@@ -72,7 +72,7 @@ describe('react-router-dom v6', () => {
           container
         );
       });
-      expect(container.innerHTML).toBe('<p>AuthSdkError: Unsupported: SecureRoute only works with react-router-dom v5 or any router library with compatible APIs. Please use Route instead and wrap your component with Secure.</p>');
+      expect(container.innerHTML).toBe('<p>AuthSdkError: Unsupported: SecureRoute only works with react-router-dom v5 or any router library with compatible APIs. Please use Route instead and wrap your component with AuthRequired.</p>');
     });
   });
 });

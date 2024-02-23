@@ -12,7 +12,7 @@
 
 import React from 'react';
 import { Routes, Route, Outlet } from 'react-router-dom';
-import { Secure, LoginCallback } from '@okta/okta-react';
+import { AuthRequired, LoginCallback } from '@okta/okta-react';
 
 import config from '../config';
 import Home from '../pages/Home';
@@ -49,7 +49,7 @@ const AppRoutes = () => {
   return (
     <Routes>
       <Route path='/' element={usingFragmentForLoginCalback ? <Home /> : <HomeWithLoginCallback />} />
-      <Route path='/protected' element={<Secure><Outlet /></Secure>}>
+      <Route path='/protected' element={<AuthRequired><Outlet /></AuthRequired>}>
         <Route path='' element={<Protected />} />
       </Route>
       <Route path='*' element={usingFragmentForLoginCalback ? <NotFoundWithLoginCallback /> : <NotFound />} />

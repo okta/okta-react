@@ -15,11 +15,11 @@ import { mount } from 'enzyme';
 import { act } from 'react-dom/test-utils';
 import { OktaAuth, AuthState } from '@okta/okta-auth-js';
 import { render, unmountComponentAtNode } from 'react-dom';
-import { OktaContext, Security, Secure, ErrorComponent } from '@okta/okta-react';
+import { OktaContext, Security, AuthRequired, ErrorComponent } from '@okta/okta-react';
 import { SecurityProps } from '../../../src/context/Security';
 import ErrorBoundary from '../support/ErrorBoundary';
 
-describe('<Secure />', () => {
+describe('<AuthRequired />', () => {
   let oktaAuth: OktaAuth;
   let authState: AuthState | null;
   let mockProps: SecurityProps;
@@ -65,7 +65,7 @@ describe('<Secure />', () => {
       await act(async () => {
         render(
           <ErrorBoundary>
-            <Secure>{"secure!"}</Secure>
+            <AuthRequired>{"secure!"}</AuthRequired>
           </ErrorBoundary>,
           container
         );
@@ -97,7 +97,7 @@ describe('<Secure />', () => {
   
       mount(
         <Security {...mockProps}>
-          <Secure>{"secure!"}</Secure>
+          <AuthRequired>{"secure!"}</AuthRequired>
         </Security>
       );
       expect(oktaAuth.signInWithRedirect).toHaveBeenCalledTimes(1);
@@ -112,7 +112,7 @@ describe('<Secure />', () => {
       updateAuthState({ isAuthenticated: true });
       expect(oktaAuth.signInWithRedirect).not.toHaveBeenCalled();
 
-      // If the state returns to unauthenticated, the Secure should still work
+      // If the state returns to unauthenticated, the AuthRequired should still work
       updateAuthState({ isAuthenticated: false });
       expect(oktaAuth.signInWithRedirect).toHaveBeenCalledTimes(1);
     });
@@ -129,7 +129,7 @@ describe('<Secure />', () => {
       const MyComponent = function() { return <div>hello world</div>; };
       const wrapper = mount(
         <Security {...mockProps}>
-          <Secure><MyComponent /></Secure>
+          <AuthRequired><MyComponent /></AuthRequired>
         </Security>
       );
       expect(wrapper.find(MyComponent).html()).toBe('<div>hello world</div>');
@@ -147,9 +147,9 @@ describe('<Secure />', () => {
       const MyComponent = function() { return <div>hello world</div>; };
       const wrapper = mount(
         <Security {...mockProps}>
-          <Secure>
+          <AuthRequired>
             <MyComponent/>
-          </Secure>
+          </AuthRequired>
         </Security>
       );
       expect(wrapper.find(MyComponent).length).toBe(0);
@@ -164,7 +164,7 @@ describe('<Secure />', () => {
         it('calls signInWithRedirect() if onAuthRequired is not provided', () => {
           mount(
             <Security {...mockProps}>
-              <Secure>{"secure!"}</Secure>
+              <AuthRequired>{"secure!"}</AuthRequired>
             </Security>
           );
           expect(oktaAuth.setOriginalUri).toHaveBeenCalled();
@@ -175,7 +175,7 @@ describe('<Secure />', () => {
           const onAuthRequired = jest.fn();
           mount(
             <Security {...mockProps} onAuthRequired={onAuthRequired}>
-              <Secure>{"secure!"}</Secure>
+              <AuthRequired>{"secure!"}</AuthRequired>
             </Security>
           );
           expect(oktaAuth.setOriginalUri).toHaveBeenCalled();
@@ -183,12 +183,12 @@ describe('<Secure />', () => {
           expect(onAuthRequired).toHaveBeenCalledWith(oktaAuth);
         });
 
-        it('calls onAuthRequired from Secure if provide from both Security and Secure', () => {
+        it('calls onAuthRequired from AuthRequired if provide from both Security and AuthRequired', () => {
           const onAuthRequired1 = jest.fn();
           const onAuthRequired2 = jest.fn();
           mount(
             <Security {...mockProps} onAuthRequired={onAuthRequired1}>
-              <Secure onAuthRequired={onAuthRequired2}>{"secure!"}</Secure>
+              <AuthRequired onAuthRequired={onAuthRequired2}>{"secure!"}</AuthRequired>
             </Security>
           );
           expect(oktaAuth.setOriginalUri).toHaveBeenCalled();
@@ -202,7 +202,7 @@ describe('<Secure />', () => {
         it('does not call signInWithRedirect()', () => {
           mount(
             <Security {...mockProps}>
-              <Secure requiresAuth={false}>{"secure!"}</Secure>
+              <AuthRequired requiresAuth={false}>{"secure!"}</AuthRequired>
             </Security>
           );
           expect(oktaAuth.setOriginalUri).not.toHaveBeenCalled();
@@ -219,7 +219,7 @@ describe('<Secure />', () => {
       it('does not call signInWithRedirect()', () => {
         mount(
           <Security {...mockProps}>
-            <Secure>{"secure!"}</Secure>
+            <AuthRequired>{"secure!"}</AuthRequired>
           </Security>
         );
         expect(oktaAuth.signInWithRedirect).not.toHaveBeenCalled();
@@ -257,7 +257,7 @@ describe('<Secure />', () => {
             oktaAuth: oktaAuth,
             authState
           }}>
-            <Secure>{"secure!"}</Secure>
+            <AuthRequired>{"secure!"}</AuthRequired>
           </OktaContext.Provider>,
           container
         );
@@ -275,7 +275,7 @@ describe('<Secure />', () => {
             oktaAuth: oktaAuth,
             authState
           }}>
-            <Secure errorComponent={CustomErrorComponent}>{"secure!"}</Secure>
+            <AuthRequired errorComponent={CustomErrorComponent}>{"secure!"}</AuthRequired>
           </OktaContext.Provider>,
           container
         );
@@ -294,7 +294,7 @@ describe('<Secure />', () => {
             authState,
             errorComponent: SecurityErrorComponent
           }}>
-            <Secure>{"secure!"}</Secure>
+            <AuthRequired>{"secure!"}</AuthRequired>
           </OktaContext.Provider>,
           container
         );
@@ -302,12 +302,12 @@ describe('<Secure />', () => {
       expect(container?.innerHTML).toBe('<div>Security Error: DOMException: Failed to read the \'sessionStorage\' property from \'Window\': Access is denied for this document.</div>');
     });
 
-    it('uses errorComponent prop from Secure if provided from both Secure and Security', async () => {
+    it('uses errorComponent prop from AuthRequired if provided from both AuthRequired and Security', async () => {
       const SecurityErrorComponent: ErrorComponent = ({ error }) => {
         return <div>Security Error: {error.message}</div>;
       };
       const SecureErrorComponent: ErrorComponent = ({ error }) => {
-        return <div>Secure Error: {error.message}</div>;
+        return <div>AuthRequired Error: {error.message}</div>;
       };
       await act(async () => {
         render(
@@ -316,12 +316,12 @@ describe('<Secure />', () => {
             authState,
             errorComponent: SecurityErrorComponent
           }}>
-            <Secure errorComponent={SecureErrorComponent}>{"secure!"}</Secure>
+            <AuthRequired errorComponent={SecureErrorComponent}>{"secure!"}</AuthRequired>
           </OktaContext.Provider>,
           container
         );
       });
-      expect(container?.innerHTML).toBe('<div>Secure Error: DOMException: Failed to read the \'sessionStorage\' property from \'Window\': Access is denied for this document.</div>');
+      expect(container?.innerHTML).toBe('<div>AuthRequired Error: DOMException: Failed to read the \'sessionStorage\' property from \'Window\': Access is denied for this document.</div>');
     });
   });
 
@@ -335,7 +335,7 @@ describe('<Secure />', () => {
     it('does not render loading by default', () => { 
       const wrapper = mount(
         <Security {...mockProps}>
-          <Secure>{"secure!"}</Secure>
+          <AuthRequired>{"secure!"}</AuthRequired>
         </Security>
       );
       expect(oktaAuth.signInWithRedirect).toHaveBeenCalledTimes(1);
@@ -347,7 +347,7 @@ describe('<Secure />', () => {
 
       const wrapper = mount(
         <Security {...mockProps}>
-          <Secure loadingElement={MyLoadingElement}>{"secure!"}</Secure>
+          <AuthRequired loadingElement={MyLoadingElement}>{"secure!"}</AuthRequired>
         </Security>
       );
       expect(oktaAuth.signInWithRedirect).toHaveBeenCalledTimes(1);
@@ -359,20 +359,20 @@ describe('<Secure />', () => {
 
       const wrapper = mount(
         <Security {...mockProps} loadingElement={SecurityLoadingElement}>
-          <Secure>{"secure!"}</Secure>
+          <AuthRequired>{"secure!"}</AuthRequired>
         </Security>
       );
       expect(oktaAuth.signInWithRedirect).toHaveBeenCalledTimes(1);
       expect(wrapper.text()).toBe('Loading...');
     });
 
-    it('uses loadingElement prop from Secure if provided from both Secure and Security', () => {
+    it('uses loadingElement prop from AuthRequired if provided from both AuthRequired and Security', () => {
       const SecurityLoadingElement = (<p>Loading...</p>);
       const SecureLoadingElement = (<p>Redirecting to sign-in...</p>);
 
       const wrapper = mount(
         <Security {...mockProps} loadingElement={SecurityLoadingElement}>
-          <Secure loadingElement={SecureLoadingElement}>{"secure!"}</Secure>
+          <AuthRequired loadingElement={SecureLoadingElement}>{"secure!"}</AuthRequired>
         </Security>
       );
       expect(oktaAuth.signInWithRedirect).toHaveBeenCalledTimes(1);
