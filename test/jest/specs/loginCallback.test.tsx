@@ -172,14 +172,14 @@ describe('<LoginCallback />', () => {
       isLoginRedirect = false;
     });
 
-    it('if there are no children, renders error', async () => {
+    it('if there are no children, renders null', async () => {
       const wrapper = mount(
         <Security {...mockProps}>
           <LoginCallback />
         </Security>
       );
       expect(wrapper.find(LoginCallback).length).toBe(1);
-      expect(wrapper.text()).toBe('AuthSdkError: Can\'t handle login redirect');
+      expect(wrapper.text()).toBe('');
     });
   
     it('renders children as a fallback', async () => {

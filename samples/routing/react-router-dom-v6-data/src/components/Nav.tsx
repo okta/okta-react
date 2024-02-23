@@ -23,7 +23,7 @@ const Nav = () => {
       <Link id='protected-nav-link' to='/protected'>Protected</Link>
       {isAuthenticated &&
         <>
-          <Link id='protected-nav-link' to='/protected/profile'>Profile</Link>
+          <Link id='protected-profile-nav-link' to='/protected/profile'>Profile</Link>
         </>
       }
     </nav>

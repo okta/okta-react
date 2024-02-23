@@ -11,7 +11,6 @@
  */
 
 import * as React from 'react';
-import { AuthSdkError } from '@okta/okta-auth-js';
 import useLoginCallback, { LoginCallbackOptions } from '../hooks/useLoginCallback';
 import useComponents, { ComponentsOptions } from '../hooks/useComponents';
 import useOktaAuth from '../context/useOktaAuth';
@@ -27,13 +26,12 @@ const LoginCallback: React.FC<LoginCallbackProps> = ({
   const { ErrorReporter, Loading } = useComponents(oktaContext, options);
 
   if (!isLoginRedirect) {
+    // This can happen if <LoginCallback> is mounted to a wrong route
+    //  or there are no requried query/hash parameters in the URL
     if (children) {
       return (<>{children}</>);
     } else {
-      // This can happen if <LoginCallback> is mounted to a wrong route
-      //  or there are no requried query/hash parameters in the URL
-      const error = new AuthSdkError('Can\'t handle login redirect');
-      return <ErrorReporter error={error} />;
+      return null;
     }
   } else if (callbackError) {
     return <ErrorReporter error={callbackError} />;
