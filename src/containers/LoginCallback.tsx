@@ -12,7 +12,7 @@
 
 import * as React from 'react';
 import useLoginCallback, { LoginCallbackOptions } from '../hooks/useLoginCallback';
-import useComponents, { ComponentsOptions } from '../hooks/useComponents';
+import getComponents, { ComponentsOptions } from '../utils/getComponents';
 import useOktaAuth from '../context/useOktaAuth';
 
 export type LoginCallbackProps = React.PropsWithChildren<LoginCallbackOptions & ComponentsOptions>;
@@ -23,7 +23,7 @@ const LoginCallback: React.FC<LoginCallbackProps> = ({
 }) => {
   const oktaContext = useOktaAuth();
   const { isLoginRedirect, callbackError } = useLoginCallback(oktaContext, options);
-  const { ErrorReporter, Loading } = useComponents(oktaContext, options);
+  const { ErrorReporter, Loading } = getComponents(oktaContext, options);
 
   if (!isLoginRedirect) {
     // This can happen if <LoginCallback> is mounted to a wrong route

@@ -13,7 +13,7 @@
 import * as React from 'react';
 import useOktaAuth from '../context/useOktaAuth';
 import useAuthRequired, { AuthRequiredOptions } from '../hooks/useAuthRequired';
-import useComponents, { ComponentsOptions } from '../hooks/useComponents';
+import getComponents, { ComponentsOptions } from '../utils/getComponents';
 
 export type AuthRequiredProps = React.PropsWithChildren<AuthRequiredOptions & ComponentsOptions>;
 
@@ -23,7 +23,7 @@ const AuthRequired: React.FC<AuthRequiredProps> = ({
 }) => {
   const oktaContext = useOktaAuth();
   const { isAuthenticated, loginError } = useAuthRequired(oktaContext, options);
-  const { Loading, ErrorReporter } = useComponents(oktaContext, options);
+  const { Loading, ErrorReporter } = getComponents(oktaContext, options);
   if (loginError) {
     return <ErrorReporter error={loginError} />;
   } else if (!isAuthenticated) {

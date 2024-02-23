@@ -20,15 +20,13 @@ import OktaError from '../components/OktaError';
 
 export type ComponentsOptions = SecurityComponents;
 
-export interface ComponentsHook {
-  ErrorReporter: ErrorComponent;
-  Loading: LoadingElement | null;
-}
-
-const useComponents = (
+const getComponents = (
   oktaContext: IOktaContext,
   options: SecurityComponents = {}
-): ComponentsHook => {
+): {
+  ErrorReporter: ErrorComponent,
+  Loading: LoadingElement | null,
+} => {
   const {
     errorComponent,
     loadingElement,
@@ -47,4 +45,4 @@ const useComponents = (
   };
 };
 
-export default useComponents;
+export default getComponents;
