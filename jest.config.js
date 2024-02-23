@@ -37,9 +37,9 @@ module.exports = {
     // avoid react conflict in yarn workspace
     '^react$': '<rootDir>/node_modules/react',
     '^react-dom$': '<rootDir>/node_modules/react-dom',
-    '^react-router-dom$': '<rootDir>/test/jest/node_modules/react-router-dom'
+    '^react-router-dom$': '<rootDir>/node_modules/react-router-dom5'
   },
-  rootDir: '../..',
+  rootDir: '.',
   testMatch: [
     '**/test/jest/specs/*.test.*',
   ],

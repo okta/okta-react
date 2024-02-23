@@ -13,7 +13,7 @@
     "start": "yarn workspace @okta/test.app.test-harness-app start",
     "test": "yarn lint && yarn test:unit && yarn test:e2e",
     "test:e2e": "yarn workspace @okta/test.e2e test",
-    "test:unit": "yarn workspace @okta/test.unit test",
+    "test:unit": "jest",
     "bundle": "rollup -c",
     "dev": "yarn bundle --watch",
     "generate": "yarn --cwd generator install && yarn --cwd generator generate"
@@ -72,6 +72,7 @@
     "react-router-dom": ">=5.1.0"
   },
   "devDependencies": {
+    "react-router-dom5": "npm:react-router-dom@^5.2.0",
     "@babel/cli": "^7.19.3",
     "@babel/core": "^7.19.3",
     "@babel/plugin-transform-runtime": "^7.19.1",
