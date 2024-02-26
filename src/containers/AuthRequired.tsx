@@ -19,11 +19,11 @@ export type AuthRequiredProps = React.PropsWithChildren<AuthRequiredOptions & Co
 
 const AuthRequired: React.FC<AuthRequiredProps> = ({
   children,
-  ...options
+  ...props
 }) => {
   const oktaContext = useOktaAuth();
-  const { isAuthenticated, loginError } = useAuthRequired(oktaContext, options);
-  const { Loading, ErrorReporter } = getComponents(oktaContext, options);
+  const { isAuthenticated, loginError } = useAuthRequired(oktaContext, props);
+  const { Loading, ErrorReporter } = getComponents(oktaContext, props);
   if (loginError) {
     return <ErrorReporter error={loginError} />;
   } else if (!isAuthenticated) {

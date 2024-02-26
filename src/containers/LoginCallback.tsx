@@ -19,11 +19,11 @@ export type LoginCallbackProps = React.PropsWithChildren<LoginCallbackOptions & 
 
 const LoginCallback: React.FC<LoginCallbackProps> = ({
   children,
-  ...options
+  ...props
 }) => {
   const oktaContext = useOktaAuth();
-  const { isLoginRedirect, callbackError } = useLoginCallback(oktaContext, options);
-  const { ErrorReporter, Loading } = getComponents(oktaContext, options);
+  const { isLoginRedirect, callbackError } = useLoginCallback(oktaContext, props);
+  const { ErrorReporter, Loading } = getComponents(oktaContext, props);
 
   if (!isLoginRedirect) {
     // This can happen if <LoginCallback> is mounted to a wrong route
