@@ -1,3 +1,15 @@
+# 7.0.0
+
+### Breaking Changes
+
+- [#274](https://github.com/okta/okta-react/pull/274)
+  - `SecureRoute` should be imported from `@okta/okta-react/react-router-5`
+
+### Features
+
+- [#274](https://github.com/okta/okta-react/pull/274)
+  - Adds new component `<AuthRequired>` for integration with `react-router 6.x`. It should be imported from `@okta/okta-react/react-router-6`
+
 # 6.8.0
 
 ### Bug Fixes

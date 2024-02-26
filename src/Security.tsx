@@ -24,12 +24,14 @@ declare const PACKAGE_NAME: string;
 declare const PACKAGE_VERSION: string;
 declare const SKIP_VERSION_CHECK: string;
 
-const Security: React.FC<{
+export interface SecurityProps {
   oktaAuth: OktaAuth,
   restoreOriginalUri: RestoreOriginalUriFunction, 
   onAuthRequired?: OnAuthRequiredFunction,
   children?: React.ReactNode
-} & React.HTMLAttributes<HTMLDivElement>> = ({ 
+}
+
+const Security: React.FC<SecurityProps & React.HTMLAttributes<HTMLDivElement>> = ({ 
   oktaAuth,
   restoreOriginalUri, 
   onAuthRequired, 

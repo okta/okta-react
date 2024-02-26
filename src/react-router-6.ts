@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-Present, Okta, Inc. and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017-Present, Okta, Inc. and/or its affiliates. All rights reserved.
  * The Okta software accompanied by this notice is provided pursuant to the Apache License, Version 2.0 (the "License.")
  *
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
@@ -10,15 +10,6 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-import * as React from 'react';
+import AuthRequired from './AuthRequired';
 
-export type ErrorComponent = React.FC<{ error: Error }>;
-
-const OktaError: ErrorComponent = ({ error }) => { 
-  if(error.name && error.message) { 
-    return <p>{error.name}: {error.message}</p>;
-  }
-  return <p>Error: {error.toString()}</p>;
-};
-
-export default OktaError;
+export { AuthRequired };

@@ -14,8 +14,7 @@ import * as React from 'react';
 import { mount } from 'enzyme';
 import { act } from 'react-dom/test-utils';
 import { MemoryRouter } from 'react-router-dom';
-import Security from '../../src/Security';
-import { useOktaAuth } from '../../src/OktaContext';
+import { Security, useOktaAuth } from '@okta/okta-react';
 import { AuthState, OktaAuth } from '@okta/okta-auth-js';
 
 declare global {
@@ -397,7 +396,7 @@ describe('<Security />', () => {
 
   it('should only log warning of restoreOriginalUri option once', () => {
     oktaAuth.options = {
-      restoreOriginalUri
+      restoreOriginalUri: restoreOriginalUri as any
     };
     const mockProps = {
       oktaAuth,
