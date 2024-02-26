@@ -472,16 +472,16 @@ export default MessageList = () => {
 
 #### restoreOriginalUri
 
-*(required)* Callback function. Called to restore original URI during [oktaAuth.handleLoginRedirect()](https://github.com/okta/okta-auth-js#handleloginredirecttokens) is called. Will override [restoreOriginalUri option of oktaAuth](https://github.com/okta/okta-auth-js#restoreoriginaluri)
+*(required)* Callback function. Called to restore original URI during [oktaAuth.handleLoginRedirect()](https://github.com/okta/okta-auth-js#handleloginredirecttokens) is called. Will override [restoreOriginalUri option of oktaAuth](https://github.com/okta/okta-auth-js#restoreoriginaluri). Please use the appropriate navigate functions for your router: [useNavigate](https://reactrouter.com/en/main/hooks/use-navigate) for `react-router 6.x`, [useHistory](https://v5.reactrouter.com/web/api/Hooks/usehistory) for `reat-router 5.x`.
 
 #### onAuthRequired
 
-*(optional)* Callback function. Called when authentication is required. If this is not supplied, `okta-react` redirects to Okta. This callback will receive [oktaAuth][Okta Auth SDK] instance as the first function parameter. This is triggered when a [SecureRoute](#secureroute) is accessed without authentication. A common use case for this callback is to redirect users to a custom login route when authentication is required for a [SecureRoute](#secureroute).
+*(optional)* Callback function. Called when authentication is required. If this is not supplied, `okta-react` redirects to Okta. This callback will receive [oktaAuth][Okta Auth SDK] instance as the first function parameter. This is triggered when a [SecureRoute](#secureroute) or [AuthRequired](#authrequired) is accessed without authentication. A common use case for this callback is to redirect users to a custom login route when authentication is required for a [SecureRoute](#secureroute).
 
 #### Example
 
 ```jsx
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { OktaAuth, toRelativeUrl } from '@okta/okta-auth-js';
 
 const oktaAuth = new OktaAuth({
@@ -491,17 +491,17 @@ const oktaAuth = new OktaAuth({
 });
 
 export default App = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
 
-  const customAuthHandler = (oktaAuth) => {
+  const customAuthHandler = React.useCallback((oktaAuth) => {
     // Redirect to the /login page that has a CustomLoginComponent
-    // This example is specific to React-Router
+    // This example is specific to React-Router 6
     history.push('/login');
-  };
+  }, [navigate]);
 
-  const restoreOriginalUri = async (_oktaAuth, originalUri) => {
-    history.replace(toRelativeUrl(originalUri || '/', window.location.origin));
-  };
+  const restoreOriginalUri = React.useCallback(async (_oktaAuth, originalUri) => {
+    navigate(toRelativeUrl(originalUri || '/', window.location.origin), { replace: true });
+  }, [navigate]);
 
   return (
     <Security
@@ -509,8 +509,10 @@ export default App = () => {
       onAuthRequired={customAuthHandler}
       restoreOriginalUri={restoreOriginalUri}
     >
-      <Route path='/login' component={CustomLoginComponent}>
-      {/* some routes here */}
+      <Routes>
+        <Route path='/login' element={<CustomLoginComponent />} />
+        {/* some routes here */}
+      </Routes>
     </Security>
   );
 };
@@ -536,8 +538,10 @@ class App extends Component {
   render() {
     return (
       <Security oktaAuth={oktaAuth} restoreOriginalUri={restoreOriginalUri}>
-        <Route path='/' exact={true} component={Home} />
-        <Route path='/login/callback' component={LoginCallback} />
+        <Routes>
+          <Route path='/' element={<Home />} />
+          <Route path='/login/callback' element={<LoginCallback />} />
+        </Routes>
       </Security>
     );
   }
@@ -613,23 +617,26 @@ An `interaction_required` error is an indication that you should resume the auth
 If using the [Okta SignIn Widget][], redirecting to your login route will allow the widget to automatically resume your authentication transaction.
 
 ```jsx
-// Example assumes you are using react-router with a customer-hosted Okta SignIn Widget on your /login route
+// Example assumes you are using react-router 6 with a customer-hosted Okta SignIn Widget on your /login route
 // This code is wherever you have your <Security> component, which must be inside your <Router> for react-router
-  const onAuthResume = async () => { 
-    history.push('/login');
-  };
+const navigate = useNavigate();
+const onAuthResume = React.useCallback(async () => { 
+  navigate('/login');
+}, [navigate]);
 
 return (
   <Security
     oktaAuth={oktaAuth}
     restoreOriginalUri={restoreOriginalUri}
   >
-    <Switch>
-      <SecureRoute path='/protected' component={Protected} />
-      <Route path='/login/callback' render={ (props) => <LoginCallback {...props} onAuthResume={ onAuthResume } /> } />
-      <Route path='/login' component={CustomLogin} />
-      <Route path='/' component={Home} />
-    </Switch>
+    <Routes>
+      <Route path='/' element={<Home />} />
+      <Route path='/protected' element={<AuthRequired />}>
+        <Route path='' element={<Protected />} />
+      </Route>
+      <Route path='/login/callback' element={<LoginCallback onAuthResume={onAuthResume} />} />
+      <Route path='/login' element={<CustomLogin />} />
+    </Routes>
   </Security>
 );
 ```
@@ -661,6 +668,20 @@ export default MyComponent = () => {
 ```
 
 ## Migrating between versions
+
+### Migrating from 6.x to 7.x
+
+If you are using `react-router` `5.x` with [SecureRoute](#secureroute), you need to change an import from
+```jsx
+import { SecureRoute } from '@okta/okta-react';
+```
+to
+```jsx
+import { SecureRoute } from '@okta/okta-react/react-router-5';
+```
+
+If you are using `react-router` `6.x`, please use [AuthRequired](#authrequired).
+
 
 ### Migrating from 5.x to 6.x
 
