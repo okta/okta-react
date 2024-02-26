@@ -311,63 +311,6 @@ describe('<Security />', () => {
     });
   });
 
-  describe('useLoginCallbackCheck', () => {
-    beforeEach(function() {
-      jest.useFakeTimers();
-    });
-    afterEach(() => {
-      jest.useRealTimers();
-    });
-
-    it('should render error if login callback was not called after 1s', async () => {
-      const mockProps = {
-        oktaAuth,
-        restoreOriginalUri
-      };
-      oktaAuth.isLoginRedirect = jest.fn().mockImplementation(() => true);
-      oktaAuth.authStateManager.getAuthState = jest.fn().mockImplementation(() => null);
-
-      const container = document.createElement('div');
-      const wrapper = mount(
-        <Security {...mockProps} />,
-        { attachTo: container }
-      );
-      act(() => {
-        jest.runAllTimers();
-      });
-      expect(container.innerHTML).toContain(
-        'Login callback was not called on the login redirect page. Please check your routes.'
-      );
-      wrapper.unmount();
-    });
-
-    it('should not render error if login callback was called (auth state has been updated)', async () => {
-      const mockProps = {
-        oktaAuth,
-        restoreOriginalUri
-      };
-      oktaAuth.isLoginRedirect = jest.fn().mockImplementation(() => true);
-      oktaAuth.authStateManager.getAuthState = jest.fn().mockImplementation(() => null);
-  
-      const container = document.createElement('div');
-      const wrapper = mount(
-        <Security {...mockProps} />,
-        { attachTo: container }
-      );
-      act(() => {
-        // Simulate call of oktaAuth.authStateManager.updateAuthState()
-        // that should always happen on oktaAuth.handleLoginRedirect()
-        oktaAuth.authStateManager.getAuthState = jest.fn().mockImplementation(() => ({
-          isAuthenticated: false
-        }));
-  
-        jest.runAllTimers();
-      });
-      expect(container.innerHTML).toBe('');
-      wrapper.unmount();
-    });
-  });
-
   it('should accept a className prop and render a component using the className', () => {
     const mockProps = {
       oktaAuth,
