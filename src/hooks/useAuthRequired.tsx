@@ -16,7 +16,6 @@ import { getRelativeUri } from '../utils';
 
 export interface AuthRequiredOptions {
   onAuthRequired?: OnAuthRequiredFunction;
-  requiresAuth?: boolean; // default: true
 }
 
 export interface AuthRequiredHook {
@@ -30,7 +29,6 @@ const useAuthRequired = (
 ): AuthRequiredHook => {
   const {
     onAuthRequired,
-    requiresAuth,
   } = options;
   const pendingLogin = React.useRef(false);
   const [ loginError, setLoginError ] = React.useState<Error | null>(null);
@@ -63,12 +61,6 @@ const useAuthRequired = (
   ]);
 
   React.useEffect(() => {
-    if (requiresAuth === false) {
-      // In `SecureRoute` (for react-router 5) we pass `requiresAuth: false`
-      //  if route doesn't match current path
-      return;
-    }
-
     if (!authState) {
       // Auth state has not been loaded yet
       return;
@@ -86,7 +78,6 @@ const useAuthRequired = (
       });
     }
   }, [
-    requiresAuth,
     authState,
     handleLogin,
   ]);

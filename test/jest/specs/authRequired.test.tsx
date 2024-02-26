@@ -160,54 +160,40 @@ describe('<AuthRequired />', () => {
         authState = {};
       });
 
-      describe('requiresAuth=true or undefined', () => {
-        it('calls signInWithRedirect() if onAuthRequired is not provided', () => {
-          mount(
-            <Security {...mockProps}>
-              <AuthRequired>{"secure!"}</AuthRequired>
-            </Security>
-          );
-          expect(oktaAuth.setOriginalUri).toHaveBeenCalled();
-          expect(oktaAuth.signInWithRedirect).toHaveBeenCalled();
-        });
+      it('calls signInWithRedirect() if onAuthRequired is not provided', () => {
+        mount(
+          <Security {...mockProps}>
+            <AuthRequired>{"secure!"}</AuthRequired>
+          </Security>
+        );
+        expect(oktaAuth.setOriginalUri).toHaveBeenCalled();
+        expect(oktaAuth.signInWithRedirect).toHaveBeenCalled();
+      });
   
-        it('calls onAuthRequired if provided from Security', () => {
-          const onAuthRequired = jest.fn();
-          mount(
-            <Security {...mockProps} onAuthRequired={onAuthRequired}>
-              <AuthRequired>{"secure!"}</AuthRequired>
-            </Security>
-          );
-          expect(oktaAuth.setOriginalUri).toHaveBeenCalled();
-          expect(oktaAuth.signInWithRedirect).not.toHaveBeenCalled();
-          expect(onAuthRequired).toHaveBeenCalledWith(oktaAuth);
-        });
-
-        it('calls onAuthRequired from AuthRequired if provide from both Security and AuthRequired', () => {
-          const onAuthRequired1 = jest.fn();
-          const onAuthRequired2 = jest.fn();
-          mount(
-            <Security {...mockProps} onAuthRequired={onAuthRequired1}>
-              <AuthRequired onAuthRequired={onAuthRequired2}>{"secure!"}</AuthRequired>
-            </Security>
-          );
-          expect(oktaAuth.setOriginalUri).toHaveBeenCalled();
-          expect(oktaAuth.signInWithRedirect).not.toHaveBeenCalled();
-          expect(onAuthRequired1).not.toHaveBeenCalled();
-          expect(onAuthRequired2).toHaveBeenCalledWith(oktaAuth);
-        });
+      it('calls onAuthRequired if provided from Security', () => {
+        const onAuthRequired = jest.fn();
+        mount(
+          <Security {...mockProps} onAuthRequired={onAuthRequired}>
+            <AuthRequired>{"secure!"}</AuthRequired>
+          </Security>
+        );
+        expect(oktaAuth.setOriginalUri).toHaveBeenCalled();
+        expect(oktaAuth.signInWithRedirect).not.toHaveBeenCalled();
+        expect(onAuthRequired).toHaveBeenCalledWith(oktaAuth);
       });
 
-      describe('requiresAuth = false', () => {
-        it('does not call signInWithRedirect()', () => {
-          mount(
-            <Security {...mockProps}>
-              <AuthRequired requiresAuth={false}>{"secure!"}</AuthRequired>
-            </Security>
-          );
-          expect(oktaAuth.setOriginalUri).not.toHaveBeenCalled();
-          expect(oktaAuth.signInWithRedirect).not.toHaveBeenCalled();
-        });
+      it('calls onAuthRequired from AuthRequired if provide from both Security and AuthRequired', () => {
+        const onAuthRequired1 = jest.fn();
+        const onAuthRequired2 = jest.fn();
+        mount(
+          <Security {...mockProps} onAuthRequired={onAuthRequired1}>
+            <AuthRequired onAuthRequired={onAuthRequired2}>{"secure!"}</AuthRequired>
+          </Security>
+        );
+        expect(oktaAuth.setOriginalUri).toHaveBeenCalled();
+        expect(oktaAuth.signInWithRedirect).not.toHaveBeenCalled();
+        expect(onAuthRequired1).not.toHaveBeenCalled();
+        expect(onAuthRequired2).toHaveBeenCalledWith(oktaAuth);
       });
     });
 
