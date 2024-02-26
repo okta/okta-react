@@ -74,6 +74,11 @@
     "react-dom": ">=16.8.0",
     "react-router-dom": ">=5.1.0"
   },
+  "peerDependenciesMeta": {
+    "react-router-dom": {
+      "optional": true
+    }
+  },
   "devDependencies": {
     "@babel/cli": "^7.19.3",
     "@babel/core": "^7.19.3",
