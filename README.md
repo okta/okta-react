@@ -595,6 +595,9 @@ Example:
 
 `SecureOutlet` runs internal `handleLogin` process which may throw Error when `authState.isAuthenticated` is false. By default, the Error will be rendered with `OktaError` component. If you wish to customise the display of such error messages, you can pass your own component as an `errorComponent` prop to `<SecureOutlet>`.  The error value will be passed to the `errorComponent` as the `error` prop.
 
+#### loadingElement
+
+By default, `SecureOutlet` will display nothing during redirect to a login page or running `onAuthRequired`. If you wish to customize this, you can pass your React element (not component) as `loadingElement` prop to `<SecureOutlet>`. Example: `<p>Loading...</p>`
 
 ### `LoginCallback`
 

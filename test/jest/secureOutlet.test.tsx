@@ -259,4 +259,61 @@ describe('<SecureOutlet />', () => {
     });
   });
 
+  describe('shows loading', () => {
+    let container: HTMLElement | null = null;
+    beforeEach(() => {
+      // setup a DOM element as a render target
+      container = document.createElement('div');
+      document.body.appendChild(container);
+      
+      authState = {
+        isAuthenticated: false
+      };
+    });
+
+    afterEach(() => {
+      // cleanup on exiting
+      unmountComponentAtNode(container as Element);
+      container?.remove();
+      container = null;
+    });
+
+    it('does not render loading by default', () => { 
+      const wrapper = mount(
+        <Security {...mockProps}>
+          <SecureOutlet />
+        </Security>
+      );
+      expect(wrapper.text()).toBe('');
+    });
+
+    it('custom loading element can be passed to render during loading', () => {
+      const MyLoadingElement = (<p>loading...</p>);
+
+      const wrapper = mount(
+        <Security {...mockProps}>
+          <SecureOutlet loadingElement={MyLoadingElement} />
+        </Security>
+      );
+      expect(wrapper.text()).toBe('loading...');
+    });
+
+    it('does not render loading element on error', async () => {
+      oktaAuth.setOriginalUri = jest.fn().mockImplementation(() => {
+        throw new Error('oh drat!');
+      });
+      const MyLoadingElement = (<p>loading...</p>);
+
+      await act(async () => {
+        render(
+          <Security {...mockProps}>
+            <SecureOutlet loadingElement={MyLoadingElement} />
+          </Security>,
+          container
+        );
+      });
+      expect(container?.innerHTML).toBe('<p>Error: oh drat!</p>');
+    });
+  });
+
 });

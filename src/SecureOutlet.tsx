@@ -34,12 +34,16 @@ if ('Outlet' in ReactRouterDom) {
   };
 }
 
-const SecureOutlet: React.FC<{
+export interface SecureOutletProps {
   onAuthRequired?: OnAuthRequiredFunction;
   errorComponent?: React.ComponentType<{ error: Error }>;
-} & React.HTMLAttributes<HTMLDivElement>> = ({ 
+  loadingElement?: React.ReactElement;
+}
+
+const SecureOutlet: React.FC<SecureOutletProps & React.HTMLAttributes<HTMLDivElement>> = ({ 
   onAuthRequired,
   errorComponent,
+  loadingElement = null,
   ...props
 }) => {
   // Need to use OktaContext imported from `@okta/okta-react`
@@ -94,15 +98,15 @@ const SecureOutlet: React.FC<{
     return <ErrorReporter error={handleLoginError} />;
   }
 
-  if (!authState || !authState.isAuthenticated) {
-    return null;
+  if (authState?.isAuthenticated) {
+    return (
+      <Outlet
+        { ...props }
+      />
+    );
   }
 
-  return (
-    <Outlet
-      { ...props }
-    />
-  );
+  return loadingElement;
 };
 
 export default SecureOutlet;
