@@ -16,14 +16,14 @@ import { act } from 'react-dom/test-utils';
 import { OktaAuth, AuthState } from '@okta/okta-auth-js';
 import { render, unmountComponentAtNode } from 'react-dom';
 import { OktaContext, Security } from '@okta/okta-react';
-import { AuthRequired } from '@okta/okta-react/react-router-6';
+import { SecureOutlet } from '@okta/okta-react/react-router-6';
 import { MemoryRouter, Route, Routes } from 'react-router-dom6';
 import { SecurityProps } from '../../src/Security';
 import { ErrorComponent } from '../../src/OktaError';
 
 jest.mock('react-router-dom', () => jest.requireActual('react-router-dom6'));
 
-describe('<AuthRequired />', () => {
+describe('<SecureOutlet />', () => {
   let oktaAuth: OktaAuth;
   let authState: AuthState | null;
   let mockProps: SecurityProps;
@@ -76,7 +76,7 @@ describe('<AuthRequired />', () => {
   
       mount(
         <Security {...mockProps}>
-          <AuthRequired />
+          <SecureOutlet />
         </Security>
       );
       expect(oktaAuth.signInWithRedirect).toHaveBeenCalledTimes(1);
@@ -91,7 +91,7 @@ describe('<AuthRequired />', () => {
       updateAuthState({ isAuthenticated: true });
       expect(oktaAuth.signInWithRedirect).not.toHaveBeenCalled();
 
-      // If the state returns to unauthenticated, the AuthRequired should still work
+      // If the state returns to unauthenticated, the SecureOutlet should still work
       updateAuthState({ isAuthenticated: false });
       expect(oktaAuth.signInWithRedirect).toHaveBeenCalledTimes(1);
     });
@@ -110,7 +110,7 @@ describe('<AuthRequired />', () => {
         <MemoryRouter>
           <Security {...mockProps}>
             <Routes>
-              <Route path='/' element={<AuthRequired />}>
+              <Route path='/' element={<SecureOutlet />}>
                 <Route path='/' element={<MyComponent />} />
               </Route>
             </Routes>
@@ -134,7 +134,7 @@ describe('<AuthRequired />', () => {
         <MemoryRouter>
           <Security {...mockProps}>
             <Routes>
-              <Route path='/' element={<AuthRequired />}>
+              <Route path='/' element={<SecureOutlet />}>
                 <Route path='/' element={<MyComponent />} />
               </Route>
             </Routes>
@@ -152,7 +152,7 @@ describe('<AuthRequired />', () => {
       it('calls signInWithRedirect() if onAuthRequired is not provided', () => {
         mount(
           <Security {...mockProps}>
-            <AuthRequired />
+            <SecureOutlet />
           </Security>
         );
         expect(oktaAuth.setOriginalUri).toHaveBeenCalled();
@@ -163,7 +163,7 @@ describe('<AuthRequired />', () => {
         const onAuthRequired = jest.fn();
         mount(
           <Security {...mockProps} onAuthRequired={onAuthRequired}>
-            <AuthRequired />
+            <SecureOutlet />
           </Security>
         );
         expect(oktaAuth.setOriginalUri).toHaveBeenCalled();
@@ -171,12 +171,12 @@ describe('<AuthRequired />', () => {
         expect(onAuthRequired).toHaveBeenCalledWith(oktaAuth);
       });
 
-      it('calls onAuthRequired from AuthRequired if provide from both Security and AuthRequired', () => {
+      it('calls onAuthRequired from SecureOutlet if provide from both Security and SecureOutlet', () => {
         const onAuthRequired1 = jest.fn();
         const onAuthRequired2 = jest.fn();
         mount(
           <Security {...mockProps} onAuthRequired={onAuthRequired1}>
-            <AuthRequired onAuthRequired={onAuthRequired2} />
+            <SecureOutlet onAuthRequired={onAuthRequired2} />
           </Security>
         );
         expect(oktaAuth.setOriginalUri).toHaveBeenCalled();
@@ -194,7 +194,7 @@ describe('<AuthRequired />', () => {
       it('does not call signInWithRedirect()', () => {
         mount(
           <Security {...mockProps}>
-            <AuthRequired />
+            <SecureOutlet />
           </Security>
         );
         expect(oktaAuth.signInWithRedirect).not.toHaveBeenCalled();
@@ -232,7 +232,7 @@ describe('<AuthRequired />', () => {
             oktaAuth: oktaAuth,
             authState
           }}>
-            <AuthRequired />
+            <SecureOutlet />
           </OktaContext.Provider>,
           container
         );
@@ -250,7 +250,7 @@ describe('<AuthRequired />', () => {
             oktaAuth: oktaAuth,
             authState
           }}>
-            <AuthRequired errorComponent={CustomErrorComponent} />
+            <SecureOutlet errorComponent={CustomErrorComponent} />
           </OktaContext.Provider>,
           container
         );

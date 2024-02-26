@@ -30,11 +30,11 @@ if ('Outlet' in ReactRouterDom) {
 } else {
   // throw when useMatch is triggered
   Outlet = () => { 
-    throw new AuthSdkError('Unsupported: AuthRequired only works with react-router-dom v6 or any router library with compatible APIs. See examples under the "samples" folder for how to implement your own custom SecureRoute Component.');
+    throw new AuthSdkError('Unsupported: SecureOutlet only works with react-router-dom v6 or any router library with compatible APIs. See examples under the "samples" folder for how to implement your own custom SecureRoute Component.');
   };
 }
 
-const AuthRequired: React.FC<{
+const SecureOutlet: React.FC<{
   onAuthRequired?: OnAuthRequiredFunction;
   errorComponent?: React.ComponentType<{ error: Error }>;
 } & React.HTMLAttributes<HTMLDivElement>> = ({ 
@@ -43,7 +43,7 @@ const AuthRequired: React.FC<{
   ...props
 }) => {
   // Need to use OktaContext imported from `@okta/okta-react`
-  // Because AuthRequired needs to be imported from `@okta/okta-react/react-router-6`
+  // Because SecureOutlet needs to be imported from `@okta/okta-react/react-router-6`
   const { oktaAuth, authState, _onAuthRequired } = useOktaAuth(OktaContext);
   const pendingLogin = React.useRef(false);
   const [handleLoginError, setHandleLoginError] = React.useState<Error | null>(null);
@@ -105,4 +105,4 @@ const AuthRequired: React.FC<{
   );
 };
 
-export default AuthRequired;
+export default SecureOutlet;

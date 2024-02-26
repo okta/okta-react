@@ -111,9 +111,9 @@ See these [samples](https://github.com/okta/okta-react/tree/master/samples/routi
 `okta-react` provides a number of pre-built components to connect a `react-router`-based SPA to Okta OIDC information.  You can use these components directly, or use them as a basis for building your own components.
 
 - [SecureRoute](#secureroute) - A normal `Route` except authentication is needed to render the component.
-- [AuthRequired](#authrequired) - A route component to be used for rendering routes with authentication requirement.
+- [SecureOutlet](#secureoutlet) - A route component to be used for rendering routes with authentication requirement.
 
-> ⚠️ NOTE ⚠️<br> The [SecureRoute](#secureroute) component packaged in this SDK only works with `react-router-dom` `5.x`.<br>The [AuthRequired](#authrequired) component works with `react-router-dom` `6.x`.
+> ⚠️ NOTE ⚠️<br> The [SecureRoute](#secureroute) component packaged in this SDK only works with `react-router-dom` `5.x`.<br>The [SecureOutlet](#secureoutlet) component works with `react-router-dom` `6.x`.
 
 
 ### General components
@@ -197,7 +197,7 @@ export default class extends Component {
 ```jsx
 import React from 'react';
 import { Security, LoginCallback } from '@okta/okta-react';
-import { AuthRequired } from '@okta/okta-react/react-route-6';
+import { SecureOutlet } from '@okta/okta-react/react-route-6';
 import { OktaAuth, toRelativeUrl } from '@okta/okta-auth-js';
 import { BrowserRouter as Router, Route, useNavigate } from 'react-router-dom';
 import Home from './Home';
@@ -219,7 +219,7 @@ const App = () => {
     <Security oktaAuth={oktaAuth} restoreOriginalUri={restoreOriginalUri}>
       <Routes>
         <Route path='/' element={<Home />} />
-        <Route path='/protected' element={<AuthRequired />}>
+        <Route path='/protected' element={<SecureOutlet />}>
           <Route path='' element={<Protected />} />
         </Route>
         <Route path='/login/callback' element={<LoginCallback />} />
@@ -244,7 +244,7 @@ export default AppWithRouterAccess;
 
 import React from 'react';
 import { Security, LoginCallback } from '@okta/okta-react';
-import { AuthRequired } from '@okta/okta-react/react-route-6';
+import { SecureOutlet } from '@okta/okta-react/react-route-6';
 import { OktaAuth, toRelativeUrl } from '@okta/okta-auth-js';
 import { RouterProvider, createBrowserRouter, Outlet, useNavigate } from 'react-router-dom';
 import Home from './Home';
@@ -287,7 +287,7 @@ const routes = [
       },
       {
         path: 'protected',
-        element: <AuthRequired />,
+        element: <SecureOutlet />,
         children: [
           {
             path: '',
@@ -476,7 +476,7 @@ export default MessageList = () => {
 
 #### onAuthRequired
 
-*(optional)* Callback function. Called when authentication is required. If this is not supplied, `okta-react` redirects to Okta. This callback will receive [oktaAuth][Okta Auth SDK] instance as the first function parameter. This is triggered when a [SecureRoute](#secureroute) or [AuthRequired](#authrequired) is accessed without authentication. A common use case for this callback is to redirect users to a custom login route when authentication is required.
+*(optional)* Callback function. Called when authentication is required. If this is not supplied, `okta-react` redirects to Okta. This callback will receive [oktaAuth][Okta Auth SDK] instance as the first function parameter. This is triggered when a [SecureRoute](#secureroute) or [SecureOutlet](#secureoutlet) is accessed without authentication. A common use case for this callback is to redirect users to a custom login route when authentication is required.
 
 #### Example
 
@@ -573,15 +573,15 @@ As with `Route` from `react-router-dom`, `<SecureRoute>` can take one of:
 - a `render` prop that is passed a function that returns a component.  This function will be passed any additional props that react-router injects (such as `history` or `match`)
 - children components
 
-### `AuthRequired`
+### `SecureOutlet`
 
-`AuthRequired` is a component for a route that renders its child route elements only if the user is authenticated. If the user is not authenticated, it calls [onAuthRequired](#onauthrequired) if it exists, otherwise, it redirects to Okta.
+`SecureOutlet` is a component for a route that renders its child route elements only if the user is authenticated. If the user is not authenticated, it calls [onAuthRequired](#onauthrequired) if it exists, otherwise, it redirects to Okta.
 
-> ⚠️ NOTE ⚠️<br> The [AuthRequired](#authrequired) component works with `react-router-dom` `6.x`.
+> ⚠️ NOTE ⚠️<br> The [SecureOutlet](#secureoutlet) component works with `react-router-dom` `6.x`.
 
 Example:
 ```jsx
-<Route path='/protected' element={<AuthRequired />}>
+<Route path='/protected' element={<SecureOutlet />}>
   <Route path='' element={<Protected />} />
   <Route path='profile' element={<Profile />} />
 </Route>
@@ -589,11 +589,11 @@ Example:
 
 #### onAuthRequired
 
-`AuthRequired` accepts `onAuthRequired` as an optional prop, it overrides [onAuthRequired](#onauthrequired) from the [Security](#security) component if exists.
+`SecureOutlet` accepts `onAuthRequired` as an optional prop, it overrides [onAuthRequired](#onauthrequired) from the [Security](#security) component if exists.
 
 #### errorComponent
 
-`AuthRequired` runs internal `handleLogin` process which may throw Error when `authState.isAuthenticated` is false. By default, the Error will be rendered with `OktaError` component. If you wish to customise the display of such error messages, you can pass your own component as an `errorComponent` prop to `<AuthRequired>`.  The error value will be passed to the `errorComponent` as the `error` prop.
+`SecureOutlet` runs internal `handleLogin` process which may throw Error when `authState.isAuthenticated` is false. By default, the Error will be rendered with `OktaError` component. If you wish to customise the display of such error messages, you can pass your own component as an `errorComponent` prop to `<SecureOutlet>`.  The error value will be passed to the `errorComponent` as the `error` prop.
 
 
 ### `LoginCallback`
@@ -631,7 +631,7 @@ return (
   >
     <Routes>
       <Route path='/' element={<Home />} />
-      <Route path='/protected' element={<AuthRequired />}>
+      <Route path='/protected' element={<SecureOutlet />}>
         <Route path='' element={<Protected />} />
       </Route>
       <Route path='/login/callback' element={<LoginCallback onAuthResume={onAuthResume} />} />
@@ -680,7 +680,7 @@ to
 import { SecureRoute } from '@okta/okta-react/react-router-5';
 ```
 
-If you are using `react-router` `6.x`, please use [AuthRequired](#authrequired).
+If you are using `react-router` `6.x`, please use [SecureOutlet](#secureoutlet).
 
 
 ### Migrating from 5.x to 6.x

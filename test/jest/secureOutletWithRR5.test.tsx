@@ -16,7 +16,7 @@ import * as React from 'react';
 import { act } from 'react-dom/test-utils';
 import { render } from 'react-dom';
 import { OktaAuth, AuthState } from '@okta/okta-auth-js';
-import { AuthRequired } from '@okta/okta-react/react-router-6';
+import { SecureOutlet } from '@okta/okta-react/react-router-6';
 import { MemoryRouter } from 'react-router-dom6';
 import { Security } from '@okta/okta-react';
 import { SecurityProps } from '../../src/Security';
@@ -24,7 +24,7 @@ import ErrorBoundary from './support/ErrorBoundary';
 
 jest.mock('react-router-dom', () => jest.requireActual('react-router-dom'));
 
-describe('<AuthRequired />', () => {
+describe('<SecureOutlet />', () => {
   describe('with react-router-dom v5', () => {
     let oktaAuth: OktaAuth;
     let authState: AuthState | null;
@@ -69,14 +69,14 @@ describe('<AuthRequired />', () => {
           <ErrorBoundary>
             <MemoryRouter>
               <Security {...mockProps}>
-                <AuthRequired />
+                <SecureOutlet />
               </Security>
             </MemoryRouter>
           </ErrorBoundary>,
           container
         );
       });
-      expect(container.innerHTML).toBe('<p>AuthSdkError: Unsupported: AuthRequired only works with react-router-dom v6 or any router library with compatible APIs. See examples under the "samples" folder for how to implement your own custom SecureRoute Component.</p>');
+      expect(container.innerHTML).toBe('<p>AuthSdkError: Unsupported: SecureOutlet only works with react-router-dom v6 or any router library with compatible APIs. See examples under the "samples" folder for how to implement your own custom SecureRoute Component.</p>');
     })
   });
 });
