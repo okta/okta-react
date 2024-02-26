@@ -51,9 +51,8 @@ const Security: React.FC<SecurityProps & React.HTMLAttributes<HTMLDivElement>> =
 
     // Add default restoreOriginalUri callback
     // props.restoreOriginalUri is required, therefore if options.restoreOriginalUri exists, there are 2 callbacks
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    if (oktaAuth.options.restoreOriginalUri) {
+    const originalCallback = oktaAuth.options.restoreOriginalUri;
+    if (originalCallback) {
       console.warn('Two custom restoreOriginalUri callbacks are detected. The one from the OktaAuth configuration will be overridden by the provided restoreOriginalUri prop from the Security component.');
     }
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -62,6 +61,10 @@ const Security: React.FC<SecurityProps & React.HTMLAttributes<HTMLDivElement>> =
       restoreOriginalUri(oktaAuth as OktaAuth, originalUri);
     }) as ((oktaAuth: OktaAuth, originalUri?: string) => Promise<void>);
 
+    return () => {
+      // Restore original callback
+      oktaAuth.options.restoreOriginalUri = originalCallback;
+    };
   }, []); // empty array, only check on component mount
 
   React.useEffect(() => {
