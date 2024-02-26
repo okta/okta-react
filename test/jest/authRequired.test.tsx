@@ -104,7 +104,7 @@ describe('<AuthRequired />', () => {
       };
     });
 
-    it('will render wrapped component', () => {
+    it('will render wrapped route component', () => {
       const MyComponent = function() { return <div>hello world</div>; };
       const wrapper = mount(
         <MemoryRouter>
@@ -128,7 +128,7 @@ describe('<AuthRequired />', () => {
       };
     });
 
-    it('will not render wrapped component', () => {
+    it('will not render wrapped route component', () => {
       const MyComponent = function() { return <div>hello world</div>; };
       const wrapper = mount(
         <MemoryRouter>
@@ -152,7 +152,7 @@ describe('<AuthRequired />', () => {
       it('calls signInWithRedirect() if onAuthRequired is not provided', () => {
         mount(
           <Security {...mockProps}>
-            <AuthRequired>{"secure!"}</AuthRequired>
+            <AuthRequired />
           </Security>
         );
         expect(oktaAuth.setOriginalUri).toHaveBeenCalled();
@@ -163,7 +163,7 @@ describe('<AuthRequired />', () => {
         const onAuthRequired = jest.fn();
         mount(
           <Security {...mockProps} onAuthRequired={onAuthRequired}>
-            <AuthRequired>{"secure!"}</AuthRequired>
+            <AuthRequired />
           </Security>
         );
         expect(oktaAuth.setOriginalUri).toHaveBeenCalled();
@@ -176,7 +176,7 @@ describe('<AuthRequired />', () => {
         const onAuthRequired2 = jest.fn();
         mount(
           <Security {...mockProps} onAuthRequired={onAuthRequired1}>
-            <AuthRequired onAuthRequired={onAuthRequired2}>{"secure!"}</AuthRequired>
+            <AuthRequired onAuthRequired={onAuthRequired2} />
           </Security>
         );
         expect(oktaAuth.setOriginalUri).toHaveBeenCalled();
@@ -194,7 +194,7 @@ describe('<AuthRequired />', () => {
       it('does not call signInWithRedirect()', () => {
         mount(
           <Security {...mockProps}>
-            <AuthRequired>{"secure!"}</AuthRequired>
+            <AuthRequired />
           </Security>
         );
         expect(oktaAuth.signInWithRedirect).not.toHaveBeenCalled();
@@ -232,7 +232,7 @@ describe('<AuthRequired />', () => {
             oktaAuth: oktaAuth,
             authState
           }}>
-            <AuthRequired>{"secure!"}</AuthRequired>
+            <AuthRequired />
           </OktaContext.Provider>,
           container
         );
@@ -250,7 +250,7 @@ describe('<AuthRequired />', () => {
             oktaAuth: oktaAuth,
             authState
           }}>
-            <AuthRequired errorComponent={CustomErrorComponent}>{"secure!"}</AuthRequired>
+            <AuthRequired errorComponent={CustomErrorComponent} />
           </OktaContext.Provider>,
           container
         );

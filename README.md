@@ -243,7 +243,7 @@ export default AppWithRouterAccess;
 // src/App.js
 
 import React from 'react';
-import { Security, LoginCallback, getRelativeUri } from '@okta/okta-react';
+import { Security, LoginCallback } from '@okta/okta-react';
 import { AuthRequired } from '@okta/okta-react/react-route-6';
 import { OktaAuth, toRelativeUrl } from '@okta/okta-auth-js';
 import { RouterProvider, createBrowserRouter, Outlet, useNavigate } from 'react-router-dom';
@@ -476,7 +476,7 @@ export default MessageList = () => {
 
 #### onAuthRequired
 
-*(optional)* Callback function. Called when authentication is required. If this is not supplied, `okta-react` redirects to Okta. This callback will receive [oktaAuth][Okta Auth SDK] instance as the first function parameter. This is triggered when a [SecureRoute](#secureroute) or [AuthRequired](#authrequired) is accessed without authentication. A common use case for this callback is to redirect users to a custom login route when authentication is required for a [SecureRoute](#secureroute).
+*(optional)* Callback function. Called when authentication is required. If this is not supplied, `okta-react` redirects to Okta. This callback will receive [oktaAuth][Okta Auth SDK] instance as the first function parameter. This is triggered when a [SecureRoute](#secureroute) or [AuthRequired](#authrequired) is accessed without authentication. A common use case for this callback is to redirect users to a custom login route when authentication is required.
 
 #### Example
 
