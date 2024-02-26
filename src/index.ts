@@ -18,7 +18,6 @@ import LoginCallback from './containers/LoginCallback';
 import AuthRequired from './containers/AuthRequired';
 import withAuthRequired from './hocs/withAuthRequired';
 import useAuthRequired from './hooks/useAuthRequired';
-import useLoginCallback from './hooks/useLoginCallback';
 import {
   getRelativeUri,
   waitForAuthenticated,
@@ -35,7 +34,6 @@ export {
   AuthRequired,
   useAuthRequired,
   withAuthRequired,
-  useLoginCallback,
   getRelativeUri,
   waitForAuthenticated,
 };

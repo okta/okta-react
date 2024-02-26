@@ -47,7 +47,6 @@
 [context]: #context
 [useAuthRequired]: #useauthrequired
 [withAuthRequired]: #withauthrequired
-[useLoginCallback]: #uselogincallback
 [getRelativeUri]: #getrelativeuri
 [restoreOriginalUri]: #restoreoriginaluri
 [onAuthResume]: #onauthresume
@@ -165,7 +164,7 @@ See these [samples][Routing Samples] to get started
 - [AuthRequired][] - A container that renders its children only if the user has been authenticated. Otherwise performs a redirect to a login page or calls [onAuthRequired][] that can be passed in props to `AuthRequired` or outer `Security`.
 
 
-Users of routers other than `react-router` can use [useOktaAuth][] to see if `authState` is not null and `authState.isAuthenticated` is true.  If it is false, you can send them to login via [oktaAuth.signInWithRedirect()][]. Also consider using [useAuthRequired][] and [useLoginCallback][] hooks. See the hooks [implementation][src/hooks] as an example.
+Users of routers other than `react-router` can use [useOktaAuth][] to see if `authState` is not null and `authState.isAuthenticated` is true.  If it is false, you can send them to login via [oktaAuth.signInWithRedirect()][]. See the hooks [implementation][src/hooks] as an example.
 
 ### React-Router components (optional)
 
@@ -204,8 +203,6 @@ These hooks can be used in a component that is a descendant of a [`Security`][Se
 Class-based components can gain access to the same information via the [withOktaAuth][] Higher Order Component, which provides `oktaAuth` and `authState` as props to the wrapped component.
 
 - [useAuthRequired][] - (*advanced*) can be used in your own component with an authentication requirement if you don't want to use the [AuthRequired][] container. If the user is not authenticated, it performs a redirect to a login page or calls [onAuthRequired][] callback. Returns an object with property `isAuthenticated` - if it's `true` you can render your component and process logic that requires an authenticated user.
-
-- [useLoginCallback][] - (*advanced*) can be used to include optional login callback logic to your component if you don't want to use the [LoginCallback][] container. E.g. if a login redirect URL is resolved to a root (`/`) route or a 404 (`*`) route, you can use this hook in your corresponding components (like `Home`, `NotFound` etc.). Returns an object with property `isLoginRedirect` - if it's `false` you can render your component.
 
 
 ### Minimal Example in React Router
@@ -795,7 +792,7 @@ As with `Route` from `react-router-dom`, `<SecureRoute>` can take one of:
 `LoginCallback` handles the callback after the redirect to and back from the Okta-hosted login page.  
 By default, it parses the tokens from the uri, stores them, then redirects to `/`.  
 If a [AuthRequired][], [SecureRoute][] or [useAuthRequired][] caused the redirect, then the callback redirects to the secured route.  
-For more advanced cases, this component can be copied to your own source tree and modified as needed, also consider using [useLoginCallback][].
+For more advanced cases, this component can be copied to your own source tree and modified as needed.
 
 #### errorComponent
 
@@ -914,18 +911,6 @@ export default MySecureComponent = () => {
 
 `withAuthRequired(Component, { onAuthRequired? })` is a [higher-order component][] which performs a user authentication check like a [useAuthRequired][] hook. Injects following props into the wrapped component - `isAuthenticated` and `loginError`.  
 Components wrapped in `withAuthRequired()` need to be a child or descendant of a `<Security>` component to have the necessary context.
-
-### `useLoginCallback`
-
-> This hook is used under the hood in a [LoginCallback][] component.  Use this hook if you need the login callback handling logic, but can't use `LoginCallback`. 
-
-`useLoginCallback(context, { onAuthResume? })` is a React Hook that can handle the callback after the redirect from the Okta-hosted login page.  
-Returns an object with two properties:
-  - `isLoginRedirect` - `false` is a green light to render your component, `true` means the hook is performing a login callback logic.
-  - `callbackError` - an exception caught from [oktaAuth.handleLoginRedirect()][] or `authState.error`
-
-Accepts two arguments: required [context][] (returned from [useOktaAuth][]) and optional options object with property [onAuthResume][].  
-Components calling this hook need to be a child or descendant of a `<Security>` component to have the necessary context.  
 
 
 ### `getRelativeUri`
