@@ -24,12 +24,16 @@ declare const PACKAGE_NAME: string;
 declare const PACKAGE_VERSION: string;
 declare const SKIP_VERSION_CHECK: string;
 
-const Security: React.FC<{
+export interface SecurityProps {
   oktaAuth: OktaAuth,
   restoreOriginalUri: RestoreOriginalUriFunction, 
   onAuthRequired?: OnAuthRequiredFunction,
   children?: React.ReactNode
-} & React.HTMLAttributes<HTMLDivElement>> = ({ 
+}
+
+let restoreOriginalUriOverridden = false;
+
+const Security: React.FC<SecurityProps & React.HTMLAttributes<HTMLDivElement>> = ({ 
   oktaAuth,
   restoreOriginalUri, 
   onAuthRequired, 
@@ -47,10 +51,14 @@ const Security: React.FC<{
       return;
     }
 
+    // Fixes issue #227: Prevents multiple effect calls in React18 StrictMode
+    // Top-level variable solution follows: https://react.dev/learn/you-might-not-need-an-effect#initializing-the-application
+    if (restoreOriginalUriOverridden) {
+      return;
+    }
+
     // Add default restoreOriginalUri callback
     // props.restoreOriginalUri is required, therefore if options.restoreOriginalUri exists, there are 2 callbacks
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     if (oktaAuth.options.restoreOriginalUri) {
       console.warn('Two custom restoreOriginalUri callbacks are detected. The one from the OktaAuth configuration will be overridden by the provided restoreOriginalUri prop from the Security component.');
     }
@@ -59,7 +67,7 @@ const Security: React.FC<{
     oktaAuth.options.restoreOriginalUri = (async (oktaAuth: unknown, originalUri: string) => {
       return restoreOriginalUri(oktaAuth as OktaAuth, originalUri);
     }) as ((oktaAuth: OktaAuth, originalUri?: string) => Promise<void>);
-
+    restoreOriginalUriOverridden = true;
   }, []); // empty array, only check on component mount
 
   React.useEffect(() => {

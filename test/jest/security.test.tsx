@@ -14,9 +14,9 @@ import * as React from 'react';
 import { mount } from 'enzyme';
 import { act } from 'react-dom/test-utils';
 import { MemoryRouter } from 'react-router-dom';
-import Security from '../../src/Security';
-import { useOktaAuth } from '../../src/OktaContext';
 import { AuthState, OktaAuth } from '@okta/okta-auth-js';
+import { SecurityProps } from '../../src/Security';
+import { IOktaContext } from '../../src/OktaContext';
 
 declare global {
   let SKIP_VERSION_CHECK: any;
@@ -24,14 +24,21 @@ declare global {
 
 console.warn = jest.fn();
 
+/* Forces Jest to use same version of React to enable fresh module state via isolateModulesAsync() call in beforeEach().
+Otherwise, React raises "Invalid hook call" error because of multiple copies of React, see: https://github.com/jestjs/jest/issues/11471#issuecomment-851266333 */
+jest.mock('react', () => jest.requireActual('react'));
+
 describe('<Security />', () => {
   let oktaAuth: OktaAuth;
   let initialAuthState: AuthState | null;
+  let Security: React.FC<SecurityProps>;
+  let useOktaAuth: () => IOktaContext;
+
   const restoreOriginalUri = async (_: OktaAuth, url: string) => {
     // leaving empty, doesn't affect tests, was causing jsdom error (location.href is not supported)
     // location.href = url;
   };
-  beforeEach(() => {
+  beforeEach(async () => {
     jest.clearAllMocks();
 
     initialAuthState = {
@@ -54,6 +61,13 @@ describe('<Security />', () => {
       stop: jest.fn(),
       isLoginRedirect: jest.fn().mockImplementation(() => false),
     } as any;
+
+    // Dynamically import Security and useOktaAuth before each test to refresh the modules' states
+    // Specifically used to reset the global restoreOriginalUriOverridden variable in Security.tsx between tests
+    await jest.isolateModulesAsync(async () => {
+      Security = (await import('../../src/Security')).default;
+      useOktaAuth = (await import('../../src/OktaContext')).useOktaAuth;
+    });
   });
 
   it('adds an environmemnt to oktaAuth\'s _oktaUserAgent', () => {

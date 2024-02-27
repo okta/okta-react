@@ -37,7 +37,9 @@ describe('<OktaError />', () => {
       const errorCode = '400'; 
       const errorLink = 'http://errorlink.com';
       const errorId = 'fake error id'; 
-      const errorCauses = ['fake error cause'];
+      const errorCauses = [{
+        errorSummary: 'fake error cause'
+      }];
       const error = new AuthApiError({ errorSummary, errorCode, errorLink, errorId, errorCauses });
       const wrapper = mount(
         <OktaError error={error}/>
