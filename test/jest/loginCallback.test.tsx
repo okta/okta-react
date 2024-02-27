@@ -12,18 +12,21 @@
 
 import React from 'react'
 import { mount } from 'enzyme';
+import { AuthState, OktaAuth } from '@okta/okta-auth-js';
+import { SecurityProps } from '../../src/Security';
+import { LoginCallbackProps } from '../../src/LoginCallback';
 
 /* Forces Jest to use same version of React to enable fresh module state via isolateModulesAsync() call in beforeEach().
 Otherwise, React raises "Invalid hook call" error because of multiple copies of React, see: https://github.com/jestjs/jest/issues/11471#issuecomment-851266333 */
 jest.mock('react', () => jest.requireActual('react'));
 
 describe('<LoginCallback />', () => {
-  let oktaAuth: any;
-  let authState: any;
-  let mockProps: any;
-  let Security: any;
-  let LoginCallback: any;
-  const restoreOriginalUri = async (_: any, url: string) => {
+  let oktaAuth: OktaAuth;
+  let authState: AuthState | null;
+  let mockProps: SecurityProps;
+  let Security: React.FC<SecurityProps>;
+  let LoginCallback: React.FC<LoginCallbackProps>;
+  const restoreOriginalUri = async (_: OktaAuth, url: string) => {
     location.href = url;
   };
   beforeEach(async () => {
@@ -43,7 +46,7 @@ describe('<LoginCallback />', () => {
       idx: {
         isInteractionRequired: jest.fn().mockImplementation( () => false ),
       }
-    };
+    } as any as OktaAuth;
     mockProps = {
       oktaAuth, 
       restoreOriginalUri
@@ -117,7 +120,7 @@ describe('<LoginCallback />', () => {
     it('can be passed a custom component to render', () => {
       authState = {
         isAuthenticated: true,
-        error: { has: 'errorData' }
+        error: { has: 'errorData' } as any
       };
 
       const MyErrorComponent = (props: any) => { 

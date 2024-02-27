@@ -14,7 +14,7 @@ import * as React from 'react';
 import { useOktaAuth, OnAuthResumeFunction } from './OktaContext';
 import OktaError from './OktaError';
 
-interface LoginCallbackProps {
+export interface LoginCallbackProps {
   errorComponent?: React.ComponentType<{ error: Error }>;
   onAuthResume?: OnAuthResumeFunction;
   loadingElement?: React.ReactElement;

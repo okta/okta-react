@@ -1,3 +1,15 @@
+# 7.0.0
+
+### Breaking Changes
+
+- [#275](https://github.com/okta/okta-react/pull/275)
+  - `SecureRoute` should be imported from `@okta/okta-react/react-router-5`
+
+### Features
+
+- [#275](https://github.com/okta/okta-react/pull/275)
+  - Adds new component `<SecureOutlet>` for integration with `react-router 6.x`. It should be imported from `@okta/okta-react/react-router-6`
+
 # 6.9.0
 
 ### Bug Fixes
