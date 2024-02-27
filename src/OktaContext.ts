@@ -25,6 +25,7 @@ export interface IOktaContext {
 
 const OktaContext = React.createContext<IOktaContext | null>(null);
 
-export const useOktaAuth = (): IOktaContext => React.useContext(OktaContext) as IOktaContext;
+export const useOktaAuth = (context?: typeof OktaContext): IOktaContext =>
+    React.useContext(context ?? OktaContext) as IOktaContext;
 
 export default OktaContext;

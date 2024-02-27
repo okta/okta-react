@@ -18,6 +18,25 @@
     "dev": "yarn bundle --watch",
     "generate": "yarn --cwd generator install && yarn --cwd generator generate"
   },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/bundles/types/index.d.ts",
+      "import": "./dist/bundles/okta-react.esm.js",
+      "require": "./dist/bundles/okta-react.cjs.js",
+      "default": "./dist/bundles/okta-react.umd.js"
+    },
+    "./react-router-5": {
+      "types": "./dist/bundles/types/react-router-5.d.ts",
+      "import": "./dist/bundles/okta-react-router-5.esm.js",
+      "require": "./dist/bundles/okta-react-router-5.cjs.js"
+    },
+    "./react-router-6": {
+      "types": "./dist/bundles/types/react-router-6.d.ts",
+      "import": "./dist/bundles/okta-react-router-6.esm.js",
+      "require": "./dist/bundles/okta-react-router-6.cjs.js"
+    }
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/okta/okta-react.git"
@@ -54,6 +73,11 @@
     "react": ">=16.8.0",
     "react-dom": ">=16.8.0",
     "react-router-dom": ">=5.1.0"
+  },
+  "peerDependenciesMeta": {
+    "react-router-dom": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@babel/cli": "^7.19.3",
@@ -99,6 +123,7 @@
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "react-router-dom": "5.2.0",
+    "react-router-dom6": "npm:react-router-dom@^6.22.0",
     "rimraf": "^2.6.2",
     "rollup": "^2.33.1",
     "rollup-plugin-cleanup": "^3.2.1",
