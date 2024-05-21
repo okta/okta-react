@@ -80,6 +80,18 @@ module.exports = [
     ]
   },
   {
+    name: '@okta/samples.react.react-router-dom-v6-loader',
+    nested: 'routing/',
+    useSiw: false,
+    useSemanticUi: false,
+    usePolyfill: false,
+    reactRouterDomVersion: '6.23.1',
+    reachRouterVersion: false,
+    specs: [
+      'router-sample'
+    ]
+  },
+  {
     name: '@okta/samples.react.react-router-dom-v5',
     nested: 'routing/',
     useSiw: false,
