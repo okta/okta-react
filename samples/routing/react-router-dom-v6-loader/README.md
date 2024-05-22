@@ -1,4 +1,6 @@
-# Okta React Router DOM v6 Sample App
+# Okta React Router DOM v6 Loader pattern Sample App
+
+> Based on https://github.com/remix-run/react-router/tree/main/examples/auth-router-provider
 
 Sample app to demonstrate how to use `react-router-dom` v6 with `@okta/okta-react`.
 
@@ -18,7 +20,7 @@ ISSUER=<YOUR ISSUER URL>
 
 ## Start
 ```bash
-$ yarn workspace @okta/samples.react.react-router-dom-v6 start
+$ yarn workspace @okta/samples.react.react-router-dom-v6-loader start
 ```
 OR
 ```bash

@@ -12,7 +12,6 @@
 
 import React from 'react';
 
-import { LoginCallback } from '@okta/okta-react';
 import { RouterProvider, createBrowserRouter, Outlet, redirect, LoaderFunctionArgs } from 'react-router-dom';
 import authProvider from './auth';
 
@@ -47,6 +46,7 @@ const router = createBrowserRouter([
         Component: Home
       },
       {
+        // must be public route
         path: 'login/callback',
         async loader () {
           const uri = await authProvider.handleAuthCodeCallback();

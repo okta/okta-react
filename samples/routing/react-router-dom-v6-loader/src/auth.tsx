@@ -3,6 +3,7 @@ import { OktaAuth, toRelativeUrl } from '@okta/okta-auth-js';
 import config from './config';
 
 const oktaAuth = new OktaAuth(config.oidc);
+oktaAuth.start();
 oktaAuth.options.restoreOriginalUri = async ()=>{};   // async no-op
 
 const signin = async (path = '') => {
@@ -25,6 +26,8 @@ const getUser = async () => {
   const { idToken } = oktaAuth.tokenManager.getTokensSync();
   // option to call /userinfo as well
   return idToken ? { ...idToken.claims } : null;
+  // const userInfo = await oktaAuth.getUser();
+  // return userInfo ? { ...userInfo } : null;
 };
 
 const getAccessToken = async () => {
@@ -32,7 +35,6 @@ const getAccessToken = async () => {
 };
 
 const handleAuthCodeCallback = async () => {
-  console.log('here');
   // return await oktaAuth.handleLoginRedirect();
   if (oktaAuth.isLoginRedirect()) {
     const { tokens, state } = await oktaAuth.token.parseFromUrl();
