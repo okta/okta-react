@@ -169,21 +169,26 @@ describe('<Security />', () => {
 
     it('should await the resulting Promise when a fn returning a Promise is provided', async () => {
       oktaAuth.options = {};
-      let resolver: (r: any) => void;
-      const promise = new Promise(resolve => {
-        resolver = resolve;
-      });
-      const restore = (_: OktaAuth, url: string): Promise<any> => {
-        resolver(restoreOriginalUri(_, url));
-        return promise;
-      };
 
-      mount(<Security oktaAuth={oktaAuth} restoreOriginalUri={restore} />);
+      let hasResolved = false;
+      const restoreSpy = jest.fn().mockImplementation(() => {
+        return new Promise(resolve => {
+          // adds small sleep so non-awaited promises will "fallthrough"
+          // and the test will fail, unless it awaits for the sleep duration
+          // (meaning the resulting promise was awaited)
+          setTimeout(() => {
+            hasResolved = true;
+            resolve('foo');
+          }, 500);
+        });
+      });
+
+      mount(<Security oktaAuth={oktaAuth} restoreOriginalUri={restoreSpy} />);
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const result = oktaAuth.options.restoreOriginalUri!(oktaAuth, 'foo');
-      expect(result === promise).toEqual(true);
-      await expect(result).toResolve();
-      await expect(promise).toResolve();
+      await oktaAuth.options.restoreOriginalUri!(oktaAuth, 'foo');
+      expect(hasResolved).toEqual(true);
+      expect(restoreSpy).toHaveBeenCalledTimes(1);
+      expect(restoreSpy).toHaveBeenCalledWith(oktaAuth, 'foo');
     });
   });
 

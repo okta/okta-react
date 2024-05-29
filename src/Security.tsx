@@ -55,8 +55,10 @@ const Security: React.FC<{
       console.warn('Two custom restoreOriginalUri callbacks are detected. The one from the OktaAuth configuration will be overridden by the provided restoreOriginalUri prop from the Security component.');
     }
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore `restoreOriginalUri` is purposely not exposed in Options interface
-    oktaAuth.options.restoreOriginalUri = restoreOriginalUri;
+    // @ts-ignore
+    oktaAuth.options.restoreOriginalUri = (async (oktaAuth: unknown, originalUri: string) => {
+      return restoreOriginalUri(oktaAuth as OktaAuth, originalUri);
+    }) as ((oktaAuth: OktaAuth, originalUri?: string) => Promise<void>);
 
   }, []); // empty array, only check on component mount
 
