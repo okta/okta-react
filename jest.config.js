@@ -28,6 +28,9 @@ module.exports = {
   setupFiles: [
     './test/jest/setup.ts'
   ],
+  setupFilesAfterEnv: [
+    './test/jest/jest-extension.ts'
+  ],
   testEnvironment: 'jsdom',
   transform: { 
     '^.+\\.tsx?$': ['ts-jest', {
