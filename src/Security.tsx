@@ -65,7 +65,7 @@ const Security: React.FC<SecurityProps & React.HTMLAttributes<HTMLDivElement>> =
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     oktaAuth.options.restoreOriginalUri = (async (oktaAuth: unknown, originalUri: string) => {
-      restoreOriginalUri(oktaAuth as OktaAuth, originalUri);
+      return restoreOriginalUri(oktaAuth as OktaAuth, originalUri);
     }) as ((oktaAuth: OktaAuth, originalUri?: string) => Promise<void>);
     restoreOriginalUriOverridden = true;
   }, []); // empty array, only check on component mount
