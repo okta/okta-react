@@ -28,7 +28,8 @@ describe('<Security />', () => {
   let oktaAuth: OktaAuth;
   let initialAuthState: AuthState | null;
   const restoreOriginalUri = async (_: OktaAuth, url: string) => {
-    location.href = url;
+    // leaving empty, doesn't affect tests, was causing jsdom error (location.href is not supported)
+    // location.href = url;
   };
   beforeEach(() => {
     jest.clearAllMocks();
@@ -136,14 +137,58 @@ describe('<Security />', () => {
     });
   });
 
-  it('should set default restoreOriginalUri callback in oktaAuth.options', () => {
-    oktaAuth.options = {};
-    const mockProps = {
-      oktaAuth,
-      restoreOriginalUri
-    };
-    mount(<Security {...mockProps} />);
-    expect(oktaAuth.options.restoreOriginalUri).toBeDefined();
+  describe('restoreOriginalUri', () => {
+    it('should set default restoreOriginalUri callback in oktaAuth.options', () => {
+      oktaAuth.options = {};
+      const mockProps = {
+        oktaAuth,
+        restoreOriginalUri
+      };
+      mount(<Security {...mockProps} />);
+      expect(oktaAuth.options.restoreOriginalUri).toBeDefined();
+    });
+
+    it('should only log warning of restoreOriginalUri option once', () => {
+      oktaAuth.options = {
+        restoreOriginalUri
+      };
+      const mockProps = {
+        oktaAuth,
+        restoreOriginalUri
+      };
+      const warning = 'Two custom restoreOriginalUri callbacks are detected. The one from the OktaAuth configuration will be overridden by the provided restoreOriginalUri prop from the Security component.';
+      const spy = jest.spyOn(console, 'warn');
+      const wrapper = mount(<Security {...mockProps} />);
+      expect(spy).toBeCalledTimes(1);
+      expect(spy).toBeCalledWith(warning);
+      spy.mockClear();
+      wrapper.setProps({restoreOriginalUri: 'foo'});    // forces rerender
+      expect(spy).toBeCalledTimes(0);
+    });
+
+    it('should await the resulting Promise when a fn returning a Promise is provided', async () => {
+      oktaAuth.options = {};
+
+      let hasResolved = false;
+      const restoreSpy = jest.fn().mockImplementation(() => {
+        return new Promise(resolve => {
+          // adds small sleep so non-awaited promises will "fallthrough"
+          // and the test will fail, unless it awaits for the sleep duration
+          // (meaning the resulting promise was awaited)
+          setTimeout(() => {
+            hasResolved = true;
+            resolve('foo');
+          }, 500);
+        });
+      });
+
+      mount(<Security oktaAuth={oktaAuth} restoreOriginalUri={restoreSpy} />);
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      await oktaAuth.options.restoreOriginalUri!(oktaAuth, 'foo');
+      expect(hasResolved).toEqual(true);
+      expect(restoreSpy).toHaveBeenCalledTimes(1);
+      expect(restoreSpy).toHaveBeenCalledWith(oktaAuth, 'foo');
+    });
   });
 
   it('gets initial state from oktaAuth and exposes it on the context', () => {
@@ -393,23 +438,5 @@ describe('<Security />', () => {
       );
       expect(wrapper.find(Security).html()).toBe('<p>AuthSdkError: No restoreOriginalUri callback passed to Security Component.</p>');
     });
-  });
-
-  it('should only log warning of restoreOriginalUri option once', () => {
-    oktaAuth.options = {
-      restoreOriginalUri
-    };
-    const mockProps = {
-      oktaAuth,
-      restoreOriginalUri
-    };
-    const warning = 'Two custom restoreOriginalUri callbacks are detected. The one from the OktaAuth configuration will be overridden by the provided restoreOriginalUri prop from the Security component.';
-    const spy = jest.spyOn(console, 'warn');
-    const wrapper = mount(<Security {...mockProps} />);
-    expect(spy).toBeCalledTimes(1);
-    expect(spy).toBeCalledWith(warning);
-    spy.mockClear();
-    wrapper.setProps({restoreOriginalUri: 'foo'});    // forces rerender
-    expect(spy).toBeCalledTimes(0);
   });
 });

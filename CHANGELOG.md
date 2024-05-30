@@ -1,3 +1,9 @@
+# 6.9.0
+
+### Bug Fixes
+
+-[#284](https://github.com/okta/okta-react/pull/284) fix: passes the return value of `restoreOriginalUri()`, so promises will be awaited
+
 # 6.8.0
 
 ### Bug Fixes
