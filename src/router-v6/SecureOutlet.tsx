@@ -10,42 +10,46 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
+import type { OnAuthRequiredFunction } from '../OktaContext';
+
 import * as React from 'react';
-import { useOktaAuth, OnAuthRequiredFunction } from './OktaContext';
 import * as ReactRouterDom from 'react-router-dom';
 import { toRelativeUrl, AuthSdkError } from '@okta/okta-auth-js';
 // Important! Don't import OktaContext from './OktaContext'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { OktaContext } from '@okta/okta-react';
-import OktaError from './OktaError';
+import { OktaContext, useOktaAuth } from '@okta/okta-react';
+import OktaError from '../OktaError';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-let useMatch: any;
-if ('useRouteMatch' in ReactRouterDom) {
-  // trick static analyzer to avoid "'useRouteMatch' is not exported" error
+let Outlet: any;
+if ('Outlet' in ReactRouterDom) {
+  // trick static analyzer to avoid "'Outlet' is not exported" error
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  useMatch = (ReactRouterDom as any)['useRouteMatch' in ReactRouterDom ? 'useRouteMatch' : ''];
+  Outlet = (ReactRouterDom as any)['Outlet' in ReactRouterDom ? 'Outlet' : ''];
 } else {
   // throw when useMatch is triggered
-  useMatch = () => { 
-    throw new AuthSdkError('Unsupported: SecureRoute only works with react-router-dom v5 or any router library with compatible APIs. See examples under the "samples" folder for how to implement your own custom SecureRoute Component.');
+  Outlet = () => { 
+    throw new AuthSdkError('Unsupported: SecureOutlet only works with react-router-dom v6 or any router library with compatible APIs. See examples under the "samples" folder for how to implement your own custom SecureRoute Component.');
   };
 }
 
-const SecureRoute: React.FC<{
+export interface SecureOutletProps {
   onAuthRequired?: OnAuthRequiredFunction;
   errorComponent?: React.ComponentType<{ error: Error }>;
-} & ReactRouterDom.RouteProps & React.HTMLAttributes<HTMLDivElement>> = ({ 
+  loadingElement?: React.ReactElement;
+}
+
+const SecureOutlet: React.FC<SecureOutletProps & React.HTMLAttributes<HTMLDivElement>> = ({ 
   onAuthRequired,
   errorComponent,
-  ...routeProps
+  loadingElement = null,
+  ...props
 }) => {
   // Need to use OktaContext imported from `@okta/okta-react`
-  // Because SecureRoute needs to be imported from `@okta/okta-react/react-router-5`
+  // Because SecureOutlet needs to be imported from `@okta/okta-react/react-router-6`
   const { oktaAuth, authState, _onAuthRequired } = useOktaAuth(OktaContext);
-  const match = useMatch(routeProps);
   const pendingLogin = React.useRef(false);
   const [handleLoginError, setHandleLoginError] = React.useState<Error | null>(null);
   const ErrorReporter = errorComponent || OktaError;
@@ -68,11 +72,6 @@ const SecureRoute: React.FC<{
       }
     };
 
-    // Only process logic if the route matches
-    if (!match) {
-      return;
-    }
-
     if (!authState) {
       return;
     }
@@ -91,9 +90,8 @@ const SecureRoute: React.FC<{
 
   }, [
     authState,
-    oktaAuth, 
-    match, 
-    onAuthRequired, 
+    oktaAuth,
+    onAuthRequired,
     _onAuthRequired
   ]);
 
@@ -101,15 +99,15 @@ const SecureRoute: React.FC<{
     return <ErrorReporter error={handleLoginError} />;
   }
 
-  if (!authState || !authState.isAuthenticated) {
-    return null;
+  if (authState?.isAuthenticated) {
+    return (
+      <Outlet
+        { ...props }
+      />
+    );
   }
 
-  return (
-    <ReactRouterDom.Route
-      { ...routeProps }
-    />
-  );
+  return loadingElement;
 };
 
-export default SecureRoute;
+export default SecureOutlet;

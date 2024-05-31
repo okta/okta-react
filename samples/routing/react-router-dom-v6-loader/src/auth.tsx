@@ -37,7 +37,7 @@ const getAccessToken = async () => {
 const handleAuthCodeCallback = async () => {
   // return await oktaAuth.handleLoginRedirect();
   if (oktaAuth.isLoginRedirect()) {
-    const { tokens, state } = await oktaAuth.token.parseFromUrl();
+    const { tokens, state, responseType } = await oktaAuth.token.parseFromUrl();
     oktaAuth.tokenManager.setTokens(tokens);
     const originalUri = oktaAuth.getOriginalUri(state);
     return originalUri;
