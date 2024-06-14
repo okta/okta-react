@@ -362,7 +362,7 @@ export default MessageList = () => {
         try {
           const response = await fetch('http://localhost:{serverPort}/api/messages', {
             headers: {
-              Authorization: 'Bearer ' + authState.accessToken.accessToken
+              Authorization: 'Bearer ' + authState.accessToken
             }
           });
           const data = await response.json();
