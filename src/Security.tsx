@@ -33,13 +33,6 @@ const Security: React.FC<SecurityProps> = ({
   onAuthRequired, 
   children
 }) => { 
-  const [authState, setAuthState] = React.useState(() => {
-    if (!oktaAuth) {
-      return null;
-    }
-    return oktaAuth.authStateManager.getAuthState();
-  });
-
   React.useEffect(() => {
     if (!oktaAuth || !restoreOriginalUri) {
       return;
@@ -77,21 +70,21 @@ const Security: React.FC<SecurityProps> = ({
     }
 
     // Update Security provider with latest authState
-    const currentAuthState = oktaAuth.authStateManager.getAuthState();
-    if (currentAuthState !== authState) {
-      setAuthState(currentAuthState);
-    }
-    const handler = (authState: AuthState) => {
-      setAuthState(authState);
-    };
-    oktaAuth.authStateManager.subscribe(handler);
+    // const currentAuthState = oktaAuth.authStateManager.getAuthState();
+    // if (currentAuthState !== authState) {
+    //   setAuthState(currentAuthState);
+    // }
+    // const handler = (authState: AuthState) => {
+    //   setAuthState(authState);
+    // };
+    // oktaAuth.authStateManager.subscribe(handler);
 
     // Trigger an initial change event to make sure authState is latest
     oktaAuth.start();
 
-    return () => {
-      oktaAuth.authStateManager.unsubscribe(handler);
-    };
+    // return () => {
+    //   oktaAuth.authStateManager.unsubscribe(handler);
+    // };
   }, [oktaAuth]);
 
   if (!oktaAuth) {
@@ -111,7 +104,7 @@ const Security: React.FC<SecurityProps> = ({
   return (
     <OktaContext.Provider value={{ 
       oktaAuth, 
-      authState, 
+      authState: null,  // TODO: remove this line 
       _onAuthRequired: onAuthRequired
     }}>
       {children}

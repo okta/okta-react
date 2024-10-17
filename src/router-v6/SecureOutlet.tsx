@@ -38,10 +38,10 @@ if ('Outlet' in ReactRouterDom) {
 export interface SecureOutletProps {
   onAuthRequired?: OnAuthRequiredFunction;
   errorComponent?: React.ComponentType<{ error: Error }>;
-  loadingElement?: React.ReactElement;
+  loadingElement?: React.ReactElement<{ foo: string }> 
 }
 
-const SecureOutlet: React.FC<SecureOutletProps & React.HTMLAttributes<HTMLDivElement>> = ({ 
+const SecureOutlet: React.FC<SecureOutletProps> = ({ 
   onAuthRequired,
   errorComponent,
   loadingElement = null,
@@ -51,42 +51,54 @@ const SecureOutlet: React.FC<SecureOutletProps & React.HTMLAttributes<HTMLDivEle
   // Because SecureOutlet needs to be imported from `@okta/okta-react/react-router-6`
   const { oktaAuth, authState, _onAuthRequired } = useOktaAuth(OktaContext);
   const pendingLogin = React.useRef(false);
+  const [hasAuthenticated, setHasAuthenticated] = React.useState<boolean>(false);
   const [handleLoginError, setHandleLoginError] = React.useState<Error | null>(null);
   const ErrorReporter = errorComponent || OktaError;
 
+  // wraps `oktaAuth.signInWithRedirect` in a Promise that never resolves, so the full page
+  // redirect has time to occur before the Promise resolves and code begins executing again
+  const signInWithRedirect = () => {
+    return new Promise(() => oktaAuth.signInWithRedirect());
+  }
+
   React.useEffect(() => {
-    const handleLogin = async () => {
+    const verifyCredential = async () => {
       if (pendingLogin.current) {
         return;
       }
 
       pendingLogin.current = true;
 
-      const originalUri = toRelativeUrl(window.location.href, window.location.origin);
-      oktaAuth.setOriginalUri(originalUri);
-      const onAuthRequiredFn = onAuthRequired || _onAuthRequired;
-      if (onAuthRequiredFn) {
-        await onAuthRequiredFn(oktaAuth);
-      } else {
-        await oktaAuth.signInWithRedirect();
+      const isAuthenticated = await oktaAuth.isAuthenticated();
+      
+      if (hasAuthenticated !== isAuthenticated) {
+        setHasAuthenticated(isAuthenticated);
+      }
+
+      if (!isAuthenticated) {
+        // no tokens exist, trigger login
+        const originalUri = toRelativeUrl(window.location.href, window.location.origin);
+        oktaAuth.setOriginalUri(originalUri);
+        const onAuthRequiredFn = onAuthRequired || _onAuthRequired;
+        if (onAuthRequiredFn) {
+          await onAuthRequiredFn(oktaAuth);
+        } else {
+          await signInWithRedirect();
+        }
       }
     };
 
-    if (!authState) {
-      return;
-    }
-
-    if (authState.isAuthenticated) {
+    if (hasAuthenticated) {
       pendingLogin.current = false;
       return;
     }
 
     // Start login if app has decided it is not logged in and there is no pending signin
-    if(!authState.isAuthenticated) { 
-      handleLogin().catch(err => {
+    if (!hasAuthenticated) { 
+      verifyCredential().catch(err => {
         setHandleLoginError(err as Error);
       });
-    }  
+    }
 
   }, [
     authState,
@@ -99,7 +111,7 @@ const SecureOutlet: React.FC<SecureOutletProps & React.HTMLAttributes<HTMLDivEle
     return <ErrorReporter error={handleLoginError} />;
   }
 
-  if (authState?.isAuthenticated) {
+  if (hasAuthenticated) {
     return (
       <Outlet
         { ...props }
