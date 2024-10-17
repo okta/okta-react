@@ -33,13 +33,18 @@ if [ -z "${TEST_SUITE_ID}" ]; then
     fi
   }
 
-  get_vault_secret_key () {
+  get_terminus_secret () {
     # ensures the env var is set
     key="$3"
     if [ -z "${!key}" ]; then
       echo "$key is not defined. Exiting..."
       exit 1
     fi
+  }
+
+  get_vault_secret_key () {
+    echo "'get_vault_secret_key' command has been deprecated!"
+    exit 1
   }
 
   set -x  # when running locally, might as well see all the commands being ran
