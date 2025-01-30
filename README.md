@@ -194,7 +194,7 @@ export default class extends Component {
 #### Creating React Router Routes with function-based components
 
 ```jsx
-import React from 'react';
+import React, { useCallback } from 'react';
 import { SecureRoute, Security, LoginCallback } from '@okta/okta-react';
 import { OktaAuth, toRelativeUrl } from '@okta/okta-auth-js';
 import { BrowserRouter as Router, Route, useHistory } from 'react-router-dom';
@@ -209,9 +209,9 @@ const oktaAuth = new OktaAuth({
 
 const App = () => {
   const history = useHistory();
-  const restoreOriginalUri = async (_oktaAuth, originalUri) => {
+  const restoreOriginalUri = useCallback(async (_oktaAuth, originalUri) => {
     history.replace(toRelativeUrl(originalUri || '/', window.location.origin));
-  };
+  }, []);
 
   return (
     <Security oktaAuth={oktaAuth} restoreOriginalUri={restoreOriginalUri}>
@@ -395,16 +395,19 @@ export default MessageList = () => {
 
 #### restoreOriginalUri
 
-*(required)* Callback function. Called to restore original URI during [oktaAuth.handleLoginRedirect()](https://github.com/okta/okta-auth-js#handleloginredirecttokens) is called. Will override [restoreOriginalUri option of oktaAuth](https://github.com/okta/okta-auth-js#restoreoriginaluri)
+*(required)* Callback function. Called to restore original URI during [oktaAuth.handleLoginRedirect()](https://github.com/okta/okta-auth-js#handleloginredirecttokens) is called. Will override [restoreOriginalUri option of oktaAuth](https://github.com/okta/okta-auth-js#restoreoriginaluri). 
+**Note** Recommended to memoize callback with `useCallback` hook. For `react-router v6` please don't set result of `useNavigate` hook as dependency for memoizing `restoreOriginalUri` callback.
 
 #### onAuthRequired
 
-*(optional)* Callback function. Called when authentication is required. If this is not supplied, `okta-react` redirects to Okta. This callback will receive [oktaAuth][Okta Auth SDK] instance as the first function parameter. This is triggered when a [SecureRoute](#secureroute) is accessed without authentication. A common use case for this callback is to redirect users to a custom login route when authentication is required for a [SecureRoute](#secureroute).
+*(optional)* Callback function. Called when authentication is required. If this is not supplied, `okta-react` redirects to Okta. This callback will receive [oktaAuth][Okta Auth SDK] instance as the first function parameter. This is triggered when a [SecureRoute](#secureroute) is accessed without authentication. A common use case for this callback is to redirect users to a custom login route when authentication is required for a [SecureRoute](#secureroute). 
+**Note** Recommended to memoize callback with `useCallback` hook. For `react-router v6` please don't set result of `useNavigate` hook as dependency for memoizing `onAuthRequired` callback.
 
 #### Example
 
 ```jsx
 import { useHistory } from 'react-router-dom';
+import { useCallback } from 'react';
 import { OktaAuth, toRelativeUrl } from '@okta/okta-auth-js';
 
 const oktaAuth = new OktaAuth({
@@ -416,15 +419,15 @@ const oktaAuth = new OktaAuth({
 export default App = () => {
   const history = useHistory();
 
-  const customAuthHandler = (oktaAuth) => {
+  const customAuthHandler = useCallback((oktaAuth) => {
     // Redirect to the /login page that has a CustomLoginComponent
     // This example is specific to React-Router
     history.push('/login');
-  };
+  }, []);
 
-  const restoreOriginalUri = async (_oktaAuth, originalUri) => {
+  const restoreOriginalUri = useCallback(async (_oktaAuth, originalUri) => {
     history.replace(toRelativeUrl(originalUri || '/', window.location.origin));
-  };
+  }, []);
 
   return (
     <Security
@@ -575,6 +578,7 @@ Example of implementation of this callback for `react-router`:
 
 ```jsx
 import { Security } from '@okta/okta-react';
+import { useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import { OktaAuth, toRelativeUrl } from '@okta/okta-auth-js';
 
@@ -586,9 +590,9 @@ const oktaAuth = new OktaAuth({
 
 export default App = () => {
   const history = useHistory();
-  const restoreOriginalUri = async (_oktaAuth, originalUri) => {
+  const restoreOriginalUri = useCallback(async (_oktaAuth, originalUri) => {
     history.replace(toRelativeUrl(originalUri, window.location.origin));
-  };
+  }, []);
 
   return (
     <Security
@@ -604,11 +608,13 @@ export default App = () => {
 **Note:** If you use `basename` prop for `<BrowserRouter>`, use this implementation to fix `basename` duplication problem:
 ```jsx
   import { toRelativeUrl } from '@okta/okta-auth-js';
-  const restoreOriginalUri = async (_oktaAuth, originalUri) => {
+  import { useCallback } from 'react';
+  
+  const restoreOriginalUri = useCallback(async (_oktaAuth, originalUri) => {
     const basepath = history.createHref({});
     const originalUriWithoutBasepath = originalUri.replace(basepath, '/');
     history.replace(toRelativeUrl(originalUriWithoutBasepath, window.location.origin));
-  };
+  }, []);
 ```
 
 ### Migrating from 3.x to 4.x
