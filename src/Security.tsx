@@ -12,7 +12,7 @@
 
 import * as React from 'react';
 import { AuthSdkError, AuthState, OktaAuth } from '@okta/okta-auth-js';
-import OktaContext, { OnAuthRequiredFunction, RestoreOriginalUriFunction } from './OktaContext';
+import OktaContext, { IOktaContext, OnAuthRequiredFunction, RestoreOriginalUriFunction } from './OktaContext';
 import OktaError from './OktaError';
 import { compare as compareVersions } from 'compare-versions';
 
@@ -92,6 +92,12 @@ const Security: React.FC<{
     };
   }, [oktaAuth]);
 
+  const oktaContextValue = React.useMemo((): IOktaContext => ({
+    oktaAuth,
+    authState,
+    _onAuthRequired: onAuthRequired
+  }), [oktaAuth, authState, onAuthRequired]);
+
   if (!oktaAuth) {
     const err = new AuthSdkError('No oktaAuth instance passed to Security Component.');
     return <OktaError error={err} />;
@@ -120,11 +126,7 @@ const Security: React.FC<{
   }
 
   return (
-    <OktaContext.Provider value={{ 
-      oktaAuth, 
-      authState, 
-      _onAuthRequired: onAuthRequired
-    }}>
+    <OktaContext.Provider value={oktaContextValue}>
       {children}
     </OktaContext.Provider>
   );
