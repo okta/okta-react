@@ -1,7 +1,13 @@
 # 6.10.0
 
+### Features
+
 -[#295](https://github.com/okta/okta-react/pull/295) fix: wraps `OktaContext` in a `useMemo` to reduce re-renders and improve performance
   - Resolve [#294](https://github.com/okta/okta-react/pull/294)
+
+### Fixes
+
+-[#296](https://github.com/okta/okta-react/pull/296) fix: upgrades `@babel/runtime` to `7.27.0` to resolve CVE
 
 # 6.9.0
 
