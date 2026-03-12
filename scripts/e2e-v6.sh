@@ -15,6 +15,7 @@ setup_service google-chrome-stable 106.0.5249.61-1
 export CI=true
 export TEST_SUITE_TYPE="junit"
 export TEST_RESULT_FILE_DIR="${REPO}/test-reports/e2e"
+export E2E_LOG_DIR=/tmp/e2e-logs
 
 export ISSUER=https://samples-javascript.okta.com/oauth2/default
 export CLIENT_ID=0oapmwm72082GXal14x6
@@ -30,6 +31,7 @@ yarn --ignore-scripts
 
 if ! yarn test:e2e; then
   echo "e2e tests failed! Exiting..."
+  log_extra_dir_as_zip ${E2E_LOG_DIR} "e2e-logs.zip"
   exit ${TEST_FAILURE}
 fi
 
