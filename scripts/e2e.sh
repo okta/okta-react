@@ -5,7 +5,7 @@ source $DIR/utils/local.sh
 source ${OKTA_HOME}/${REPO}/scripts/setup.sh
 
 setup_service java 1.8.222
-setup_service google-chrome-stable 106.0.5249.61-1
+setup_service google-chrome-stable 121.0.6167.85-1
 
 export CI=true
 export TEST_SUITE_TYPE="junit"
