@@ -16,6 +16,7 @@ require('@okta/env').setEnvironmentVarsFromTestEnv(__dirname);
 const fs = require('node:fs/promises');
 
 
+const CI = process.env.CI === 'true' || process.env.CI === true;
 const logLevel = 'warn';
 const browserOptions = {
     args: ['--auto-open-devtools-for-tabs']
