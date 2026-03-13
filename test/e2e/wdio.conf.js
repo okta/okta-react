@@ -222,6 +222,7 @@ exports.config = {
      */
     onPrepare: async function (config, capabilities) {
       if (CI) {
+        console.log('e2e dir was made')
         await fs.mkdir(process.env.E2E_LOG_DIR, { recursive: true });
       }
     },
@@ -296,6 +297,7 @@ exports.config = {
      * @param {Object}  result.retries   informations to spec related retries, e.g. `{ attempts: 0, limit: 0 }`
      */
     afterTest: async function(test, context, { error, result, duration, passed }) {
+      console.log('Results: ', { error, result, duration, passed })
       if (CI && error) {
         failureCount += 1;
         await browser.saveScreenshot(`${process.env.E2E_LOG_DIR}/failure-${failureCount}.png`);
