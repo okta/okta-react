@@ -182,13 +182,7 @@ exports.config = {
     // The only one supported by default is 'dot'
     // see also: https://webdriver.io/docs/dot-reporter
     reporters: [
-        'spec',
-        // ['junit', {
-        //     outputDir: '../../test-reports/e2e',
-        //     outputFileFormat: function () {
-        //         return 'results.xml';
-        //     }
-        // }]
+      'spec',
     ],
 
 
@@ -297,7 +291,6 @@ exports.config = {
      * @param {Object}  result.retries   informations to spec related retries, e.g. `{ attempts: 0, limit: 0 }`
      */
     afterTest: async function(test, context, { error, result, duration, passed }) {
-      console.log('Results: ', { error, result, duration, passed })
       if (CI && error) {
         failureCount += 1;
         await browser.saveScreenshot(`${process.env.E2E_LOG_DIR}/failure-${failureCount}.png`);

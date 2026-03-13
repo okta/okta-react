@@ -1,3 +1,9 @@
+# 6.11.0
+
+### Other
+
+- [#301](https://github.com/okta/okta-react/pull/301) adds support for `okta-auth-js@8.0.0`
+
 # 6.10.0
 
 ### Features
