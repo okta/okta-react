@@ -54,7 +54,7 @@ function runWithConfig(sampleConfig) {
       // TODO: support saucelab and cucumber
       const wdioConfig = path.resolve(__dirname, 'wdio.conf.js');
       const specs = sampleConfig.specs.reduce(
-        (acc, spec) => [...acc, '--spec', path.join(__dirname, 'specs', spec)]
+        (acc, spec) => [...acc, '--spec', path.join(__dirname, 'specs', spec) + '.js']
       , []);
       const args = ['wdio', 'run', wdioConfig, ...specs];
       const env = Object.assign({}, process.env, {APP_NAME: name});

@@ -13,12 +13,16 @@
 /* eslint-disable */
 // will load environment vars from testenv file and set on process.env
 require('@okta/env').setEnvironmentVarsFromTestEnv(__dirname);
+const fs = require('node:fs/promises');
 
 
+const CI = process.env.CI === 'true' || process.env.CI === true;
 const logLevel = 'warn';
 const browserOptions = {
-    args: []
+    args: ['--auto-open-devtools-for-tabs']
 };
+
+let failureCount = 0;
 
 if (process.env.CHROMIUM_BINARY) {
     browserOptions.binary = process.env.CHROMIUM_BINARY;
@@ -37,10 +41,6 @@ if (process.env.CI || process.env.CHROME_HEADLESS) {
     ]);
 }
 
-const CHROMEDRIVER_VERSION = process.env.CHROMEDRIVER_VERSION || '106.0.5249.61';
-const drivers = {
-    chrome: { version: CHROMEDRIVER_VERSION }
-};
 
 exports.config = {
     //
@@ -102,6 +102,9 @@ exports.config = {
         //
         browserName: 'chrome',
         'goog:chromeOptions': browserOptions,
+        'goog:loggingPrefs': {
+          'browser': 'ALL'
+        },
         acceptInsecureCerts: true
         // If outputDir is provided WebdriverIO can capture driver session logs
         // it is possible to configure which logTypes to include/exclude.
@@ -156,14 +159,6 @@ exports.config = {
     // your test setup with almost no effort. Unlike plugins, they don't add new
     // commands. Instead, they hook themselves up into the test process.
     services: [
-        ['selenium-standalone', {
-            installArgs: {
-                drivers
-            },
-            args: {
-                drivers
-            }
-        }]
     ],
     
     // Framework you want to run your specs with.
@@ -187,13 +182,7 @@ exports.config = {
     // The only one supported by default is 'dot'
     // see also: https://webdriver.io/docs/dot-reporter
     reporters: [
-        'spec',
-        ['junit', {
-            outputDir: '../../test-reports/e2e',
-            outputFileFormat: function () {
-                return 'results.xml';
-            }
-        }]
+      'spec',
     ],
 
 
@@ -225,8 +214,12 @@ exports.config = {
      * @param {Object} config wdio configuration object
      * @param {Array.<Object>} capabilities list of capabilities details
      */
-    // onPrepare: function (config, capabilities) {
-    // },
+    onPrepare: async function (config, capabilities) {
+      if (CI) {
+        console.log('e2e dir was made')
+        await fs.mkdir(process.env.E2E_LOG_DIR, { recursive: true });
+      }
+    },
     /**
      * Gets executed before a worker process is spawned and can be used to initialise specific service
      * for that worker as well as modify runtime environments in an async fashion.
@@ -297,8 +290,26 @@ exports.config = {
      * @param {Boolean} result.passed    true if test has passed, otherwise false
      * @param {Object}  result.retries   informations to spec related retries, e.g. `{ attempts: 0, limit: 0 }`
      */
-    // afterTest: function(test, context, { error, result, duration, passed, retries }) {
-    // },
+    afterTest: async function(test, context, { error, result, duration, passed }) {
+      if (CI && error) {
+        failureCount += 1;
+        await browser.saveScreenshot(`${process.env.E2E_LOG_DIR}/failure-${failureCount}.png`);
+        const logs = await browser.getLogs('browser');
+        let log;
+        try {
+          log = JSON.parse(logs, null, 4);
+        }
+        catch (err) {
+          log = logs;
+        }
+        await fs.writeFile(
+          `${process.env.E2E_LOG_DIR}/failure-${failureCount}-console.log`,
+          `Console Log Failure #${failureCount}:\n${log}`
+        );
+        console.log('CONSOLE LOGS: ');
+        console.log(logs);
+      }
+    },
 
 
     /**
