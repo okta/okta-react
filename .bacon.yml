@@ -28,7 +28,7 @@ test_suites:
       criteria: MERGE
       queue_name: al2023
     - name: snyk
-      script_path: /root/okta/okta-client-javascript/scripts/bacon
+      script_path: /root/okta/okta-react/scripts
       script_name: snyk
       sort_order: '7'
       timeout: '200'
