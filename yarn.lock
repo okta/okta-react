@@ -1753,24 +1753,23 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@okta/okta-auth-js@*":
-  version "7.0.0"
-  resolved "https://registry.yarnpkg.com/@okta/okta-auth-js/-/okta-auth-js-7.0.0.tgz#d83acb76394ebc7d019d922f0e319fe6655c41ac"
-  integrity sha512-tF+OiaAHNHc5ACKUR5lynX7LQyw9+pqKj8hzSY+E6OCKucYudjMg87AdCdyBxpFgxrirRlAFYv08sM1wwn0Eeg==
+"@okta/okta-auth-js@*", "@okta/okta-auth-js@^7.14.5":
+  version "7.14.5"
+  resolved "https://registry.yarnpkg.com/@okta/okta-auth-js/-/okta-auth-js-7.14.5.tgz#698c2a97b13331fe8e2d2ec5ca0e5fd925d5bd1a"
+  integrity sha512-UPSm/bLgsWOMnAUQnlepcH3S143u1Fzg/mUa8yTXJEjnFZbovMEVsmVCjvFTshTtSANb8Orjp1bzmQavlya6rg==
   dependencies:
-    "@babel/runtime" "^7.12.5"
+    "@babel/runtime" "^7.27.0"
     "@peculiar/webcrypto" "^1.4.0"
     Base64 "1.1.0"
     atob "^2.1.2"
-    broadcast-channel "~4.17.0"
+    broadcast-channel "~5.3.0"
     btoa "^1.2.1"
-    core-js "^3.6.5"
+    core-js "^3.39.0"
     cross-fetch "^3.1.5"
+    fast-text-encoding "^1.0.6"
     js-cookie "^3.0.1"
-    jsonpath-plus "^6.0.1"
     node-cache "^5.1.2"
     p-cancelable "^2.0.0"
-    text-encoding "^0.7.0"
     tiny-emitter "1.1.0"
     webcrypto-shim "^0.1.5"
     xhr2 "0.1.3"
@@ -1794,28 +1793,6 @@
     node-cache "^5.1.2"
     p-cancelable "^2.0.0"
     text-encoding "^0.7.0"
-    tiny-emitter "1.1.0"
-    webcrypto-shim "^0.1.5"
-    xhr2 "0.1.3"
-
-"@okta/okta-auth-js@^7.7.0":
-  version "7.7.0"
-  resolved "https://registry.yarnpkg.com/@okta/okta-auth-js/-/okta-auth-js-7.7.0.tgz#daac09294316a69d996a33232eb25032d1b85d70"
-  integrity sha512-m+WlI9TJ3J2uHI+W9Uc7zinE4CQLS2JC6AQYPJ0KHxaVE5lwPDLFleapPNfNWzYGr/30GV7oBzJMU+8+UQEsPA==
-  dependencies:
-    "@babel/runtime" "^7.12.5"
-    "@peculiar/webcrypto" "^1.4.0"
-    Base64 "1.1.0"
-    atob "^2.1.2"
-    broadcast-channel "~5.3.0"
-    btoa "^1.2.1"
-    core-js "^3.6.5"
-    cross-fetch "^3.1.5"
-    fast-text-encoding "^1.0.6"
-    js-cookie "^3.0.1"
-    jsonpath-plus "^6.0.1"
-    node-cache "^5.1.2"
-    p-cancelable "^2.0.0"
     tiny-emitter "1.1.0"
     webcrypto-shim "^0.1.5"
     xhr2 "0.1.3"
@@ -3739,6 +3716,11 @@ core-js-pure@^3.30.2:
   version "3.32.1"
   resolved "https://artifacts.aue1e.internal:443/artifactory/api/npm/npm-okta-master/core-js-pure/-/core-js-pure-3.32.1.tgz#5775b88f9062885f67b6d7edce59984e89d276f3"
   integrity sha512-f52QZwkFVDPf7UEQZGHKx6NYxsxmVGJe5DIvbzOdRMJlmT6yv0KDjR8rmy3ngr/t5wU54c7Sp/qIJH0ppbhVpQ==
+
+core-js@^3.39.0:
+  version "3.49.0"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.49.0.tgz#8b4d520ac034311fa21aa616f017ada0e0dbbddd"
+  integrity sha512-es1U2+YTtzpwkxVLwAFdSpaIMyQaq0PBgm3YD1W3Qpsn1NAmO3KSgZfu+oGSWVu6NvLHoHCV/aYcsE5wiB7ALg==
 
 core-js@^3.6.5:
   version "3.24.1"
@@ -7001,10 +6983,10 @@ locate-path@^7.1.0:
   dependencies:
     p-locate "^6.0.0"
 
-lodash-es@^4.17.15:
-  version "4.17.21"
-  resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-4.17.21.tgz#43e626c46e6591b7750beb2b50117390c609e3ee"
-  integrity sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==
+lodash-es@4.18.1, lodash-es@^4.17.15:
+  version "4.18.1"
+  resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-4.18.1.tgz#b962eeb80d9d983a900bf342961fb7418ca10b1d"
+  integrity sha512-J8xewKD/Gk22OZbhpOVSwcs60zhd95ESDwezOFuA3/099925PdHJ7OFHNTGtajL3AlZkykD32HykiMo+BIBI8A==
 
 lodash.clonedeep@^4.5.0:
   version "4.5.0"
@@ -7061,10 +7043,10 @@ lodash.zip@^4.2.0:
   resolved "https://registry.yarnpkg.com/lodash.zip/-/lodash.zip-4.2.0.tgz#ec6662e4896408ed4ab6c542a3990b72cc080020"
   integrity sha512-C7IOaBBK/0gMORRBd8OETNx3kmOkgIWIPvyDpZSCTwUrpYmgZwJkjZeOD8ww4xbOUOs4/attY+pciKvadNfFbg==
 
-lodash@^4.17.15, lodash@^4.17.19, lodash@^4.17.21:
-  version "4.17.21"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
-  integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
+lodash@4.18.1, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.17.21:
+  version "4.18.1"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.18.1.tgz#ff2b66c1f6326d59513de2407bf881439812771c"
+  integrity sha512-dMInicTPVE8d1e5otfwmmjlxkZoUpiVLwyeTdUsi/Caj/gfzzblBcCE5sRHV/AsjuCmxWrte2TNGSYuCeCq+0Q==
 
 log-symbols@^4.1.0:
   version "4.1.0"
