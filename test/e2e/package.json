@@ -9,7 +9,7 @@
   },
   "devDependencies": {
     "@babel/cli": "^7.19.3",
-    "@babel/core": "^7.19.3",
+    "@babel/core": "^7.29.6",
     "@babel/preset-env": "^7.19.3",
     "@babel/register": "^7.18.9",
     "@wdio/cli": "^8.38.1",
