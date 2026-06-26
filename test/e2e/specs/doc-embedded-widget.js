@@ -24,8 +24,6 @@ if (process.env.ORG_OIE_ENABLED) {
   OktaSignInPage = OktaSignInPageOIE;
 }
 
-// NOTE: this test requires `USE_INTERACTION_CODE` to be set to `true` in testenv
-
 const params = {
   login: {
     // In windows, USERNAME is a built-in env var, which we don't want to change

@@ -13,7 +13,7 @@
 const spawn = require('cross-spawn-with-kill');
 const waitOn = require('wait-on');
 const path = require('path');
-const samplesConfig = require('../../generator/config');
+const samplesConfig = require('./config');
 
 require('@okta/env').setEnvironmentVarsFromTestEnv();
 

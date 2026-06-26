@@ -18,7 +18,7 @@ export SPA_CLIENT_ID=0oapmwm72082GXal14x6
 export USERNAME=george@acme.com
 get_terminus_secret "/" PASSWORD PASSWORD
 export ORG_OIE_ENABLED=
-export USE_INTERACTION_CODE=
+export USE_CLASSIC_ENGINE=
 
 if ! yarn test:e2e; then
   echo "e2e tests failed! Exiting..."
