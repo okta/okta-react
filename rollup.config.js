@@ -3,7 +3,10 @@ import replace from '@rollup/plugin-replace';
 import cleanup from 'rollup-plugin-cleanup';
 import { terser } from 'rollup-plugin-terser';
 import typescript from 'rollup-plugin-typescript2';
-import pkg from "./package.json";
+import ts from 'typescript';
+import { readFileSync } from 'fs';
+
+const pkg = JSON.parse(readFileSync('./package.json', 'utf8'));
 
 
 const makeExternalPredicate = () => {
@@ -25,8 +28,7 @@ const input = 'src/index.ts';
 const external = makeExternalPredicate();
 const commonPlugins = [
   typescript({
-    // eslint-disable-next-line node/no-unpublished-require
-    typescript: require('typescript'),
+    typescript: ts,
     useTsconfigDeclarationDir: true
   }),
   replace({
@@ -38,6 +40,9 @@ const commonPlugins = [
         minSupportedVersion: '5.3.1'
       })
     },
+    // default delimiters in @rollup/plugin-replace v3+ don't match identifiers
+    // followed by ".", which breaks replacing AUTH_JS.minSupportedVersion
+    delimiters: ['\\b', '\\b'],
     preventAssignment: true
   }),
   cleanup({ 
