@@ -49,7 +49,8 @@
     "**/lodash": "4.18.1",
     "**/lodash-es": "4.18.1",
     "@types/node": "^20.0.0",
-    "**/cheerio": "1.0.0-rc.12"
+    "**/cheerio": "1.0.0-rc.12",
+    "@okta/okta-auth-js": "7.14.5"
   },
   "dependencies": {
     "@babel/runtime": "^7.27.0",

@@ -995,7 +995,7 @@
     pirates "^4.0.6"
     source-map-support "^0.5.16"
 
-"@babel/runtime@7.22.10", "@babel/runtime@7.28.6", "@babel/runtime@^7.1.2", "@babel/runtime@^7.10.4", "@babel/runtime@^7.10.5", "@babel/runtime@^7.12.1", "@babel/runtime@^7.12.13", "@babel/runtime@^7.12.5", "@babel/runtime@^7.27.0", "@babel/runtime@^7.28.6", "@babel/runtime@^7.7.6", "@babel/runtime@^7.9.2":
+"@babel/runtime@7.22.10", "@babel/runtime@^7.1.2", "@babel/runtime@^7.10.4", "@babel/runtime@^7.10.5", "@babel/runtime@^7.12.1", "@babel/runtime@^7.12.13", "@babel/runtime@^7.12.5", "@babel/runtime@^7.27.0", "@babel/runtime@^7.7.6", "@babel/runtime@^7.9.2":
   version "7.29.7"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.29.7.tgz#12022450c45a4da6d8d8287b18a4ff2ddb23f768"
   integrity sha512-Nq8OhGWiZIZGV6hLHoyAKLLcJihP/xFeBMGJoUrxTX2psI8dCifzLhZISFb+VWS3wFMRDmCGw5R+dOySCqPLhw==
@@ -1586,39 +1586,7 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@okta/okta-auth-js@*":
-  version "8.0.1"
-  resolved "https://registry.yarnpkg.com/@okta/okta-auth-js/-/okta-auth-js-8.0.1.tgz#0b621cf5a6dd5d83ab687a3527ac71c6dac3199d"
-  integrity sha512-bLJ4MjSw59q6biH9na+JFeadwleHf40xw/iTEpkAaKZ3zu4FlX48ZiSgVN13+dXEx36J0BHUIg+hpRAr1lQI3w==
-  dependencies:
-    "@babel/runtime" "^7.28.6"
-    broadcast-channel "~7.3.0"
-    js-cookie "^3.0.5"
-    node-cache "^5.1.2"
-    tiny-emitter "2.1.0"
-
-"@okta/okta-auth-js@7.14.0":
-  version "7.14.0"
-  resolved "https://registry.yarnpkg.com/@okta/okta-auth-js/-/okta-auth-js-7.14.0.tgz#ffecf48ccd6fca1a737b8e8ac2759e2ed6e6b6eb"
-  integrity sha512-LCqJhhT1oXC/I7XaM7G3EHzHB5aubNMRHqAsmv0wiNdoC1zEeXJo5SwY9ZmS9LmLbfMOj+YmbydRIxRF8CpBNQ==
-  dependencies:
-    "@babel/runtime" "^7.27.0"
-    "@peculiar/webcrypto" "^1.4.0"
-    Base64 "1.1.0"
-    atob "^2.1.2"
-    broadcast-channel "~5.3.0"
-    btoa "^1.2.1"
-    core-js "^3.39.0"
-    cross-fetch "^3.1.5"
-    fast-text-encoding "^1.0.6"
-    js-cookie "^3.0.1"
-    node-cache "^5.1.2"
-    p-cancelable "^2.0.0"
-    tiny-emitter "1.1.0"
-    webcrypto-shim "^0.1.5"
-    xhr2 "0.1.3"
-
-"@okta/okta-auth-js@^7.14.5":
+"@okta/okta-auth-js@*", "@okta/okta-auth-js@7.14.0", "@okta/okta-auth-js@7.14.5", "@okta/okta-auth-js@^7.14.5":
   version "7.14.5"
   resolved "https://registry.yarnpkg.com/@okta/okta-auth-js/-/okta-auth-js-7.14.5.tgz#698c2a97b13331fe8e2d2ec5ca0e5fd925d5bd1a"
   integrity sha512-UPSm/bLgsWOMnAUQnlepcH3S143u1Fzg/mUa8yTXJEjnFZbovMEVsmVCjvFTshTtSANb8Orjp1bzmQavlya6rg==
@@ -3297,16 +3265,6 @@ broadcast-channel@~5.3.0:
   dependencies:
     "@babel/runtime" "7.22.10"
     oblivious-set "1.1.1"
-    p-queue "6.6.2"
-    unload "2.4.1"
-
-broadcast-channel@~7.3.0:
-  version "7.3.0"
-  resolved "https://registry.yarnpkg.com/broadcast-channel/-/broadcast-channel-7.3.0.tgz#d80c4f393b5811493490b2c504606949d5502884"
-  integrity sha512-UHPhLBQKfQ8OmMFMpmPfO5dRakyA1vsfiDGWTYNvChYol65tbuhivPEGgZZiuetorvExdvxaWiBy/ym1Ty08yA==
-  dependencies:
-    "@babel/runtime" "7.28.6"
-    oblivious-set "2.0.0"
     p-queue "6.6.2"
     unload "2.4.1"
 
@@ -6786,7 +6744,7 @@ js-cleanup@^1.2.0:
     perf-regexes "^1.0.1"
     skip-regex "^1.0.2"
 
-js-cookie@^3.0.1, js-cookie@^3.0.5:
+js-cookie@^3.0.1:
   version "3.0.8"
   resolved "https://registry.yarnpkg.com/js-cookie/-/js-cookie-3.0.8.tgz#444e6f4b27a5d844594fef61c9d6bca5f0787688"
   integrity sha512-yeJd4aNAdYZQjaon2bpD/Gb0B/omw7HQOsynXXcOiWVCacbBcPlgn8S/d1X6blFSaHao7ozqtW7NZW19xpCtIw==
@@ -7577,11 +7535,6 @@ oblivious-set@1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/oblivious-set/-/oblivious-set-1.1.1.tgz#d9d38e9491d51f27a5c3ec1681d2ba40aa81e98b"
   integrity sha512-Oh+8fK09mgGmAshFdH6hSVco6KZmd1tTwNFWj35OvzdmJTMZtAkbn05zar2iG3v6sDs1JLEtOiBGNb6BHwkb2w==
-
-oblivious-set@2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/oblivious-set/-/oblivious-set-2.0.0.tgz#30e0f0770cdde62aa906d935e25adfca8e3de895"
-  integrity sha512-QOUH5Xrsced9fKXaQTjWoDGKeS/Or7E2jB0FN63N4mkAO4qJdB7WR7e6qWAOHM5nk25FJ8TGjhP7DH4l6vFVLg==
 
 once@^1.3.1, once@^1.4.0:
   version "1.4.0"
@@ -9459,7 +9412,7 @@ tiny-emitter@1.1.0:
   resolved "https://registry.yarnpkg.com/tiny-emitter/-/tiny-emitter-1.1.0.tgz#ab405a21ffed814a76c19739648093d70654fecb"
   integrity sha512-HFhr+OKGIHRO6krgzEt9MqbMO98wPDzDPr1BOpM/nZCChkK40UYn8b70nSjcan4jTzDSQecy1KRVVQRohIRWrw==
 
-tiny-emitter@2.1.0, tiny-emitter@^2.0.0:
+tiny-emitter@^2.0.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/tiny-emitter/-/tiny-emitter-2.1.0.tgz#1d1a56edfc51c43e863cbb5382a72330e3555423"
   integrity sha512-NB6Dk1A9xgQPMoGqC5CVXn123gWyte215ONT5Pp5a0yt4nlEoO1ZWeCwpncaekPHXO60i47ihFnZPiRPjRMq4Q==
