@@ -28,7 +28,7 @@ if ! ci-append-sha; then
 fi
 
 npm config set @okta:registry ${REGISTRY}
-if ! npm publish --registry ${REGISTRY}; then
+if ! npm publish --registry ${REGISTRY} --tag ${TARGET_BRANCH}; then
   echo "npm publish failed! Exiting..."
   exit ${PUBLISH_ARTIFACTORY_FAILURE}
 fi
