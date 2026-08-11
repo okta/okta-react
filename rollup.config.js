@@ -112,5 +112,37 @@ export default [
         sourcemap: true
       }
     ]
+  },
+  {
+    input: 'src/client-js/index.ts',
+    external,
+    plugins: [
+      ...commonPlugins,
+      babel({
+        babelHelpers: 'runtime',
+        presets: [
+          '@babel/preset-env',
+          '@babel/preset-react'
+        ],
+        plugins: [
+          '@babel/plugin-transform-runtime'
+        ],
+        extensions
+      }),
+    ],
+    output: [
+      {
+        format: 'cjs',
+        file: 'dist/bundles/client-js.cjs.js',
+        exports: 'named',
+        sourcemap: true
+      },
+      {
+        format: 'esm',
+        file: 'dist/bundles/client-js.esm.js',
+        exports: 'named',
+        sourcemap: true
+      }
+    ]
   }
 ];

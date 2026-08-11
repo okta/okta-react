@@ -17,6 +17,7 @@
 * [Getting started](#getting-started)
 * [Installation](#installation)
 * [Usage](#usage)
+* [Using `@okta/okta-react/client-js` (opt-in, beta)](#using-oktaokta-reactclient-js-opt-in-beta)
 * [Reference](#reference)
 * [Migrating between versions](#migrating-between-versions)
 * [Contributing](#contributing)
@@ -382,6 +383,98 @@ export default MessageList = () => {
   return <ul>{items}</ul>;
 };
 ```
+
+## Using `@okta/okta-react/client-js` (opt-in, beta)
+
+> :warning: **Beta** :warning:<br> This subpath and the `@okta/okta-client-javascript` packages it wraps
+(`@okta/auth-foundation`, `@okta/oauth2-flows`, `@okta/spa-platform`) are in beta. APIs may change in a
+minor release. This is entirely opt-in — it adds no imports, code, or dependencies to the default
+`@okta/okta-react` bundle.
+
+`@okta/okta-react/client-js` provides [React Router](#) v6.4+ [loader](https://reactrouter.com/en/main/route/loader)
+factories for apps using [`@okta/okta-client-javascript`](https://github.com/okta/okta-client-javascript) instead
+of `@okta/okta-auth-js`. Unlike the rest of this SDK, this subpath does not provide a React Context, hooks, or
+components — `@okta/okta-client-javascript` has no persistent global auth state to provide; authentication is
+checked and refreshed per-request. Instead, you construct the SDK's client instances yourself (typically as
+module-level singletons) and pass them into the loader factories below, wiring the returned loaders into your
+own route definitions.
+
+> :warning: **Requires React Router v6.4+** :warning:<br> These loaders only work with a [data router](https://reactrouter.com/en/main/routers/picking-a-router)
+(`createBrowserRouter`, `createMemoryRouter`, etc.) and its `RouterProvider`. They are not compatible with
+`react-router-dom` v5 or the non-data APIs of v6 (`<BrowserRouter>` + `<Routes>`).
+
+### Installation
+
+```bash
+npm install --save @okta/okta-react
+npm install --save @okta/auth-foundation @okta/oauth2-flows @okta/spa-platform
+```
+
+### Constructing the SDK singletons
+
+```javascript
+// src/auth.js
+import { FetchClient } from '@okta/spa-platform/fetch';
+import { AuthorizationCodeFlowOrchestrator } from '@okta/spa-platform/orchestrator';
+import { AuthorizationCodeFlow } from '@okta/spa-platform/flows';
+
+const config = {
+  issuer: 'https://{yourOktaDomain}/oauth2/default',
+  clientId: '{clientId}',
+  redirectUri: window.location.origin + '/login/callback',
+};
+
+export const fetchClient = new FetchClient(config);
+const signInFlow = new AuthorizationCodeFlow(config);
+export const tokenOrchestrator = new AuthorizationCodeFlowOrchestrator(signInFlow);
+```
+
+### Wiring loaders into your router
+
+```jsx
+// src/router.js
+import { createBrowserRouter } from 'react-router-dom';
+import { createFetchLoader, createTokenLoader, createLoginCallbackLoader } from '@okta/okta-react/client-js';
+import { fetchClient, tokenOrchestrator } from './auth';
+import Home from './Home';
+import Protected from './Protected';
+import Messages from './Messages';
+
+export const router = createBrowserRouter([
+  { path: '/', element: <Home /> },
+  {
+    path: '/protected',
+    element: <Protected />,
+    loader: createTokenLoader(tokenOrchestrator),
+  },
+  {
+    path: '/messages',
+    element: <Messages />,
+    loader: createFetchLoader(fetchClient, () => '/api/messages'),
+  },
+  {
+    path: '/login/callback',
+    loader: createLoginCallbackLoader(tokenOrchestrator),
+  },
+]);
+```
+
+```jsx
+// src/App.js
+import { RouterProvider } from 'react-router-dom';
+import { router } from './router';
+
+export default function App() {
+  return <RouterProvider router={router} />;
+}
+```
+
+`createTokenLoader` throws a `401` `Response` if a valid token can't be obtained, which React Router will
+surface to the nearest [`errorElement`](https://reactrouter.com/en/main/route/error-element). `createFetchLoader`
+returns the `fetchClient.fetch()` response directly so it can be consumed with `useLoaderData()`.
+`createLoginCallbackLoader` resumes the sign-in flow via `orchestrator.resumeFlow()` (which stores the resulting
+credential itself) and redirects back to the original URI — it replaces the `<LoginCallback>` component used with
+`@okta/okta-auth-js`.
 
 ## Reference
 
