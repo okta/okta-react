@@ -1586,6 +1586,16 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
+"@okta/auth-foundation@^0.6.0":
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/@okta/auth-foundation/-/auth-foundation-0.6.0.tgz#25b729bc8d15de53025e08d619f4ec19e072687f"
+  integrity sha512-AueDPbgox+E0To/SYrxpjQwiyI2HwxNqp1aWn/90ZonevTiJAk+o5kSp9i+Y7j08aUEc1NGXKJj989I+ZXsRbQ==
+
+"@okta/oauth2-flows@^0.6.0":
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/@okta/oauth2-flows/-/oauth2-flows-0.6.0.tgz#1df28e8167b67912dfca31bd755593aa1f66425d"
+  integrity sha512-wCReTJegsaRYeycPcXeuyuPlQ2G5ZA6ttTJ/Is4rvBDCOQk8vMEq+B8Sd3n1v8tOddWP2HTRiIffu/92PqXRRQ==
+
 "@okta/okta-auth-js@*", "@okta/okta-auth-js@^7.14.5":
   version "7.14.5"
   resolved "https://registry.yarnpkg.com/@okta/okta-auth-js/-/okta-auth-js-7.14.5.tgz#698c2a97b13331fe8e2d2ec5ca0e5fd925d5bd1a"
@@ -1653,6 +1663,11 @@
     underscore "1.13.1"
   optionalDependencies:
     fsevents "*"
+
+"@okta/spa-platform@^0.6.0":
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/@okta/spa-platform/-/spa-platform-0.6.0.tgz#ac232752117835f7815459e7ce7d1f622c241953"
+  integrity sha512-VCQbvbnBtpwXBMg98ysRMyvdgjqj03wqPYEda4wyHEo31NN+KwzbwOaNAlxzg0+04MT2iDB0S+krA6MYGXA59w==
 
 "@peculiar/asn1-schema@^2.7.0":
   version "2.8.0"
@@ -1722,6 +1737,11 @@
     invariant "^2.2.3"
     prop-types "^15.6.1"
     react-lifecycles-compat "^3.0.4"
+
+"@remix-run/router@1.23.3":
+  version "1.23.3"
+  resolved "https://registry.yarnpkg.com/@remix-run/router/-/router-1.23.3.tgz#957c098d4393d301a8aa7dccf3ef28ea5430e36a"
+  integrity sha512-4An71tdz9X8+3sI4Qqqd2LWd9vS39J7sqd9EU4Scw7TJE/qB10Flv/UuqbPVgfQV9XoK8Np6jNquZitnZq5i+Q==
 
 "@rolldown/pluginutils@1.0.0-beta.27":
   version "1.0.0-beta.27"
@@ -8328,6 +8348,14 @@ react-refresh@^0.17.0:
   resolved "https://registry.yarnpkg.com/react-refresh/-/react-refresh-0.17.0.tgz#b7e579c3657f23d04eccbe4ad2e58a8ed51e7e53"
   integrity sha512-z6F7K9bV85EfseRCp2bzrpyQ0Gkw1uLoCel9XBVWPg/TjRj94SkJzUTGfOa4bs7iJvBWtQG0Wq7wnI0syw3EBQ==
 
+"react-router-dom-v6@npm:react-router-dom@^6.4.0":
+  version "6.30.4"
+  resolved "https://registry.yarnpkg.com/react-router-dom/-/react-router-dom-6.30.4.tgz#f7167bf3da6c7d9132130ea985dd06def25e84d5"
+  integrity sha512-q4HvNl+mmDdkS0g+MqiBZNteQJCuimWoOyHMy4T/RQLAn9Z29+E91QXRaxOujeMl2HTzRSS0KFPd7lxX3PjV0Q==
+  dependencies:
+    "@remix-run/router" "1.23.3"
+    react-router "6.30.4"
+
 react-router-dom@5.2.0:
   version "5.2.0"
   resolved "https://registry.yarnpkg.com/react-router-dom/-/react-router-dom-5.2.0.tgz#9e65a4d0c45e13289e66c7b17c7e175d0ea15662"
@@ -8415,6 +8443,13 @@ react-router@6.3.0:
   integrity sha512-7Wh1DzVQ+tlFjkeo+ujvjSqSJmkt1+8JO+T5xklPlgrh70y7ogx75ODRW0ThWhY7S+6yEDks8TYrtQe/aoboBQ==
   dependencies:
     history "^5.2.0"
+
+react-router@6.30.4:
+  version "6.30.4"
+  resolved "https://registry.yarnpkg.com/react-router/-/react-router-6.30.4.tgz#638f35176527bd243d96d81d35d33b757bad46c2"
+  integrity sha512-SVUsDe+DybHM/WmYKIVYhZh1o5Dcuf16yM6WjG02Q9XVFMZIJyHYhwrr6bFBXZkVP6z69kNkMyBCujt8FaFLJA==
+  dependencies:
+    "@remix-run/router" "1.23.3"
 
 react-test-renderer@^16.0.0-0:
   version "16.14.0"
@@ -9743,10 +9778,15 @@ typedarray-to-buffer@^3.1.5:
   dependencies:
     is-typedarray "^1.0.0"
 
-typescript@^4.0.5, typescript@^4.5.4:
+typescript@^4.5.4:
   version "4.9.5"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.9.5.tgz#095979f9bcc0d09da324d58d03ce8f8374cbe65a"
   integrity sha512-1FXk9E2Hm+QzZQ7z+McJiHL4NW1F2EzMu9Nq9i3zAaGqibafqYwCVU6WyWAuyQRRzOlxou8xZSyXLEN8oKj24g==
+
+typescript@^5.6.3:
+  version "5.9.3"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.9.3.tgz#5b4f59e15310ab17a216f5d6cf53ee476ede670f"
+  integrity sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw==
 
 u2f-api-polyfill@0.4.3:
   version "0.4.3"
@@ -9786,7 +9826,7 @@ undici-types@~6.21.0:
   resolved "https://registry.yarnpkg.com/undici-types/-/undici-types-6.21.0.tgz#691d00af3909be93a7faa13be61b3a5b50ef12cb"
   integrity sha512-iwDZqg0QAGrg9Rav5H4n0M64c3mkR59cJ6wQp+7C4nI0gsmExaedaYLNO44eT4AtBBwjbTiGPMlt2Md0T9H9JQ==
 
-undici@^7.19.0:
+undici@^7.19.0, undici@^7.29.0:
   version "7.29.0"
   resolved "https://registry.yarnpkg.com/undici/-/undici-7.29.0.tgz#ae0f6f62e06e057a9cbb7b2b5fde2bb74f791b8f"
   integrity sha512-IDxfleLmmbSskfWSUATiN1nfn2rDuvnMOqb5CWR92iIfojA0Ud+ulOAAEQ57LPr9rWmsreUyf5lwyao+7GNNVw==
