@@ -394,10 +394,61 @@ minor release. This is entirely opt-in — it adds no imports, code, or dependen
 `@okta/okta-react/client-js` provides [React Router](#) v6.4+ [loader](https://reactrouter.com/en/main/route/loader)
 factories for apps using [`@okta/okta-client-javascript`](https://github.com/okta/okta-client-javascript) instead
 of `@okta/okta-auth-js`. Unlike the rest of this SDK, this subpath does not provide a React Context, hooks, or
-components — `@okta/okta-client-javascript` has no persistent global auth state to provide; authentication is
-checked and refreshed per-request. Instead, you construct the SDK's client instances yourself (typically as
-module-level singletons) and pass them into the loader factories below, wiring the returned loaders into your
-own route definitions.
+components — `@okta/okta-client-javascript` has no persistent global auth state to provide. Instead, you construct
+the SDK's client instances yourself and pass them into the loader factories below, wiring the returned loaders
+into your own route definitions.
+
+This is a different model from the rest of this README, not just a different API. Everywhere above, `oktaAuth`
+determines authentication asynchronously and emits a cached `authState` object on the `Security` context;
+components read `authState.isAuthenticated` / `authState.accessToken.accessToken` from that cached snapshot and
+re-render when a new `authState` is emitted. `@okta/okta-client-javascript` has no equivalent object. There's
+nothing to subscribe to, because token validity and refresh are evaluated at the moment a token is needed, on
+every call — not on a change-detection loop your components have to stay in sync with. `TokenOrchestrator.getToken()`
+(used by `createTokenLoader`) and `FetchClient.fetch()` (used by `createFetchLoader`) each check the stored
+credential's expiry and refresh it as part of that call, then return. There's no snapshot handed to you ahead of
+time — just whatever's in token storage right now, read fresh each time.
+
+Compare the [old pattern](#use-the-access-token-function-based) for attaching a bearer token to a request:
+
+```jsx
+// old: authState is a cached snapshot, so components guard on it being ready and re-run
+// effects when it changes.
+const { authState } = useOktaAuth();
+const [messages, setMessages] = useState(null);
+
+useEffect(() => {
+  if (authState.isAuthenticated) {
+    fetch('/api/messages', {
+      headers: { Authorization: 'Bearer ' + authState.accessToken.accessToken },
+    }).then(/* ... */);
+  }
+}, [authState]);
+```
+
+against the loader-based equivalent shown below:
+
+```jsx
+// new: the loader calls fetchClient.fetch(), which resolves a valid token (refreshing if
+// necessary) at the moment of the request - no snapshot to guard on or re-subscribe to.
+loader: createFetchLoader(fetchClient, () => '/api/messages'),
+// ...
+const messages = useLoaderData();
+```
+
+Some concrete differences that follow from this:
+
+- `authState.accessToken.accessToken` is a string captured at render/effect time. If the token refreshes in the
+  background afterward, that captured string is stale, and a request built from it can 401 even though `authState`
+  itself is fine a moment later. `createFetchLoader`/`createTokenLoader` resolve the token at the moment of use,
+  so there's no window where a component holds an outdated value.
+- The `useEffect(..., [authState])` dependency array exists to re-run the effect when `authState`'s identity
+  changes. Loaders re-run on every navigation to their route, so there's nothing to keep in sync — each run is
+  already fresh.
+- Consumers of `authState` handle it being `null` during the initial async determination (the `Loading...`
+  checks above). `createTokenLoader` throwing a `401` `Response` on a bad/missing token is that check — the
+  loader blocks navigation until the answer is known, so there's no separate "is auth state ready" state.
+- `authState` updates arrive via `oktaAuth.authStateManager.subscribe()`; getting an effect's subscription scope
+  wrong can mean missed updates or leaked listeners. The `client-js` loaders have no subscription to manage.
 
 > :warning: **Requires React Router v6.4+** :warning:<br> These loaders only work with a [data router](https://reactrouter.com/en/main/routers/picking-a-router)
 (`createBrowserRouter`, `createMemoryRouter`, etc.) and its `RouterProvider`. They are not compatible with
@@ -410,7 +461,7 @@ npm install --save @okta/okta-react
 npm install --save @okta/auth-foundation @okta/oauth2-flows @okta/spa-platform
 ```
 
-### Constructing the SDK singletons
+### Constructing the SDK client instances
 
 ```javascript
 // src/auth.js
@@ -424,9 +475,9 @@ const config = {
   redirectUri: window.location.origin + '/login/callback',
 };
 
-export const fetchClient = new FetchClient(config);
 const signInFlow = new AuthorizationCodeFlow(config);
 export const tokenOrchestrator = new AuthorizationCodeFlowOrchestrator(signInFlow);
+export const fetchClient = new FetchClient(tokenOrchestrator, config);
 ```
 
 ### Wiring loaders into your router
