@@ -14,13 +14,13 @@ import * as React from 'react';
 import { Link, useLoaderData } from 'react-router';
 
 const Resource: React.FC = () => {
-  const userInfo = useLoaderData();
+  const resource = useLoaderData();
 
   return (
     <div>
       <h1>Resource</h1>
-      <p>Loaded via <code>createFetchLoader</code> (<code>/oauth2/v1/userinfo</code>).</p>
-      <pre id="userinfo">{JSON.stringify(userInfo, null, 2)}</pre>
+      <p>Loaded via <code>createFetchLoader</code> (<code>/resource.json</code>).</p>
+      <pre id="resource">{JSON.stringify(resource, null, 2)}</pre>
       <Link to="/">Home</Link>
     </div>
   );

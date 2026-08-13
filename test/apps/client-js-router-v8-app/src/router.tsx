@@ -16,7 +16,7 @@ import {
   createTokenLoader,
   createLoginCallbackLoader,
 } from '@okta/okta-react/client-js';
-import { orchestrator, fetchClient, userInfoUrl } from './auth';
+import { orchestrator, fetchClient } from './auth';
 import Home from './Home';
 import Protected from './Protected';
 import Resource from './Resource';
@@ -38,7 +38,7 @@ export const router = createBrowserRouter([
   {
     path: '/resource',
     element: <Resource />,
-    loader: createFetchLoader(fetchClient, () => userInfoUrl),
+    loader: createFetchLoader(fetchClient, () => '/resource.json'),
     errorElement: <ErrorBoundary />,
   },
   {
