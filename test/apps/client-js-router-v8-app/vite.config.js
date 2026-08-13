@@ -44,12 +44,8 @@ export default defineConfig({
   },
   build: {
     rollupOptions: {
-      // always throw with build warnings, except for react-router's own internal
-      // circular import among its (unused, SSR-only) dist chunks
+      // always throw with build warnings, customize "onwarn" callback in vite.config.js to handle this error.
       onwarn (warning, warn) {
-        if (warning.code === 'CIRCULAR_DEPENDENCY' && warning.message.includes('react-router')) {
-          return;
-        }
         warn('\nBuild warning happened, customize "onwarn" callback in vite.config.js to handle this error.');
         throw new Error(warning);
       }
