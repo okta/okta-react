@@ -1,0 +1,58 @@
+/*!
+ * Copyright (c) 2017-Present, Okta, Inc. and/or its affiliates. All rights reserved.
+ * The Okta software accompanied by this notice is provided pursuant to the Apache License, Version 2.0 (the "License.")
+ *
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *
+ * See the License for the specific language governing permissions and limitations under the License.
+ */
+
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+import oktaEnv from '@okta/env';
+
+oktaEnv.setEnvironmentVarsFromTestEnv(__dirname);
+
+process.env.CLIENT_ID = process.env.SPA_CLIENT_ID || process.env.CLIENT_ID;
+process.env.OKTA_TESTING_DISABLEHTTPSCHECK = process.env.OKTA_TESTING_DISABLEHTTPSCHECK || false;
+
+const env = {};
+
+// List of environment variables made available to the app
+[
+  'ISSUER',
+  'CLIENT_ID',
+  'OKTA_TESTING_DISABLEHTTPSCHECK',
+].forEach((key) => {
+  if (!process.env[key]) {
+    throw new Error(`Environment variable ${key} must be set. See README.md`);
+  }
+  env[key] = process.env[key];
+});
+
+// https://vitejs.dev/config/
+export default defineConfig({
+  plugins: [react()],
+  define: {
+    'process.env': env
+  },
+  server: {
+    port: process.env.PORT || 8080
+  },
+  build: {
+    rollupOptions: {
+      // always throw with build warnings, except for react-router's own internal
+      // circular import among its (unused, SSR-only) dist chunks
+      onwarn (warning, warn) {
+        if (warning.code === 'CIRCULAR_DEPENDENCY' && warning.message.includes('react-router')) {
+          return;
+        }
+        warn('\nBuild warning happened, customize "onwarn" callback in vite.config.js to handle this error.');
+        throw new Error(warning);
+      }
+    }
+  }
+})
