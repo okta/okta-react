@@ -20,11 +20,6 @@ import {
 
 const { ISSUER, CLIENT_ID } = process.env;
 
-// The userinfo endpoint always lives under the issuing authorization server, not the org root -
-// for a custom authorization server (e.g. `.../oauth2/default`) that's `.../oauth2/default/v1/userinfo`,
-// which differs from the org authorization server's `.../oauth2/v1/userinfo`.
-export const userInfoUrl = new URL(`${ISSUER}/v1/userinfo`);
-
 export const client = new OAuth2Client({
   issuer: ISSUER!,
   clientId: CLIENT_ID!,
