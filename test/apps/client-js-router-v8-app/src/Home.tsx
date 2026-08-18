@@ -16,10 +16,10 @@ import { Credential } from '@okta/spa-platform';
 import { orchestrator, signOutFlow } from './auth';
 
 const Home: React.FC = () => {
-  const [credential, setCredential] = React.useState<Credential | null>(null);
+  const [hasCredential, setHasCredential] = React.useState(false);
 
   React.useEffect(() => {
-    Credential.getDefault().then(setCredential);
+    Credential.getDefault().then((credential) => setHasCredential(credential !== null));
   }, []);
 
   const signIn = async () => {
@@ -28,6 +28,7 @@ const Home: React.FC = () => {
   };
 
   const signOut = async () => {
+    const credential = await Credential.getDefault();
     const idToken = credential?.token.idToken?.toString();
     if (!credential || !idToken) {
       return;
@@ -41,7 +42,7 @@ const Home: React.FC = () => {
   return (
     <div>
       <h1>okta-react client-js + React Router v8 sample</h1>
-      {credential ? (
+      {hasCredential ? (
         <button id="logout-button" onClick={signOut}>Sign out</button>
       ) : (
         <button id="login-button" onClick={signIn}>Sign in</button>
