@@ -11,6 +11,6 @@
  */
 
 export { createFetchLoader } from './createFetchLoader';
-export type { GetResource, LoaderArgs } from './createFetchLoader';
 export { createTokenLoader } from './createTokenLoader';
 export { createLoginCallbackLoader } from './createLoginCallbackLoader';
+export { createLoadersFromOrchestrator } from './createLoadersFromOrchestrator';

@@ -14,20 +14,26 @@ import type { Token, TokenOrchestrator } from '@okta/auth-foundation';
 import type { AuthorizationCodeFlowOrchestrator } from '@okta/spa-platform';
 
 /**
- * Wraps an {@link AuthorizationCodeFlowOrchestrator} in a React Router (v6.4+) loader-compatible function,
- * for consumers who want a raw {@link Token} (e.g. to attach an `Authorization` header themselves) rather
- * than a `fetchClient`-mediated `Response`.
+ * Binds an {@link AuthorizationCodeFlowOrchestrator} to a small helper for use inside a React Router (v6.4+)
+ * loader, for consumers who want a raw {@link Token} (e.g. to attach an `Authorization` header themselves)
+ * rather than a `fetchClient`-mediated `Response`.
  *
  * `orchestrator.getToken()` already resolves a matching credential, refreshes it if needed, or performs a
  * full re-authentication redirect if not - if a redirect occurs, the returned promise never resolves because
  * the page navigates away, same as {@link createFetchLoader}. The `401` throw below only covers the
  * (default-off, `avoidPrompting: true`) case where the orchestrator declines to redirect and returns `null`.
+ *
+ * The returned function takes optional {@link TokenOrchestrator.AuthorizeParams}, not React Router's
+ * `{ request, params }` loader args, so call it from within your own loader function rather than assigning
+ * it directly to `loader`:
+ *
+ * @example
+ * const getToken = createTokenLoader(orchestrator);
+ * // ...
+ * loader: () => getToken({ scopes: ['openid', 'admin'] }),
  */
-export function createTokenLoader(
-  orchestrator: AuthorizationCodeFlowOrchestrator,
-  params?: TokenOrchestrator.AuthorizeParams,
-) {
-  return async (): Promise<Token> => {
+export function createTokenLoader(orchestrator: AuthorizationCodeFlowOrchestrator) {
+  return async (params?: TokenOrchestrator.AuthorizeParams): Promise<Token> => {
     const token = await orchestrator.getToken(params);
     if (!token) {
       throw new Response('Unauthorized', { status: 401 });
