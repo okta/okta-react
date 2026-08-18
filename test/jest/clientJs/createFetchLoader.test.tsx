@@ -25,6 +25,7 @@ describe('createFetchLoader', () => {
         headers: { 'Content-Type': 'application/json' },
       })),
     };
+    const fetchResource = createFetchLoader(fetchClient as any);
 
     function Page() {
       const data = useLoaderData() as { id: string };
@@ -35,7 +36,7 @@ describe('createFetchLoader', () => {
       [{
         path: '/',
         element: <Page />,
-        loader: createFetchLoader(fetchClient as any, () => '/api/resource'),
+        loader: () => fetchResource('/api/resource'),
       }],
       { initialEntries: ['/'] }
     );
@@ -46,11 +47,11 @@ describe('createFetchLoader', () => {
     expect(fetchClient.fetch).toHaveBeenCalledWith('/api/resource', undefined);
   });
 
-  it('derives the resource from request/params and forwards init through to fetchClient.fetch()', async () => {
+  it('derives the resource from params and forwards init through to fetchClient.fetch()', async () => {
     const fetchClient = {
       fetch: jest.fn().mockResolvedValue(new Response(null, { status: 204 })),
     };
-    const getResource = jest.fn(({ params }: any) => `/api/users/${params.userId}`);
+    const fetchResource = createFetchLoader(fetchClient as any);
     const init = { headers: { 'X-Test': '1' } };
 
     function Page() {
@@ -62,7 +63,7 @@ describe('createFetchLoader', () => {
       [{
         path: '/users/:userId',
         element: <Page />,
-        loader: createFetchLoader(fetchClient as any, getResource, init),
+        loader: ({ params }) => fetchResource(`/api/users/${params.userId}`, init),
       }],
       { initialEntries: ['/users/abc'] }
     );
@@ -70,9 +71,6 @@ describe('createFetchLoader', () => {
     render(<RouterProvider router={router} />);
 
     await waitFor(() => expect(screen.getByText('done')).toBeInTheDocument());
-    expect(getResource).toHaveBeenCalledWith(
-      expect.objectContaining({ params: expect.objectContaining({ userId: 'abc' }) })
-    );
     expect(fetchClient.fetch).toHaveBeenCalledWith('/api/users/abc', init);
   });
 });

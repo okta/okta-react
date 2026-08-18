@@ -15,26 +15,23 @@
 // instances are structurally assignable here since they extend this base class.
 import type { FetchClient } from '@okta/auth-foundation';
 
-export interface LoaderArgs {
-  request: Request;
-  params: Record<string, string | undefined>;
-}
-
-export type GetResource = (args: LoaderArgs) => string | URL | Request;
-
 /**
- * Wraps a {@link FetchClient} in a React Router (v6.4+) loader-compatible function.
+ * Binds a {@link FetchClient} to a small helper for use inside a React Router (v6.4+) loader.
  *
  * `fetchClient.fetch()` already resolves a matching credential, refreshes it if needed, or performs a full
- * re-authentication redirect if not - this loader does no auth logic of its own, it just fetches and returns
+ * re-authentication redirect if not - this helper does no auth logic of its own, it just fetches and returns
  * the raw `Response`, which React Router auto-parses when read via `useLoaderData()`.
+ *
+ * The returned function takes a resource and optional `RequestInit`, not React Router's `{ request, params }`
+ * loader args, so call it from within your own loader function rather than assigning it directly to `loader`:
+ *
+ * @example
+ * const fetchMessages = createFetchLoader(fetchClient);
+ * // ...
+ * loader: ({ params }) => fetchMessages(`/api/users/${params.userId}/messages`),
  */
-export function createFetchLoader(
-  fetchClient: FetchClient,
-  getResource: GetResource,
-  init?: RequestInit,
-) {
-  return async (args: LoaderArgs): Promise<Response> => {
-    return fetchClient.fetch(getResource(args), init);
+export function createFetchLoader(fetchClient: FetchClient) {
+  return async (resource: string | URL | Request, init?: RequestInit): Promise<Response> => {
+    return fetchClient.fetch(resource, init);
   };
 }

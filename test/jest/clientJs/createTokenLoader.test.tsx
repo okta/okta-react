@@ -21,6 +21,7 @@ describe('createTokenLoader', () => {
   it('resolves the token via orchestrator.getToken()', async () => {
     const token = { accessToken: 'abc123' };
     const orchestrator = { getToken: jest.fn().mockResolvedValue(token) };
+    const getToken = createTokenLoader(orchestrator as any);
 
     function Page() {
       const data = useLoaderData() as typeof token;
@@ -28,7 +29,7 @@ describe('createTokenLoader', () => {
     }
 
     const router = createMemoryRouter(
-      [{ path: '/', element: <Page />, loader: createTokenLoader(orchestrator as any) }],
+      [{ path: '/', element: <Page />, loader: () => getToken() }],
       { initialEntries: ['/'] }
     );
 
@@ -40,6 +41,7 @@ describe('createTokenLoader', () => {
 
   it('passes the provided params through to orchestrator.getToken()', async () => {
     const orchestrator = { getToken: jest.fn().mockResolvedValue({ accessToken: 'xyz' }) };
+    const getToken = createTokenLoader(orchestrator as any);
     const params = { scopes: ['openid'] };
 
     function Page() {
@@ -48,7 +50,7 @@ describe('createTokenLoader', () => {
     }
 
     const router = createMemoryRouter(
-      [{ path: '/', element: <Page />, loader: createTokenLoader(orchestrator as any, params) }],
+      [{ path: '/', element: <Page />, loader: () => getToken(params) }],
       { initialEntries: ['/'] }
     );
 
@@ -60,6 +62,7 @@ describe('createTokenLoader', () => {
 
   it('throws a 401 Response when getToken() resolves null', async () => {
     const orchestrator = { getToken: jest.fn().mockResolvedValue(null) };
+    const getToken = createTokenLoader(orchestrator as any);
 
     function ErrorBoundary() {
       const error = useRouteError();
@@ -70,7 +73,7 @@ describe('createTokenLoader', () => {
       [{
         path: '/',
         element: <p>never rendered</p>,
-        loader: createTokenLoader(orchestrator as any),
+        loader: () => getToken(),
         errorElement: <ErrorBoundary />,
       }],
       { initialEntries: ['/'] }

@@ -430,7 +430,9 @@ against the loader-based equivalent shown below:
 ```jsx
 // new: the loader calls fetchClient.fetch(), which resolves a valid token (refreshing if
 // necessary) at the moment of the request - no snapshot to guard on or re-subscribe to.
-loader: createFetchLoader(fetchClient, () => '/api/messages'),
+const fetchResource = createFetchLoader(fetchClient);
+// ...
+loader: () => fetchResource('/api/messages'),
 // ...
 const messages = useLoaderData();
 ```
@@ -485,27 +487,30 @@ export const fetchClient = new FetchClient(tokenOrchestrator, config);
 ```jsx
 // src/router.js
 import { createBrowserRouter } from 'react-router-dom';
-import { createFetchLoader, createTokenLoader, createLoginCallbackLoader } from '@okta/okta-react/client-js';
+import { createFetchLoader, createLoadersFromOrchestrator } from '@okta/okta-react/client-js';
 import { fetchClient, tokenOrchestrator } from './auth';
 import Home from './Home';
 import Protected from './Protected';
 import Messages from './Messages';
+
+const fetchResource = createFetchLoader(fetchClient);
+const { tokenLoader, loginCallbackLoader } = createLoadersFromOrchestrator(tokenOrchestrator);
 
 export const router = createBrowserRouter([
   { path: '/', element: <Home /> },
   {
     path: '/protected',
     element: <Protected />,
-    loader: createTokenLoader(tokenOrchestrator),
+    loader: () => tokenLoader(),
   },
   {
     path: '/messages',
     element: <Messages />,
-    loader: createFetchLoader(fetchClient, () => '/api/messages'),
+    loader: () => fetchResource('/api/messages'),
   },
   {
     path: '/login/callback',
-    loader: createLoginCallbackLoader(tokenOrchestrator),
+    loader: loginCallbackLoader,
   },
 ]);
 ```
@@ -520,10 +525,16 @@ export default function App() {
 }
 ```
 
-`createTokenLoader` throws a `401` `Response` if a valid token can't be obtained, which React Router will
-surface to the nearest [`errorElement`](https://reactrouter.com/en/main/route/error-element). `createFetchLoader`
+`createFetchLoader` and `createTokenLoader` (bundled into `createLoadersFromOrchestrator` alongside
+`createLoginCallbackLoader`, since the token loader and login callback loader need to share one orchestrator
+instance to see each other's stored credential) each return a function that takes the resource/params to use,
+not React Router's `{ request, params }` loader args directly — call them from within your own loader function,
+as above, rather than assigning them straight to `loader`.
+
+`tokenLoader` throws a `401` `Response` if a valid token can't be obtained, which React Router will
+surface to the nearest [`errorElement`](https://reactrouter.com/en/main/route/error-element). `fetchResource`
 returns the `fetchClient.fetch()` response directly so it can be consumed with `useLoaderData()`.
-`createLoginCallbackLoader` resumes the sign-in flow via `orchestrator.resumeFlow()` (which stores the resulting
+`loginCallbackLoader` resumes the sign-in flow via `orchestrator.resumeFlow()` (which stores the resulting
 credential itself) and redirects back to the original URI — it replaces the `<LoginCallback>` component used with
 `@okta/okta-auth-js`.
 
