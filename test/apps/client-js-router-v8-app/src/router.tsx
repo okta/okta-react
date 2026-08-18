@@ -11,17 +11,16 @@
  */
 
 import { createBrowserRouter } from 'react-router';
-import {
-  createFetchLoader,
-  createTokenLoader,
-  createLoginCallbackLoader,
-} from '@okta/okta-react/client-js';
+import { createFetchLoader, createLoadersFromOrchestrator } from '@okta/okta-react/client-js';
 import { orchestrator, fetchClient } from './auth';
 import Home from './Home';
 import Protected from './Protected';
 import Resource from './Resource';
 import LoginCallback from './LoginCallback';
 import ErrorBoundary from './ErrorBoundary';
+
+const fetchResource = createFetchLoader(fetchClient);
+const { tokenLoader, loginCallbackLoader } = createLoadersFromOrchestrator(orchestrator);
 
 export const router = createBrowserRouter([
   {
@@ -32,19 +31,19 @@ export const router = createBrowserRouter([
   {
     path: '/protected',
     element: <Protected />,
-    loader: createTokenLoader(orchestrator),
+    loader: () => tokenLoader(),
     errorElement: <ErrorBoundary />,
   },
   {
     path: '/resource',
     element: <Resource />,
-    loader: createFetchLoader(fetchClient, () => '/resource.json'),
+    loader: () => fetchResource('/resource.json'),
     errorElement: <ErrorBoundary />,
   },
   {
     path: '/login/callback',
     element: <LoginCallback />,
-    loader: createLoginCallbackLoader(orchestrator),
+    loader: loginCallbackLoader,
     errorElement: <ErrorBoundary />,
   },
 ]);
