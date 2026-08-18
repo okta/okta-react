@@ -538,6 +538,36 @@ returns the `fetchClient.fetch()` response directly so it can be consumed with `
 credential itself) and redirects back to the original URI — it replaces the `<LoginCallback>` component used with
 `@okta/okta-auth-js`.
 
+### Using these loaders in React Router framework mode
+
+`fetchClient`/`tokenOrchestrator` read from browser storage and can trigger a browser redirect, so they can only
+run in the browser. In [framework mode](https://reactrouter.com/start/framework/data-loading), export them as
+`clientLoader`, not `loader` (which runs on the server). Set `clientLoader.hydrate = true` and provide a
+`HydrateFallback` so the check also runs on the very first page load, not just on later client-side navigations:
+
+```tsx
+// app/routes/messages.tsx
+import { createFetchLoader } from '@okta/okta-react/client-js';
+import { useLoaderData } from 'react-router';
+import { fetchClient } from '~/auth';
+
+const fetchResource = createFetchLoader(fetchClient);
+
+export async function clientLoader() {
+  return fetchResource('/api/messages');
+}
+clientLoader.hydrate = true;
+
+export function HydrateFallback() {
+  return <p>Checking authentication…</p>;
+}
+
+export default function Messages() {
+  const messages = useLoaderData<typeof clientLoader>();
+  // ...
+}
+```
+
 ## Reference
 
 ### `Security`
