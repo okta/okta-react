@@ -9,9 +9,9 @@ The app is server-rendered, but authentication state is entirely browser-held (v
 - `/` (`app/routes/home.tsx`) - shows a sign in/out button based on whether a `Credential` exists.
 - `/protected` (`app/routes/protected.tsx`) - loads and renders ID token claims via `createTokenLoader`.
 - `/resource` (`app/routes/resource.tsx`) - fetches `/resource.json` via `createFetchLoader`.
-- `/login/callback` (`app/routes/login-callback.tsx`) - resumes the OAuth flow via `createLoginCallbackLoader` and redirects back to the original page. Needs a `default` export (not just `HydrateFallback`) so React Router treats it as a normal page route instead of a resource route - a route with no `default` export has nothing to render, so a real browser navigation to it (like the redirect back from Okta) has nowhere to go without a server-side `loader`.
+- `/login/callback` (`app/routes/login-callback.tsx`) - resumes the OAuth flow via `createLoginCallbackLoader` and redirects back to the original page. Exports `HydrateFallback` as its `default`, so React Router treats it as a page route rather than a resource route.
 
-`app/auth.ts` exports a single `getAuth()` - a lazy, memoized async singleton. `@okta/spa-platform`'s main entry is a barrel file whose module chain touches the browser-only `location` global as soon as any of its exports are imported, which crashes if evaluated during SSR. `getAuth()` only dynamically imports it on first call, and must only ever be called from code guaranteed to run in the browser (`clientLoader` bodies, event handlers) - never from module scope.
+`app/auth.ts` exports a single `getAuth()` - a lazy, memoized async singleton. `@okta/spa-platform`'s main entry is a single barrel file: importing any export from it (e.g. `OAuth2Client`) loads the whole module graph, including `Credential`'s own module, which touches the browser-only `location` global on import. `getAuth()` dynamically imports it on first call and is only called from code that runs in the browser (`clientLoader` bodies, event handlers), never from module scope.
 
 ## Setup
 

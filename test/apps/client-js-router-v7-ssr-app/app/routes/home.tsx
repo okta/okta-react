@@ -13,18 +13,14 @@
 import { Link, useLoaderData } from 'react-router';
 import { getAuth } from '../auth';
 
-// `Credential` is imported dynamically (rather than statically at the top of
-// this file) because its module touches the browser-only `location` global
-// as soon as it's loaded. `clientLoader` and `signOut` below only ever run
-// in the browser, but this route module is also imported on the server to
-// read its `HydrateFallback`/`Home` exports for the SSR render, so a static
-// import here would crash that server-side import.
+// `Credential` is imported dynamically because `@okta/spa-platform`'s entry
+// point is a single barrel file: importing any export from it loads the
+// whole module graph, including `Credential`'s own module, which touches the
+// browser-only `location` global on import. This route module is also
+// imported on the server, for its `HydrateFallback`/`Home` exports;
+// `clientLoader` and `signOut` below only run in the browser.
 export async function clientLoader() {
-    // `getAuth()` must resolve before `Credential.getDefault()` is called -
-    // it's what constructs the `OAuth2Client`, which registers the
-    // client/credential coordinator that `Credential.getDefault()` reads
-    // from. Without it, there's nothing for `Credential.getDefault()` to
-    // find.
+    // `getAuth()` constructs the `OAuth2Client` that `Credential.getDefault()` reads from.
     const [{ Credential }] = await Promise.all([import('@okta/spa-platform'), getAuth()]);
     const credential = await Credential.getDefault();
     return { hasCredential: credential !== null };
