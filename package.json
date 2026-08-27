@@ -167,6 +167,8 @@
       "**/react-dom/**",
       "**/react-router-dom",
       "**/react-router-dom/**",
+      "**/react-router",
+      "**/react-router/**",
       "**/@types/react/**",
       "**/@types/react-dom",
       "**/@types/react-dom/**",
