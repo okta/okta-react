@@ -2,6 +2,7 @@
     "name": "@okta/test.app.client-js-router-v7-ssr-app",
     "private": true,
     "version": "0.0.0",
+    "type": "module",
     "scripts": {
         "dev": "react-router dev",
         "build": "react-router build",
