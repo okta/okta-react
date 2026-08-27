@@ -15,7 +15,14 @@ The app is server-rendered, but authentication state is entirely browser-held (v
 
 ## Setup
 
-Requires a `testenv` file at the repo root providing `ISSUER` and `CLIENT_ID` for a test Okta org (see the root `README.md`/`CONTRIBUTING.md` for the expected format). The app's redirect URI is `{origin}/login/callback` and its logout redirect is `{origin}/`, so the test org's app configuration needs to allow those for whatever origin you run this on.
+Requires a `testenv` file at the repo root providing `ISSUER` and `CLIENT_ID` for a test Okta org:
+
+```
+CLIENT_ID=<YOUR CLIENT ID>
+ISSUER=<YOUR ISSUER URL>
+```
+
+The app's redirect URI is `{origin}/login/callback` and its logout redirect is `{origin}/`, so the test org's app configuration needs to allow those for whatever origin you run this on.
 
 ```bash
 yarn dev    # start the dev server (defaults to http://localhost:8080)
