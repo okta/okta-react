@@ -20,15 +20,12 @@ type Auth = {
 
 let authPromise: Promise<Auth> | undefined;
 
-// `@okta/spa-platform`'s main entry is a single barrel file that re-exports
-// `Credential` alongside `OAuth2Client` etc. Importing it at module scope
-// (even just for `OAuth2Client`) forces that re-export to load too, and its
-// module chain touches the browser-only `location` global as soon as it's
-// loaded - which crashes under SSR, since this file is imported (via route
-// modules) on the server as well as in the browser. So the import is done
-// dynamically, inside this function, which must only ever be called from
-// code that's guaranteed to run in the browser (clientLoader bodies, event
-// handlers) - never from module scope.
+// `@okta/spa-platform`'s entry point is a single barrel file: importing any
+// export from it (e.g. `OAuth2Client`) loads the whole module graph,
+// including `Credential`, whose module touches the browser-only `location`
+// global on import. This file is imported on the server as well as in the
+// browser, so the import is dynamic here. `createAuth()` runs only in the
+// browser (clientLoader bodies, event handlers), never from module scope.
 async function createAuth(): Promise<Auth> {
     const {
         OAuth2Client,

@@ -16,11 +16,9 @@ import { ServerRouter } from 'react-router';
 import { createReadableStreamFromReadable } from '@react-router/node';
 import { renderToPipeableStream } from 'react-dom/server';
 
-// `renderToString` can't render a Suspense boundary that's still pending, and
-// routes with `clientLoader.hydrate = true` (like `home.tsx`, `protected.tsx`,
-// etc.) render inside exactly that kind of boundary so their `HydrateFallback`
-// can be shown. `renderToPipeableStream` is the streaming renderer that
-// supports it.
+// Routes with `clientLoader.hydrate = true` render inside a Suspense boundary
+// for their `HydrateFallback`. `renderToPipeableStream` supports streaming a
+// pending boundary; `renderToString` does not.
 export default function handleRequest(
     request: Request,
     responseStatusCode: number,
