@@ -6,6 +6,7 @@ const fs = require('fs');
 
 const NPM_DIR = `dist`;
 const BUNDLE_CMD = 'yarn bundle';
+const TYPES_CMD = 'yarn types';
 const BANNER_CMD = `yarn banners`;
 
 shell.echo(`Start building...`);
@@ -15,6 +16,13 @@ shell.rm(`-Rf`, `${NPM_DIR}/*`);
 // Bundle with rollup
 if (shell.exec(BUNDLE_CMD).code !== 0) {
   shell.echo(chalk.red(`Error: Rollup failed`));
+  shell.exit(1);
+}
+
+// Emit type declarations (kept separate from the rollup bundles above so the
+// multiple entry points don't fight over writing .d.ts files to the same directory)
+if (shell.exec(TYPES_CMD).code !== 0) {
+  shell.echo(chalk.red(`Error: Type declaration generation failed`));
   shell.exit(1);
 }
 

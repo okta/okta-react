@@ -16,6 +16,7 @@
     "test:e2e": "yarn workspace @okta/test.e2e test",
     "test:unit": "jest",
     "bundle": "rollup -c",
+    "types": "tsc -p tsconfig.json --declaration --emitDeclarationOnly --declarationDir dist/bundles/types",
     "dev": "yarn bundle --watch",
     "generate": "yarn --cwd generator install && yarn --cwd generator generate"
   },

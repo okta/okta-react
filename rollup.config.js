@@ -28,23 +28,12 @@ const extensions = ['js', 'jsx', 'ts', 'tsx'];
 const input = 'src/index.ts';
 const external = makeExternalPredicate();
 
-// Each build below needs its own `typescript()` plugin instance (with its own cacheRoot).
-// Sharing a single instance across configs with different inputs confuses rollup-plugin-typescript2's
-// declaration-emit bookkeeping and causes spurious "would overwrite input file" (TS5055) errors.
-// The first (UMD) build below type-checks the whole `src/**/*` program (per tsconfig's `include`)
-// and already produces every .d.ts file we need at `dist/bundles/types`; the later builds redirect
-// their (unused) declaration output elsewhere so they can't collide with those canonical files.
-const commonPlugins = (cacheRoot, emitDeclarationsTo = 'dist/bundles/types') => [
+// Type declarations are emitted separately (see `yarn types`, a single whole-program
+// `tsc --emitDeclarationOnly` pass) rather than by this plugin, so multiple entry points
+// below can share one `typescript()` instance without fighting over declaration output.
+const commonPlugins = [
   typescript({
-    typescript: ts,
-    useTsconfigDeclarationDir: true,
-    cacheRoot: `./node_modules/.cache/rpt2_${cacheRoot}`,
-    tsconfigOverride: {
-      compilerOptions: {
-        rootDir: 'src',
-        declarationDir: emitDeclarationsTo
-      }
-    }
+    typescript: ts
   }),
   replace({
     values: {
@@ -71,7 +60,7 @@ export default [
     input,
     external,
     plugins: [
-      ...commonPlugins('umd'),
+      ...commonPlugins,
       babel({
         babelrc: false,
         babelHelpers: 'bundled',
@@ -100,7 +89,7 @@ export default [
     input: 'src/index.ts',
     external,
     plugins: [
-      ...commonPlugins('index', './node_modules/.cache/rpt2_index_types'),
+      ...commonPlugins,
       babel({
         babelHelpers: 'runtime',
         presets: [
@@ -132,7 +121,7 @@ export default [
     input: 'src/react-router-5.ts',
     external,
     plugins: [
-      ...commonPlugins('react-router-5', './node_modules/.cache/rpt2_react-router-5_types'),
+      ...commonPlugins,
       babel({
         babelHelpers: 'runtime',
         presets: [
@@ -164,7 +153,7 @@ export default [
     input: 'src/react-router-6.ts',
     external,
     plugins: [
-      ...commonPlugins('react-router-6', './node_modules/.cache/rpt2_react-router-6_types'),
+      ...commonPlugins,
       babel({
         babelHelpers: 'runtime',
         presets: [
