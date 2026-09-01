@@ -14,6 +14,11 @@ import * as React from 'react';
 import { useOktaAuth, OnAuthRequiredFunction } from './OktaContext';
 import * as ReactRouterDom from 'react-router-dom';
 import { toRelativeUrl, AuthSdkError } from '@okta/okta-auth-js';
+// Important! Don't import OktaContext from './OktaContext'
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { OktaContext } from '@okta/okta-react';
 import OktaError from './OktaError';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -41,7 +46,9 @@ const SecureOutlet: React.FC<SecureOutletProps & React.HTMLAttributes<HTMLDivEle
   loadingElement = null,
   ...outletProps
 }) => {
-  const { oktaAuth, authState, _onAuthRequired } = useOktaAuth();
+  // Need to use OktaContext imported from `@okta/okta-react`
+  // Because SecureOutlet needs to be imported from `@okta/okta-react/react-router-6`
+  const { oktaAuth, authState, _onAuthRequired } = useOktaAuth(OktaContext);
   const pendingLogin = React.useRef(false);
   const [handleLoginError, setHandleLoginError] = React.useState<Error | null>(null);
   const ErrorReporter = errorComponent || OktaError;

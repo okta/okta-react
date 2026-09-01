@@ -100,8 +100,10 @@ npm install --save react-router-dom     # see note below
 npm install --save @okta/okta-auth-js   # requires at least version 5.3.1
 ```
 
-> ⚠️ NOTE ⚠️<br> The [SecureRoute](#secureroute) component packaged in this SDK only works with `react-router-dom` `5.x`.
-If you're using `react-router-dom` `6.x` or later, use [SecureOutlet](#secureoutlet) instead.
+> ⚠️ NOTE ⚠️<br> The [SecureRoute](#secureroute) component only works with `react-router-dom` `5.x`, and is imported from `@okta/okta-react/react-router-5`.
+If you're using `react-router-dom` `6.x` or later, use [SecureOutlet](#secureoutlet) instead, imported from `@okta/okta-react/react-router-6`.
+
+> ⚠️ Upgrading to `7.x` ⚠️<br> As of `7.0.0`, `SecureRoute` and `SecureOutlet` are no longer exported from the `@okta/okta-react` top-level package. Update your imports to `import { SecureRoute } from '@okta/okta-react/react-router-5';` or `import { SecureOutlet } from '@okta/okta-react/react-router-6';`. This keeps `react-router-dom` version-specific code out of your bundle unless you actually use it. All other exports (`Security`, `withOktaAuth`, `useOktaAuth`, `OktaContext`, `LoginCallback`) are unaffected.
 
 ## Usage
 
@@ -152,7 +154,8 @@ This example defines 3 routes:
 
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, withRouter } from 'react-router-dom';
-import { SecureRoute, Security, LoginCallback } from '@okta/okta-react';
+import { Security, LoginCallback } from '@okta/okta-react';
+import { SecureRoute } from '@okta/okta-react/react-router-5';
 import { OktaAuth, toRelativeUrl } from '@okta/okta-auth-js';
 import Home from './Home';
 import Protected from './Protected';
@@ -193,7 +196,8 @@ export default class extends Component {
 
 ```jsx
 import React from 'react';
-import { SecureRoute, Security, LoginCallback } from '@okta/okta-react';
+import { Security, LoginCallback } from '@okta/okta-react';
+import { SecureRoute } from '@okta/okta-react/react-router-5';
 import { OktaAuth, toRelativeUrl } from '@okta/okta-auth-js';
 import { BrowserRouter as Router, Route, useHistory } from 'react-router-dom';
 import Home from './Home';
@@ -233,7 +237,8 @@ export default AppWithRouterAccess;
 
 ```jsx
 import React from 'react';
-import { SecureOutlet, Security, LoginCallback } from '@okta/okta-react';
+import { Security, LoginCallback } from '@okta/okta-react';
+import { SecureOutlet } from '@okta/okta-react/react-router-6';
 import { OktaAuth, toRelativeUrl } from '@okta/okta-auth-js';
 import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 import Home from './Home';
@@ -512,7 +517,7 @@ class App extends Component {
 
 ### `SecureRoute`
 
-`SecureRoute` ensures that a route is only rendered if the user is authenticated. If the user is not authenticated, it calls [onAuthRequired](#onauthrequired) if it exists, otherwise, it redirects to Okta.
+Import from `@okta/okta-react/react-router-5`. `SecureRoute` ensures that a route is only rendered if the user is authenticated. If the user is not authenticated, it calls [onAuthRequired](#onauthrequired) if it exists, otherwise, it redirects to Okta.
 
 #### onAuthRequired
 
@@ -534,7 +539,7 @@ As with `Route` from `react-router-dom`, `<SecureRoute>` can take one of:
 
 ### `SecureOutlet`
 
-`SecureOutlet` is the `react-router-dom` `6.x`+ equivalent of [SecureRoute](#secureroute). It renders an `Outlet` for its nested routes only if the user is authenticated. If the user is not authenticated, it calls [onAuthRequired](#onauthrequired) if it exists, otherwise, it redirects to Okta.
+Import from `@okta/okta-react/react-router-6`. `SecureOutlet` is the `react-router-dom` `6.x`+ equivalent of [SecureRoute](#secureroute). It renders an `Outlet` for its nested routes only if the user is authenticated. If the user is not authenticated, it calls [onAuthRequired](#onauthrequired) if it exists, otherwise, it redirects to Okta.
 
 Use it as the `element` of a parent `Route` that wraps the routes you want to protect:
 

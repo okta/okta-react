@@ -1,4 +1,4 @@
-/*
+/*!
  * Copyright (c) 2017-Present, Okta, Inc. and/or its affiliates. All rights reserved.
  * The Okta software accompanied by this notice is provided pursuant to the Apache License, Version 2.0 (the "License.")
  *
@@ -10,15 +10,31 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-import Security from './Security';
-import withOktaAuth from './withOktaAuth';
-import OktaContext, { useOktaAuth } from './OktaContext';
-import LoginCallback from './LoginCallback';
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
-export {
-  Security,
-  withOktaAuth,
-  useOktaAuth,
-  OktaContext,
-  LoginCallback,
-};
+import * as React from 'react';
+import { AuthSdkError } from '@okta/okta-auth-js';
+
+export class ErrorBoundary extends React.Component {
+  constructor(props: any) {
+    super(props);
+    this.state = {
+      error: null
+    } as {
+      error: AuthSdkError | null
+    };
+  }
+
+  componentDidCatch(error: AuthSdkError) {
+    this.setState({ error: error });
+  }
+
+  render() {
+    if (this.state.error) {
+      // You can render any custom fallback UI
+      return <p>{ this.state.error.toString() }</p>;
+    }
+
+    return this.props.children;
+  }
+}

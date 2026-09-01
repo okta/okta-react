@@ -1,3 +1,9 @@
+# 7.0.0
+
+### Breaking Changes
+
+- `SecureRoute` and `SecureOutlet` are no longer exported from `@okta/okta-react`. Import `SecureRoute` from `@okta/okta-react/react-router-5` and `SecureOutlet` from `@okta/okta-react/react-router-6` instead. This ensures `react-router-dom` version-specific code is only pulled into your bundle if you actually use it, and avoids build-time errors from unused router APIs. Minimum supported Node version is now `12.17.0`.
+
 # 6.11.0
 
 ### Other
