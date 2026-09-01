@@ -4,6 +4,12 @@
     "jsx": "react",
     "esModuleInterop": true,
     "resolveJsonModule": true,
-    "strict": true
+    "strict": true,
+    "baseUrl": ".",
+    "paths": {
+      "@okta/okta-react": ["../../src"],
+      "@okta/okta-react/react-router-5": ["../../src/react-router-5.ts"],
+      "@okta/okta-react/react-router-6": ["../../src/react-router-6.ts"]
+    }
   }
 }

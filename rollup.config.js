@@ -13,6 +13,7 @@ const makeExternalPredicate = () => {
   const externalArr = [
     ...Object.keys(pkg.peerDependencies || {}),
     ...Object.keys(pkg.dependencies || {}),
+    '@okta/okta-react',
   ];
 
   if (externalArr.length === 0) {
@@ -26,10 +27,24 @@ const extensions = ['js', 'jsx', 'ts', 'tsx'];
 
 const input = 'src/index.ts';
 const external = makeExternalPredicate();
-const commonPlugins = [
+
+// Each build below needs its own `typescript()` plugin instance (with its own cacheRoot).
+// Sharing a single instance across configs with different inputs confuses rollup-plugin-typescript2's
+// declaration-emit bookkeeping and causes spurious "would overwrite input file" (TS5055) errors.
+// The first (UMD) build below type-checks the whole `src/**/*` program (per tsconfig's `include`)
+// and already produces every .d.ts file we need at `dist/bundles/types`; the later builds redirect
+// their (unused) declaration output elsewhere so they can't collide with those canonical files.
+const commonPlugins = (cacheRoot, emitDeclarationsTo = 'dist/bundles/types') => [
   typescript({
     typescript: ts,
-    useTsconfigDeclarationDir: true
+    useTsconfigDeclarationDir: true,
+    cacheRoot: `./node_modules/.cache/rpt2_${cacheRoot}`,
+    tsconfigOverride: {
+      compilerOptions: {
+        rootDir: 'src',
+        declarationDir: emitDeclarationsTo
+      }
+    }
   }),
   replace({
     values: {
@@ -45,7 +60,7 @@ const commonPlugins = [
     delimiters: ['\\b', '\\b'],
     preventAssignment: true
   }),
-  cleanup({ 
+  cleanup({
     extensions,
     comments: 'none'
   })
@@ -56,7 +71,7 @@ export default [
     input,
     external,
     plugins: [
-      ...commonPlugins,
+      ...commonPlugins('umd'),
       babel({
         babelrc: false,
         babelHelpers: 'bundled',
@@ -85,7 +100,7 @@ export default [
     input: 'src/index.ts',
     external,
     plugins: [
-      ...commonPlugins,
+      ...commonPlugins('index', './node_modules/.cache/rpt2_index_types'),
       babel({
         babelHelpers: 'runtime',
         presets: [
@@ -108,6 +123,70 @@ export default [
       {
         format: 'esm',
         file: 'dist/bundles/okta-react.esm.js',
+        exports: 'named',
+        sourcemap: true
+      }
+    ]
+  },
+  {
+    input: 'src/react-router-5.ts',
+    external,
+    plugins: [
+      ...commonPlugins('react-router-5', './node_modules/.cache/rpt2_react-router-5_types'),
+      babel({
+        babelHelpers: 'runtime',
+        presets: [
+          '@babel/preset-env',
+          '@babel/preset-react'
+        ],
+        plugins: [
+          '@babel/plugin-transform-runtime'
+        ],
+        extensions
+      }),
+    ],
+    output: [
+      {
+        format: 'cjs',
+        file: 'dist/bundles/okta-react-router-5.cjs.js',
+        exports: 'named',
+        sourcemap: true
+      },
+      {
+        format: 'esm',
+        file: 'dist/bundles/okta-react-router-5.esm.js',
+        exports: 'named',
+        sourcemap: true
+      }
+    ]
+  },
+  {
+    input: 'src/react-router-6.ts',
+    external,
+    plugins: [
+      ...commonPlugins('react-router-6', './node_modules/.cache/rpt2_react-router-6_types'),
+      babel({
+        babelHelpers: 'runtime',
+        presets: [
+          '@babel/preset-env',
+          '@babel/preset-react'
+        ],
+        plugins: [
+          '@babel/plugin-transform-runtime'
+        ],
+        extensions
+      }),
+    ],
+    output: [
+      {
+        format: 'cjs',
+        file: 'dist/bundles/okta-react-router-6.cjs.js',
+        exports: 'named',
+        sourcemap: true
+      },
+      {
+        format: 'esm',
+        file: 'dist/bundles/okta-react-router-6.esm.js',
         exports: 'named',
         sourcemap: true
       }

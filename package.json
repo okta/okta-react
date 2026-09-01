@@ -1,6 +1,6 @@
 {
   "name": "@okta/okta-react",
-  "version": "6.12.0",
+  "version": "7.0.0",
   "description": "React support for Okta",
   "private": true,
   "scripts": {
@@ -29,6 +29,25 @@
   "main": "dist/bundles/okta-react.cjs.js",
   "module": "dist/bundles/okta-react.esm.js",
   "types": "dist/bundles/types",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/bundles/types/index.d.ts",
+      "import": "./dist/bundles/okta-react.esm.js",
+      "require": "./dist/bundles/okta-react.cjs.js",
+      "default": "./dist/bundles/okta-react.umd.js"
+    },
+    "./react-router-5": {
+      "types": "./dist/bundles/types/react-router-5.d.ts",
+      "import": "./dist/bundles/okta-react-router-5.esm.js",
+      "require": "./dist/bundles/okta-react-router-5.cjs.js"
+    },
+    "./react-router-6": {
+      "types": "./dist/bundles/types/react-router-6.d.ts",
+      "import": "./dist/bundles/okta-react-router-6.esm.js",
+      "require": "./dist/bundles/okta-react-router-6.cjs.js"
+    }
+  },
   "author": "",
   "license": "Apache-2.0",
   "bugs": {
@@ -36,7 +55,7 @@
   },
   "homepage": "https://github.com/okta/okta-react#readme",
   "engines": {
-    "node": ">=10.3",
+    "node": ">=12.17.0",
     "yarn": "^1.7.0"
   },
   "resolutions": {

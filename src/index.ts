@@ -14,8 +14,6 @@ import Security from './Security';
 import withOktaAuth from './withOktaAuth';
 import OktaContext, { useOktaAuth } from './OktaContext';
 import LoginCallback from './LoginCallback';
-import SecureRoute from './SecureRoute';
-import SecureOutlet from './SecureOutlet';
 
 export {
   Security,
@@ -23,6 +21,4 @@ export {
   useOktaAuth,
   OktaContext,
   LoginCallback,
-  SecureRoute,
-  SecureOutlet,
 };
