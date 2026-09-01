@@ -68,6 +68,21 @@ module.exports = {
         node: true,
         browser: true
       }
+    },
+    {
+      // SecureRoute/SecureOutlet must import the OktaContext object via the package's
+      // own self-import so bundlers dedupe it to the same instance <Security> provides;
+      // importing it from the relative path would give this file its own separate Context.
+      files: ['src/SecureRoute.tsx', 'src/SecureOutlet.tsx'],
+      rules: {
+        'no-restricted-imports': ['error', {
+          paths: [{
+            name: './OktaContext',
+            importNames: ['default'],
+            message: "Import OktaContext from '@okta/okta-react' instead of './OktaContext' here - see the comment above this import."
+          }]
+        }]
+      }
     }
   ]
 }
