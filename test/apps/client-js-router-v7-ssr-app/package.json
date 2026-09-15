@@ -1,0 +1,31 @@
+{
+    "name": "@okta/test.app.client-js-router-v7-ssr-app",
+    "private": true,
+    "version": "0.0.0",
+    "type": "module",
+    "scripts": {
+        "dev": "react-router dev",
+        "build": "react-router build",
+        "prestart": "yarn build",
+        "start": "react-router-serve ./build/server/index.js"
+    },
+    "dependencies": {
+        "react": "^19.2.7",
+        "react-dom": "^19.2.7",
+        "react-router": "^7.18.2",
+        "@react-router/node": "^7.18.2",
+        "@react-router/serve": "^7.18.2",
+        "@okta/auth-foundation": "*",
+        "@okta/oauth2-flows": "*",
+        "@okta/spa-platform": "*",
+        "@okta/okta-react": "*"
+    },
+    "devDependencies": {
+        "@react-router/dev": "^7.18.2",
+        "@types/react": "^19.2.18",
+        "@types/react-dom": "^19.2.4",
+        "typescript": "^5.6.3",
+        "vite": "^8.2.1",
+        "react-router-dom": "^7.18.2"
+    }
+}
