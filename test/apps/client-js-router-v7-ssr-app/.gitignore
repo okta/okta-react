@@ -1,0 +1,9 @@
+node_modules
+build
+.react-router
+*.local
+
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store

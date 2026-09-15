@@ -38,10 +38,26 @@ delete packageJSON.workspaces; // remove yarn workspace section
 
 // Remove "build/" from the entrypoint paths.
 ['main', 'module', 'types'].forEach(function(key) {
-  if (packageJSON[key]) { 
+  if (packageJSON[key]) {
     packageJSON[key] = packageJSON[key].replace(`${NPM_DIR}/`, '');
   }
 });
+
+// Remove "build/" from the `exports` map paths (leaves the leading "./" intact).
+function stripDistPrefix(value) {
+  if (typeof value === 'string') {
+    return value.replace(`${NPM_DIR}/`, '');
+  }
+  if (value && typeof value === 'object') {
+    Object.keys(value).forEach(function(key) {
+      value[key] = stripDistPrefix(value[key]);
+    });
+  }
+  return value;
+}
+if (packageJSON.exports) {
+  stripDistPrefix(packageJSON.exports);
+}
 
 fs.writeFileSync(`./${NPM_DIR}/package.json`, JSON.stringify(packageJSON, null, 4));
 

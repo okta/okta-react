@@ -10,15 +10,12 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-import Enzyme from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-import { fetch, Headers, Request, Response } from 'undici';
+import type { RouteConfig } from '@react-router/dev/routes';
+import { index, route } from '@react-router/dev/routes';
 
-Enzyme.configure({ adapter: new Adapter() });
-
-// jsdom (testEnvironment) doesn't implement the Fetch API - React Router v6.4+'s data router
-// internals (createMemoryRouter et al.) rely on the global Request/Response/fetch.
-Object.assign(global, { fetch, Headers, Request, Response });
-
-// eslint-disable-next-line @typescript-eslint/no-empty-function
-global.console.warn = function() {};
+export default [
+    index('routes/home.tsx'),
+    route('protected', 'routes/protected.tsx'),
+    route('resource', 'routes/resource.tsx'),
+    route('login/callback', 'routes/login-callback.tsx'),
+] satisfies RouteConfig;

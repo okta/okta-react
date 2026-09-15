@@ -10,15 +10,22 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-import Enzyme from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-import { fetch, Headers, Request, Response } from 'undici';
+import * as React from 'react';
+import { Link, useLoaderData } from 'react-router';
+import type { Token } from '@okta/auth-foundation';
 
-Enzyme.configure({ adapter: new Adapter() });
+const Protected: React.FC = () => {
+  const token = useLoaderData() as Token;
+  const claims = token.idToken?.claims;
 
-// jsdom (testEnvironment) doesn't implement the Fetch API - React Router v6.4+'s data router
-// internals (createMemoryRouter et al.) rely on the global Request/Response/fetch.
-Object.assign(global, { fetch, Headers, Request, Response });
+  return (
+    <div>
+      <h1>Protected</h1>
+      <p>Loaded via <code>createTokenLoader</code>.</p>
+      <pre id="claims">{JSON.stringify(claims, null, 2)}</pre>
+      <Link to="/">Home</Link>
+    </div>
+  );
+};
 
-// eslint-disable-next-line @typescript-eslint/no-empty-function
-global.console.warn = function() {};
+export default Protected;
