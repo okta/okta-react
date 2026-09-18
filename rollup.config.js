@@ -13,6 +13,7 @@ const makeExternalPredicate = () => {
   const externalArr = [
     ...Object.keys(pkg.peerDependencies || {}),
     ...Object.keys(pkg.dependencies || {}),
+    '@okta/okta-react',
   ];
 
   if (externalArr.length === 0) {
@@ -26,10 +27,13 @@ const extensions = ['js', 'jsx', 'ts', 'tsx'];
 
 const input = 'src/index.ts';
 const external = makeExternalPredicate();
+
+// Type declarations are emitted separately (see `yarn types`, a single whole-program
+// `tsc --emitDeclarationOnly` pass) rather than by this plugin, so multiple entry points
+// below can share one `typescript()` instance without fighting over declaration output.
 const commonPlugins = [
   typescript({
-    typescript: ts,
-    useTsconfigDeclarationDir: true
+    typescript: ts
   }),
   replace({
     values: {
@@ -45,7 +49,7 @@ const commonPlugins = [
     delimiters: ['\\b', '\\b'],
     preventAssignment: true
   }),
-  cleanup({ 
+  cleanup({
     extensions,
     comments: 'none'
   })
@@ -108,6 +112,70 @@ export default [
       {
         format: 'esm',
         file: 'dist/bundles/okta-react.esm.js',
+        exports: 'named',
+        sourcemap: true
+      }
+    ]
+  },
+  {
+    input: 'src/react-router-5.ts',
+    external,
+    plugins: [
+      ...commonPlugins,
+      babel({
+        babelHelpers: 'runtime',
+        presets: [
+          '@babel/preset-env',
+          '@babel/preset-react'
+        ],
+        plugins: [
+          '@babel/plugin-transform-runtime'
+        ],
+        extensions
+      }),
+    ],
+    output: [
+      {
+        format: 'cjs',
+        file: 'dist/bundles/okta-react-router-5.cjs.js',
+        exports: 'named',
+        sourcemap: true
+      },
+      {
+        format: 'esm',
+        file: 'dist/bundles/okta-react-router-5.esm.js',
+        exports: 'named',
+        sourcemap: true
+      }
+    ]
+  },
+  {
+    input: 'src/react-router-6.ts',
+    external,
+    plugins: [
+      ...commonPlugins,
+      babel({
+        babelHelpers: 'runtime',
+        presets: [
+          '@babel/preset-env',
+          '@babel/preset-react'
+        ],
+        plugins: [
+          '@babel/plugin-transform-runtime'
+        ],
+        extensions
+      }),
+    ],
+    output: [
+      {
+        format: 'cjs',
+        file: 'dist/bundles/okta-react-router-6.cjs.js',
+        exports: 'named',
+        sourcemap: true
+      },
+      {
+        format: 'esm',
+        file: 'dist/bundles/okta-react-router-6.esm.js',
         exports: 'named',
         sourcemap: true
       }

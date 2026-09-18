@@ -20,7 +20,11 @@ module.exports = {
     // avoid react conflict in yarn workspace
     '^react$': '<rootDir>/node_modules/react',
     '^react-dom$': '<rootDir>/node_modules/react-dom',
-    '^react-router-dom$': '<rootDir>/node_modules/react-router-dom'
+    '^react-router-dom$': '<rootDir>/node_modules/react-router-dom',
+    // resolve self-imports of OktaContext used by SecureRoute/SecureOutlet
+    '^@okta/okta-react$': '<rootDir>/src',
+    '^@okta/okta-react/react-router-5$': '<rootDir>/src/react-router-5.ts',
+    '^@okta/okta-react/react-router-6$': '<rootDir>/src/react-router-6.ts'
   },
   roots: [
     './test/jest'
