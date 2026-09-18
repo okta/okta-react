@@ -56,7 +56,7 @@
   },
   "homepage": "https://github.com/okta/okta-react#readme",
   "engines": {
-    "node": ">=12.17.0",
+    "node": ">=20.11.0",
     "yarn": "^1.7.0"
   },
   "resolutions": {

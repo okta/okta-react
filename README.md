@@ -103,7 +103,7 @@ npm install --save @okta/okta-auth-js   # requires at least version 5.3.1
 > ⚠️ NOTE ⚠️<br> The [SecureRoute](#secureroute) component only works with `react-router-dom` `5.x`, and is imported from `@okta/okta-react/react-router-5`.
 If you're using `react-router-dom` `6.x` or later, use [SecureOutlet](#secureoutlet) instead, imported from `@okta/okta-react/react-router-6`.
 
-> ⚠️ Upgrading to `7.x` ⚠️<br> As of `7.0.0`, `SecureRoute` and `SecureOutlet` are no longer exported from the `@okta/okta-react` top-level package. Update your imports to `import { SecureRoute } from '@okta/okta-react/react-router-5';` or `import { SecureOutlet } from '@okta/okta-react/react-router-6';`. This keeps `react-router-dom` version-specific code out of your bundle unless you actually use it. All other exports (`Security`, `withOktaAuth`, `useOktaAuth`, `OktaContext`, `LoginCallback`) are unaffected.
+> ⚠️ Upgrading to `7.x` ⚠️<br> As of `7.0.0`, `SecureRoute` has moved to `@okta/okta-react/react-router-5` and is no longer exported from the `@okta/okta-react` top-level package — update your imports to `import { SecureRoute } from '@okta/okta-react/react-router-5';`. This keeps `react-router-dom` version-specific code out of your bundle unless you actually use it. All other exports (`Security`, `withOktaAuth`, `useOktaAuth`, `OktaContext`, `LoginCallback`) are unaffected. `7.0.0` also requires Node `20.11.0` or later.
 
 ## Usage
 
