@@ -10,26 +10,30 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import * as React from 'react';
 import { AuthSdkError } from '@okta/okta-auth-js';
 
-export class ErrorBoundary extends React.Component {
-  constructor(props: any) {
+interface ErrorBoundaryProps {
+  children?: React.ReactNode;
+}
+
+interface ErrorBoundaryState {
+  error: AuthSdkError | null;
+}
+
+export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  constructor(props: ErrorBoundaryProps) {
     super(props);
     this.state = {
       error: null
-    } as {
-      error: AuthSdkError | null
     };
   }
 
-  componentDidCatch(error: AuthSdkError) {
-    this.setState({ error: error });
+  componentDidCatch(error: AuthSdkError): void {
+    this.setState({ error });
   }
 
-  render() {
+  render(): React.ReactNode {
     if (this.state.error) {
       // You can render any custom fallback UI
       return <p>{ this.state.error.toString() }</p>;
