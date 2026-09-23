@@ -10,9 +10,11 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-// polyfill TextEncoder for IE Edge
-import { TextEncoder } from 'text-encoding';
+// Example: for polyfilling TextEncoder for IE Edge
+//
+// import { TextEncoder } from 'text-encoding';
 
-if (typeof window.TextEncoder === 'undefined') {
-  window.TextEncoder = TextEncoder;
-}
+// if (typeof window.TextEncoder === 'undefined') {
+//   window.TextEncoder = TextEncoder;
+// }
+
