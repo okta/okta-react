@@ -1,3 +1,33 @@
+# 7.0.0
+
+### Features
+
+- [#326](https://github.com/okta/okta-react/pull/326) adds `SecureOutlet`, a new export available from `@okta/okta-react/react-router-6`. It is the `react-router-dom` `6.x`+ equivalent of `SecureRoute` — use it as the `element` of a parent `Route` to require authentication for that route's children
+
+  ```jsx
+  import { SecureOutlet } from '@okta/okta-react/react-router-6';
+
+  <Route element={<SecureOutlet />}>
+    <Route path='/protected' element={<Protected />} />
+  </Route>
+  ```
+
+### Breaking Changes
+
+- [#326](https://github.com/okta/okta-react/pull/326) `SecureRoute` moved to `@okta/okta-react/react-router-5` and is no longer exported from `@okta/okta-react`
+
+  ```diff
+  - import { SecureRoute } from '@okta/okta-react';
+  + import { SecureRoute } from '@okta/okta-react/react-router-5';
+  ```
+
+  Router-specific components now live in their own subpath exports, so `react-router-dom` version-specific code is only pulled into your bundle if you import it. Every other export (`Security`, `withOktaAuth`, `useOktaAuth`, `OktaContext`, `LoginCallback`) is unchanged and still comes from `@okta/okta-react`
+- [#326](https://github.com/okta/okta-react/pull/326) bumps the minimum supported Node version to `20.11.0`
+
+### Other
+
+- [#326](https://github.com/okta/okta-react/pull/326) makes `react-router-dom` an optional peer dependency. It is only required if you import from `@okta/okta-react/react-router-5` or `@okta/okta-react/react-router-6`
+
 # 6.11.0
 
 ### Other
