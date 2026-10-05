@@ -143,8 +143,7 @@
     "rollup-plugin-typescript2": "^0.37.0",
     "shelljs": "^0.10.0",
     "ts-jest": "^29.1.1",
-    "typescript": "^5.6.3",
-    "undici": "^7.29.0"
+    "typescript": "^5.6.3"
   },
   "jest-junit": {
     "outputDirectory": "./test-reports/unit/",

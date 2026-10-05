@@ -26,13 +26,12 @@ module.exports = {
     './test/jest'
   ],
   setupFiles: [
-    './test/jest/polyfills.ts',
     './test/jest/setup.ts'
   ],
   setupFilesAfterEnv: [
     '@testing-library/jest-dom'
   ],
-  testEnvironment: 'jsdom',
+  testEnvironment: '<rootDir>/test/jest/jest.environment.js',
   transform: { 
     '^.+\\.tsx?$': ['ts-jest', {
       diagnostics: {
