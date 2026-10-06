@@ -22,7 +22,7 @@
   ```
 
   Router-specific components now live in their own subpath exports, so `react-router-dom` version-specific code is only pulled into your bundle if you import it. Every other export (`Security`, `withOktaAuth`, `useOktaAuth`, `OktaContext`, `LoginCallback`) is unchanged and still comes from `@okta/okta-react`
-- [#326](https://github.com/okta/okta-react/pull/326) bumps the minimum supported Node version to `20.11.0`
+- [#326](https://github.com/okta/okta-react/pull/326) bumps the minimum supported Node version to `22.0.0`
 
 ### Other
 

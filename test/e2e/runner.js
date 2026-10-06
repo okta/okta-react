@@ -95,11 +95,24 @@ function runHarnessTests () {
   return runWithConfig(config);
 }
 
+function runV6AppTests () {
+  const config = {
+    name: '@okta/test.app.v6-app',
+    specs: ['v6-app'],
+    mode: 'dev'
+  }
+
+  return runWithConfig(config);
+}
+
 if (testName) {
   console.log(`Running starting for test "${testName}"`);
 
   if (testName === 'harness') {
     runHarnessTests().then(exitWith);
+  }
+  else if (testName === 'v6') {
+    runV6AppTests();
   }
   else {
     const sampleConfig = samplesConfig.find(config => config.name === testName);
@@ -121,5 +134,5 @@ if (testName) {
   })
   .filter((task) => typeof task === 'function');
 
-  runNextTask([runHarnessTests, ...tasks]);
+  runNextTask([runHarnessTests, runV6AppTests, ...tasks]);
 }
