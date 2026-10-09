@@ -11,7 +11,7 @@
  */
 
 import { createLoginCallbackLoader } from '@okta/okta-react/client-js';
-import { getAuth } from '../auth';
+import { getAuth } from '../authService';
 
 export async function clientLoader({ request }: { request: Request }) {
     const { orchestrator } = await getAuth();

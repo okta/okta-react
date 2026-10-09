@@ -10,23 +10,28 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
+// Constructs the sign-in/sign-out flows and the token orchestrator - everything that performs
+// authentication. The `FetchClient` that *consumes* these tokens lives in `dataService.ts`.
+//
+// The flow and orchestrator exports live behind the `/flows` entry point - they depend on
+// `@okta/oauth2-flows`, which the root entry point deliberately avoids so that it stays an
+// optional dependency. `/flows` re-exports the root surface too, so one import covers both.
 import {
   OAuth2Client,
   AuthorizationCodeFlow,
   SessionLogoutFlow,
   AuthorizationCodeFlowOrchestrator,
-  FetchClient,
-} from '@okta/spa-platform';
+} from '@okta/spa-platform/flows';
 
 const { ISSUER, CLIENT_ID } = process.env;
 
-export const client = new OAuth2Client({
+const client = new OAuth2Client({
   issuer: ISSUER!,
   clientId: CLIENT_ID!,
   scopes: ['openid', 'profile', 'email'],
 });
 
-export const signInFlow = new AuthorizationCodeFlow(client, {
+const signInFlow = new AuthorizationCodeFlow(client, {
   redirectUri: `${window.location.origin}/login/callback`,
 });
 
@@ -39,8 +44,6 @@ export const signOutFlow = new SessionLogoutFlow(client, {
 export const orchestrator = new AuthorizationCodeFlowOrchestrator(signInFlow, {
   emitBeforeRedirect: false,
 });
-
-export const fetchClient = new FetchClient(orchestrator);
 
 // If the user abandons a sign-in redirect (e.g. hits the browser back button on Okta's hosted page
 // before completing it) and the browser restores this page from the back/forward cache, `signInFlow`

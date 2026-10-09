@@ -12,10 +12,10 @@
 
 import { Link, useLoaderData } from 'react-router';
 import { createFetchLoader } from '@okta/okta-react/client-js';
-import { getAuth } from '../auth';
+import { getDataService } from '../dataService';
 
 export async function clientLoader() {
-    const { fetchClient } = await getAuth();
+    const { fetchClient } = await getDataService();
     return createFetchLoader(fetchClient)('/resource.json');
 }
 clientLoader.hydrate = true;
