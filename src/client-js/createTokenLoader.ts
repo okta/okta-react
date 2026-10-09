@@ -11,7 +11,7 @@
  */
 
 import type { Token, TokenOrchestrator } from '@okta/auth-foundation';
-import type { AuthorizationCodeFlowOrchestrator } from '@okta/spa-platform';
+import type { AuthorizationCodeFlowOrchestrator } from '@okta/spa-platform/flows';
 
 /**
  * Binds an {@link AuthorizationCodeFlowOrchestrator} to a small helper for use inside a React Router (v6.4+)

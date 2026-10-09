@@ -465,21 +465,65 @@ npm install --save @okta/auth-foundation @okta/oauth2-flows @okta/spa-platform
 
 ### Constructing the SDK client instances
 
+All three classes come from `@okta/spa-platform/flows`. The flows and the orchestrator depend on
+`@okta/oauth2-flows`, so they are kept out of the package's root entry point to leave that dependency
+optional; `/flows` re-exports the root surface as well, so a single import covers both.
+
 ```javascript
 // src/auth.js
-import { FetchClient } from '@okta/spa-platform/fetch';
-import { AuthorizationCodeFlowOrchestrator } from '@okta/spa-platform/orchestrator';
-import { AuthorizationCodeFlow } from '@okta/spa-platform/flows';
+import {
+  AuthorizationCodeFlow,
+  AuthorizationCodeFlowOrchestrator,
+  FetchClient,
+} from '@okta/spa-platform/flows';
 
-const config = {
+const signInFlow = new AuthorizationCodeFlow({
   issuer: 'https://{yourOktaDomain}/oauth2/default',
   clientId: '{clientId}',
+  scopes: ['openid', 'profile', 'email'],
   redirectUri: window.location.origin + '/login/callback',
-};
+});
 
-const signInFlow = new AuthorizationCodeFlow(config);
 export const tokenOrchestrator = new AuthorizationCodeFlowOrchestrator(signInFlow);
-export const fetchClient = new FetchClient(tokenOrchestrator, config);
+export const fetchClient = new FetchClient(tokenOrchestrator);
+```
+
+`FetchClient` resolves tokens through the orchestrator it is given, so it needs no issuer
+configuration of its own.
+
+> :warning: **TypeScript note** :warning:<br> On `@okta/auth-foundation` 0.9.0, the last line above
+does not typecheck: `EventEmitter` exposes a public `signals: Map<keyof Events, ...>`, and `Map`'s
+key type is invariant, so `AuthorizationCodeFlowOrchestrator` — which adds a
+`login_prompt_required` event — is not assignable to the base `TokenOrchestrator` that `FetchClient`
+accepts. Until that is fixed upstream, cast at the call site:
+> ```typescript
+> import type { TokenOrchestrator } from '@okta/spa-platform/flows';
+>
+> export const fetchClient = new FetchClient(tokenOrchestrator as unknown as TokenOrchestrator);
+> ``` If you need to share one `OAuth2Client` across several flows — to add a
+`SessionLogoutFlow` for sign-out, for example — construct it yourself and use the two-argument flow
+constructor instead:
+
+```javascript
+import {
+  OAuth2Client,
+  AuthorizationCodeFlow,
+  SessionLogoutFlow,
+} from '@okta/spa-platform/flows';
+
+const client = new OAuth2Client({
+  issuer: 'https://{yourOktaDomain}/oauth2/default',
+  clientId: '{clientId}',
+  scopes: ['openid', 'profile', 'email'],
+});
+
+const signInFlow = new AuthorizationCodeFlow(client, {
+  redirectUri: window.location.origin + '/login/callback',
+});
+
+export const signOutFlow = new SessionLogoutFlow(client, {
+  logoutRedirectUri: window.location.origin + '/',
+});
 ```
 
 ### Wiring loaders into your router

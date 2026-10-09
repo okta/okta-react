@@ -10,7 +10,7 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-import type { AuthorizationCodeFlowOrchestrator } from '@okta/spa-platform';
+import type { AuthorizationCodeFlowOrchestrator } from '@okta/spa-platform/flows';
 import { createTokenLoader } from './createTokenLoader';
 import { createLoginCallbackLoader } from './createLoginCallbackLoader';
 

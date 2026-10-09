@@ -10,7 +10,7 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-import type { AuthorizationCodeFlowOrchestrator } from '@okta/spa-platform';
+import type { AuthorizationCodeFlowOrchestrator } from '@okta/spa-platform/flows';
 
 /**
  * Wraps an {@link AuthorizationCodeFlowOrchestrator} in a React Router (v6.4+) loader-compatible function - the
