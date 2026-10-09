@@ -114,5 +114,20 @@ module.exports = [
     specs: [
       'router-sample'
     ]
+  },
+  // The two `@okta/okta-react/client-js` sample apps under test/apps. Unlike the entries above
+  // these aren't generated from samples/, so they carry none of the generator fields - the runner
+  // only reads `name`, `specs`, `mode` and `port`.
+  {
+    name: '@okta/test.app.client-js-router-v8-app',
+    specs: [
+      'client-js-router-sample'
+    ]
+  },
+  {
+    name: '@okta/test.app.client-js-router-v7-ssr-app',
+    specs: [
+      'client-js-router-sample'
+    ]
   }
 ];

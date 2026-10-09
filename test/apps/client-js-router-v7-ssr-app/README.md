@@ -29,5 +29,17 @@ The app's redirect URI is `{origin}/login/callback` and its logout redirect is `
 ```bash
 yarn dev    # start the dev server (defaults to http://localhost:8080)
 yarn build  # production build
-yarn start  # build, then serve via @react-router/serve
+yarn start  # build, then serve via @react-router/serve on port 8080
 ```
+
+`start` pins `PORT=8080` because `@react-router/serve` otherwise picks its own port (3000, or the next free one), and the e2e runner waits on 8080.
+
+## e2e tests
+
+Covered by `test/e2e/specs/client-js-router-sample.js`, shared with `client-js-router-v8-app`. From the repo root:
+
+```bash
+SAMPLE_NAME=@okta/test.app.client-js-router-v7-ssr-app yarn test:e2e
+```
+
+The spec needs `USERNAME` and `PASSWORD` for a user in the test org on top of the `testenv` values above.
