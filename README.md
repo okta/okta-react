@@ -491,16 +491,14 @@ export const fetchClient = new FetchClient(tokenOrchestrator);
 `FetchClient` resolves tokens through the orchestrator it is given, so it needs no issuer
 configuration of its own.
 
-> :warning: **TypeScript note** :warning:<br> On `@okta/auth-foundation` 0.9.0, the last line above
-does not typecheck: `EventEmitter` exposes a public `signals: Map<keyof Events, ...>`, and `Map`'s
-key type is invariant, so `AuthorizationCodeFlowOrchestrator` — which adds a
-`login_prompt_required` event — is not assignable to the base `TokenOrchestrator` that `FetchClient`
-accepts. Until that is fixed upstream, cast at the call site:
-> ```typescript
-> import type { TokenOrchestrator } from '@okta/spa-platform/flows';
->
-> export const fetchClient = new FetchClient(tokenOrchestrator as unknown as TokenOrchestrator);
-> ``` If you need to share one `OAuth2Client` across several flows — to add a
+> :warning: **TypeScript note** :warning:<br> On `@okta/auth-foundation` 0.9.0 the last line above
+> does not typecheck. `EventEmitter` holds a `signals: Map<keyof Events, ...>`, and a `Map`'s key
+> type is invariant, so `AuthorizationCodeFlowOrchestrator` — which adds a `login_prompt_required`
+> event — is not assignable to the base `TokenOrchestrator` that `FetchClient` accepts. This is
+> fixed in 0.9.1; on 0.9.0, suppress it at the call site with `// @ts-expect-error`, which will
+> then fail once you upgrade and the suppression is no longer needed.
+
+If you need to share one `OAuth2Client` across several flows — to add a
 `SessionLogoutFlow` for sign-out, for example — construct it yourself and use the two-argument flow
 constructor instead:
 

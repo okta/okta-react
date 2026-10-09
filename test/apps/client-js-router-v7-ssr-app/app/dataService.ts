@@ -13,7 +13,7 @@
 // Constructs the `FetchClient` used to call protected APIs. This is a data concern, not an auth
 // one: `FetchClient` never authenticates, it only attaches (and refreshes) tokens that
 // `authService` already knows how to obtain. Hence the dependency runs one way, data -> auth.
-import type { FetchClient, TokenOrchestrator } from '@okta/spa-platform/flows';
+import type { FetchClient } from '@okta/spa-platform/flows';
 import { getAuth } from './authService';
 
 type DataService = {
@@ -31,13 +31,16 @@ async function createDataService(): Promise<DataService> {
         getAuth(),
     ]);
 
-    // The cast works around an upstream typing regression in `@okta/auth-foundation` 0.9.0: its
-    // `EventEmitter` gained a `signals: Map<keyof Events, ...>` field, and `Map`'s key type is
-    // invariant, so no orchestrator that widens the event map is assignable to the base
-    // `TokenOrchestrator` that `FetchClient` asks for - including this SDK's own
-    // `AuthorizationCodeFlowOrchestrator`, which adds `login_prompt_required`. Remove once
-    // upstream accepts the subclass again (0.6.0 did, when `signals` did not exist).
-    const fetchClient = new FetchClient(orchestrator as unknown as TokenOrchestrator);
+    // Works around an upstream typing bug in `@okta/auth-foundation` 0.9.0: `EventEmitter` holds
+    // a `signals: Map<keyof Events, ...>`, and a `Map`'s key type is invariant, so no orchestrator
+    // that widens the event map is assignable to the base `TokenOrchestrator` that `FetchClient`
+    // asks for - including this SDK's own `AuthorizationCodeFlowOrchestrator`, which adds
+    // `login_prompt_required`.
+    //
+    // Fixed upstream in 0.9.1 (okta/okta-client-javascript#61). `@ts-expect-error` rather than a
+    // cast so that bumping the dependency fails the build here until this directive is removed.
+    // @ts-expect-error -- remove together with this comment once the peer SDKs are on 0.9.1
+    const fetchClient = new FetchClient(orchestrator);
 
     return { fetchClient };
 }
