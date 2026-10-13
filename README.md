@@ -491,12 +491,11 @@ export const fetchClient = new FetchClient(tokenOrchestrator);
 `FetchClient` resolves tokens through the orchestrator it is given, so it needs no issuer
 configuration of its own.
 
-> :warning: **TypeScript note** :warning:<br> On `@okta/auth-foundation` 0.9.0 the last line above
-> does not typecheck. `EventEmitter` holds a `signals: Map<keyof Events, ...>`, and a `Map`'s key
-> type is invariant, so `AuthorizationCodeFlowOrchestrator` — which adds a `login_prompt_required`
-> event — is not assignable to the base `TokenOrchestrator` that `FetchClient` accepts. This is
-> fixed in 0.9.1; on 0.9.0, suppress it at the call site with `// @ts-expect-error`, which will
-> then fail once you upgrade and the suppression is no longer needed.
+> :warning: **TypeScript note** :warning:<br> The last line above requires `@okta/auth-foundation`
+> 0.9.1 or later. On 0.9.0 it does not typecheck: `EventEmitter` held a
+> `signals: Map<keyof Events, ...>`, and a `Map`'s key type is invariant, so
+> `AuthorizationCodeFlowOrchestrator` — which adds a `login_prompt_required` event — was not
+> assignable to the base `TokenOrchestrator` that `FetchClient` accepts.
 
 If you need to share one `OAuth2Client` across several flows — to add a
 `SessionLogoutFlow` for sign-out, for example — construct it yourself and use the two-argument flow

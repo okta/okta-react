@@ -1787,10 +1787,10 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@okta/auth-foundation@^0.9.0":
-  version "0.9.0"
-  resolved "https://registry.yarnpkg.com/@okta/auth-foundation/-/auth-foundation-0.9.0.tgz#b9f20bdb19541bc8fdb17c631484596d5b574fbb"
-  integrity sha512-967SjEWnI2VT9Kx6erdTnKQ7wum0Nmhphi/Nv/1Yp873gMf4wFlghAg0RZUILvH9RUDP+P7BRjHt2eMR+zvj7w==
+"@okta/auth-foundation@^0.9.1":
+  version "0.9.1"
+  resolved "https://registry.yarnpkg.com/@okta/auth-foundation/-/auth-foundation-0.9.1.tgz#9a43ca8907f559362367229f2c48f330164d5311"
+  integrity sha512-HIgqPR96RBjdpjKwvVsA6ICJ+Zbp/KFs1TctLEt6xEdFEL74+iYCfNIWZzH9968ppsnKPkgyOWOHT9v7yU6eow==
 
 "@okta/oauth2-flows@^0.9.0":
   version "0.9.0"
