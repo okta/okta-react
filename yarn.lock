@@ -1628,6 +1628,14 @@
     webcrypto-shim "^0.1.5"
     xhr2 "0.1.3"
 
+"@okta/okta-react@*":
+  version "6.11.0"
+  resolved "https://registry.yarnpkg.com/@okta/okta-react/-/okta-react-6.11.0.tgz#01de75fe9201118e2bfae8514a0954f4ebea72db"
+  integrity sha512-0MfOdJMFqFRfEiYhF9KsZdGnug4nh+fzh4pELdg9ZYM3TuJshLsN72hwddZO/498ulsmsU+CSoKsRwsC8eozXQ==
+  dependencies:
+    "@babel/runtime" "^7.27.0"
+    compare-versions "^4.1.2"
+
 "@okta/okta-signin-widget@7.34.3":
   version "7.34.3"
   resolved "https://registry.yarnpkg.com/@okta/okta-signin-widget/-/okta-signin-widget-7.34.3.tgz#56a24437eecd774d3caf940cd1ad1fe52dddaba1"
@@ -3695,6 +3703,11 @@ commondir@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/commondir/-/commondir-1.0.1.tgz#ddd800da0c66127393cca5950ea968a3aaf1253b"
   integrity sha512-W9pAhw0ja1Edb5GVdIF1mjZw/ASI0AlShXM83UUGe2DVr5TdAPEA1OA8m/g8zWp9x6On7gqufY+FatDbC3MDQg==
+
+compare-versions@^4.1.2:
+  version "4.1.4"
+  resolved "https://registry.yarnpkg.com/compare-versions/-/compare-versions-4.1.4.tgz#3571f4d610924d4414846a4183d386c8f3d51112"
+  integrity sha512-FemMreK9xNyL8gQevsdRMrvO4lFCkQP7qbuktn1q8ndcNk1+0mz7lgE7b/sNvbhVgY4w6tMN1FDp6aADjqw2rw==
 
 compare-versions@^6.1.1:
   version "6.1.1"
@@ -7451,9 +7464,9 @@ mute-stream@1.0.0:
   integrity sha512-avsJQhyd+680gKXyG/sQc0nXaC6rBkPOfyHYcFb9+hdkqQkR9bdnkJ0AMZhke0oesPqIO+mFFJ+IdBc7mst4IA==
 
 nanoid@^3.3.16:
-  version "3.3.16"
-  resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.3.16.tgz#a04d8ec4b1f10009d2d533947aefe4293737816c"
-  integrity sha512-bzlKTyNJ7+LdGIIwy8ijFpIqEQIvafahV7eYykJ8Cvh42EdJeODoJ6gUJXpQJvej1BddH8OqTXZNE/KfbWAu8Q==
+  version "3.3.18"
+  resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.3.18.tgz#f66a2de1199ffde0fcf21c8a5f13106b1c081913"
+  integrity sha512-DTg4MJbGMWkfi6VZFdNt2/caMbQy4Ou+Op/hJQvGEWcnVfoA1QA+xzRKAzw9jD6+GVOOeYr/mIcuDSdug6F6+w==
 
 natural-compare@^1.4.0:
   version "1.4.0"
