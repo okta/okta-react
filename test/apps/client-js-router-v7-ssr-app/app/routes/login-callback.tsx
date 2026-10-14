@@ -19,7 +19,14 @@ export async function clientLoader({ request }: { request: Request }) {
 }
 clientLoader.hydrate = true;
 
-export default function HydrateFallback() {
+// React Router resolves fallbacks by export *name* (`routeModule.HydrateFallback`), so this has to be a
+// named export - exporting it as `default` would wire it up as the route component instead, leaving the
+// route with no fallback at all.
+export function HydrateFallback() {
     return <p>Checking authentication…</p>;
 }
 
+// `clientLoader` always redirects, so this renders only in the moment before the browser follows the 302.
+export default function LoginCallback() {
+    return <p>Signing in…</p>;
+}
