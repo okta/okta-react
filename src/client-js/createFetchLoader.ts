@@ -10,9 +10,9 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-// Imported from @okta/auth-foundation (not @okta/spa-platform, whose FetchClient re-export doesn't
-// surface the inherited `fetch` method to the type checker) - spa-platform's concrete FetchClient
-// instances are structurally assignable here since they extend this base class.
+// Imported from @okta/auth-foundation rather than @okta/spa-platform because the base type is the
+// wider of the two: spa-platform's FetchClient extends this class, so instances of either satisfy a
+// parameter typed as the base, whereas typing it as spa-platform's would reject base instances.
 import type { FetchClient } from '@okta/auth-foundation';
 
 /**
@@ -20,7 +20,20 @@ import type { FetchClient } from '@okta/auth-foundation';
  *
  * `fetchClient.fetch()` already resolves a matching credential, refreshes it if needed, or performs a full
  * re-authentication redirect if not - this helper does no auth logic of its own, it just fetches and returns
- * the raw `Response`, which React Router auto-parses when read via `useLoaderData()`.
+ * the raw `Response`.
+ *
+ * React Router reads that `Response` for you when you access it via `useLoaderData()`, parsing it as JSON
+ * when it carries an `application/json` content type and as text otherwise (an empty JSON body reads as
+ * `null`). Note also that the response is returned as-is regardless of status: a non-`ok` `Response` is
+ * *returned*, not thrown, so React Router treats it as loader data rather than routing it to an
+ * `errorElement`. Throw it yourself if you want a failed request to hit the error boundary:
+ *
+ * @example
+ * loader: async () => {
+ *   const response = await fetchMessages('/api/messages');
+ *   if (!response.ok) throw response;
+ *   return response;
+ * },
  *
  * The returned function takes a resource and optional `RequestInit`, not React Router's `{ request, params }`
  * loader args, so call it from within your own loader function rather than assigning it directly to `loader`:
