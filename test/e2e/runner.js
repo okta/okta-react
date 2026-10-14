@@ -39,17 +39,35 @@ function runWithConfig(sampleConfig) {
     const command = mode ? `start:${mode}` : 'start'
 
     // 1. start the sample's web server
-    const server = spawn('yarn', [
-      'workspace',
-      name,
-      command
-    ], { stdio: 'inherit' });
-
+    //
+    // Wait for the port to be free first. Successive configs share a port, and `server.kill()`
+    // below only *starts* the previous server's shutdown - the next run can begin while it is
+    // still listening, in which case `wait-on` resolves against the dying server and the specs
+    // silently re-test the previous app, reporting green. Reverse mode waits for the port to stop
+    // answering, so each run gets the server it started.
+    //
+    // PORT is passed through so a config entry's `port` actually reaches the app being started -
+    // every app here already honours it, and without this a non-default `port` would only change
+    // where `wait-on` and the specs look, not where the server binds.
+    const serverEnv = Object.assign({}, process.env, { PORT: String(port) });
     waitOn({
       resources: [
         `http-get://localhost:${port}`
-      ]
+      ],
+      reverse: true
     }).then(() => {
+      const server = spawn('yarn', [
+        'workspace',
+        name,
+        command
+      ], { stdio: 'inherit', env: serverEnv });
+
+      return waitOn({
+        resources: [
+          `http-get://localhost:${port}`
+        ]
+      }).then(() => server);
+    }).then((server) => {
       // 2. run webdriver based on if sauce is needed or not
       // TODO: support saucelab and cucumber
       const wdioConfig = path.resolve(__dirname, 'wdio.conf.js');
@@ -57,7 +75,7 @@ function runWithConfig(sampleConfig) {
         (acc, spec) => [...acc, '--spec', path.join(__dirname, 'specs', spec) + '.js']
       , []);
       const args = ['wdio', 'run', wdioConfig, ...specs];
-      const env = Object.assign({}, process.env, {APP_NAME: name});
+      const env = Object.assign({}, process.env, {APP_NAME: name, PORT: String(port)});
       const runner = spawn('yarn', args, { stdio: 'inherit', env });
 
       let returnCode = 1;

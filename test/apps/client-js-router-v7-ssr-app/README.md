@@ -32,7 +32,7 @@ yarn build  # production build
 yarn start  # build, then serve via @react-router/serve on port 8080
 ```
 
-`start` pins `PORT=8080` because `@react-router/serve` otherwise picks its own port (3000, or the next free one), and the e2e runner waits on 8080.
+`start` defaults `PORT` to 8080 because `@react-router/serve` otherwise picks its own port (3000, or the next free one). The e2e runner sets `PORT` explicitly, so an override there wins. 8080 isn't arbitrary: the test org registers `http://localhost:8080/login/callback` as this app's only login redirect URI, so serving on another port makes `/authorize` reject the request before the sign-in widget renders.
 
 ## e2e tests
 

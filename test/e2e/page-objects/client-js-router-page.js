@@ -16,7 +16,13 @@
 * Page object shared by both @okta/okta-react/client-js sample apps - client-js-router-v8-app and
 * client-js-router-v7-ssr-app. The two render different routers (a data router vs. React Router
 * framework mode with SSR) but expose the same ids, so one page object covers both.
+*
+* Both apps serve on 8080, which the runner passes in as PORT. The port is fixed rather than
+* arbitrary: the test org registers `http://localhost:8080/login/callback` as the app's only login
+* redirect URI, so a different origin gets rejected by /authorize before the widget ever renders.
 */
+const PORT = process.env.PORT || 8080;
+
 class ClientJsRouterAppPage {
 
   get header () { return $('h1'); }
@@ -45,7 +51,7 @@ class ClientJsRouterAppPage {
   * @param path path of the sub page (e.g. /path/to/page.html)
   */
   open (path='/') {
-    return browser.url(`http://localhost:8080${path}`);
+    return browser.url(`http://localhost:${PORT}${path}`);
   }
 }
 

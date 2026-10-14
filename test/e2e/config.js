@@ -126,6 +126,11 @@ module.exports = [
   },
   {
     name: '@okta/test.app.client-js-router-v7-ssr-app',
+    // Deliberately on the same default 8080 as the v8 app above, even though these two entries run
+    // back to back sharing one spec. The test org registers the redirect URI per origin, so only
+    // `http://localhost:8080/login/callback` can complete a login - an app moved to another port
+    // gets `redirect_uri must be a Login redirect URI` from /authorize and never signs in. The
+    // runner waits for the port to be released between runs instead.
     specs: [
       'client-js-router-sample'
     ]
