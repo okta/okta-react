@@ -10,7 +10,7 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-import type { AuthorizationCodeFlowOrchestrator } from '@okta/spa-platform';
+import type { AuthorizationCodeFlowOrchestrator } from '@okta/spa-platform/flows';
 
 /**
  * Wraps an {@link AuthorizationCodeFlowOrchestrator} in a React Router (v6.4+) loader-compatible function - the
@@ -19,6 +19,12 @@ import type { AuthorizationCodeFlowOrchestrator } from '@okta/spa-platform';
  *
  * `orchestrator.resumeFlow()` completes the authorization code exchange and stores the resulting credential
  * itself - this loader does no storage of its own, it just redirects once that's done.
+ *
+ * Give this route an `errorElement`. An OAuth error on the callback (the user cancelling at the sign-in
+ * widget, say, which arrives as `?error=access_denied`) makes `resumeFlow()` throw, and the error surfaces as
+ * a plain `Error` rather than a `Response` - so `isRouteErrorResponse()` is false and `useRouteError()` gives
+ * you an object to read `message` from. Without an `errorElement` on this route (or an ancestor) the user
+ * lands on React Router's default error page.
  *
  * The `context` returned by `orchestrator.resumeFlow()` is whatever `meta` object was passed to `flow.start()`
  * (or the orchestrator's `login_prompt_required` listener) when the flow began - `originalUri` is a convention,

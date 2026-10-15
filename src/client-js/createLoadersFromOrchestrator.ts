@@ -10,7 +10,7 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-import type { AuthorizationCodeFlowOrchestrator } from '@okta/spa-platform';
+import type { AuthorizationCodeFlowOrchestrator } from '@okta/spa-platform/flows';
 import { createTokenLoader } from './createTokenLoader';
 import { createLoginCallbackLoader } from './createLoginCallbackLoader';
 
@@ -18,9 +18,11 @@ import { createLoginCallbackLoader } from './createLoginCallbackLoader';
  * Binds a single {@link AuthorizationCodeFlowOrchestrator} instance to both {@link createTokenLoader} and
  * {@link createLoginCallbackLoader}.
  *
- * The login callback route stores the credential that the token loader later reads back from the same
- * orchestrator - passing two separately-constructed orchestrator instances to those loaders would silently
- * break that handoff, so this constructs both from the one instance you provide.
+ * Credential storage itself is static (`Credential.store`/`Credential.find` share one module-level
+ * coordinator), so two separately-constructed orchestrators would still see each other's credentials. What
+ * they would not share is per-instance state: the in-flight `flow` and its PKCE/transaction context, and the
+ * emitter that `login_prompt_required` and `error` fire on. Since the callback route resumes the very flow
+ * the token loader started, both must be bound to the one instance you provide.
  *
  * @example
  * const { tokenLoader, loginCallbackLoader } = createLoadersFromOrchestrator(tokenOrchestrator);

@@ -5,7 +5,11 @@
     "target": "ES2019",
     "sourceMap": true,
     "jsx": "react",
-    "moduleResolution": "node",
+    // `@okta/spa-platform` ships its `/flows` entry point only through an `exports` map, which the
+    // legacy "node" (node10) resolver cannot read. Rollup emits ES modules and every consumer of the
+    // `client-js` subpath is on a bundler already, so resolve the way they do.
+    "module": "esnext",
+    "moduleResolution": "bundler",
     "strictFunctionTypes": true,
     "resolveJsonModule": true,
     "strict": true

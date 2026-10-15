@@ -11,7 +11,7 @@
  */
 
 import type { Token, TokenOrchestrator } from '@okta/auth-foundation';
-import type { AuthorizationCodeFlowOrchestrator } from '@okta/spa-platform';
+import type { AuthorizationCodeFlowOrchestrator } from '@okta/spa-platform/flows';
 
 /**
  * Binds an {@link AuthorizationCodeFlowOrchestrator} to a small helper for use inside a React Router (v6.4+)
@@ -20,8 +20,10 @@ import type { AuthorizationCodeFlowOrchestrator } from '@okta/spa-platform';
  *
  * `orchestrator.getToken()` already resolves a matching credential, refreshes it if needed, or performs a
  * full re-authentication redirect if not - if a redirect occurs, the returned promise never resolves because
- * the page navigates away, same as {@link createFetchLoader}. The `401` throw below only covers the
- * (default-off, `avoidPrompting: true`) case where the orchestrator declines to redirect and returns `null`.
+ * the page navigates away, same as {@link createFetchLoader}. The `401` throw below is a type-contract
+ * guard: `getToken()` is declared `Promise<Token | null>` on the abstract `TokenOrchestrator` base, but no
+ * path through `AuthorizationCodeFlowOrchestrator` actually resolves `null` - it either returns a token
+ * (including in the `avoidPrompting: true` case, which acquires one silently) or throws.
  *
  * The returned function takes optional {@link TokenOrchestrator.AuthorizeParams}, not React Router's
  * `{ request, params }` loader args, so call it from within your own loader function rather than assigning
