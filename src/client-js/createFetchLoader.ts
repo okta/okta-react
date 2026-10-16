@@ -10,9 +10,7 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-// Imported from @okta/auth-foundation rather than @okta/spa-platform because the base type is the
-// wider of the two: spa-platform's FetchClient extends this class, so instances of either satisfy a
-// parameter typed as the base, whereas typing it as spa-platform's would reject base instances.
+// @okta/spa-platform's FetchClient extends this one, so the base type accepts either.
 import type { FetchClient } from '@okta/auth-foundation';
 
 /**
@@ -22,11 +20,11 @@ import type { FetchClient } from '@okta/auth-foundation';
  * re-authentication redirect if not - this helper does no auth logic of its own, it just fetches and returns
  * the raw `Response`.
  *
- * React Router reads that `Response` for you when you access it via `useLoaderData()`, parsing it as JSON
- * when it carries an `application/json` content type and as text otherwise (an empty JSON body reads as
- * `null`). Note also that the response is returned as-is regardless of status: a non-`ok` `Response` is
- * *returned*, not thrown, so React Router treats it as loader data rather than routing it to an
- * `errorElement`. Throw it yourself if you want a failed request to hit the error boundary:
+ * `useLoaderData()` reads that `Response` as JSON when it carries an `application/json` content type and as
+ * text otherwise (an empty JSON body reads as `null`).
+ *
+ * The response is returned as-is regardless of status, so a non-`ok` `Response` arrives as loader data rather
+ * than reaching an `errorElement`. Throw it to route it to the error boundary:
  *
  * @example
  * loader: async () => {
