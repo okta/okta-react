@@ -447,24 +447,21 @@ Some concrete differences that follow from this:
   changes. Loaders re-run on every navigation to their route, so there's nothing to keep in sync — each run is
   already fresh.
 - Consumers of `authState` handle it being `null` during the initial async determination (the `Loading...`
-  checks above). The loaders remove that state entirely: they block navigation until the answer is known, so
-  there's never a render where auth state is still undetermined. A missing or unusable token doesn't resolve
-  to a falsy value you have to branch on — it triggers the sign-in redirect.
+  checks above). The loaders block navigation until the answer is known, so no render sees undetermined auth
+  state, and a missing or unusable token triggers the sign-in redirect rather than resolving to a falsy value.
 - `authState` updates arrive via `oktaAuth.authStateManager.subscribe()`; getting an effect's subscription scope
   wrong can mean missed updates or leaked listeners. The `client-js` loaders have no subscription to manage.
 
-> :warning: **Requires React Router v6.4+** :warning:<br> These helpers are designed for a
-[data router](https://reactrouter.com/en/main/routers/picking-a-router) (`createBrowserRouter`,
-`createMemoryRouter`, etc.) and its `RouterProvider`, which is the only setup where you can assign them to a
-route's `loader`.
+> :warning: **Requires React Router v6.4+** :warning:<br> Assigning these helpers to a route's `loader`
+requires a [data router](https://reactrouter.com/en/main/routers/picking-a-router) (`createBrowserRouter`,
+`createMemoryRouter`, etc.) and its `RouterProvider`.
 >
-> `createFetchLoader` and `createTokenLoader` are, however, just async functions — they take no router
-> arguments and this subpath imports nothing from `react-router` — so you can also call them from an effect or
-> an event handler under the declarative API (`<BrowserRouter>` + `<Routes>`), or from a
-> [fetcher](https://reactrouter.com/how-to/fetchers#loading-data). `createLoginCallbackLoader` is the
-> exception: it returns a `302` `Response` that only a data router will act on, so outside one you should call
-> `orchestrator.resumeFlow()` and navigate yourself. `createLoadersFromOrchestrator` bundles the callback
-> loader and inherits that constraint.
+> `createFetchLoader` and `createTokenLoader` are plain async functions that take no router arguments, so they
+> can also be called from an effect, an event handler, or a
+> [fetcher](https://reactrouter.com/how-to/fetchers#loading-data) under the declarative API
+> (`<BrowserRouter>` + `<Routes>`). `createLoginCallbackLoader` returns a `302` `Response` that only a data
+> router acts on; outside one, call `orchestrator.resumeFlow()` and navigate yourself.
+> `createLoadersFromOrchestrator` bundles the callback loader and inherits that constraint.
 
 ### Installation
 
@@ -577,20 +574,19 @@ export default function App() {
 ```
 
 `createFetchLoader` and `createTokenLoader` (bundled into `createLoadersFromOrchestrator` alongside
-`createLoginCallbackLoader`, since the callback route resumes the very sign-in flow the token loader started and
-that in-flight flow state lives on the orchestrator instance) each return a function that takes the
-resource/params to use, not React Router's `{ request, params }` loader args directly — call them from within
-your own loader function, as above, rather than assigning them straight to `loader`.
+`createLoginCallbackLoader`, which shares the orchestrator's in-flight sign-in flow) each return a function
+that takes the resource/params to use, not React Router's `{ request, params }` loader args directly — call
+them from within your own loader function, as above, rather than assigning them straight to `loader`.
 
-`tokenLoader` throws a `401` `Response` if a valid token can't be obtained, which React Router will
-surface to the nearest [`errorElement`](https://reactrouter.com/en/main/route/error-element). In practice a
-missing token triggers the sign-in redirect instead, so this is a defensive guard rather than the common path.
+`tokenLoader` throws a `401` `Response` if a valid token can't be obtained, which React Router surfaces to the
+nearest [`errorElement`](https://reactrouter.com/en/main/route/error-element). A missing token triggers the
+sign-in redirect first, so this is a guard rather than the common path.
 
-`fetchResource` returns the `fetchClient.fetch()` response directly so it can be consumed with
-`useLoaderData()`, which reads it as JSON when the response carries an `application/json` content type and as
-text otherwise. Because the response is returned rather than thrown, **error statuses arrive as loader data,
-not as errors** — a `403` renders your component with the error body in `useLoaderData()` and never reaches the
-`errorElement`. Throw it yourself if you want the error boundary to handle it:
+`fetchResource` returns the `fetchClient.fetch()` response directly for use with `useLoaderData()`, which
+reads it as JSON when the response carries an `application/json` content type and as text otherwise. Because
+the response is returned rather than thrown, **error statuses arrive as loader data, not as errors** — a `403`
+renders your component with the error body in `useLoaderData()` and never reaches the `errorElement`. Throw it
+to route it to the error boundary:
 
 ```jsx
 loader: async () => {
@@ -603,7 +599,7 @@ loader: async () => {
 `loginCallbackLoader` resumes the sign-in flow via `orchestrator.resumeFlow()` (which stores the resulting
 credential itself) and redirects back to the original URI — it replaces the `<LoginCallback>` component used with
 `@okta/okta-auth-js`. Give its route an `errorElement` too: an OAuth error on the callback (a cancelled sign-in
-arrives as `?error=access_denied`) throws a plain `Error`, not a `Response`, so read `message` off
+arrives as `?error=access_denied`) throws a plain `Error`, not a `Response`, so `message` is read off
 `useRouteError()`.
 
 ### Using these loaders in React Router framework mode
