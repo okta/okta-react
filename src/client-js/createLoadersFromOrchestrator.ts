@@ -18,10 +18,8 @@ import { createLoginCallbackLoader } from './createLoginCallbackLoader';
  * Binds a single {@link AuthorizationCodeFlowOrchestrator} instance to both {@link createTokenLoader} and
  * {@link createLoginCallbackLoader}.
  *
- * The callback route resumes the flow the token loader started. That in-flight flow - its PKCE and
- * transaction context, and the emitter `login_prompt_required` and `error` fire on - is per-instance state,
- * so both loaders are bound to the one orchestrator you provide. (Credential storage is static, so stored
- * credentials are shared regardless.)
+ * The callback route resumes the flow the token loader started, and that in-flight flow is per-instance
+ * state, so both loaders are bound to the one orchestrator you provide.
  *
  * @example
  * const { tokenLoader, loginCallbackLoader } = createLoadersFromOrchestrator(tokenOrchestrator);
