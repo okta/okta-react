@@ -21,7 +21,7 @@ const Resource: React.FC = () => {
       <h1>Resource</h1>
       <p>Loaded via <code>createFetchLoader</code> (<code>/resource.json</code>).</p>
       <pre id="resource">{JSON.stringify(resource, null, 2)}</pre>
-      <Link to="/">Home</Link>
+      <Link id="home-nav-link" to="/">Home</Link>
     </div>
   );
 };
