@@ -49,7 +49,7 @@ export function ErrorBoundary() {
         <div>
             <h1>Error</h1>
             <p id="error-message">{message}</p>
-            <Link to="/">Home</Link>
+            <Link id="home-nav-link" to="/">Home</Link>
         </div>
     );
 }
