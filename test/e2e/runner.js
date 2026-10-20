@@ -39,17 +39,28 @@ function runWithConfig(sampleConfig) {
     const command = mode ? `start:${mode}` : 'start'
 
     // 1. start the sample's web server
-    const server = spawn('yarn', [
-      'workspace',
-      name,
-      command
-    ], { stdio: 'inherit' });
-
+    //
+    // Reverse mode first: successive configs share a port and `server.kill()` below only starts the
+    // previous server's shutdown, so without this a run can resolve against the dying server.
+    const serverEnv = Object.assign({}, process.env, { PORT: String(port) });
     waitOn({
       resources: [
         `http-get://localhost:${port}`
-      ]
+      ],
+      reverse: true
     }).then(() => {
+      const server = spawn('yarn', [
+        'workspace',
+        name,
+        command
+      ], { stdio: 'inherit', env: serverEnv });
+
+      return waitOn({
+        resources: [
+          `http-get://localhost:${port}`
+        ]
+      }).then(() => server);
+    }).then((server) => {
       // 2. run webdriver based on if sauce is needed or not
       // TODO: support saucelab and cucumber
       const wdioConfig = path.resolve(__dirname, 'wdio.conf.js');
@@ -57,7 +68,7 @@ function runWithConfig(sampleConfig) {
         (acc, spec) => [...acc, '--spec', path.join(__dirname, 'specs', spec) + '.js']
       , []);
       const args = ['wdio', 'run', wdioConfig, ...specs];
-      const env = Object.assign({}, process.env, {APP_NAME: name});
+      const env = Object.assign({}, process.env, {APP_NAME: name, PORT: String(port)});
       const runner = spawn('yarn', args, { stdio: 'inherit', env });
 
       let returnCode = 1;
