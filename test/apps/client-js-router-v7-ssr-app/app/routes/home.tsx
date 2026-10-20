@@ -13,16 +13,9 @@
 import { Link, useLoaderData } from 'react-router';
 import { getAuth } from '../authService';
 
-// `Credential` is imported dynamically because `@okta/spa-platform`'s entry
-// point is a single barrel file: importing any export from it loads the
-// whole module graph, including `Credential`'s own module, which touches the
-// browser-only `location` global on import. This route module is also
-// imported on the server, for its `HydrateFallback`/`Home` exports;
-// `clientLoader` and `signOut` below only run in the browser.
 export async function clientLoader() {
-    // `Credential.getDefault()` is self-contained: it reads the default token id from storage and
-    // rebuilds its own `OAuth2Client` from the stored token's context, so it needs nothing from
-    // `getAuth()`.
+    // Imported dynamically because this module is also loaded on the server, and
+    // `@okta/spa-platform`'s barrel touches the browser-only `location` global on import.
     const { Credential } = await import('@okta/spa-platform');
     const credential = await Credential.getDefault();
     return { hasCredential: credential !== null };

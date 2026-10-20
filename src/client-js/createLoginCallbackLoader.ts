@@ -22,17 +22,12 @@ import type { AuthorizationCodeFlowOrchestrator } from '@okta/spa-platform/flows
  *
  * Give this route an `errorElement`. An OAuth error on the callback (a cancelled sign-in arrives as
  * `?error=access_denied`) makes `resumeFlow()` throw a plain `Error`, not a `Response`, so
- * `isRouteErrorResponse()` is false and `message` is read off `useRouteError()`. Without an `errorElement` on
- * this route or an ancestor, React Router's default error page renders.
+ * `isRouteErrorResponse()` is false and `message` is read off `useRouteError()`.
  *
  * The `context` returned by `orchestrator.resumeFlow()` is whatever `meta` object was passed to `flow.start()`
  * (or the orchestrator's `login_prompt_required` listener) when the flow began - `originalUri` is a convention,
  * not a guarantee, so consumers who pass their own `meta` shape should read `context` themselves instead of
  * using this loader.
- *
- * Constructing the redirect `Response` directly (rather than importing `redirect()` from `react-router-dom`)
- * keeps this subpath's runtime code framework-agnostic - it needs no `react-router-dom` import at all, only
- * the ambient `Request`/`Response` globals.
  */
 export function createLoginCallbackLoader(orchestrator: AuthorizationCodeFlowOrchestrator) {
   return async ({ request }: { request: Request }): Promise<Response> => {

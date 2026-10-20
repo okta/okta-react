@@ -10,9 +10,6 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-// Constructs the `FetchClient` used to call protected APIs. This is a data concern, not an auth
-// one: `FetchClient` never authenticates, it only attaches (and refreshes) tokens that
-// `authService` already knows how to obtain. Hence the dependency runs one way, data -> auth.
 import { FetchClient } from '@okta/spa-platform/flows';
 import { orchestrator } from './authService';
 

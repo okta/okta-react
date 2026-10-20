@@ -20,9 +20,8 @@ import type { AuthorizationCodeFlowOrchestrator } from '@okta/spa-platform/flows
  *
  * `orchestrator.getToken()` already resolves a matching credential, refreshes it if needed, or performs a
  * full re-authentication redirect if not - if a redirect occurs, the returned promise never resolves because
- * the page navigates away, same as {@link createFetchLoader}. The `401` throw below satisfies the
- * `Promise<Token | null>` signature declared on the `TokenOrchestrator` base;
- * `AuthorizationCodeFlowOrchestrator` either returns a token or throws, so it is unreachable in practice.
+ * the page navigates away, same as {@link createFetchLoader}. The `401` throw below satisfies
+ * `getToken()`'s `Token | null` return type; in practice the orchestrator returns a token or throws.
  *
  * The returned function takes optional {@link TokenOrchestrator.AuthorizeParams}, not React Router's
  * `{ request, params }` loader args, so call it from within your own loader function rather than assigning

@@ -10,12 +10,6 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-// Constructs the sign-in/sign-out flows and the token orchestrator - everything that performs
-// authentication. The `FetchClient` that *consumes* these tokens lives in `dataService.ts`.
-//
-// The flow and orchestrator exports live behind the `/flows` entry point - they depend on
-// `@okta/oauth2-flows`, which the root entry point deliberately avoids so that it stays an
-// optional dependency. `/flows` re-exports the root surface too, so one import covers both.
 import type {
     AuthorizationCodeFlowOrchestrator,
     SessionLogoutFlow,
@@ -28,11 +22,8 @@ type AuthService = {
 
 let authPromise: Promise<AuthService> | undefined;
 
-// `@okta/spa-platform`'s entry points are barrel files: importing any export (e.g.
-// `OAuth2Client`) loads the whole module graph, including `Credential`, whose module touches
-// the browser-only `location` global on import. This file is imported on the server as well as
-// in the browser, so the import is dynamic here. `createAuth()` runs only in the browser
-// (clientLoader bodies, event handlers), never from module scope.
+// Imported dynamically because this module is also loaded on the server, and
+// `@okta/spa-platform`'s barrel touches the browser-only `location` global on import.
 async function createAuth(): Promise<AuthService> {
     const {
         OAuth2Client,
@@ -58,20 +49,13 @@ async function createAuth(): Promise<AuthService> {
         logoutRedirectUri: `${appOrigin}/`,
     });
 
-    // `emitBeforeRedirect: false` skips the `login_prompt_required` event - this sample has no
-    // confirmation UI to gate the redirect on, so `getToken()` should redirect immediately.
+    // Skips the `login_prompt_required` event - there's no confirmation UI to gate the redirect on.
     const orchestrator = new AuthorizationCodeFlowOrchestrator(signInFlow, {
         emitBeforeRedirect: false,
     });
 
-    // If the user abandons a sign-in redirect (e.g. hits the browser back button on Okta's hosted
-    // page before completing it) and the browser restores this page from the back/forward cache,
-    // `signInFlow` comes back with `inProgress` still stuck `true` from the aborted attempt -
-    // `start()`/`resume()` only ever reset it on completion or failure, neither of which runs for an
-    // abandoned redirect. That stuck state makes every later `orchestrator.getToken()` call throw
-    // `flow already in progress` immediately. `pageshow`'s `persisted` flag is the standard signal
-    // for a bfcache restore, so reset here. Registered inside `createAuth()` rather than at module
-    // scope because this module is also imported on the server, where `window` doesn't exist.
+    // An abandoned sign-in redirect leaves `inProgress` stuck true, so every later `getToken()`
+    // throws `flow already in progress`. Reset when the page is restored from the bfcache.
     window.addEventListener('pageshow', (event) => {
         if (event.persisted) {
             signInFlow.reset();
