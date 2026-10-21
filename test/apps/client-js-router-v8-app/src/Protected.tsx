@@ -23,7 +23,7 @@ const Protected: React.FC = () => {
       <h1>Protected</h1>
       <p>Loaded via <code>createTokenLoader</code>.</p>
       <pre id="claims">{JSON.stringify(claims, null, 2)}</pre>
-      <Link to="/">Home</Link>
+      <Link id="home-nav-link" to="/">Home</Link>
     </div>
   );
 };

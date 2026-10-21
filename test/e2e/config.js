@@ -114,5 +114,21 @@ module.exports = [
     specs: [
       'router-sample'
     ]
+  },
+  // The two `@okta/okta-react/client-js` sample apps under test/apps. Not generated from samples/,
+  // so they carry none of the generator fields.
+  {
+    name: '@okta/test.app.client-js-router-v8-app',
+    specs: [
+      'client-js-router-sample'
+    ]
+  },
+  {
+    name: '@okta/test.app.client-js-router-v7-ssr-app',
+    // Shares 8080 with the v8 app above: only `http://localhost:8080/login/callback` is a
+    // registered redirect URI. The runner waits for the port to be released between runs.
+    specs: [
+      'client-js-router-sample'
+    ]
   }
 ];
