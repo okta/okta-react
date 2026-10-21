@@ -12,7 +12,8 @@
 
 import { createBrowserRouter } from 'react-router';
 import { createFetchLoader, createLoadersFromOrchestrator } from '@okta/okta-react/client-js';
-import { orchestrator, fetchClient } from './auth';
+import { orchestrator } from './authService';
+import { fetchClient } from './dataService';
 import Home from './Home';
 import Protected from './Protected';
 import Resource from './Resource';

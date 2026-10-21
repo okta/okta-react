@@ -27,10 +27,12 @@ module.exports = {
         message: 'src/client-js/** is a separate, optional bundle - do not import it from the default okta-react entry point.'
       }]
     }],
-    // ...nor may the default bundle depend on the client-js peer SDKs directly.
+    // ...nor may the default bundle depend on the client-js peer SDKs directly. These are
+    // `patterns`, not `paths`, so that subpath entry points (e.g. `@okta/spa-platform/flows`)
+    // are caught too - `paths` only matches the exact specifier.
     'no-restricted-imports': ['error', {
-      paths: ['@okta/auth-foundation', '@okta/oauth2-flows', '@okta/spa-platform'].map(name => ({
-        name,
+      patterns: ['@okta/auth-foundation', '@okta/oauth2-flows', '@okta/spa-platform'].map(name => ({
+        group: [name, `${name}/*`],
         message: `${name} may only be imported from src/client-js/** - the default okta-react bundle must not depend on it.`
       }))
     }]

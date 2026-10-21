@@ -9,9 +9,11 @@ The app is server-rendered, but authentication state is entirely browser-held (v
 - `/` (`app/routes/home.tsx`) - shows a sign in/out button based on whether a `Credential` exists.
 - `/protected` (`app/routes/protected.tsx`) - loads and renders ID token claims via `createTokenLoader`.
 - `/resource` (`app/routes/resource.tsx`) - fetches `/resource.json` via `createFetchLoader`.
-- `/login/callback` (`app/routes/login-callback.tsx`) - resumes the OAuth flow via `createLoginCallbackLoader` and redirects back to the original page. Exports `HydrateFallback` as its `default`, so React Router treats it as a page route rather than a resource route.
+- `/login/callback` (`app/routes/login-callback.tsx`) - resumes the OAuth flow via `createLoginCallbackLoader` and redirects back to the original page. Exports a `HydrateFallback` by name and a component as its `default`.
 
-`app/auth.ts` exports a single `getAuth()` - a lazy, memoized async singleton. `@okta/spa-platform`'s main entry is a single barrel file: importing any export from it (e.g. `OAuth2Client`) loads the whole module graph, including `Credential`'s own module, which touches the browser-only `location` global on import. `getAuth()` dynamically imports it on first call and is only called from code that runs in the browser (`clientLoader` bodies, event handlers), never from module scope.
+Construction is split in two: `app/authService.ts` builds the flows and token orchestrator - everything that performs authentication - and `app/dataService.ts` builds the `FetchClient` on top of it. `FetchClient` never authenticates; it only attaches and refreshes tokens the orchestrator already knows how to obtain, so it's a data concern rather than an auth one.
+
+Each exports a lazy, memoized async singleton (`getAuth()` and `getDataService()`). `@okta/spa-platform`'s entry points are barrel files: importing any export (e.g. `OAuth2Client`) loads the whole module graph, including `Credential`'s own module, which touches the browser-only `location` global on import. Both dynamically import it on first call and are only called from code that runs in the browser (`clientLoader` bodies, event handlers), never from module scope.
 
 ## Setup
 
