@@ -1787,15 +1787,15 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@okta/auth-foundation@^0.9.1":
-  version "0.9.1"
-  resolved "https://registry.yarnpkg.com/@okta/auth-foundation/-/auth-foundation-0.9.1.tgz#9a43ca8907f559362367229f2c48f330164d5311"
-  integrity sha512-HIgqPR96RBjdpjKwvVsA6ICJ+Zbp/KFs1TctLEt6xEdFEL74+iYCfNIWZzH9968ppsnKPkgyOWOHT9v7yU6eow==
+"@okta/auth-foundation@^0.10.0":
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/@okta/auth-foundation/-/auth-foundation-0.10.0.tgz#c24dfb368c63e53632dc87ddce903385e42edf9b"
+  integrity sha512-0s2fTeSKjSFzLH81kUBPq55H2gdVW53Krakvmv1cyTx5xX6R9nf6jp7nV5ypu6PbcQpZ2mCxry7VaqdWAbYPbQ==
 
-"@okta/oauth2-flows@^0.9.0":
-  version "0.9.0"
-  resolved "https://registry.yarnpkg.com/@okta/oauth2-flows/-/oauth2-flows-0.9.0.tgz#1dcce8512b23a797f8c50508af1e0c40a63f2d77"
-  integrity sha512-mxJo0WzY/txyRtDwoobGKmEVunORVqMfxWx+iIQnBWWPYv+BNzEsnrnnYj9Ce+co6bIQPIgyC55S9utJhRj8Zw==
+"@okta/oauth2-flows@^0.10.0":
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/@okta/oauth2-flows/-/oauth2-flows-0.10.0.tgz#9f8cb30c10c65bb8312c66a4d7843859bcd5f310"
+  integrity sha512-jEWXWo1ch6FUogaeXFmNj0Ubk5C5+MTscX8BsrIuWcmi0EKYCoR3j/rglXhLp/GDDB1E5W/r3NxCCcGnvlMVbQ==
 
 "@okta/okta-auth-js@*", "@okta/okta-auth-js@^7.14.5":
   version "7.14.5"
@@ -1865,10 +1865,10 @@
   optionalDependencies:
     fsevents "*"
 
-"@okta/spa-platform@^0.9.0":
-  version "0.9.0"
-  resolved "https://registry.yarnpkg.com/@okta/spa-platform/-/spa-platform-0.9.0.tgz#9719a5a7898fa24393566846889b2501eee846ae"
-  integrity sha512-tG9bEhgu92HoCNx+oJNvnNmbuCdNCXdoYT2dlDpL8nDBcfv5bEGSyCDSgUIXa+s7NUEPvX0rtxSyC8uk+GQicA==
+"@okta/spa-platform@^0.10.0":
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/@okta/spa-platform/-/spa-platform-0.10.0.tgz#37d0f13018713575a2df1bf7a354e56aceba401b"
+  integrity sha512-p0waen9hXY+6MKMw+4Bc7E60cgYycnmqyslrK9B8HRF37XVrAORxecvK6CabK+I1WskGhVH9rNQ9mMFCsUXCfw==
 
 "@oxc-project/types@=0.144.0":
   version "0.144.0"

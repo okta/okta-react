@@ -20,6 +20,13 @@ import Resource from './Resource';
 import LoginCallback from './LoginCallback';
 import ErrorBoundary from './ErrorBoundary';
 
+// React Router hasn't committed the new URL while a loader runs, so the orchestrator's default
+// `getOriginalUri` would capture the previous route.
+const toOriginalUri = ({ url }: { url: string }) => {
+  const { pathname, search, hash } = new URL(url);
+  return pathname + search + hash;
+};
+
 const fetchResource = createFetchLoader(fetchClient);
 const { tokenLoader, loginCallbackLoader } = createLoadersFromOrchestrator(orchestrator);
 
@@ -32,7 +39,7 @@ export const router = createBrowserRouter([
   {
     path: '/protected',
     element: <Protected />,
-    loader: () => tokenLoader(),
+    loader: ({ request }) => tokenLoader({ originalUri: toOriginalUri(request) }),
     errorElement: <ErrorBoundary />,
   },
   {

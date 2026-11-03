@@ -10,7 +10,7 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-import type { Token, TokenOrchestrator } from '@okta/auth-foundation';
+import type { Token } from '@okta/auth-foundation';
 import type { AuthorizationCodeFlowOrchestrator } from '@okta/spa-platform/flows';
 
 /**
@@ -23,17 +23,26 @@ import type { AuthorizationCodeFlowOrchestrator } from '@okta/spa-platform/flows
  * the page navigates away, same as {@link createFetchLoader}. The `401` throw below satisfies
  * `getToken()`'s `Token | null` return type; in practice the orchestrator returns a token or throws.
  *
- * The returned function takes optional {@link TokenOrchestrator.AuthorizeParams}, not React Router's
- * `{ request, params }` loader args, so call it from within your own loader function rather than assigning
- * it directly to `loader`:
+ * The returned function takes optional {@link AuthorizationCodeFlowOrchestrator.TokenParams}, not React
+ * Router's `{ request, params }` loader args, so call it from within your own loader function rather than
+ * assigning it directly to `loader`:
  *
  * @example
  * const getToken = createTokenLoader(orchestrator);
  * // ...
  * loader: () => getToken({ scopes: ['openid', 'admin'] }),
+ *
+ * Pass `originalUri` to control where the user returns after signing in. React Router has not committed the
+ * new URL while a loader runs, so the orchestrator's default would capture the previous route:
+ *
+ * @example
+ * loader: ({ request }) => {
+ *   const { pathname, search, hash } = new URL(request.url);
+ *   return getToken({ originalUri: pathname + search + hash });
+ * },
  */
 export function createTokenLoader(orchestrator: AuthorizationCodeFlowOrchestrator) {
-  return async (params?: TokenOrchestrator.AuthorizeParams): Promise<Token> => {
+  return async (params?: AuthorizationCodeFlowOrchestrator.TokenParams): Promise<Token> => {
     const token = await orchestrator.getToken(params);
     if (!token) {
       throw new Response('Unauthorized', { status: 401 });
