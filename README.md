@@ -498,12 +498,6 @@ export const fetchClient = new FetchClient(tokenOrchestrator);
 `FetchClient` resolves tokens through the orchestrator it is given, so it needs no issuer
 configuration of its own.
 
-> :warning: **TypeScript note** :warning:<br> The last line above requires `@okta/auth-foundation`
-> 0.9.1 or later. On 0.9.0 it does not typecheck: `EventEmitter` held a
-> `signals: Map<keyof Events, ...>`, and a `Map`'s key type is invariant, so
-> `AuthorizationCodeFlowOrchestrator` — which adds a `login_prompt_required` event — was not
-> assignable to the base `TokenOrchestrator` that `FetchClient` accepts.
-
 If you need to share one `OAuth2Client` across several flows — to add a
 `SessionLogoutFlow` for sign-out, for example — construct it yourself and use the two-argument flow
 constructor instead:
@@ -549,7 +543,10 @@ export const router = createBrowserRouter([
   {
     path: '/protected',
     element: <Protected />,
-    loader: () => tokenLoader(),
+    loader: ({ request }) => {
+      const { pathname, search, hash } = new URL(request.url);
+      return tokenLoader({ originalUri: pathname + search + hash });
+    },
   },
   {
     path: '/messages',
@@ -577,6 +574,12 @@ export default function App() {
 `createLoginCallbackLoader`, which shares the orchestrator's in-flight sign-in flow) each return a function
 that takes the resource/params to use, not React Router's `{ request, params }` loader args directly — call
 them from within your own loader function, as above, rather than assigning them straight to `loader`.
+
+`tokenLoader` takes `originalUri` so the user returns to the route they asked for after signing in. React
+Router has not committed the new URL while a loader runs, so the orchestrator's default reads the previous
+route — pass the destination from the loader's own `request`, as above. The same applies to a sign-in
+triggered by `fetchResource`; `FetchClient` has no per-call equivalent, so set the orchestrator's
+`getOriginalUri` option if that path matters to you.
 
 `tokenLoader` throws a `401` `Response` if a valid token can't be obtained, which React Router surfaces to the
 nearest [`errorElement`](https://reactrouter.com/en/main/route/error-element). A missing token triggers the

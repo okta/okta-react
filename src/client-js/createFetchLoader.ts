@@ -11,7 +11,7 @@
  */
 
 // @okta/spa-platform's FetchClient extends this one, so the base type accepts either.
-import type { FetchClient } from '@okta/auth-foundation';
+import type { FetchClient, TokenOrchestrator } from '@okta/auth-foundation';
 
 /**
  * Binds a {@link FetchClient} to a small helper for use inside a React Router (v6.4+) loader.
@@ -33,8 +33,9 @@ import type { FetchClient } from '@okta/auth-foundation';
  *   return response;
  * },
  *
- * The returned function takes a resource and optional `RequestInit`, not React Router's `{ request, params }`
- * loader args, so call it from within your own loader function rather than assigning it directly to `loader`:
+ * The returned function takes a resource and an optional init accepting both `RequestInit` and
+ * {@link TokenOrchestrator.AuthorizeParams}, not React Router's `{ request, params }` loader args, so call it
+ * from within your own loader function rather than assigning it directly to `loader`:
  *
  * @example
  * const fetchMessages = createFetchLoader(fetchClient);
@@ -42,7 +43,10 @@ import type { FetchClient } from '@okta/auth-foundation';
  * loader: ({ params }) => fetchMessages(`/api/users/${params.userId}/messages`),
  */
 export function createFetchLoader(fetchClient: FetchClient) {
-  return async (resource: string | URL | Request, init?: RequestInit): Promise<Response> => {
+  return async (
+    resource: string | URL | Request,
+    init?: TokenOrchestrator.AuthorizeParams & RequestInit
+  ): Promise<Response> => {
     return fetchClient.fetch(resource, init);
   };
 }
