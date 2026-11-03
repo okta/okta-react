@@ -55,9 +55,9 @@ export default function Home() {
                 <button id="login-button" onClick={signIn}>Sign in</button>
             )}
             <nav>
-                <Link to="/protected">Protected</Link>
+                <Link id="protected-nav-link" to="/protected">Protected</Link>
                 {' | '}
-                <Link to="/resource">Resource</Link>
+                <Link id="resource-nav-link" to="/resource">Resource</Link>
             </nav>
         </div>
     );
