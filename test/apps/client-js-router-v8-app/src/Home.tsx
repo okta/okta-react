@@ -13,7 +13,7 @@
 import * as React from 'react';
 import { Link } from 'react-router';
 import { Credential } from '@okta/spa-platform';
-import { orchestrator, signOutFlow } from './auth';
+import { orchestrator, signOutFlow } from './authService';
 
 const Home: React.FC = () => {
   const [hasCredential, setHasCredential] = React.useState(false);

@@ -1787,15 +1787,15 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@okta/auth-foundation@*", "@okta/auth-foundation@^0.6.0":
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/@okta/auth-foundation/-/auth-foundation-0.6.0.tgz#25b729bc8d15de53025e08d619f4ec19e072687f"
-  integrity sha512-AueDPbgox+E0To/SYrxpjQwiyI2HwxNqp1aWn/90ZonevTiJAk+o5kSp9i+Y7j08aUEc1NGXKJj989I+ZXsRbQ==
+"@okta/auth-foundation@^0.10.0":
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/@okta/auth-foundation/-/auth-foundation-0.10.0.tgz#c24dfb368c63e53632dc87ddce903385e42edf9b"
+  integrity sha512-0s2fTeSKjSFzLH81kUBPq55H2gdVW53Krakvmv1cyTx5xX6R9nf6jp7nV5ypu6PbcQpZ2mCxry7VaqdWAbYPbQ==
 
-"@okta/oauth2-flows@*", "@okta/oauth2-flows@^0.6.0":
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/@okta/oauth2-flows/-/oauth2-flows-0.6.0.tgz#1df28e8167b67912dfca31bd755593aa1f66425d"
-  integrity sha512-wCReTJegsaRYeycPcXeuyuPlQ2G5ZA6ttTJ/Is4rvBDCOQk8vMEq+B8Sd3n1v8tOddWP2HTRiIffu/92PqXRRQ==
+"@okta/oauth2-flows@^0.10.0":
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/@okta/oauth2-flows/-/oauth2-flows-0.10.0.tgz#9f8cb30c10c65bb8312c66a4d7843859bcd5f310"
+  integrity sha512-jEWXWo1ch6FUogaeXFmNj0Ubk5C5+MTscX8BsrIuWcmi0EKYCoR3j/rglXhLp/GDDB1E5W/r3NxCCcGnvlMVbQ==
 
 "@okta/okta-auth-js@*", "@okta/okta-auth-js@^7.14.5":
   version "7.14.5"
@@ -1865,10 +1865,10 @@
   optionalDependencies:
     fsevents "*"
 
-"@okta/spa-platform@*", "@okta/spa-platform@^0.6.0":
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/@okta/spa-platform/-/spa-platform-0.6.0.tgz#ac232752117835f7815459e7ce7d1f622c241953"
-  integrity sha512-VCQbvbnBtpwXBMg98ysRMyvdgjqj03wqPYEda4wyHEo31NN+KwzbwOaNAlxzg0+04MT2iDB0S+krA6MYGXA59w==
+"@okta/spa-platform@^0.10.0":
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/@okta/spa-platform/-/spa-platform-0.10.0.tgz#37d0f13018713575a2df1bf7a354e56aceba401b"
+  integrity sha512-p0waen9hXY+6MKMw+4Bc7E60cgYycnmqyslrK9B8HRF37XVrAORxecvK6CabK+I1WskGhVH9rNQ9mMFCsUXCfw==
 
 "@oxc-project/types@=0.144.0":
   version "0.144.0"

@@ -10,30 +10,27 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-import type { AuthorizationCodeFlowOrchestrator, FetchClient, SessionLogoutFlow } from '@okta/spa-platform';
+import type {
+    AuthorizationCodeFlowOrchestrator,
+    SessionLogoutFlow,
+} from '@okta/spa-platform/flows';
 
-type Auth = {
+type AuthService = {
     orchestrator: AuthorizationCodeFlowOrchestrator;
     signOutFlow: SessionLogoutFlow;
-    fetchClient: FetchClient;
 };
 
-let authPromise: Promise<Auth> | undefined;
+let authPromise: Promise<AuthService> | undefined;
 
-// `@okta/spa-platform`'s entry point is a single barrel file: importing any
-// export from it (e.g. `OAuth2Client`) loads the whole module graph,
-// including `Credential`, whose module touches the browser-only `location`
-// global on import. This file is imported on the server as well as in the
-// browser, so the import is dynamic here. `createAuth()` runs only in the
-// browser (clientLoader bodies, event handlers), never from module scope.
-async function createAuth(): Promise<Auth> {
+// Imported dynamically because this module is also loaded on the server, and
+// `@okta/spa-platform`'s barrel touches the browser-only `location` global on import.
+async function createAuth(): Promise<AuthService> {
     const {
         OAuth2Client,
         AuthorizationCodeFlow,
         SessionLogoutFlow,
         AuthorizationCodeFlowOrchestrator,
-        FetchClient,
-    } = await import('@okta/spa-platform');
+    } = await import('@okta/spa-platform/flows');
 
     const { ISSUER, CLIENT_ID } = process.env;
     const appOrigin = window.location.origin;
@@ -52,16 +49,23 @@ async function createAuth(): Promise<Auth> {
         logoutRedirectUri: `${appOrigin}/`,
     });
 
+    // Skips the `login_prompt_required` event - there's no confirmation UI to gate the redirect on.
     const orchestrator = new AuthorizationCodeFlowOrchestrator(signInFlow, {
         emitBeforeRedirect: false,
     });
 
-    const fetchClient = new FetchClient(orchestrator);
+    // An abandoned sign-in redirect leaves `inProgress` stuck true, so every later `getToken()`
+    // throws `flow already in progress`. Reset when the page is restored from the bfcache.
+    window.addEventListener('pageshow', (event) => {
+        if (event.persisted) {
+            signInFlow.reset();
+        }
+    });
 
-    return { orchestrator, signOutFlow, fetchClient };
+    return { orchestrator, signOutFlow };
 }
 
-export function getAuth(): Promise<Auth> {
+export function getAuth(): Promise<AuthService> {
     authPromise ??= createAuth();
     return authPromise;
 }

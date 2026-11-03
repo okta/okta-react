@@ -15,18 +15,17 @@ import {
   AuthorizationCodeFlow,
   SessionLogoutFlow,
   AuthorizationCodeFlowOrchestrator,
-  FetchClient,
-} from '@okta/spa-platform';
+} from '@okta/spa-platform/flows';
 
 const { ISSUER, CLIENT_ID } = process.env;
 
-export const client = new OAuth2Client({
+const client = new OAuth2Client({
   issuer: ISSUER!,
   clientId: CLIENT_ID!,
   scopes: ['openid', 'profile', 'email'],
 });
 
-export const signInFlow = new AuthorizationCodeFlow(client, {
+const signInFlow = new AuthorizationCodeFlow(client, {
   redirectUri: `${window.location.origin}/login/callback`,
 });
 
@@ -34,20 +33,13 @@ export const signOutFlow = new SessionLogoutFlow(client, {
   logoutRedirectUri: `${window.location.origin}/`,
 });
 
-// `emitBeforeRedirect: false` skips the `login_prompt_required` event - this sample has no
-// confirmation UI to gate the redirect on, so `getToken()` should redirect immediately.
+// Skips the `login_prompt_required` event - there's no confirmation UI to gate the redirect on.
 export const orchestrator = new AuthorizationCodeFlowOrchestrator(signInFlow, {
   emitBeforeRedirect: false,
 });
 
-export const fetchClient = new FetchClient(orchestrator);
-
-// If the user abandons a sign-in redirect (e.g. hits the browser back button on Okta's hosted page
-// before completing it) and the browser restores this page from the back/forward cache, `signInFlow`
-// comes back with `inProgress` still stuck `true` from the aborted attempt - `start()`/`resume()` only
-// ever reset it on completion or failure, neither of which runs for an abandoned redirect. That stuck
-// state makes every later `orchestrator.getToken()` call throw `flow already in progress` immediately.
-// `pageshow`'s `persisted` flag is the standard signal for a bfcache restore, so reset here.
+// An abandoned sign-in redirect leaves `inProgress` stuck true, so every later `getToken()` throws
+// `flow already in progress`. Reset when the page is restored from the bfcache.
 window.addEventListener('pageshow', (event) => {
   if (event.persisted) {
     signInFlow.reset();
