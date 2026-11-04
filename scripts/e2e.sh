@@ -20,12 +20,17 @@ get_terminus_secret "/" PASSWORD PASSWORD
 export ORG_OIE_ENABLED=
 export USE_CLASSIC_ENGINE=
 
+# Point Bacon at the junit results before branching on the outcome. A failing run
+# is exactly when the per-test detail is worth having, so these must not sit
+# behind the success path.
+echo ${TEST_SUITE_TYPE} > ${TEST_SUITE_TYPE_FILE}
+echo ${TEST_RESULT_FILE_DIR} > ${TEST_RESULT_FILE_DIR_FILE}
+
 if ! yarn test:e2e; then
   echo "e2e tests failed! Exiting..."
   log_extra_dir_as_zip ${E2E_LOG_DIR} "e2e-logs.zip"
-  exit ${TEST_FAILURE}
+  # publishes the results dir above and still fails the suite
+  exit ${PUBLISH_TYPE_AND_RESULT_DIR_BUT_ALWAYS_FAIL}
 fi
 
-echo ${TEST_SUITE_TYPE} > ${TEST_SUITE_TYPE_FILE}
-echo ${TEST_RESULT_FILE_DIR} > ${TEST_RESULT_FILE_DIR_FILE}
-exit ${SUCCESS}
+exit ${PUBLISH_TYPE_AND_RESULT_DIR}
