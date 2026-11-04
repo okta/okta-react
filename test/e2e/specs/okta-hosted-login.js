@@ -12,14 +12,14 @@
 
 'use strict';
 
-import LoginHomePage from '../page-objects/shared/login-home-page';
-import OktaSignInPageV1 from '../page-objects/okta-signin-page';
-import OktaSignInPageOIE from '../page-objects/okta-oie-signin-page';
-import AuthenticatedHomePage from '../page-objects/shared/authenticated-home-page';
-import ProfilePage from '../page-objects/shared/profile-page';
-import MessagesPage from '../page-objects/messages-page';
-import AuthenticatorsPage from '../page-objects/authenticators-page';
-import MFAChallengePage from '../page-objects/mfa-challenge-page';
+import LoginHomePage from '../page-objects/shared/login-home-page.js';
+import OktaSignInPageV1 from '../page-objects/okta-signin-page.js';
+import OktaSignInPageOIE from '../page-objects/okta-oie-signin-page.js';
+import AuthenticatedHomePage from '../page-objects/shared/authenticated-home-page.js';
+import ProfilePage from '../page-objects/shared/profile-page.js';
+import MessagesPage from '../page-objects/messages-page.js';
+import AuthenticatorsPage from '../page-objects/authenticators-page.js';
+import MFAChallengePage from '../page-objects/mfa-challenge-page.js';
 import url from 'url';
 import axios from 'axios';
 

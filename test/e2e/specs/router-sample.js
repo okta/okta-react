@@ -11,9 +11,9 @@
  */
 
 /* eslint-disable */
-import RouterSampleApp from  '../page-objects/router-sample-page';
-import OktaSignInPageV1 from '../page-objects/okta-signin-page';
-import OktaSignInPageOIE from '../page-objects/okta-oie-signin-page';
+import RouterSampleApp from  '../page-objects/router-sample-page.js';
+import OktaSignInPageV1 from '../page-objects/okta-signin-page.js';
+import OktaSignInPageOIE from '../page-objects/okta-oie-signin-page.js';
 
 let OktaSignInPage = OktaSignInPageV1;
 if (process.env.ORG_OIE_ENABLED) {

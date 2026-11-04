@@ -19,14 +19,21 @@ require('@okta/env').setEnvironmentVarsFromTestEnv();
 
 const testName = process.env.SAMPLE_NAME;
 
-function runNextTask(tasks) {
+// Exits non-zero if any run failed. Without this the suite can report success
+// while every spec failed to run.
+function exitWith (returnCode) {
+  process.exit(returnCode === 0 ? 0 : 1);
+}
+
+function runNextTask(tasks, failed = false) {
   if (tasks.length === 0) {
     console.log('all runs are complete');
+    exitWith(failed ? 1 : 0);
     return;
   }
   const task = tasks.shift();
-  task().then(() => {
-    runNextTask(tasks);
+  task().then((returnCode) => {
+    runNextTask(tasks, failed || returnCode !== 0);
   });
 }
 
@@ -92,15 +99,15 @@ if (testName) {
   console.log(`Running starting for test "${testName}"`);
 
   if (testName === 'harness') {
-    runHarnessTests();
+    runHarnessTests().then(exitWith);
   }
   else {
     const sampleConfig = samplesConfig.find(config => config.name === testName);
-    if (!samplesConfig) {
+    if (!sampleConfig) {
       throw new Error(`Failed to find sample config with ${testName} `);
     }
     console.log('Starting test with config: ', sampleConfig);
-    runWithConfig(sampleConfig);
+    runWithConfig(sampleConfig).then(exitWith);
   }
 } else {
   // Run all tests

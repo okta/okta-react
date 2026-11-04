@@ -14,6 +14,7 @@
 // will load environment vars from testenv file and set on process.env
 require('@okta/env').setEnvironmentVarsFromTestEnv(__dirname);
 const fs = require('node:fs/promises');
+const path = require('node:path');
 
 
 const CI = process.env.CI === 'true' || process.env.CI === true;
@@ -183,6 +184,12 @@ exports.config = {
     // see also: https://webdriver.io/docs/dot-reporter
     reporters: [
       'spec',
+      // Bacon reads junit XML from test-reports/e2e (see scripts/e2e.sh). Without
+      // this it finds no files and reports 0 tests regardless of what ran.
+      ['junit', {
+        outputDir: path.resolve(__dirname, '../../test-reports/e2e'),
+        outputFileFormat: ({ cid }) => `results-${cid}.${process.env.APP_NAME || 'e2e'}.xml`
+      }],
     ],
 
 

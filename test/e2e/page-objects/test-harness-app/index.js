@@ -10,7 +10,7 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-export { default as AppPage } from './app-page';
-export { default as ProtectedPage } from './protected-page';
-export { default as SessionTokenSignInPage } from './sessionToken-signin-page';
-export { default as LoginCallbackPage } from './login-callback-page';
+export { default as AppPage } from './app-page.js';
+export { default as ProtectedPage } from './protected-page.js';
+export { default as SessionTokenSignInPage } from './sessionToken-signin-page.js';
+export { default as LoginCallbackPage } from './login-callback-page.js';
