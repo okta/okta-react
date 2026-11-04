@@ -188,7 +188,12 @@ exports.config = {
       // this it finds no files and reports 0 tests regardless of what ran.
       ['junit', {
         outputDir: path.resolve(__dirname, '../../test-reports/e2e'),
-        outputFileFormat: ({ cid }) => `results-${cid}.${process.env.APP_NAME || 'e2e'}.xml`
+        // APP_NAME is a scoped package name (@okta/samples.react.custom-login); its
+        // slashes would be read as directories, so flatten it into a filename.
+        outputFileFormat: ({ cid }) => {
+          const app = (process.env.APP_NAME || 'e2e').replace(/[^a-zA-Z0-9._-]/g, '-');
+          return `results-${cid}.${app}.xml`;
+        }
       }],
     ],
 
