@@ -59,6 +59,13 @@ delete packageJSON.workspaces; // remove yarn workspace section
   });
 });
 
+// typesVersions carries the same subpath types for consumers on moduleResolution
+// "node", which ignores "exports" entirely
+Object.keys(packageJSON.typesVersions['*']).forEach(function(subpath) {
+  packageJSON.typesVersions['*'][subpath] = packageJSON.typesVersions['*'][subpath]
+    .map(function(p) { return p.replace(`${NPM_DIR}/`, ''); });
+});
+
 fs.writeFileSync(`./${NPM_DIR}/package.json`, JSON.stringify(packageJSON, null, 4));
 
 shell.echo(chalk.green(`End building`));

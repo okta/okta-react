@@ -49,6 +49,16 @@
       "require": "./dist/bundles/okta-react-router-6.cjs.js"
     }
   },
+  "typesVersions": {
+    "*": {
+      "react-router-5": [
+        "./dist/bundles/types/react-router-5.d.ts"
+      ],
+      "react-router-6": [
+        "./dist/bundles/types/react-router-6.d.ts"
+      ]
+    }
+  },
   "author": "",
   "license": "Apache-2.0",
   "bugs": {
