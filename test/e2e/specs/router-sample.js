@@ -11,9 +11,9 @@
  */
 
 /* eslint-disable */
-import RouterSampleApp from  '../page-objects/router-sample-page';
-import OktaSignInPageV1 from '../page-objects/okta-signin-page';
-import OktaSignInPageOIE from '../page-objects/okta-oie-signin-page';
+import RouterSampleApp from  '../page-objects/router-sample-page.js';
+import OktaSignInPageV1 from '../page-objects/okta-signin-page.js';
+import OktaSignInPageOIE from '../page-objects/okta-oie-signin-page.js';
 
 let OktaSignInPage = OktaSignInPageV1;
 if (process.env.ORG_OIE_ENABLED) {
@@ -39,7 +39,9 @@ describe('React router test app', () => {
   
     await OktaSignInPage.login(USERNAME, PASSWORD);
     isAuthenticated = true;
-    await RouterSampleApp.loadingIcon.waitForDisplayed();
+    // #loading-icon only exists while the callback is in flight, so by the time
+    // a later test logs in against an established Okta session it can unmount
+    // before we look. The header is what the caller actually asserts on.
     await RouterSampleApp.header.waitForDisplayed();
   };
 

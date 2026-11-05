@@ -12,11 +12,11 @@
 
 'use strict';
 
-import LoginHomePage from '../page-objects/shared/login-home-page';
-import OktaSignInPageV1 from '../page-objects/okta-signin-page';
-import OktaSignInPageOIE from '../page-objects/okta-oie-signin-page';
-import AuthenticatedHomePage from '../page-objects/shared/authenticated-home-page';
-import ProtectedPage from '../page-objects/shared/protected-page';
+import LoginHomePage from '../page-objects/shared/login-home-page.js';
+import OktaSignInPageV1 from '../page-objects/okta-signin-page.js';
+import OktaSignInPageOIE from '../page-objects/okta-oie-signin-page.js';
+import AuthenticatedHomePage from '../page-objects/shared/authenticated-home-page.js';
+import ProtectedPage from '../page-objects/shared/protected-page.js';
 import url from 'url';
 
 let OktaSignInPage = OktaSignInPageV1;

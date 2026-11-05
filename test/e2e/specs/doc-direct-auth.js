@@ -13,10 +13,10 @@
 'use strict';
 
 
-import LoginHomePage from '../page-objects/shared/login-home-page';
-import DirectAuthLoginInPage from '../page-objects/direct-auth-login-form';
-import AuthenticatedHomePage from '../page-objects/shared/authenticated-home-page';
-import ProtectedPage from '../page-objects/shared/protected-page';
+import LoginHomePage from '../page-objects/shared/login-home-page.js';
+import DirectAuthLoginInPage from '../page-objects/direct-auth-login-form.js';
+import AuthenticatedHomePage from '../page-objects/shared/authenticated-home-page.js';
+import ProtectedPage from '../page-objects/shared/protected-page.js';
 import url from 'url';
 
 const params = {
