@@ -39,7 +39,9 @@ describe('React router test app', () => {
   
     await OktaSignInPage.login(USERNAME, PASSWORD);
     isAuthenticated = true;
-    await RouterSampleApp.loadingIcon.waitForDisplayed();
+    // #loading-icon only exists while the callback is in flight, so by the time
+    // a later test logs in against an established Okta session it can unmount
+    // before we look. The header is what the caller actually asserts on.
     await RouterSampleApp.header.waitForDisplayed();
   };
 

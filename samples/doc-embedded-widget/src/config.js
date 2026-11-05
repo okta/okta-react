@@ -13,6 +13,7 @@
 const CLIENT_ID = process.env.SPA_CLIENT_ID || process.env.CLIENT_ID || '{clientId}';
 const ISSUER = process.env.ISSUER || 'https://{yourOktaDomain}.com/oauth2/default';
 const REDIRECT_URI = `${window.location.origin}/login/callback`;
+const USE_CLASSIC_ENGINE = process.env.USE_CLASSIC_ENGINE === 'true' || true;
 
 export default {
   oidc: {
@@ -32,6 +33,8 @@ export default {
       // you will need to uncomment the below line
       // pkce: false
     },
+    // Set to false if your org is OIE enabled
+    useClassicEngine: USE_CLASSIC_ENGINE,
     // Additional documentation on config options can be found at https://github.com/okta/okta-signin-widget#basic-config-options
   },
 };
