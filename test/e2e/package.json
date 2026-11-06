@@ -5,7 +5,8 @@
   "scripts": {
     "test": "node runner.js",
     "wdio": "wdio run wdio.conf.js",
-    "test:harness": "SAMPLE_NAME=harness yarn test"
+    "test:harness": "SAMPLE_NAME=harness yarn test",
+    "test:v6": "SAMPLE_NAME=v6 yarn test"
   },
   "devDependencies": {
     "@babel/cli": "^7.19.3",

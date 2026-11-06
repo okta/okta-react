@@ -1,7 +1,10 @@
 {
   "compilerOptions": {
-    "declaration": true,
-    "declarationDir": "dist/bundles/types",
+    // `nohoist` in package.json deliberately keeps per-workspace copies of @types/react
+    // (the test apps pin React 18 while the SDK builds against 16), so multiple copies of
+    // the React type declarations are always present. Checking them all surfaces conflicts
+    // between those copies rather than errors in this package's own sources.
+    "skipLibCheck": true,
     "target": "ES2019",
     "sourceMap": true,
     "jsx": "react",

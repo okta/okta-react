@@ -13,7 +13,7 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { LoginCallback } from '@okta/okta-react';
-import { RequiredAuth } from './SecureRoute';
+import { SecureOutlet } from '@okta/okta-react/react-router-6';
 
 import Home from '../pages/Home';
 import Protected from '../pages/Protected';
@@ -24,7 +24,7 @@ const AppRoutes = () => {
     <Routes>
       <Route path='/' element={<Home />} />
       <Route path='login/callback' element={<LoginCallback loadingElement={<Loading />} />} />
-      <Route path='/protected' element={<RequiredAuth />}>
+      <Route path='/protected' element={<SecureOutlet loadingElement={<Loading />} />}>
         <Route path='' element={<Protected />} />
       </Route>
     </Routes>
