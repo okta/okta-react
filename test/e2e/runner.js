@@ -112,7 +112,7 @@ if (testName) {
     runHarnessTests().then(exitWith);
   }
   else if (testName === 'v6') {
-    runV6AppTests();
+    runV6AppTests().then(exitWith);
   }
   else {
     const sampleConfig = samplesConfig.find(config => config.name === testName);

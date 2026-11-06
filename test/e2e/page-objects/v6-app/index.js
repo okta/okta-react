@@ -17,4 +17,4 @@ export {
   ProtectedPage,
   SessionTokenSignInPage,
   LoginCallbackPage
-} from '../test-harness-app';
+} from '../test-harness-app/index.js';

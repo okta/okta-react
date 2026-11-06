@@ -15,9 +15,9 @@ import {
   ProtectedPage,
   SessionTokenSignInPage,
   LoginCallbackPage
-} from '../page-objects/v6-app';
-import OktaSignInPageV1 from '../page-objects/okta-signin-page';
-import OktaSignInPageOIE from '../page-objects/okta-oie-signin-page';
+} from '../page-objects/v6-app/index.js';
+import OktaSignInPageV1 from '../page-objects/okta-signin-page.js';
+import OktaSignInPageOIE from '../page-objects/okta-oie-signin-page.js';
 
 let OktaSignInPage = OktaSignInPageV1;
 if (process.env.ORG_OIE_ENABLED) {
