@@ -1,0 +1,4 @@
+{
+  "message": "This is a protected resource, fetched via createFetchLoader.",
+  "widgets": ["foo", "bar", "baz"]
+}
