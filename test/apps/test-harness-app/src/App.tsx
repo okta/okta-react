@@ -27,17 +27,17 @@ const App: React.FC<{
 }> = ({ oktaAuth, customLogin, baseUrl }) => {
   const history = useHistory();
 
-  const onAuthRequired = async () => {
+  const onAuthRequired = React.useCallback(async () => {
     history.push('/login');
-  };
+  }, []);
 
-  const onAuthResume = async () => { 
+  const onAuthResume = React.useCallback(async () => { 
     history.push('/widget-login');
-  };
+  }, []);
 
-  const restoreOriginalUri = async (_oktaAuth: OktaAuth, originalUri: string) => {
+  const restoreOriginalUri = React.useCallback(async (_oktaAuth: OktaAuth, originalUri: string) => {
     history.replace(toRelativeUrl(originalUri || '/', window.location.origin));
-  };
+  }, []);
 
   return (
     <React.StrictMode>
