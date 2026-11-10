@@ -190,6 +190,40 @@ describe('<Security />', () => {
       expect(restoreSpy).toHaveBeenCalledTimes(1);
       expect(restoreSpy).toHaveBeenCalledWith(oktaAuth, 'foo');
     });
+
+    it('should set restoreOriginalUri callback on a new oktaAuth instance', async () => {
+      const restoreSpy = jest.fn();
+      const nextOktaAuth = { ...oktaAuth, options: {} } as OktaAuth;
+      const wrapper = mount(<Security oktaAuth={oktaAuth} restoreOriginalUri={restoreSpy} />);
+      expect(nextOktaAuth.options.restoreOriginalUri).toBeUndefined();
+
+      wrapper.setProps({ oktaAuth: nextOktaAuth });
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      await nextOktaAuth.options.restoreOriginalUri!(nextOktaAuth, '/next');
+      expect(restoreSpy).toHaveBeenCalledWith(nextOktaAuth, '/next');
+    });
+
+    it('should call the latest restoreOriginalUri prop', async () => {
+      const firstSpy = jest.fn();
+      const secondSpy = jest.fn();
+      const wrapper = mount(<Security oktaAuth={oktaAuth} restoreOriginalUri={firstSpy} />);
+
+      wrapper.setProps({ restoreOriginalUri: secondSpy });
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      await oktaAuth.options.restoreOriginalUri!(oktaAuth, '/latest');
+      expect(firstSpy).not.toHaveBeenCalled();
+      expect(secondSpy).toHaveBeenCalledWith(oktaAuth, '/latest');
+    });
+
+    it('should not log warning when switching back to a previous oktaAuth instance', () => {
+      oktaAuth.options = {};
+      const nextOktaAuth = { ...oktaAuth, options: {} } as OktaAuth;
+      const spy = jest.spyOn(console, 'warn');
+      const wrapper = mount(<Security oktaAuth={oktaAuth} restoreOriginalUri={restoreOriginalUri} />);
+      wrapper.setProps({ oktaAuth: nextOktaAuth });
+      wrapper.setProps({ oktaAuth });
+      expect(spy).not.toHaveBeenCalledWith(expect.stringContaining('Two custom restoreOriginalUri callbacks'));
+    });
   });
 
   it('gets initial state from oktaAuth and exposes it on the context', () => {

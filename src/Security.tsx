@@ -24,6 +24,8 @@ declare const PACKAGE_NAME: string;
 declare const PACKAGE_VERSION: string;
 declare const SKIP_VERSION_CHECK: string;
 
+const securityCallbacks = new WeakSet<(...args: never[]) => unknown>();
+
 const Security: React.FC<{
   oktaAuth: OktaAuth,
   restoreOriginalUri: RestoreOriginalUriFunction, 
@@ -42,8 +44,11 @@ const Security: React.FC<{
     return oktaAuth.authStateManager.getAuthState();
   });
 
+  const restoreOriginalUriRef = React.useRef(restoreOriginalUri);
+  restoreOriginalUriRef.current = restoreOriginalUri;
+
   React.useEffect(() => {
-    if (!oktaAuth || !restoreOriginalUri) {
+    if (!oktaAuth || !restoreOriginalUriRef.current) {
       return;
     }
 
@@ -51,16 +56,18 @@ const Security: React.FC<{
     // props.restoreOriginalUri is required, therefore if options.restoreOriginalUri exists, there are 2 callbacks
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    if (oktaAuth.options.restoreOriginalUri) {
+    if (oktaAuth.options.restoreOriginalUri && !securityCallbacks.has(oktaAuth.options.restoreOriginalUri)) {
       console.warn('Two custom restoreOriginalUri callbacks are detected. The one from the OktaAuth configuration will be overridden by the provided restoreOriginalUri prop from the Security component.');
     }
+    const callback = (async (oktaAuth: unknown, originalUri: string) => {
+      return restoreOriginalUriRef.current(oktaAuth as OktaAuth, originalUri);
+    }) as ((oktaAuth: OktaAuth, originalUri?: string) => Promise<void>);
+    securityCallbacks.add(callback);
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    oktaAuth.options.restoreOriginalUri = (async (oktaAuth: unknown, originalUri: string) => {
-      return restoreOriginalUri(oktaAuth as OktaAuth, originalUri);
-    }) as ((oktaAuth: OktaAuth, originalUri?: string) => Promise<void>);
+    oktaAuth.options.restoreOriginalUri = callback;
 
-  }, []); // empty array, only check on component mount
+  }, [oktaAuth]);
 
   React.useEffect(() => {
     if (!oktaAuth) {
