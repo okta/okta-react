@@ -1,0 +1,29 @@
+{
+  "name": "@okta/test.app.client-js-router-v8-app",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "prestart": "vite build",
+    "start": "vite preview --port 8080",
+    "start:dev": "vite build --mode development && vite preview --port 8080",
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "react-router": "^8.3.0",
+    "@okta/auth-foundation": "*",
+    "@okta/oauth2-flows": "*",
+    "@okta/spa-platform": "*",
+    "@okta/okta-react": "*"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
+    "@vitejs/plugin-react": "^6.0.5",
+    "typescript": "^5.6.3",
+    "vite": "^8.2.1"
+  }
+}

@@ -37,6 +37,7 @@ module.exports = {
         '.eslintrc.js',
         'babel.config.js',
         'jest.config.js',
+        'test/jest/jest.environment.js',
         'vite.config.js',
         'bs-config.js'
       ],
