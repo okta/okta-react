@@ -543,10 +543,7 @@ export const router = createBrowserRouter([
   {
     path: '/protected',
     element: <Protected />,
-    loader: ({ request }) => {
-      const { pathname, search, hash } = new URL(request.url);
-      return tokenLoader({ originalUri: pathname + search + hash });
-    },
+    loader: (args) => tokenLoader(args),
   },
   {
     path: '/messages',
@@ -575,11 +572,20 @@ export default function App() {
 that takes the resource/params to use, not React Router's `{ request, params }` loader args directly — call
 them from within your own loader function, as above, rather than assigning them straight to `loader`.
 
-`tokenLoader` takes `originalUri` so the user returns to the route they asked for after signing in. React
-Router has not committed the new URL while a loader runs, so the orchestrator's default reads the previous
-route — pass the destination from the loader's own `request`, as above. The same applies to a sign-in
-triggered by `fetchResource`; `FetchClient` has no per-call equivalent, so set the orchestrator's
-`getOriginalUri` option if that path matters to you.
+`tokenLoader` takes React Router's loader arguments, so a route's `loader` just forwards them. It derives
+`originalUri` from the loader's `request` — the route being navigated *to* — so the user returns there after
+signing in. React Router has not committed that URL to `window.location` while a loader runs, so the
+orchestrator's own default would read the previous route. Pass `getOriginalUri` to
+`createLoadersFromOrchestrator` (or `createTokenLoader`) to change the derivation, or an explicit
+`originalUri` per call to override it:
+
+```jsx
+loader: (args) => tokenLoader(args, { scopes: ['openid', 'admin'] }),
+```
+
+A sign-in triggered by `fetchResource` is not covered: `FetchClient.fetch` forwards only
+`AuthorizeParams`, which has no `originalUri`, so that path falls back to the orchestrator's
+`getOriginalUri` option.
 
 `tokenLoader` throws a `401` `Response` if a valid token can't be obtained, which React Router surfaces to the
 nearest [`errorElement`](https://reactrouter.com/en/main/route/error-element). A missing token triggers the

@@ -11,7 +11,7 @@
  */
 
 import type { AuthorizationCodeFlowOrchestrator } from '@okta/spa-platform/flows';
-import { createTokenLoader } from './createTokenLoader';
+import { createTokenLoader, type CreateTokenLoaderOptions } from './createTokenLoader';
 import { createLoginCallbackLoader } from './createLoginCallbackLoader';
 
 /**
@@ -24,12 +24,15 @@ import { createLoginCallbackLoader } from './createLoginCallbackLoader';
  * @example
  * const { tokenLoader, loginCallbackLoader } = createLoadersFromOrchestrator(tokenOrchestrator);
  */
-export function createLoadersFromOrchestrator(orchestrator: AuthorizationCodeFlowOrchestrator): {
+export function createLoadersFromOrchestrator(
+  orchestrator: AuthorizationCodeFlowOrchestrator,
+  options: CreateTokenLoaderOptions = {}
+): {
   tokenLoader: ReturnType<typeof createTokenLoader>;
   loginCallbackLoader: ReturnType<typeof createLoginCallbackLoader>;
 } {
   return {
-    tokenLoader: createTokenLoader(orchestrator),
+    tokenLoader: createTokenLoader(orchestrator, options),
     loginCallbackLoader: createLoginCallbackLoader(orchestrator),
   };
 }
