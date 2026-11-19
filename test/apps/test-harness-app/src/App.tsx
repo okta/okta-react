@@ -13,7 +13,8 @@
 import * as React from 'react';
 import { Route, Switch, useHistory } from 'react-router-dom';
 import { OktaAuth, toRelativeUrl } from '@okta/okta-auth-js';
-import { Security, LoginCallback, SecureRoute } from '@okta/okta-react';
+import { Security, LoginCallback } from '@okta/okta-react';
+import { SecureRoute } from '@okta/okta-react/react-router-5';
 import Home from './Home';
 import Protected from './Protected';
 import CustomLogin from './CustomLogin';
