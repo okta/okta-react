@@ -29,14 +29,14 @@ describe('createTokenLoader', () => {
     }
 
     const router = createMemoryRouter(
-      [{ path: '/', element: <Page />, loader: () => getToken() }],
+      [{ path: '/', element: <Page />, loader: getToken }],
       { initialEntries: ['/'] }
     );
 
     render(<RouterProvider router={router} />);
 
     await waitFor(() => expect(screen.getByText('abc123')).toBeInTheDocument());
-    expect(orchestrator.getToken).toHaveBeenCalledWith(undefined);
+    expect(orchestrator.getToken).toHaveBeenCalledWith({ originalUri: '/' });
   });
 
   it('passes the provided params through to orchestrator.getToken()', async () => {
@@ -50,14 +50,14 @@ describe('createTokenLoader', () => {
     }
 
     const router = createMemoryRouter(
-      [{ path: '/', element: <Page />, loader: () => getToken(params) }],
+      [{ path: '/', element: <Page />, loader: (args) => getToken(args, params) }],
       { initialEntries: ['/'] }
     );
 
     render(<RouterProvider router={router} />);
 
     await waitFor(() => expect(screen.getByText('done')).toBeInTheDocument());
-    expect(orchestrator.getToken).toHaveBeenCalledWith(params);
+    expect(orchestrator.getToken).toHaveBeenCalledWith({ ...params, originalUri: '/' });
   });
 
   it('throws a 401 Response when getToken() resolves null', async () => {
@@ -73,7 +73,7 @@ describe('createTokenLoader', () => {
       [{
         path: '/',
         element: <p>never rendered</p>,
-        loader: () => getToken(),
+        loader: getToken,
         errorElement: <ErrorBoundary />,
       }],
       { initialEntries: ['/'] }
@@ -82,5 +82,73 @@ describe('createTokenLoader', () => {
     render(<RouterProvider router={router} />);
 
     await waitFor(() => expect(screen.getByText('401')).toBeInTheDocument());
+  });
+
+  // React Router strips the hash before building the loader request (`createClientSideRequest` ->
+  // `stripHashFromPath`), so the derived value carries path and query only.
+  it('derives originalUri from the loader request, including the query string', async () => {
+    const orchestrator = { getToken: jest.fn().mockResolvedValue({ accessToken: 'a' }) };
+    const getToken = createTokenLoader(orchestrator as any);
+
+    function Page() {
+      useLoaderData();
+      return <p>done</p>;
+    }
+
+    const router = createMemoryRouter(
+      [{ path: '/protected', element: <Page />, loader: getToken }],
+      { initialEntries: ['/protected?tab=1#top'] }
+    );
+
+    render(<RouterProvider router={router} />);
+
+    await waitFor(() => expect(screen.getByText('done')).toBeInTheDocument());
+    expect(orchestrator.getToken).toHaveBeenCalledWith({ originalUri: '/protected?tab=1' });
+  });
+
+  it('uses a provided getOriginalUri over the default', async () => {
+    const orchestrator = { getToken: jest.fn().mockResolvedValue({ accessToken: 'a' }) };
+    const getToken = createTokenLoader(orchestrator as any, {
+      getOriginalUri: (request) => new URL(request.url).pathname.replace(/^\/app/, ''),
+    });
+
+    function Page() {
+      useLoaderData();
+      return <p>done</p>;
+    }
+
+    const router = createMemoryRouter(
+      [{ path: '/app/protected', element: <Page />, loader: getToken }],
+      { initialEntries: ['/app/protected'] }
+    );
+
+    render(<RouterProvider router={router} />);
+
+    await waitFor(() => expect(screen.getByText('done')).toBeInTheDocument());
+    expect(orchestrator.getToken).toHaveBeenCalledWith({ originalUri: '/protected' });
+  });
+
+  it('lets an explicit originalUri param win over the derived one', async () => {
+    const orchestrator = { getToken: jest.fn().mockResolvedValue({ accessToken: 'a' }) };
+    const getToken = createTokenLoader(orchestrator as any);
+
+    function Page() {
+      useLoaderData();
+      return <p>done</p>;
+    }
+
+    const router = createMemoryRouter(
+      [{
+        path: '/protected',
+        element: <Page />,
+        loader: (args) => getToken(args, { originalUri: '/elsewhere' }),
+      }],
+      { initialEntries: ['/protected'] }
+    );
+
+    render(<RouterProvider router={router} />);
+
+    await waitFor(() => expect(screen.getByText('done')).toBeInTheDocument());
+    expect(orchestrator.getToken).toHaveBeenCalledWith({ originalUri: '/elsewhere' });
   });
 });

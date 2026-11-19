@@ -12,5 +12,6 @@
 
 export { createFetchLoader } from './createFetchLoader';
 export { createTokenLoader } from './createTokenLoader';
+export type { CreateTokenLoaderOptions, LoaderArgs } from './createTokenLoader';
 export { createLoginCallbackLoader } from './createLoginCallbackLoader';
 export { createLoadersFromOrchestrator } from './createLoadersFromOrchestrator';

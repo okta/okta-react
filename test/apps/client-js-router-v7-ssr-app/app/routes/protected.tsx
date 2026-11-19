@@ -12,11 +12,11 @@
 
 import { Link, useLoaderData } from 'react-router';
 import { createTokenLoader } from '@okta/okta-react/client-js';
-import { getAuth } from '../auth';
+import { getAuth } from '../authService';
 
-export async function clientLoader() {
+export async function clientLoader(args: { request: Request }) {
     const { orchestrator } = await getAuth();
-    return createTokenLoader(orchestrator)();
+    return createTokenLoader(orchestrator)(args);
 }
 clientLoader.hydrate = true;
 

@@ -11,7 +11,7 @@
  */
 
 import { createLoginCallbackLoader } from '@okta/okta-react/client-js';
-import { getAuth } from '../auth';
+import { getAuth } from '../authService';
 
 export async function clientLoader({ request }: { request: Request }) {
     const { orchestrator } = await getAuth();
@@ -19,7 +19,12 @@ export async function clientLoader({ request }: { request: Request }) {
 }
 clientLoader.hydrate = true;
 
-export default function HydrateFallback() {
+// React Router resolves fallbacks by export name, so this must stay a named export.
+export function HydrateFallback() {
     return <p>Checking authentication…</p>;
 }
 
+// `clientLoader` always redirects, so this renders only until the browser follows the 302.
+export default function LoginCallback() {
+    return <p>Signing in…</p>;
+}

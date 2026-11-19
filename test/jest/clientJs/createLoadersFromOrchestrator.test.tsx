@@ -24,8 +24,9 @@ describe('createLoadersFromOrchestrator', () => {
 
     const { tokenLoader, loginCallbackLoader } = createLoadersFromOrchestrator(orchestrator as any);
 
-    await expect(tokenLoader()).resolves.toBe(token);
-    expect(orchestrator.getToken).toHaveBeenCalledWith(undefined);
+    const args = { request: new Request('https://example.com/protected') };
+    await expect(tokenLoader(args)).resolves.toBe(token);
+    expect(orchestrator.getToken).toHaveBeenCalledWith({ originalUri: '/protected' });
 
     const response = await loginCallbackLoader({ request: new Request('https://example.com/login/callback') });
     expect(orchestrator.resumeFlow).toHaveBeenCalledWith('https://example.com/login/callback');

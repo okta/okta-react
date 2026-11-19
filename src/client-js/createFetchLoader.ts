@@ -10,20 +10,32 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-// Imported from @okta/auth-foundation (not @okta/spa-platform, whose FetchClient re-export doesn't
-// surface the inherited `fetch` method to the type checker) - spa-platform's concrete FetchClient
-// instances are structurally assignable here since they extend this base class.
-import type { FetchClient } from '@okta/auth-foundation';
+// @okta/spa-platform's FetchClient extends this one, so the base type accepts either.
+import type { FetchClient, TokenOrchestrator } from '@okta/auth-foundation';
 
 /**
  * Binds a {@link FetchClient} to a small helper for use inside a React Router (v6.4+) loader.
  *
  * `fetchClient.fetch()` already resolves a matching credential, refreshes it if needed, or performs a full
  * re-authentication redirect if not - this helper does no auth logic of its own, it just fetches and returns
- * the raw `Response`, which React Router auto-parses when read via `useLoaderData()`.
+ * the raw `Response`.
  *
- * The returned function takes a resource and optional `RequestInit`, not React Router's `{ request, params }`
- * loader args, so call it from within your own loader function rather than assigning it directly to `loader`:
+ * `useLoaderData()` reads that `Response` as JSON when it carries an `application/json` content type and as
+ * text otherwise (an empty JSON body reads as `null`).
+ *
+ * The response is returned as-is regardless of status, so a non-`ok` `Response` arrives as loader data rather
+ * than reaching an `errorElement`. Throw it to route it to the error boundary:
+ *
+ * @example
+ * loader: async () => {
+ *   const response = await fetchMessages('/api/messages');
+ *   if (!response.ok) throw response;
+ *   return response;
+ * },
+ *
+ * The returned function takes a resource and an optional init accepting both `RequestInit` and
+ * {@link TokenOrchestrator.AuthorizeParams}, not React Router's `{ request, params }` loader args, so call it
+ * from within your own loader function rather than assigning it directly to `loader`:
  *
  * @example
  * const fetchMessages = createFetchLoader(fetchClient);
@@ -31,7 +43,10 @@ import type { FetchClient } from '@okta/auth-foundation';
  * loader: ({ params }) => fetchMessages(`/api/users/${params.userId}/messages`),
  */
 export function createFetchLoader(fetchClient: FetchClient) {
-  return async (resource: string | URL | Request, init?: RequestInit): Promise<Response> => {
+  return async (
+    resource: string | URL | Request,
+    init?: TokenOrchestrator.AuthorizeParams & RequestInit
+  ): Promise<Response> => {
     return fetchClient.fetch(resource, init);
   };
 }
